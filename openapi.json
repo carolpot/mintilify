@@ -9243,7 +9243,7 @@
       "NewsEventCategory": {
         "type": "string",
         "description": "News event category for filtering company news signals",
-        "enum": null,
+        
         "example": "allSignals"
       },
       "CompanyNewsEventSignal": {
