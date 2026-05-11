@@ -100,7 +100,7 @@
       },
       {
         "tab": "API Reference",
-        "openapi": "https://docs.lusha.com/_bundle/apis/openapi.json"
+        "openapi": "openapi.json"
       }
     ]
   }
