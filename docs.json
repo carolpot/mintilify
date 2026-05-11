@@ -19,6 +19,11 @@
       "href": "https://www.lusha.com/signup/"
     }
   },
+  "api": {
+    "playground": {
+      "mode": "show"
+    }
+  },
   "navigation": {
     "tabs": [
       {
@@ -95,83 +100,7 @@
       },
       {
         "tab": "API Reference",
-        "groups": [
-          {
-            "group": "Enrichment",
-            "pages": [
-              "api-reference/enrichment/search-single-contact",
-              "api-reference/enrichment/search-multiple-contacts",
-              "api-reference/enrichment/search-single-company",
-              "api-reference/enrichment/search-multiple-companies"
-            ]
-          },
-          {
-            "group": "Prospecting",
-            "pages": [
-              "api-reference/prospecting/search-contacts",
-              "api-reference/prospecting/enrich-contacts",
-              "api-reference/prospecting/search-companies",
-              "api-reference/prospecting/enrich-companies"
-            ]
-          },
-          {
-            "group": "Signals",
-            "pages": [
-              "api-reference/signals/get-signal-options",
-              "api-reference/signals/get-contact-signals",
-              "api-reference/signals/search-contact-signals",
-              "api-reference/signals/get-company-signals",
-              "api-reference/signals/search-company-signals"
-            ]
-          },
-          {
-            "group": "Webhooks",
-            "pages": [
-              "api-reference/webhooks/create-subscription",
-              "api-reference/webhooks/list-subscriptions",
-              "api-reference/webhooks/get-subscription",
-              "api-reference/webhooks/update-subscription",
-              "api-reference/webhooks/delete-subscriptions",
-              "api-reference/webhooks/test-subscription",
-              "api-reference/webhooks/get-audit-logs",
-              "api-reference/webhooks/get-audit-log-stats",
-              "api-reference/webhooks/get-account-secret",
-              "api-reference/webhooks/regenerate-account-secret"
-            ]
-          },
-          {
-            "group": "Lookalikes",
-            "pages": [
-              "api-reference/lookalikes/contact-lookalikes",
-              "api-reference/lookalikes/company-lookalikes"
-            ]
-          },
-          {
-            "group": "Filters",
-            "pages": [
-              "api-reference/filters/contact-departments",
-              "api-reference/filters/contact-seniority",
-              "api-reference/filters/contact-data-points",
-              "api-reference/filters/contact-countries",
-              "api-reference/filters/contact-locations",
-              "api-reference/filters/company-names",
-              "api-reference/filters/company-industries",
-              "api-reference/filters/company-sizes",
-              "api-reference/filters/company-revenues",
-              "api-reference/filters/company-locations",
-              "api-reference/filters/company-sic-codes",
-              "api-reference/filters/company-naics-codes",
-              "api-reference/filters/company-intent-topics",
-              "api-reference/filters/company-technologies"
-            ]
-          },
-          {
-            "group": "Account",
-            "pages": [
-              "api-reference/account/usage-stats"
-            ]
-          }
-        ]
+        "openapi": "https://docs.lusha.com/_bundle/apis/openapi.json"
       }
     ]
   }
