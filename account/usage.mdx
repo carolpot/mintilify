@@ -1,0 +1,70 @@
+---
+title: "Monitor API credit usage with GET /account/usage"
+sidebarTitle: "Usage"
+description: "Check how many API credits you have used, how many remain, and your total plan allocation. Use this endpoint to stay ahead of plan limits in production."
+---
+
+The account usage endpoint gives you a real-time view of your credit consumption. Call it at any point to see how many credits you have spent, how many are still available, and what your total plan allocation is. This is especially useful in production pipelines where you want to avoid hitting your plan limit mid-run.
+
+**Endpoint:** `GET https://api.lusha.com/account/usage`
+
+<Warning>
+  This endpoint has a specific rate limit of **5 requests per minute**. Do not poll it on every API call — instead, fetch it on a schedule or before starting a large batch job.
+</Warning>
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/account/usage \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "used": 450,
+  "remaining": 550,
+  "total": 1000
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `used` | integer | Credits consumed in the current billing period. |
+| `remaining` | integer | Credits still available to spend. |
+| `total` | integer | Total credits included in your plan for this period. |
+
+## Use cases
+
+- **Monitor consumption** — track credit burn rate over time to understand which workflows consume the most credits.
+- **Avoid plan limit interruptions** — check remaining credits before starting a large enrichment or prospecting job and split or defer the job if needed.
+- **Support billing reconciliation** — pull usage data at the end of each billing period to cross-check against your invoice.
+- **Governance and multi-system oversight** — when Lusha is integrated across multiple systems, use this endpoint to maintain a central view of usage.
+
+## Recommendations for production use
+
+<Steps>
+  <Step title="Poll on a schedule, not per request">
+    Fetch usage once per hour or at the start of each pipeline run rather than after every individual API call. This keeps you well within the 5 requests/minute rate limit.
+  </Step>
+  <Step title="Set a low-credit alert threshold">
+    When `remaining` drops below a threshold meaningful to your workflow (for example, 10% of `total`), trigger an alert or pause automated jobs to avoid unexpected failures.
+
+    ```json
+    {
+      "used": 920,
+      "remaining": 80,
+      "total": 1000
+    }
+    ```
+  </Step>
+  <Step title="Log usage before large batch jobs">
+    Record the `remaining` value before and after a large batch run to confirm expected credit consumption and catch any anomalies early.
+  </Step>
+</Steps>
+
+<Tip>
+  If you run Lusha integrations across multiple systems or teams, designate one service to own usage polling and share the result with your other systems. This prevents each system from hitting the rate limit independently.
+</Tip>

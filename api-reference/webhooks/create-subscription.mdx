@@ -1,0 +1,186 @@
+---
+title: "POST /api/subscriptions — Create webhook subscriptions"
+sidebarTitle: "POST /api/subscriptions"
+description: "Create up to 25 webhook subscriptions per request. Specify the entity type, entity IDs, signal types to monitor, and your HTTPS webhook endpoint URL."
+---
+
+Send a single request to subscribe one or more contacts or companies to real-time signal notifications. Each subscription links an entity to a webhook URL and the set of signal types you want to receive. Lusha delivers a signed JSON payload to your endpoint whenever a matching signal fires.
+
+<Warning>
+  Your account must have a webhook secret before deliveries can be received. Generate one by calling `POST /api/account/secret/regenerate` and store it securely — it is shown only once.
+</Warning>
+
+**Endpoint:** `POST https://api.lusha.com/api/subscriptions`
+
+<Note>
+  You can create up to 25 subscriptions per request.
+</Note>
+
+## Request body
+
+<ParamField body="subscriptions" type="object[]" required>
+  Array of subscription objects to create. Maximum 25 items per request.
+
+  <Expandable title="properties">
+    <ParamField body="entityType" type="string" required>
+      The type of entity to watch. Accepted values: `contact`, `company`.
+    </ParamField>
+
+    <ParamField body="entityId" type="string" required>
+      The unique identifier of the contact or company to subscribe to.
+    </ParamField>
+
+    <ParamField body="signalTypes" type="string[]" required>
+      Array of signal type keys you want to receive for this entity. For the full list of available signal types, see the Signal Options reference.
+    </ParamField>
+
+    <ParamField body="webhookUrl" type="string" required>
+      The HTTPS URL where Lusha will POST signal payloads. HTTP URLs are not accepted.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Webhook payload structure
+
+When a signal fires, Lusha sends a POST request to your `webhookUrl`. The payload structure depends on the signal type.
+
+<CodeGroup>
+
+```json Promotion signal (contact)
+{
+  "id": "f3b87e05-0402-4f3e-8e26-6a38fd0ad62c",
+  "type": "promotion",
+  "entityType": "contact",
+  "entityId": "4158887495",
+  "subscriptionId": "507f1f77bcf86cd799439011",
+  "data": {
+    "personId": 4158887495,
+    "currentCompanyId": 40823133,
+    "currentCompanyName": "OMG Hospitality Group LLC",
+    "currentDomain": "omghospitalitygroup.com",
+    "currentTitle": "Bartender",
+    "currentDepartments": [
+      { "id": 7, "value": "Other" }
+    ],
+    "previousCompanyName": "First Watch Restaurants",
+    "previousDomain": "firstwatch.com",
+    "signalDate": "2025-07-01"
+  },
+  "timestamp": "2026-01-14T16:16:35.841Z",
+  "billing": {
+    "creditsCharged": 1
+  }
+}
+```
+
+```json Commercial activity news signal (company)
+{
+  "id": "a7c92f14-1234-4b3e-9d22-8b4fe1d0bc45",
+  "type": "commercialActivityNews",
+  "entityType": "company",
+  "entityId": "33222678",
+  "subscriptionId": "507f1f77bcf86cd799439011",
+  "data": {
+    "companyId": "33222678",
+    "companyName": "Lusha",
+    "domain": "lusha.com",
+    "signalId": "1503910",
+    "eventType": "partnership",
+    "eventSummary": "Lusha announced a strategic partnership with Salesforce.",
+    "articlePublishedDate": "2025-06-15",
+    "articleTitle": "Lusha Partners with Salesforce",
+    "articleHighlight": "The partnership enables Salesforce users to access Lusha data directly within their CRM.",
+    "eventEffectiveDate": "2025-06-10",
+    "articleUrl": "https://example.com/lusha-salesforce-partnership"
+  },
+  "timestamp": "2026-01-14T16:16:35.841Z",
+  "billing": {
+    "creditsCharged": 1
+  }
+}
+```
+
+</CodeGroup>
+
+## Delivery headers
+
+Lusha includes the following headers in every webhook delivery:
+
+| Header | Description |
+|--------|-------------|
+| `X-Lusha-Signature` | HMAC-SHA256 signature for verifying the request came from Lusha |
+| `X-Lusha-Timestamp` | Unix timestamp of when the request was sent |
+| `Content-Type` | `application/json` |
+| `User-Agent` | `Lusha-Webhooks/1.0` |
+
+## Required acknowledgment response
+
+Your endpoint must respond within **10 seconds** with an HTTP `2xx` status and the following JSON body:
+
+```json
+{
+  "received": true,
+  "timestamp": "2026-02-05T10:30:45.123Z",
+  "webhookId": "f3b87e05-0402-4f3e-8e26-6a38fd0ad62c"
+}
+```
+
+<ResponseField name="received" type="boolean" required>
+  Must be `true` to confirm receipt.
+</ResponseField>
+
+<ResponseField name="timestamp" type="string" required>
+  ISO 8601 timestamp of when your server received the request.
+</ResponseField>
+
+<ResponseField name="webhookId" type="string" required>
+  The `id` value copied from the incoming webhook payload.
+</ResponseField>
+
+Return the acknowledgment before performing any heavy processing. Queue the payload for async handling if needed:
+
+```javascript
+app.post('/webhook', async (req, res) => {
+  // 1. Verify signature first
+  if (!verifyWebhookSignature(req)) {
+    return res.status(401).json({ error: 'Invalid signature' });
+  }
+
+  // 2. Queue for async processing
+  await queueWebhook(req.body);
+
+  // 3. Acknowledge immediately
+  res.status(201).json({
+    received: true,
+    timestamp: new Date().toISOString(),
+    webhookId: req.body.id
+  });
+});
+```
+
+## Delivery and retry behavior
+
+- Lusha retries failed deliveries up to **3 times** with exponential backoff.
+- A non-`2xx` response or a timeout triggers the retry mechanism.
+- After all 3 retries are exhausted, the subscription is **automatically disabled**.
+- All delivery attempts are recorded in [audit logs](/api-reference/webhooks/get-audit-logs).
+
+<Warning>
+  Retries do not incur additional credit charges. Each signal is charged once, at the time it is first delivered.
+</Warning>
+
+## Error responses
+
+```json
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": ["entityType must be one of: contact, company"]
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `statusCode` | number | HTTP status code |
+| `message` | string | Human-readable error message |
+| `errors` | string[] | Detailed validation errors (optional) |

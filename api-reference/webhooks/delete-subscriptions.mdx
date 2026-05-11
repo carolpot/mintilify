@@ -1,0 +1,94 @@
+---
+title: "POST /api/subscriptions/delete — Delete subscriptions"
+sidebarTitle: "POST /api/subscriptions/delete"
+description: "Permanently delete one or more webhook subscriptions in a single request. Supports up to 25 subscription IDs with per-item success and error reporting."
+---
+
+Permanently delete one or more webhook subscriptions in a single request. Each subscription is processed independently and the response includes a detailed result for every item, making it easy to confirm which deletions succeeded and which did not.
+
+**Endpoint:** `POST https://api.lusha.com/api/subscriptions/delete`
+
+<Warning>
+  Deletion is permanent and cannot be undone. Deleted subscriptions stop receiving deliveries immediately.
+</Warning>
+
+<Note>
+  You can delete up to 25 subscriptions per request. Duplicate IDs in the same request are automatically deduplicated.
+</Note>
+
+## Request body
+
+<ParamField body="ids" type="string[]" required>
+  Array of subscription IDs to delete. Maximum 25 items. Duplicates are deduplicated automatically.
+</ParamField>
+
+## Example request
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/api/subscriptions/delete \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "ids": [
+      "507f1f77bcf86cd799439011",
+      "507f1f77bcf86cd799439012"
+    ]
+  }'
+```
+
+## Example response
+
+```json
+{
+  "results": [
+    {
+      "id": "507f1f77bcf86cd799439011",
+      "status": "DELETED",
+      "subscription": {
+        "id": "507f1f77bcf86cd799439011",
+        "entityType": "contact",
+        "entityId": "4158887495",
+        "signalTypes": ["promotion"],
+        "webhookUrl": "https://your-server.com/webhooks/lusha",
+        "createdAt": "2026-01-10T09:00:00.000Z"
+      }
+    },
+    {
+      "id": "invalid-id-format",
+      "status": "NOT_FOUND",
+      "error": "Subscription not found"
+    }
+  ]
+}
+```
+
+## Response fields
+
+<ResponseField name="results" type="object[]">
+  Per-item results, one entry for each ID in the request.
+
+  <Expandable title="properties">
+    <ResponseField name="id" type="string">
+      The subscription ID from the request.
+    </ResponseField>
+
+    <ResponseField name="status" type="string">
+      Outcome for this item. `DELETED` indicates success. `NOT_FOUND` indicates the ID did not match an existing subscription (including invalid ID formats).
+    </ResponseField>
+
+    <ResponseField name="subscription" type="object">
+      The deleted subscription object. Only present when `status` is `DELETED`.
+    </ResponseField>
+
+    <ResponseField name="error" type="string">
+      Human-readable error message. Only present when `status` is not `DELETED`.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Behavior notes
+
+- Each subscription is processed independently. A failure on one ID does not affect the others.
+- Invalid ID formats are handled gracefully and reported as `NOT_FOUND` rather than causing the entire request to fail.
+- Duplicate IDs are deduplicated before processing — you will not see duplicate entries in the response.

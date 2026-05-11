@@ -1,0 +1,44 @@
+---
+title: "GET /prospecting/filters/contacts/existing_data_points"
+sidebarTitle: "GET /filters/contacts/data-points"
+description: "Retrieve available data point filter values for contact searches, such as filtering for contacts with verified emails or phone numbers."
+---
+
+Retrieve the list of available data point filter values for use in `POST /prospecting/contact/search`. Data point filters let you restrict results to contacts that have specific types of verified contact information already on record — for example, only contacts with a known email address or a direct phone number.
+
+**Endpoint:** `GET https://api.lusha.com/prospecting/filters/contacts/existing_data_points`
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/contacts/existing_data_points \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "data_points": [
+    "email",
+    "phone",
+    "mobile_phone",
+    "direct_dial"
+  ]
+}
+```
+
+## Usage
+
+Pass one or more values from the `data_points` array into the `existing_data_points` filter field of your contact search request to return only contacts that have the specified data available:
+
+```json
+{
+  "existing_data_points": ["email", "direct_dial"]
+}
+```
+
+<Tip>
+  Cache the response from this endpoint. Data point options change infrequently.
+</Tip>

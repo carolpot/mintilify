@@ -1,0 +1,324 @@
+---
+title: "POST /prospecting/company/search — Search companies"
+sidebarTitle: "POST /prospecting/company/search"
+description: "Search Lusha's B2B company database using firmographic filters: industry, size, revenue, location, technologies, intent topics, and buying signals."
+---
+
+Use this endpoint to find companies in Lusha's database that match your target account criteria. Supply firmographic filters such as industry, employee size, revenue range, technologies in use, and more to build a focused account list. The response includes company IDs you then pass to the [Enrich Companies](/api-reference/prospecting/enrich-companies) endpoint to retrieve full firmographic profiles. This is **step 2** of the three-step prospecting flow.
+
+<Info>
+  **Prospecting flow**
+
+  | Step | Endpoint | Purpose |
+  |------|----------|---------|
+  | 1 | Filters API | Discover valid filter values for your search |
+  | 2 | **POST /prospecting/company/search** | Query companies using your filters |
+  | 3 | POST /prospecting/company/enrich | Retrieve full company profiles by ID |
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/prospecting/company/search
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="filters" type="object" required>
+  The top-level filter container.
+
+  <Expandable title="filters.companies">
+    <ParamField body="filters.companies.include" type="object">
+      Criteria that matching companies must satisfy. The same fields are available under `filters.companies.exclude` to remove companies from results.
+
+      <Expandable title="include fields">
+        <ParamField body="filters.companies.include.names" type="string[]">
+          Company names to include. Example: `["Apple", "Google"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.domains" type="string[]">
+          Company domains to include. Example: `["lusha.com"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.mainIndustriesIds" type="number[]">
+          Main industry IDs. Example: `[4, 5]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.subIndustriesIds" type="number[]">
+          Sub-industry IDs. Example: `[101]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.sizes" type="object[]">
+          Employee count ranges. Each object has `min` and `max` number fields. Example: `[{ "min": 1, "max": 10 }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.revenues" type="object[]">
+          Revenue ranges. Each object has `min` and `max` values.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.locations" type="object[]">
+          HQ location filters. Each object may include `country` and other geographic fields. Example: `[{ "country": "United States" }]`
+
+          <Warning>
+            This filter matches against HQ location only. To find companies with offices in a specific region regardless of HQ, use `companyLocations` instead.
+          </Warning>
+        </ParamField>
+
+        <ParamField body="filters.companies.include.companyLocations" type="object[]">
+          Office location filters based on all known company locations (not just HQ), as reported by LinkedIn.
+
+          Each object may include:
+          - `country` (string) — required
+          - `state` (string) — optional
+
+          Example: `[{ "country": "United States", "state": "California" }, { "country": "Germany" }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.employeesInLinkedIn" type="object">
+          Filter by LinkedIn-reported employee count. Both `min` and `max` are optional.
+
+          <Expandable title="fields">
+            <ParamField body="filters.companies.include.employeesInLinkedIn.min" type="integer">
+              Minimum employee count (inclusive). Example: `100`
+            </ParamField>
+
+            <ParamField body="filters.companies.include.employeesInLinkedIn.max" type="integer">
+              Maximum employee count (inclusive). Example: `5000`
+            </ParamField>
+          </Expandable>
+        </ParamField>
+
+        <ParamField body="filters.companies.include.technologies" type="object[]">
+          Filter by technologies the company uses. Each object requires a `name` field. Example: `[{ "name": "Salesforce" }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.intentTopics" type="string[]">
+          Filter by buyer intent topics. Example: `["Digital Sales"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.sicCodes" type="string[]">
+          SIC industry codes. Example: `["1011", "1021"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.naicsCodes" type="string[]">
+          NAICS industry codes. Example: `["11", "21"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.searchText" type="string">
+          Free-text search across company fields. Example: `"Finance Marketing in Germany"`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.signal" type="object">
+          **Premium feature.** Filter companies that have signals of the specified types. Credits are charged for each signal type that returns results.
+
+          See [GET /api/signals/filters/company](/api-reference/signals/get-signal-options) for available signal type values.
+
+          <Expandable title="signal fields">
+            <ParamField body="filters.companies.include.signal.names" type="string[]">
+              Signal types to match. Allowed values include: `"allSignals"`, `"surgeInHiring"`, `"headcountIncrease6m"`, `"websiteTrafficIncrease"`, `"financialEventsNews"`, and all other company signal types.
+            </ParamField>
+
+            <ParamField body="filters.companies.include.signal.startDate" type="string">
+              Earliest signal date in `YYYY-MM-DD` format. Example: `"2025-01-01"`
+            </ParamField>
+          </Expandable>
+        </ParamField>
+
+        <ParamField body="filters.companies.include.excludePartialCompanies" type="boolean">
+          When `true`, excludes companies with incomplete data from results.
+        </ParamField>
+      </Expandable>
+    </ParamField>
+
+    <ParamField body="filters.companies.exclude" type="object">
+      Same structure as `include`. Companies matching these criteria are removed from results.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="pages" type="object">
+  Pagination controls.
+
+  <Expandable title="pages fields">
+    <ParamField body="pages.page" type="number" default="0">
+      Page number. Range: `0–1000`.
+    </ParamField>
+
+    <ParamField body="pages.size" type="number" default="25">
+      Results per page. Range: `10–50`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/prospecting/company/search \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "filters": {
+      "companies": {
+        "include": {
+          "mainIndustriesIds": [4, 5],
+          "sizes": [{ "min": 100, "max": 5000 }],
+          "locations": [{ "country": "United States" }],
+          "technologies": [{ "name": "Salesforce" }],
+          "intentTopics": ["Digital Sales"]
+        }
+      }
+    },
+    "pages": { "page": 0, "size": 25 }
+  }'
+```
+
+```json Request body
+{
+  "filters": {
+    "companies": {
+      "include": {
+        "mainIndustriesIds": [4, 5],
+        "sizes": [{ "min": 100, "max": 5000 }],
+        "locations": [{ "country": "United States" }],
+        "technologies": [{ "name": "Salesforce" }],
+        "intentTopics": ["Digital Sales"],
+        "signal": {
+          "names": ["surgeInHiring", "financialEventsNews"],
+          "startDate": "2025-01-01"
+        }
+      }
+    }
+  },
+  "pages": { "page": 0, "size": 25 }
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this search. Pass this to the Enrich Companies endpoint as `requestId`.
+</ResponseField>
+
+<ResponseField name="currentPage" type="number">
+  The page number returned.
+</ResponseField>
+
+<ResponseField name="pageLength" type="number">
+  Number of results on this page.
+</ResponseField>
+
+<ResponseField name="totalResults" type="number">
+  Total number of companies matching your filters across all pages.
+</ResponseField>
+
+<ResponseField name="companies" type="object[]">
+  Array of matching companies.
+
+  <Expandable title="company fields">
+    <ResponseField name="companies.id" type="string">
+      Lusha company identifier. Use this in the Enrich Companies request.
+    </ResponseField>
+
+    <ResponseField name="companies.name" type="string">
+      Company name.
+    </ResponseField>
+
+    <ResponseField name="companies.fqdn" type="string">
+      Company domain. Example: `"lusha.com"`
+    </ResponseField>
+
+    <ResponseField name="companies.description" type="string">
+      Company description.
+    </ResponseField>
+
+    <ResponseField name="companies.logoUrl" type="string">
+      URL to the company logo image.
+    </ResponseField>
+
+    <ResponseField name="companies.signalTypes" type="string[]">
+      Signal types detected for this company. Only present when signal filtering was requested.
+    </ResponseField>
+
+    <ResponseField name="companies.hasCompanyEmployeesCount" type="boolean">
+      Whether headcount data is available.
+    </ResponseField>
+
+    <ResponseField name="companies.hasCompanyRevenue" type="boolean">
+      Whether revenue data is available.
+    </ResponseField>
+
+    <ResponseField name="companies.hasCompanyMainIndustry" type="boolean">
+      Whether main industry classification is available.
+    </ResponseField>
+
+    <ResponseField name="companies.hasCompanyFunding" type="boolean">
+      Whether funding data is available.
+    </ResponseField>
+
+    <ResponseField name="companies.hasCompanyTechnologies" type="boolean">
+      Whether technology stack data is available.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Validation failed — check your request body for missing or invalid fields. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+| `500` | Internal server error — retry with exponential backoff. |
+
+<ResponseExample>
+
+```json 200
+{
+  "requestId": "5ad275c8-7dd4-462a-bd45-6bc1970da64e",
+  "currentPage": 0,
+  "pageLength": 2,
+  "totalResults": 874,
+  "companies": [
+    {
+      "id": "33222678",
+      "name": "Lusha",
+      "fqdn": "lusha.com",
+      "description": "Lusha is the sales intelligence platform designed to help businesses get their next customers.",
+      "logoUrl": "https://logo.lusha.co/logo.jpg",
+      "hasCompanyEmployeesCount": true,
+      "hasCompanyRevenue": true,
+      "hasCompanyMainIndustry": true,
+      "hasCompanyFunding": true,
+      "hasCompanyTechnologies": true,
+      "signalTypes": ["surgeInHiring"]
+    }
+  ]
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": ["filters is required"]
+}
+```
+
+</ResponseExample>

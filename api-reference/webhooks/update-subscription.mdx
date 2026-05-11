@@ -1,0 +1,82 @@
+---
+title: "PATCH /api/subscriptions/{id} — Update a subscription"
+sidebarTitle: "PATCH /api/subscriptions/{id}"
+description: "Update a webhook subscription's URL, signal types, or active status. Reactivate disabled subscriptions or rotate the webhook secret with a single PATCH."
+---
+
+Update any combination of fields on an existing webhook subscription. All request body fields are optional — include only the fields you want to change. Use this endpoint to reactivate a disabled subscription, change signal types, update your webhook URL, or rotate your account webhook secret.
+
+**Endpoint:** `PATCH https://api.lusha.com/api/subscriptions/{id}`
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the webhook subscription to update.
+</ParamField>
+
+## Request body
+
+All fields are optional.
+
+<ParamField body="signalTypes" type="string[]">
+  Updated array of signal type keys for this subscription. Replaces the existing set.
+</ParamField>
+
+<ParamField body="webhookUrl" type="string">
+  New HTTPS URL for webhook delivery. Must use HTTPS.
+</ParamField>
+
+<ParamField body="isActive" type="boolean">
+  Set to `true` to reactivate a disabled subscription. See [Reactivating a disabled subscription](#reactivating-a-disabled-subscription) below.
+</ParamField>
+
+<ParamField body="regenerateSecret" type="boolean">
+  Set to `true` to rotate the account-level webhook secret. See [Rotating your webhook secret](#rotating-your-webhook-secret) below.
+</ParamField>
+
+## Example request
+
+```bash
+curl --request PATCH \
+  --url https://api.lusha.com/api/subscriptions/507f1f77bcf86cd799439011 \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "signalTypes": ["promotion", "jobChange", "commercialActivityNews"],
+    "isActive": true
+  }'
+```
+
+## Reactivating a disabled subscription
+
+When a subscription is disabled after exhausting all delivery retries, set `isActive: true` to bring it back online. Lusha automatically:
+
+- Clears the `blockReason` field
+- Clears the `blockedAt` timestamp
+- Resets the retry counter to zero
+
+<Tip>
+  After reactivating a subscription, send a test delivery using `POST /api/subscriptions/{id}/test` to confirm your endpoint is healthy before the next real signal arrives.
+</Tip>
+
+## Rotating your webhook secret
+
+Set `regenerateSecret: true` in the request body to generate a new account-level webhook secret. Keep in mind:
+
+- The new secret **affects all subscriptions** for your account
+- The secret is **shown only once** in the response — store it immediately in your secrets manager
+- The old secret is **immediately invalidated**
+
+<Warning>
+  Store the new secret from the response body before the request is complete. You cannot retrieve it again.
+</Warning>
+
+Example request to rotate the secret:
+
+```json
+{
+  "regenerateSecret": true
+}
+```
+
+The response includes the new secret in a `webhookSecret` field alongside the updated subscription object.

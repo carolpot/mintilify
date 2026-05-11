@@ -1,0 +1,460 @@
+---
+title: "GET /v2/company — Enrich a single company"
+sidebarTitle: "GET /v2/company"
+description: "Look up a company by domain, name, or companyId to retrieve firmographics, headcount, technologies, funding history, and signals in real time."
+---
+
+Use this endpoint to enrich a single company record in real time. Provide a domain name, company name, or Lusha company ID to retrieve firmographic data including employee count, revenue range, funding history, location, technologies, and intent signals.
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v2/company
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key. Pass it as a request header named `api_key`.
+</ParamField>
+
+## Search requirements
+
+You must supply at least one of: `domain`, `company`, or `companyId`.
+
+<Info>
+  Signal sub-filters (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) are not supported on this endpoint. If you need filtered signal retrieval, use `POST /bulk/company/v2` with the `signalsFilters` parameter instead.
+</Info>
+
+## Query parameters
+
+<ParamField query="domain" type="string">
+  The domain name associated with the company.
+
+  Example: `lusha.com`
+</ParamField>
+
+<ParamField query="company" type="string">
+  The name of the company.
+
+  Example: `Lusha`
+</ParamField>
+
+<ParamField query="companyId" type="string">
+  A unique identifier for the company in Lusha's database.
+
+  Example: `1234567890`
+</ParamField>
+
+<ParamField query="signals" type="string[]">
+  Array of signal types to retrieve for the company. Omit this parameter if you do not need signals data.
+
+  Allowed values: `allSignals`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `headcountIncrease1m`, `headcountDecrease1m`, `headcountIncrease3m`, `headcountDecrease3m`, `headcountIncrease6m`, `headcountDecrease6m`, `headcountIncrease12m`, `headcountDecrease12m`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`
+</ParamField>
+
+<ParamField query="signalsStartDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months ago if not specified. Only applies when `signals` is included.
+
+  Example: `2025-03-01`
+</ParamField>
+
+<ParamField query="partialCompany" type="boolean">
+  Set to `true` to expand coverage by returning partial company profiles when a full match is not available.
+</ParamField>
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="data" type="object">
+  The enriched company profile.
+
+  <Expandable title="properties">
+    <ResponseField name="id" type="number" required>
+      Lusha's unique identifier for the company.
+
+      Example: `123`
+    </ResponseField>
+    <ResponseField name="name" type="string" required>
+      The company name.
+
+      Example: `Lusha`
+    </ResponseField>
+    <ResponseField name="description" type="string">
+      A brief description of the company.
+
+      Example: `Lusha is the sales intelligence platform designed to help businesses get their next customers.`
+    </ResponseField>
+    <ResponseField name="domain" type="string">
+      The domain name associated with the company's email addresses.
+
+      Example: `lusha.com`
+    </ResponseField>
+    <ResponseField name="emailDomain" type="string">
+      Company email domain.
+
+      Example: `lusha.com`
+    </ResponseField>
+    <ResponseField name="fqdn" type="string">
+      The fully qualified domain name of the company.
+
+      Example: `www.lusha.com`
+    </ResponseField>
+    <ResponseField name="website" type="string">
+      The company's website URL.
+
+      Example: `https://lusha.com`
+    </ResponseField>
+    <ResponseField name="logoUrl" type="string">
+      URL of the company's logo image.
+
+      Example: `https://logo.lusha.co/logo.jpg`
+    </ResponseField>
+    <ResponseField name="employees" type="string">
+      Employee size range.
+
+      Example: `201 - 500`
+    </ResponseField>
+    <ResponseField name="companySize" type="object">
+      Detailed company size data.
+
+      <Expandable title="properties">
+        <ResponseField name="min" type="number">Minimum employee count estimate. Example: `11`</ResponseField>
+        <ResponseField name="max" type="number">Maximum employee count estimate. Example: `50`</ResponseField>
+        <ResponseField name="employeesInLinkedin" type="number">Employee count as reported on LinkedIn. Example: `32`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="founded" type="string">
+      The year or date the company was founded.
+
+      Example: `August 1, 2011`
+    </ResponseField>
+    <ResponseField name="companyType" type="string">
+      Classification of the company.
+
+      Example: `Private company`
+    </ResponseField>
+    <ResponseField name="alternativeName" type="string">
+      Normalized alternative company name.
+
+      Example: `lusha systems`
+    </ResponseField>
+    <ResponseField name="lushaPopularityTier" type="integer">
+      Lusha's proprietary ranking for the company based on platform popularity.
+
+      Example: `1`
+    </ResponseField>
+    <ResponseField name="mainIndustry" type="string">
+      Primary industry classification.
+
+      Example: `Technology`
+    </ResponseField>
+    <ResponseField name="subIndustry" type="string">
+      Sub-sector within the primary industry.
+
+      Example: `Software`
+    </ResponseField>
+    <ResponseField name="categories" type="string[]">
+      LinkedIn industry tags for the company.
+
+      Example: `["Technology", "Software"]`
+    </ResponseField>
+    <ResponseField name="specialities" type="string[]">
+      LinkedIn specialty tags associated with the company.
+
+      Example: `["data enrichment", "sales intelligence", "lead generation", "prospecting"]`
+    </ResponseField>
+    <ResponseField name="revenueRange" type="number[]">
+      The company's estimated revenue range in USD.
+
+      Example: `[1000000, 10000000]`
+    </ResponseField>
+    <ResponseField name="linkedinFollowers" type="integer">
+      LinkedIn followers count.
+
+      Example: `1950`
+    </ResponseField>
+    <ResponseField name="address" type="string">
+      The full address string for the company's location.
+
+      Example: `800 Boylston St, Suite 1410, Boston, Massachusetts 02199, US`
+    </ResponseField>
+    <ResponseField name="location" type="object">
+      HQ location only. For all company site locations, see `companyLocations`.
+
+      <Expandable title="properties">
+        <ResponseField name="fullLocation" type="string">Full location string. Example: `800 Boylston St, Suite 1410, Boston, Massachusetts 02199, US`</ResponseField>
+        <ResponseField name="stateCode" type="string">State/province code. Example: `MA`</ResponseField>
+        <ResponseField name="countryIso2" type="string">ISO 3166-1 alpha-2 country code. Example: `US`</ResponseField>
+        <ResponseField name="rawLocation" type="string">Raw location string. Example: `800 Boylston St; Suite 1410; Boston, Massachusetts 02199, US`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="companyLocations" type="object[]">
+      All known company locations, not just the HQ. Use this instead of `location` when you need a complete list of office sites.
+
+      <Expandable title="properties">
+        <ResponseField name="city" type="string">City name. Example: `Bucharest`</ResponseField>
+        <ResponseField name="continent" type="string">Continent name. Example: `Europe`</ResponseField>
+        <ResponseField name="country" type="string">Country name. Example: `Romania`</ResponseField>
+        <ResponseField name="country_iso2" type="string">ISO 3166-1 alpha-2 country code. Example: `RO`</ResponseField>
+        <ResponseField name="location_coordinates" type="number[]">Coordinates as `[longitude, latitude]`. Example: `[26.1062603, 44.432251]`</ResponseField>
+        <ResponseField name="state" type="string | null">State or province.</ResponseField>
+        <ResponseField name="state_code" type="string | null">State/province code.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="social" type="object">
+      Social profile links for the company.
+
+      <Expandable title="properties">
+        <ResponseField name="crunchbase" type="object">
+          <Expandable title="properties">
+            <ResponseField name="url" type="string" required>Crunchbase profile URL. Example: `https://crunchbase.com/company/lusha`</ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="linkedin" type="object">LinkedIn profile data.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="industryPrimaryGroupDetails" type="object">
+      Industry classification codes.
+
+      <Expandable title="properties">
+        <ResponseField name="sicCodes" type="object[]">
+          SIC code entries.
+          <Expandable title="properties">
+            <ResponseField name="description" type="string" required>SIC code description. Example: `Software Publishing`</ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="naicsCodes" type="object[]">NAICS code entries.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="funding" type="object">
+      Funding history and summary.
+
+      <Expandable title="properties">
+        <ResponseField name="rounds" type="object[]">
+          Individual funding rounds.
+          <Expandable title="properties">
+            <ResponseField name="currency" type="string" required>Currency of the round. Example: `USD`</ResponseField>
+            <ResponseField name="roundAmount" type="number" required>Amount raised in this round. Example: `205000000`</ResponseField>
+            <ResponseField name="roundType" type="string" required>Type of funding round. Example: `Private Equity Round`</ResponseField>
+            <ResponseField name="roundDate" type="string" required>Date of the round. Example: `Nov 10, 2021`</ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="totalRounds" type="number" required>Total number of funding rounds. Example: `2`</ResponseField>
+        <ResponseField name="totalRoundsAmount" type="number">Total amount raised across all rounds. Example: `245000000`</ResponseField>
+        <ResponseField name="currency" type="string" required>Currency used for all amounts. Example: `USD`</ResponseField>
+        <ResponseField name="isIpo" type="boolean" required>Whether the company has had an IPO.</ResponseField>
+        <ResponseField name="lastRoundType" type="string">Type of the most recent funding round. Example: `Private Equity Round`</ResponseField>
+        <ResponseField name="lastRoundAmount" type="number">Amount of the most recent funding round. Example: `205000000`</ResponseField>
+        <ResponseField name="lastRoundDate" type="string">Date of the most recent funding round. Example: `Nov 10, 2021`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="intent" type="object">
+      Buyer intent data for the company.
+
+      <Expandable title="properties">
+        <ResponseField name="detectedTopics" type="object[]" required>
+          Intent topics detected for this company.
+          <Expandable title="properties">
+            <ResponseField name="topicName" type="string" required>Name of the intent topic. Example: `Remote Sales`</ResponseField>
+            <ResponseField name="metadata" type="object" required>
+              <Expandable title="properties">
+                <ResponseField name="topicScore" type="number" required>Relevance score for the topic. Example: `83`</ResponseField>
+                <ResponseField name="topicTrend" type="string" required>Trend indicator (e.g., `+1`, `-5`, `New`). Example: `-5`</ResponseField>
+              </Expandable>
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="topicCount" type="number" required>Total number of detected intent topics. Example: `6`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="technologies" type="object[]">
+      Technologies used by the company.
+
+      <Expandable title="properties">
+        <ResponseField name="name" type="string" required>Technology name. Example: `salesforce`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="riskNews" type="object[]">
+      Litigation and security news signals.
+
+      <Expandable title="properties">
+        <ResponseField name="companyId" type="string">Lusha company identifier.</ResponseField>
+        <ResponseField name="companyName" type="string">Company name.</ResponseField>
+        <ResponseField name="domain" type="string">Company domain.</ResponseField>
+        <ResponseField name="signalId" type="string">Signal identifier.</ResponseField>
+        <ResponseField name="eventType" type="string">Type of event. Example: `partnership`</ResponseField>
+        <ResponseField name="eventSummary" type="string">Summary of the event.</ResponseField>
+        <ResponseField name="articlePublishedDate" type="string">Publication date. Example: `2025-06-15`</ResponseField>
+        <ResponseField name="articleTitle" type="string">Article title.</ResponseField>
+        <ResponseField name="articleHighlight" type="string">Key highlight from the article.</ResponseField>
+        <ResponseField name="eventEffectiveDate" type="string">Effective date of the event.</ResponseField>
+        <ResponseField name="articleUrl" type="string">URL to the source article.</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="commercialActivityNews" type="object[]">Launches, partnerships, and go-to-market activity signals. Shares the same shape as `riskNews`.</ResponseField>
+    <ResponseField name="corporateStrategyNews" type="object[]">M&A, restructuring, or strategic direction change signals. Shares the same shape as `riskNews`.</ResponseField>
+    <ResponseField name="financialEventsNews" type="object[]">Funding, IPO, and financial performance event signals. Shares the same shape as `riskNews`.</ResponseField>
+    <ResponseField name="peopleNews" type="object[]">Hiring, layoff, or leadership change signals. Shares the same shape as `riskNews`.</ResponseField>
+    <ResponseField name="marketIntelligenceNews" type="object[]">Event participation, recognition, and competitor activity signals. Shares the same shape as `riskNews`.</ResponseField>
+    <ResponseField name="productActivityNews" type="object[]">Product launch, development, and integration news signals. Shares the same shape as `riskNews`.</ResponseField>
+    <ResponseField name="surgeInHiring" type="object[]">
+      Overall hiring surge signals.
+
+      <Expandable title="properties">
+        <ResponseField name="companyId" type="string">Lusha company identifier. Example: `3416`</ResponseField>
+        <ResponseField name="signalId" type="string">Signal identifier. Example: `1503905`</ResponseField>
+        <ResponseField name="signalDate" type="string">Date the signal was detected. Example: `2025-06-15`</ResponseField>
+        <ResponseField name="newJobsPostedLastWeek" type="number">Jobs posted in the last week. Example: `25`</ResponseField>
+        <ResponseField name="historicalAvg" type="number">Historical weekly average. Example: `10`</ResponseField>
+        <ResponseField name="changeRatePercent" type="number">Percentage increase over historical average. Example: `150`</ResponseField>
+        <ResponseField name="companyName" type="string">Company name. Example: `Lusha`</ResponseField>
+        <ResponseField name="domain" type="string">Company domain. Example: `lusha.com`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="surgeInHiringByDepartment" type="object[]">
+      Department-specific hiring surge signals.
+
+      <Expandable title="properties">
+        <ResponseField name="department" type="string">Department name. Example: `Engineering`</ResponseField>
+        <ResponseField name="newJobsPostedLast4Weeks" type="number">Jobs posted in the last 4 weeks for this department. Example: `15`</ResponseField>
+        <ResponseField name="historicalAvg" type="number">Historical 4-week average. Example: `5`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="surgeInHiringByLocation" type="object[]">
+      Location-specific hiring surge signals.
+
+      <Expandable title="properties">
+        <ResponseField name="country" type="string">Country with hiring surge. Example: `United States`</ResponseField>
+        <ResponseField name="state" type="string">State or region. Example: `California`</ResponseField>
+        <ResponseField name="newJobsPostedLast4Weeks" type="number">Jobs posted in the last 4 weeks for this location. Example: `20`</ResponseField>
+        <ResponseField name="historicalAvg" type="number">Historical 4-week average. Example: `8`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="websiteTrafficIncrease" type="object[]">
+      Website traffic increase signals.
+
+      <Expandable title="properties">
+        <ResponseField name="historicalAvg" type="number">Historical average monthly visits. Example: `50000`</ResponseField>
+        <ResponseField name="lastMonthVisits" type="number">Visits in the last month. Example: `75000`</ResponseField>
+        <ResponseField name="changeRatePercent" type="number">Percentage change from historical average. Example: `50`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="websiteTrafficDecrease" type="object[]">Website traffic decrease signals. Shares the same shape as `websiteTrafficIncrease`.</ResponseField>
+    <ResponseField name="itSpendIncrease" type="object[]">
+      IT spending increase signals.
+
+      <Expandable title="properties">
+        <ResponseField name="estimatedAnnualItSpend" type="number">Estimated annual IT spending (USD). Example: `5000000`</ResponseField>
+        <ResponseField name="changeRatePercent" type="number">Percentage change in IT spending. Example: `25`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="itSpendDecrease" type="object[]">IT spending decrease signals. Shares the same shape as `itSpendIncrease`.</ResponseField>
+    <ResponseField name="headcountIncrease1m" type="object[]">
+      1-month headcount increase signals.
+
+      <Expandable title="properties">
+        <ResponseField name="baselineEmployeesCount" type="number">Employee count at baseline. Example: `500`</ResponseField>
+        <ResponseField name="newEmployeesCount" type="number">Current employee count. Example: `550`</ResponseField>
+        <ResponseField name="changeRatePercent" type="number">Percentage change. Example: `10`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="headcountDecrease1m" type="object[]">1-month headcount decrease signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="headcountIncrease3m" type="object[]">3-month headcount increase signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="headcountDecrease3m" type="object[]">3-month headcount decrease signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="headcountIncrease6m" type="object[]">6-month headcount increase signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="headcountDecrease6m" type="object[]">6-month headcount decrease signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="headcountIncrease12m" type="object[]">12-month headcount increase signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="headcountDecrease12m" type="object[]">12-month headcount decrease signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="errors" type="object">
+  Error information if the lookup failed.
+
+  <Expandable title="properties">
+    <ResponseField name="message" type="string" required>Error description. Example: `Something went wrong`</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Metadata about the response. Currently returns an empty object and is intended for deprecation.
+</ResponseField>
+
+### Error responses
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — missing or invalid parameters |
+| `401` | Unauthorized — invalid or missing API key |
+| `404` | Not found — company does not exist |
+| `429` | Too many requests — rate limit exceeded |
+| `500` | Internal server error |
+
+All error responses share the same shape:
+
+<ResponseField name="statusCode" type="integer" required>
+  HTTP status code.
+
+  Example: `400`
+</ResponseField>
+<ResponseField name="message" type="string" required>
+  Human-readable error description.
+
+  Example: `Validation failed`
+</ResponseField>
+<ResponseField name="errors" type="string[]">
+  Array of detailed validation error messages. Only present for validation errors.
+
+  Example: `["entityType must be one of: contact, company"]`
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request GET \
+  --url "https://api.lusha.com/v2/company?domain=lusha.com" \
+  --header "api_key: YOUR_API_KEY"
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "data": {
+    "id": 123,
+    "name": "Lusha",
+    "description": "Lusha is the sales intelligence platform designed to help businesses get their next customers.",
+    "domain": "lusha.com",
+    "fqdn": "www.lusha.com",
+    "website": "https://lusha.com",
+    "employees": "201 - 500",
+    "founded": "August 1, 2011",
+    "companyType": "Private company",
+    "mainIndustry": "Technology",
+    "subIndustry": "Software",
+    "revenueRange": [10000000, 50000000],
+    "location": {
+      "fullLocation": "800 Boylston St, Suite 1410, Boston, Massachusetts 02199, US",
+      "stateCode": "MA",
+      "countryIso2": "US"
+    },
+    "funding": {
+      "totalRounds": 2,
+      "totalRoundsAmount": 245000000,
+      "currency": "USD",
+      "isIpo": false,
+      "lastRoundType": "Private Equity Round",
+      "lastRoundDate": "Nov 10, 2021"
+    },
+    "technologies": [
+      { "name": "salesforce" },
+      { "name": "hubspot" }
+    ]
+  },
+  "errors": {},
+  "meta": {}
+}
+```

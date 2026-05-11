@@ -1,0 +1,52 @@
+---
+title: "POST /prospecting/filters/companies/names"
+sidebarTitle: "POST /filters/companies/names"
+description: "Search for company names by text query for use as filters in company prospecting searches. Returns matching company names and IDs."
+---
+
+Search for company names by free-text query to use in the `companyNames` filter field of `POST /prospecting/company/search`. The endpoint returns company names and their associated IDs as recognized by the Lusha database. Use the exact values returned here to target specific companies in your prospecting searches.
+
+**Endpoint:** `POST https://api.lusha.com/prospecting/filters/companies/names`
+
+## Request body
+
+<ParamField body="query" type="string" required>
+  Free-text search string to match against company names. For example, `"Salesforce"` or `"Lusha"`.
+</ParamField>
+
+## Example request
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/companies/names \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "Lusha" }'
+```
+
+## Example response
+
+```json
+{
+  "companies": [
+    {
+      "id": "33222678",
+      "name": "Lusha"
+    },
+    {
+      "id": "33222679",
+      "name": "Lusha Systems"
+    }
+  ]
+}
+```
+
+## Usage
+
+Pass the `name` values returned by this endpoint into the `companyNames` filter field of your company search request:
+
+```json
+{
+  "companyNames": ["Lusha"]
+}
+```

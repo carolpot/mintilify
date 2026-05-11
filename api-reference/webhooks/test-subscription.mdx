@@ -1,0 +1,57 @@
+---
+title: "POST /api/subscriptions/{id}/test — Test a subscription"
+sidebarTitle: "POST /api/subscriptions/{id}/test"
+description: "Send a test delivery to your webhook endpoint without consuming credits. Choose from a quick URL check, a handler-only test, or a full end-to-end delivery test."
+---
+
+Send a test delivery to your webhook endpoint without consuming credits. Use this endpoint after creating a subscription or updating your endpoint to confirm that your URL is reachable, your signature verification logic is correct, and the full delivery pipeline is functioning as expected.
+
+**Endpoint:** `POST https://api.lusha.com/api/subscriptions/{id}/test`
+
+<Tip>
+  Always run a test delivery before going live with a new subscription. It is the fastest way to confirm your endpoint handles Lusha payloads correctly.
+</Tip>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the webhook subscription to test.
+</ParamField>
+
+## Request body
+
+<ParamField body="mode" type="string" default="full">
+  The test mode to use. Accepted values: `direct`, `handler`, `full`.
+</ParamField>
+
+## Test modes
+
+Choose a mode based on what you want to validate:
+
+| Mode | What it tests |
+|------|---------------|
+| `direct` | HTTP reachability only — validates that your URL responds correctly to an incoming POST request |
+| `handler` | Handler-only test — validates message processing without a full end-to-end delivery flow |
+| `full` | Complete end-to-end delivery pipeline including signature generation and delivery (default) |
+
+## Example request
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/api/subscriptions/507f1f77bcf86cd799439011/test \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "mode": "full" }'
+```
+
+## What gets verified
+
+Depending on the mode selected, a test delivery validates:
+
+- **URL accessibility** — your endpoint is publicly reachable and returns a `2xx` response
+- **Signature generation** — the `X-Lusha-Signature` and `X-Lusha-Timestamp` headers are correctly formed
+- **Delivery pipeline** — the full delivery pipeline processes and delivers the payload end-to-end (`full` mode only)
+
+<Note>
+  Test deliveries use mock data and do not consume credits. They are safe to run at any time without affecting your billing balance.
+</Note>

@@ -1,0 +1,178 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "luma",
+  "name": "Lusha API",
+  "colors": {
+    "primary": "#8c8c8e",
+    "light": "#1e191f",
+    "dark": "#d2d1d2"
+  },
+  "favicon": "https://media.brand.dev/7d0f1b56-a288-4914-af30-aefaa00e11e9.png",
+  "logo": {
+    "light": "https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg",
+    "dark": "https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg"
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Get API Key",
+      "href": "https://www.lusha.com/signup/"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "authentication",
+              "rate-limiting",
+              "error-codes"
+            ]
+          },
+          {
+            "group": "Enrichment",
+            "pages": [
+              "enrichment/overview",
+              "enrichment/single-contact",
+              "enrichment/bulk-contacts",
+              "enrichment/single-company",
+              "enrichment/bulk-companies"
+            ]
+          },
+          {
+            "group": "Prospecting",
+            "pages": [
+              "prospecting/overview",
+              "prospecting/search-contacts",
+              "prospecting/enrich-contacts",
+              "prospecting/search-companies",
+              "prospecting/enrich-companies"
+            ]
+          },
+          {
+            "group": "Signals",
+            "pages": [
+              "signals/overview",
+              "signals/contact-signals",
+              "signals/company-signals"
+            ]
+          },
+          {
+            "group": "Webhooks",
+            "pages": [
+              "webhooks/overview",
+              "webhooks/manage-subscriptions",
+              "webhooks/security",
+              "webhooks/audit-logs"
+            ]
+          },
+          {
+            "group": "Lookalikes",
+            "pages": [
+              "lookalikes/overview",
+              "lookalikes/contact-lookalikes",
+              "lookalikes/company-lookalikes"
+            ]
+          },
+          {
+            "group": "Filters Reference",
+            "pages": [
+              "filters/contact-filters",
+              "filters/company-filters"
+            ]
+          },
+          {
+            "group": "Account",
+            "pages": [
+              "account/usage"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Enrichment",
+            "pages": [
+              "api-reference/enrichment/search-single-contact",
+              "api-reference/enrichment/search-multiple-contacts",
+              "api-reference/enrichment/search-single-company",
+              "api-reference/enrichment/search-multiple-companies"
+            ]
+          },
+          {
+            "group": "Prospecting",
+            "pages": [
+              "api-reference/prospecting/search-contacts",
+              "api-reference/prospecting/enrich-contacts",
+              "api-reference/prospecting/search-companies",
+              "api-reference/prospecting/enrich-companies"
+            ]
+          },
+          {
+            "group": "Signals",
+            "pages": [
+              "api-reference/signals/get-signal-options",
+              "api-reference/signals/get-contact-signals",
+              "api-reference/signals/search-contact-signals",
+              "api-reference/signals/get-company-signals",
+              "api-reference/signals/search-company-signals"
+            ]
+          },
+          {
+            "group": "Webhooks",
+            "pages": [
+              "api-reference/webhooks/create-subscription",
+              "api-reference/webhooks/list-subscriptions",
+              "api-reference/webhooks/get-subscription",
+              "api-reference/webhooks/update-subscription",
+              "api-reference/webhooks/delete-subscriptions",
+              "api-reference/webhooks/test-subscription",
+              "api-reference/webhooks/get-audit-logs",
+              "api-reference/webhooks/get-audit-log-stats",
+              "api-reference/webhooks/get-account-secret",
+              "api-reference/webhooks/regenerate-account-secret"
+            ]
+          },
+          {
+            "group": "Lookalikes",
+            "pages": [
+              "api-reference/lookalikes/contact-lookalikes",
+              "api-reference/lookalikes/company-lookalikes"
+            ]
+          },
+          {
+            "group": "Filters",
+            "pages": [
+              "api-reference/filters/contact-departments",
+              "api-reference/filters/contact-seniority",
+              "api-reference/filters/contact-data-points",
+              "api-reference/filters/contact-countries",
+              "api-reference/filters/contact-locations",
+              "api-reference/filters/company-names",
+              "api-reference/filters/company-industries",
+              "api-reference/filters/company-sizes",
+              "api-reference/filters/company-revenues",
+              "api-reference/filters/company-locations",
+              "api-reference/filters/company-sic-codes",
+              "api-reference/filters/company-naics-codes",
+              "api-reference/filters/company-intent-topics",
+              "api-reference/filters/company-technologies"
+            ]
+          },
+          {
+            "group": "Account",
+            "pages": [
+              "api-reference/account/usage-stats"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+---
+title: "POST /v3/lookalike/contacts — Find similar contacts"
+sidebarTitle: "POST /v3/lookalike/contacts"
+description: "Discover lookalike contacts based on seed contact profiles. Use dedupeSessionId for paginated results without duplicates across multiple calls."
+---
+
+The `/v3/lookalike/contacts` endpoint returns new contact prospects that match the profile of your seed contacts. Lusha's AI compares role, seniority, industry, and firmographic patterns to surface similar contacts you haven't seen yet.
+
+**Endpoint:** `POST https://api.lusha.com/v3/lookalike/contacts`
+
+**Authentication:** `api_key` header required
+
+## How deduplication sessions work
+
+On your first request, omit `dedupeSessionId`. The server generates one and returns it in the response. Pass that value in all subsequent "get more" requests to receive additional results without duplicates. Sessions are retained for 30 days from last activity (sliding window).
+
+## Request body
+
+<ParamField body="contacts" type="array" required>
+  Array of seed contact objects. Each entry should include at least one identifier.
+
+  <Expandable title="Contact object fields">
+    <ParamField body="personId" type="string">
+      Lusha person ID for the seed contact.
+    </ParamField>
+    <ParamField body="linkedinUrl" type="string">
+      LinkedIn profile URL of the seed contact.
+    </ParamField>
+    <ParamField body="email" type="string">
+      Email address of the seed contact.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="dedupeSessionId" type="string">
+  Session ID returned from a previous call. Omit on the first request. Include on all subsequent "get more" requests to avoid duplicate results.
+</ParamField>
+
+<ParamField body="exclude" type="object">
+  Optional exclusion filters applied on every request, combined with server-side deduplication.
+
+  <Expandable title="Exclude fields">
+    <ParamField body="exclude.personIds" type="array">
+      Array of Lusha person IDs to exclude from results.
+    </ParamField>
+    <ParamField body="exclude.linkedinUrls" type="array">
+      Array of LinkedIn URLs to exclude from results.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Request examples
+
+<CodeGroup>
+```bash First request
+curl -X POST https://api.lusha.com/v3/lookalike/contacts \
+  -H "api_key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contacts": [
+      { "personId": "4183886134" },
+      { "linkedinUrl": "https://www.linkedin.com/in/dustin/" }
+    ]
+  }'
+```
+
+```bash Get more (subsequent request)
+curl -X POST https://api.lusha.com/v3/lookalike/contacts \
+  -H "api_key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contacts": [
+      { "personId": "4183886134" }
+    ],
+    "dedupeSessionId": "sess_abc123xyz"
+  }'
+```
+</CodeGroup>
+
+## Response fields
+
+<ResponseField name="contacts" type="array">
+  Array of lookalike contact objects with profile data.
+</ResponseField>
+
+<ResponseField name="dedupeSessionId" type="string">
+  Session ID to use in your next "get more" request. Store this value between calls.
+</ResponseField>
+
+<ResponseField name="totalResults" type="number">
+  Total number of lookalike contacts available for this seed set.
+</ResponseField>
+
+## Error responses
+
+| Status | Meaning |
+|--------|---------|
+| 400 | Invalid request body or missing required fields |
+| 401 | Missing or invalid API key |
+| 429 | Rate limit exceeded |
+| 500 | Internal server error |
+
+<Tip>
+  Combine lookalikes with the Enrichment API to immediately get emails and phone numbers for the returned contacts.
+</Tip>

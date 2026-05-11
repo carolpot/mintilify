@@ -1,0 +1,659 @@
+---
+title: "GET /v2/person — Enrich a single contact"
+sidebarTitle: "GET /v2/person"
+description: "Enrich one contact in real time using name, email, LinkedIn URL, or personId. Returns verified emails, phone numbers, job title, location, and LinkedIn data."
+---
+
+Use this endpoint to enrich a single contact record in real time. You can look up a contact by email address, LinkedIn URL, Lusha person ID, or a combination of first name, last name, and company. The response includes contact details such as phone numbers, email addresses, job title, location, and optional signals data.
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v2/person
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key. Pass it as a request header named `api_key`.
+</ParamField>
+
+## Search requirements
+
+You must supply at least one of the following combinations:
+
+- `personId`, **or**
+- `email`, **or**
+- `linkedinUrl`, **or**
+- `firstName` **and** `lastName` **and** (`companyName` **or** `companyDomain`)
+
+<Info>
+  Provide as many identifiers as possible to improve match accuracy. Using `personId` is the most direct way to retrieve a contact, because it uniquely identifies a record in Lusha's database.
+</Info>
+
+<Warning>
+  **Unified Credits plan required for `revealEmails` and `revealPhones`**
+
+  These parameters are only available to customers on the Unified Credits pricing plan. Calling them on any other plan returns a `403` error. When neither parameter is included, the API returns all available email addresses and phone numbers by default.
+</Warning>
+
+## Query parameters
+
+<ParamField query="firstName" type="string">
+  The first name of the person.
+
+  Example: `Dustin`
+</ParamField>
+
+<ParamField query="lastName" type="string">
+  The last name of the person.
+
+  Example: `Moskovitz`
+</ParamField>
+
+<ParamField query="personId" type="string">
+  The unique person identifier in Lusha. Using this field provides the most direct lookup.
+
+  Example: `4183886134`
+</ParamField>
+
+<ParamField query="companyName" type="string">
+  The name of the company the person works at.
+
+  Example: `Lusha`
+</ParamField>
+
+<ParamField query="companyDomain" type="string">
+  The domain name of the company.
+
+  Example: `lusha.com`
+</ParamField>
+
+<ParamField query="email" type="string">
+  The email address of the person.
+
+  Example: `dustin@lusha.com`
+</ParamField>
+
+<ParamField query="linkedinUrl" type="string">
+  The LinkedIn profile URL of the person.
+
+  Example: `https://www.linkedin.com/in/dustin/`
+</ParamField>
+
+<ParamField query="refreshJobInfo" type="boolean">
+  Set to `true` to refresh and update the job details for the person. This replaces any outdated job information with the most recent data.
+
+  Example: `true`
+</ParamField>
+
+<ParamField query="filterBy" type="string">
+  Filters results based on which contact details must be present. By default, results include contacts that have at least one contact detail available.
+
+  Allowed values: `phoneNumbers`, `emailAddresses`
+</ParamField>
+
+<ParamField query="revealEmails" type="boolean">
+  Set to `true` to retrieve only the email address of the contact. Requires the Unified Credits plan.
+
+  Example: `true`
+</ParamField>
+
+<ParamField query="revealPhones" type="boolean">
+  Set to `true` to retrieve only the phone number of the contact. Requires the Unified Credits plan.
+
+  Example: `true`
+</ParamField>
+
+<ParamField query="signals" type="string[]">
+  Array of signal types to retrieve for the contact. If no signals data is found for the specified period, the `signals` object is returned empty. Omit this parameter entirely if you do not need signals data.
+
+  Allowed values: `allSignals`, `promotion`, `companyChange`
+</ParamField>
+
+<ParamField query="signalsStartDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months ago if not specified. Only applies when `signals` is included.
+
+  Example: `2025-03-01`
+</ParamField>
+
+<ParamField query="partialProfile" type="boolean">
+  Set to `true` to allow the API to return a partial profile when a full match is not available.
+
+  Example: `true`
+</ParamField>
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="contact" type="object" required>
+  The enriched contact result.
+
+  <Expandable title="properties">
+    <ResponseField name="error" type="object" required>
+      Error details for this contact lookup, if any.
+
+      <Expandable title="properties">
+        <ResponseField name="code" type="number">
+          Numeric error code.
+
+          Example: `3`
+        </ResponseField>
+        <ResponseField name="name" type="string">
+          Short error name.
+
+          Example: `EMPTY_DATA`
+        </ResponseField>
+        <ResponseField name="message" type="string">
+          Human-readable error description.
+
+          Example: `Could not find requested data`
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="isCreditCharged" type="boolean" required>
+      Indicates whether a credit was consumed for this request.
+
+      Example: `true`
+    </ResponseField>
+
+    <ResponseField name="data" type="object">
+      The contact's enriched profile data. Present when a match is found.
+
+      <Expandable title="properties">
+        <ResponseField name="companyId" type="number" required>
+          Lusha's unique identifier for the contact's company.
+
+          Example: `123`
+        </ResponseField>
+        <ResponseField name="firstName" type="string" required>
+          The contact's first name.
+
+          Example: `Dustin`
+        </ResponseField>
+        <ResponseField name="lastName" type="string" required>
+          The contact's last name.
+
+          Example: `Moskovitz`
+        </ResponseField>
+        <ResponseField name="fullName" type="string" required>
+          The contact's full name.
+
+          Example: `Dustin Moskovitz`
+        </ResponseField>
+        <ResponseField name="emails" type="string[]">
+          Simple array of email addresses. **Deprecated** — use `emailAddresses` instead.
+
+          Example: `["john.doe@example.com"]`
+        </ResponseField>
+        <ResponseField name="emailAddresses" type="object[]">
+          Detailed email addresses with metadata.
+
+          <Expandable title="properties">
+            <ResponseField name="email" type="string">
+              The email address. Alternative to `address`.
+
+              Example: `dustin@lusha.com`
+            </ResponseField>
+            <ResponseField name="address" type="string">
+              The email address. Alternative to `email`.
+
+              Example: `dustin@lusha.com`
+            </ResponseField>
+            <ResponseField name="emailType" type="string">
+              The type of email address.
+
+              Values: `work`, `private`
+            </ResponseField>
+            <ResponseField name="emailConfidence" type="string">
+              Confidence level for this address.
+
+              Example: `A+`
+            </ResponseField>
+            <ResponseField name="updateDate" type="string">
+              Date this address was last updated (`YYYY-MM-DD`).
+
+              Example: `2020-01-01`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="phones" type="string">
+          Simple array of phone numbers. **Deprecated** — use `phoneNumbers` instead.
+
+          Example: `+1 555-123-4567`
+        </ResponseField>
+        <ResponseField name="phoneNumbers" type="object[]">
+          Detailed phone numbers with metadata.
+
+          <Expandable title="properties">
+            <ResponseField name="number" type="string">
+              The phone number in E.164 format.
+
+              Example: `+1234567890`
+            </ResponseField>
+            <ResponseField name="phoneType" type="string" required>
+              The type of phone number.
+
+              Values: `Mobile`, `Direct`, `Phone`
+            </ResponseField>
+            <ResponseField name="doNotCall" type="boolean" required>
+              Whether this number is on the Do Not Call (DNC) list.
+            </ResponseField>
+            <ResponseField name="updateDate" type="string" required>
+              Date this number was last updated (`YYYY-MM-DD`).
+
+              Example: `2020-01-01`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="personId" type="number">
+          Lusha's unique identifier for this contact.
+
+          Example: `123456`
+        </ResponseField>
+        <ResponseField name="location" type="object">
+          The contact's geographic location.
+
+          <Expandable title="properties">
+            <ResponseField name="country" type="string" required>
+              Country name.
+
+              Example: `Israel`
+            </ResponseField>
+            <ResponseField name="countryIso2" type="string" required>
+              ISO 3166-1 alpha-2 country code.
+
+              Example: `IL`
+            </ResponseField>
+            <ResponseField name="country_iso2" type="string">
+              ISO 3166-1 alpha-2 country code (alternative field name).
+
+              Example: `IL`
+            </ResponseField>
+            <ResponseField name="continent" type="string" required>
+              Continent name.
+
+              Example: `Asia`
+            </ResponseField>
+            <ResponseField name="rawLocation" type="string" required>
+              Full address string.
+
+              Example: `800 Boylston St, Suite 1410, Boston, MA 02199, US`
+            </ResponseField>
+            <ResponseField name="region" type="string">
+              Region or district.
+
+              Example: `Tel Aviv`
+            </ResponseField>
+            <ResponseField name="city" type="string">
+              City name.
+
+              Example: `Tel Aviv`
+            </ResponseField>
+            <ResponseField name="cityId" type="number">
+              Numeric identifier for the city in Lusha's database.
+
+              Example: `123`
+            </ResponseField>
+            <ResponseField name="state" type="string">
+              State or province.
+
+              Example: `Tel Aviv`
+            </ResponseField>
+            <ResponseField name="stateCode" type="string">
+              State/province code.
+
+              Example: `IL`
+            </ResponseField>
+            <ResponseField name="state_code" type="string">
+              State/province code (alternative field name).
+
+              Example: `IL`
+            </ResponseField>
+            <ResponseField name="street" type="string">
+              Street address.
+
+              Example: `123 Main St`
+            </ResponseField>
+            <ResponseField name="locationCoordinates" type="number[]">
+              `[longitude, latitude]` coordinates.
+
+              Example: `[32.0853, 34.7818]`
+            </ResponseField>
+            <ResponseField name="isEuContact" type="boolean">
+              Whether the contact is located in the EU.
+
+              Example: `true`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="jobTitle" type="object">
+          The contact's current job information.
+
+          <Expandable title="properties">
+            <ResponseField name="seniority" type="string" required>
+              Seniority level.
+
+              Example: `Director`
+            </ResponseField>
+            <ResponseField name="title" type="string" required>
+              Job title.
+
+              Example: `Director of Platform`
+            </ResponseField>
+            <ResponseField name="departments" type="string[]" required>
+              Departments the contact belongs to.
+
+              Example: `["Engineering", "Operations"]`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="socialLinks" type="object">
+          The contact's social profile links.
+
+          <Expandable title="properties">
+            <ResponseField name="linkedin" type="string" required>
+              LinkedIn profile URL.
+
+              Example: `https://www.linkedin.com/in/dustin/`
+            </ResponseField>
+            <ResponseField name="xUrl" type="string">
+              Twitter/X profile URL.
+
+              Example: `https://twitter.com/dustin`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="jobStartDate" type="string">
+          The date the contact started their current position (`YYYY-MM-DD`).
+
+          Example: `2020-01-01`
+        </ResponseField>
+        <ResponseField name="previousJob" type="object">
+          The contact's previous employment.
+
+          <Expandable title="properties">
+            <ResponseField name="company" type="object" required>
+              <Expandable title="properties">
+                <ResponseField name="name" type="string">
+                  Company name. Required if no domain is present.
+
+                  Example: `Lusha`
+                </ResponseField>
+                <ResponseField name="domain" type="string">
+                  Company domain. Required if no name is present.
+
+                  Example: `lusha.com`
+                </ResponseField>
+                <ResponseField name="isCurrent" type="boolean" required>
+                  Whether this is the contact's current company.
+
+                  Example: `true`
+                </ResponseField>
+                <ResponseField name="jobTitle" type="string">
+                  Job title at this company.
+
+                  Example: `Software Engineer`
+                </ResponseField>
+                <ResponseField name="fqdn" type="string">
+                  Fully qualified domain name.
+
+                  Example: `https://lusha.com`
+                </ResponseField>
+                <ResponseField name="companySocialId" type="string">
+                  Social ID associated with the company.
+
+                  Example: `1234567890`
+                </ResponseField>
+              </Expandable>
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="contactTags" type="object[]">
+          Tags associated with the contact.
+
+          <Expandable title="properties">
+            <ResponseField name="id" type="string" required>
+              Tag identifier.
+
+              Example: `123`
+            </ResponseField>
+            <ResponseField name="name" type="string" required>
+              Tag label.
+
+              Example: `Prospect`
+            </ResponseField>
+            <ResponseField name="color" type="string" required>
+              Tag color as a hex code.
+
+              Example: `#000000`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="updateDate" type="string">
+          Date the contact record was last updated (`YYYY-MM-DD`).
+
+          Example: `2020-01-01`
+        </ResponseField>
+        <ResponseField name="linkedinFollowersCount" type="integer">
+          Number of LinkedIn followers.
+
+          Example: `1250`
+        </ResponseField>
+        <ResponseField name="linkedinConnectionsCount" type="integer">
+          Number of LinkedIn connections.
+
+          Example: `500`
+        </ResponseField>
+        <ResponseField name="linkedinCertifications" type="object[]">
+          Professional certifications listed on the contact's LinkedIn profile.
+
+          <Expandable title="properties">
+            <ResponseField name="companyId" type="integer">
+              Lusha company ID of the issuing organization.
+
+              Example: `1035`
+            </ResponseField>
+            <ResponseField name="companyName" type="string">
+              Name of the issuing organization.
+
+              Example: `Microsoft`
+            </ResponseField>
+            <ResponseField name="credentialId" type="string">
+              Credential verification ID.
+
+              Example: `abc123`
+            </ResponseField>
+            <ResponseField name="dateMonth" type="any">
+              Month the certification was obtained.
+
+              Example: `6`
+            </ResponseField>
+            <ResponseField name="dateYear" type="any">
+              Year the certification was obtained.
+
+              Example: `2020`
+            </ResponseField>
+            <ResponseField name="expireDateMonth" type="any">
+              Month the certification expires.
+
+              Example: `6`
+            </ResponseField>
+            <ResponseField name="expireDateYear" type="any">
+              Year the certification expires.
+
+              Example: `2025`
+            </ResponseField>
+            <ResponseField name="linkedinCompanyId" type="integer | null">
+              LinkedIn company ID for the certification issuer.
+
+              Example: `1441`
+            </ResponseField>
+            <ResponseField name="summary" type="string | null">
+              Description of the certification.
+
+              Example: `Azure fundamentals certification covering cloud concepts`
+            </ResponseField>
+            <ResponseField name="title" type="string">
+              Certification name.
+
+              Example: `Microsoft Certified: Azure Fundamentals`
+            </ResponseField>
+            <ResponseField name="verifyUrl" type="string | null">
+              URL to verify the credential.
+
+              Example: `https://www.youracclaim.com/badges/5ccf865c-dd6e-4dcc-9184-c8999d31f83d`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="linkedinCourses" type="object[]">
+          Education and course history listed on the contact's LinkedIn profile.
+
+          <Expandable title="properties">
+            <ResponseField name="activities" type="string | null">Activities associated with the course.</ResponseField>
+            <ResponseField name="degree" type="string | null">Degree awarded.</ResponseField>
+            <ResponseField name="endDate" type="string | null">End date of the course.</ResponseField>
+            <ResponseField name="endDateMonth" type="any">Month the course ended.</ResponseField>
+            <ResponseField name="endDateYear" type="any">Year the course ended.</ResponseField>
+            <ResponseField name="fieldOfStudy" type="object | null">
+              Field of study details.
+              <Expandable title="properties">
+                <ResponseField name="id" type="string | null">Field of study identifier.</ResponseField>
+                <ResponseField name="name" type="string | null">Field of study name.</ResponseField>
+              </Expandable>
+            </ResponseField>
+            <ResponseField name="grade" type="string | null">Grade received.</ResponseField>
+            <ResponseField name="incompleteEducation" type="boolean | null">Whether the education was incomplete.</ResponseField>
+            <ResponseField name="notes" type="string | null">Additional notes.</ResponseField>
+            <ResponseField name="school" type="object | null">
+              School information.
+              <Expandable title="properties">
+                <ResponseField name="createdAt" type="string | null">Creation timestamp.</ResponseField>
+                <ResponseField name="logoUrl" type="string | null">URL of the school's logo.</ResponseField>
+                <ResponseField name="updatedAt" type="string | null">Last updated timestamp.</ResponseField>
+              </Expandable>
+            </ResponseField>
+            <ResponseField name="startDate" type="string | null">Start date of the course.</ResponseField>
+            <ResponseField name="startDateMonth" type="any">Month the course started.</ResponseField>
+            <ResponseField name="startDateYear" type="any">Year the course started.</ResponseField>
+            <ResponseField name="linkedinSchoolId" type="number | null">LinkedIn school ID for the educational institution.</ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="linkedinAwards" type="object[]">
+          Honors and awards listed on the contact's LinkedIn profile.
+
+          <Expandable title="properties">
+            <ResponseField name="companyName" type="string | null">
+              Name of the awarding organization.
+
+              Example: `Columbia Southern University`
+            </ResponseField>
+            <ResponseField name="dateDay" type="any">Day the award was received. Example: `15`</ResponseField>
+            <ResponseField name="dateMonth" type="any">Month the award was received. Example: `7`</ResponseField>
+            <ResponseField name="dateYear" type="any">Year the award was received. Example: `2023`</ResponseField>
+            <ResponseField name="summary" type="string | null">
+              Description of the award.
+
+              Example: `Certificate of Recognition for Exceptional Teaching`
+            </ResponseField>
+            <ResponseField name="title" type="string">
+              Award name.
+
+              Example: `Raising the Bar Award`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="linkedinSkills" type="string[]">
+          Skills listed on the contact's LinkedIn profile.
+
+          Example: `["Microsoft Office", "Project Management", "Strategic Planning"]`
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Error responses
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — missing or invalid parameters |
+| `401` | Unauthorized — invalid or missing API key |
+| `403` | Forbidden — plan restriction or access denied |
+| `404` | Not found — contact does not exist |
+| `429` | Too many requests — rate limit exceeded |
+| `451` | Unavailable for legal reasons |
+| `500` | Internal server error |
+
+All error responses share the same shape:
+
+<ResponseField name="statusCode" type="integer" required>
+  HTTP status code.
+
+  Example: `400`
+</ResponseField>
+<ResponseField name="message" type="string" required>
+  Human-readable error description.
+
+  Example: `Validation failed`
+</ResponseField>
+<ResponseField name="errors" type="string[]">
+  Array of detailed validation error messages. Only present for validation errors.
+
+  Example: `["entityType must be one of: contact, company"]`
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request GET \
+  --url "https://api.lusha.com/v2/person?firstName=Dustin&lastName=Moskovitz&companyDomain=asana.com" \
+  --header "api_key: YOUR_API_KEY"
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "contact": {
+    "error": {},
+    "isCreditCharged": true,
+    "data": {
+      "companyId": 123,
+      "firstName": "Dustin",
+      "lastName": "Moskovitz",
+      "fullName": "Dustin Moskovitz",
+      "emailAddresses": [
+        {
+          "email": "dustin@asana.com",
+          "emailType": "work",
+          "emailConfidence": "A+",
+          "updateDate": "2024-01-15"
+        }
+      ],
+      "phoneNumbers": [
+        {
+          "number": "+14155550100",
+          "phoneType": "Direct",
+          "doNotCall": false,
+          "updateDate": "2024-01-15"
+        }
+      ],
+      "personId": 4183886134,
+      "jobTitle": {
+        "seniority": "C-Level",
+        "title": "CEO & Co-Founder",
+        "departments": ["General Management"]
+      },
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/in/dustin/"
+      },
+      "jobStartDate": "2008-01-01"
+    }
+  }
+}
+```

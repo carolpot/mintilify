@@ -1,0 +1,58 @@
+---
+title: "GET /account/usage — API credit usage statistics"
+sidebarTitle: "GET /account/usage"
+description: "Retrieve current API credit usage including total allotment, credits used, and credits remaining. This endpoint is rate limited to 5 requests per minute."
+---
+
+The `GET /account/usage` endpoint returns your current credit balance — how many credits you've used, how many remain, and your total allotment. Use this to monitor consumption, avoid hitting plan limits, and support billing reconciliation.
+
+**Endpoint:** `GET https://api.lusha.com/account/usage`
+
+**Authentication:** `api_key` header required
+
+<Note>
+  This endpoint has a specific rate limit of **5 requests per minute** — lower than other Lusha API endpoints. Do not poll it more frequently than needed.
+</Note>
+
+## Request
+
+```bash
+curl -X GET https://api.lusha.com/account/usage \
+  -H "api_key: YOUR_API_KEY"
+```
+
+## Response fields
+
+<ResponseField name="used" type="number" required>
+  Number of credits consumed in the current billing period.
+</ResponseField>
+
+<ResponseField name="remaining" type="number" required>
+  Number of credits still available to use.
+</ResponseField>
+
+<ResponseField name="total" type="number" required>
+  Total credit allotment for your plan in the current billing period.
+</ResponseField>
+
+## Example response
+
+```json
+{
+  "used": 450,
+  "remaining": 550,
+  "total": 1000
+}
+```
+
+## Error responses
+
+| Status | Meaning |
+|--------|---------|
+| 401 | Missing or invalid API key |
+| 429 | Rate limit exceeded (max 5 req/min) |
+| 500 | Internal server error |
+
+<Tip>
+  In production pipelines, check your credit balance at the start of each batch run. If `remaining` is low, pause the job and alert your team rather than exhausting credits unexpectedly.
+</Tip>

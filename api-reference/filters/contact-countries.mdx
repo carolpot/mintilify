@@ -1,0 +1,48 @@
+---
+title: "GET /prospecting/filters/contacts/all_countries"
+sidebarTitle: "GET /filters/contacts/countries"
+description: "Retrieve all country values for contact prospecting filters. Use returned country names to restrict your search results to specific geographic locations."
+---
+
+Retrieve the full list of country values you can use to filter contacts by location in `POST /prospecting/contact/search`. Use the exact strings returned by this endpoint in your search request — mismatched values will produce no results.
+
+**Endpoint:** `GET https://api.lusha.com/prospecting/filters/contacts/all_countries`
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/contacts/all_countries \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "countries": [
+    "United States",
+    "United Kingdom",
+    "Canada",
+    "Germany",
+    "France",
+    "Australia",
+    "Israel",
+    "India"
+  ]
+}
+```
+
+## Usage
+
+Pass one or more country names from the `countries` array into the `countries` filter field of your contact search request:
+
+```json
+{
+  "countries": ["United States", "Canada"]
+}
+```
+
+<Tip>
+  Cache the response from this endpoint. The country list changes infrequently. For more granular location filtering — such as targeting specific cities or regions — use `POST /prospecting/filters/contacts/locations`.
+</Tip>

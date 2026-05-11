@@ -1,0 +1,76 @@
+---
+title: "Lusha API error codes and responses"
+description: "Understand the Lusha API's standard error response format, every HTTP status code returned, and practical steps for debugging failed or rejected requests."
+---
+
+The Lusha API uses standard HTTP status codes to indicate whether a request succeeded or failed. When a request fails, the response body always includes a JSON object with a `statusCode`, a human-readable `message`, and an optional `errors` array with more detail.
+
+## Standard error response format
+
+All error responses follow this structure:
+
+```json
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": [
+    "entityType must be one of: contact, company"
+  ]
+}
+```
+
+The `errors` array is present only on validation errors (`400`). For other status codes it may be empty.
+
+## HTTP status codes
+
+| Status code | Meaning | Common cause |
+|---|---|---|
+| `400` Bad Request | The request failed validation. | A required parameter is missing, a parameter value is invalid, or the search criteria combination is not supported. |
+| `401` Unauthorized | Authentication failed. | The `api_key` header is missing or the key is invalid. See [authentication](/authentication). |
+| `403` Forbidden | Access denied. | Your plan does not include access to the requested feature. See the note on Unified Credits below. |
+| `404` Not Found | The resource does not exist. | The endpoint path is incorrect or the requested record is not in Lusha's database. |
+| `429` Too Many Requests | Rate limit exceeded. | You sent more requests per minute than your account allows. See [rate limits](/rate-limiting). |
+| `451` Unavailable for Legal Reasons | Legal or compliance restriction. | The requested contact data cannot be returned due to a legal or regulatory requirement. |
+| `500` Internal Server Error | Unexpected server error. | A problem occurred on Lusha's side. Retry the request, and contact [support@lusha.com](mailto:support@lusha.com) if the error persists. |
+
+## Contact-level errors
+
+A `200` response does not always mean data was found. When a contact cannot be located, the API returns HTTP `200` with an error object inside the `contact` field:
+
+```json
+{
+  "contact": {
+    "error": {
+      "code": 3,
+      "name": "EMPTY_DATA",
+      "message": "Could not find requested data"
+    },
+    "isCreditCharged": false
+  }
+}
+```
+
+| Error code | Name | Meaning |
+|---|---|---|
+| `3` | `EMPTY_DATA` | Lusha's database does not contain data matching the search criteria you provided. |
+
+Check `contact.isCreditCharged` to confirm whether a credit was consumed for the call.
+
+## Unified Credits plan restriction
+
+The `revealEmails` and `revealPhones` query parameters on enrichment endpoints are available only to accounts on the Unified Credits pricing plan.
+
+<Warning>
+  If you pass `revealEmails=true` or `revealPhones=true` on a plan that does not include Unified Credits, the API returns `403 Forbidden`. Contact your Lusha account manager to upgrade your plan.
+</Warning>
+
+When neither parameter is used, the API returns all available email addresses and phone numbers by default.
+
+## Debugging tips
+
+- **Start with the status code.** A `4xx` error is always a client-side problem; a `5xx` error is server-side.
+- **Read the `message` and `errors` fields.** Validation errors (`400`) list exactly which parameters failed and why.
+- **Check your API key first on `401`.** Confirm the `api_key` header is present and the value matches what is shown in your API settings.
+- **Do not retry `400` or `401` without fixing the request.** These errors will repeat until you correct the underlying issue.
+- **Retry `500` with exponential backoff.** Transient server errors usually resolve quickly.
+- **Log the full response body.** The `errors` array often contains the information you need to fix the request immediately.

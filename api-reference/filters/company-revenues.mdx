@@ -1,0 +1,47 @@
+---
+title: "GET /prospecting/filters/companies/revenues"
+sidebarTitle: "GET /filters/companies/revenues"
+description: "Retrieve available annual revenue range values accepted by the company prospecting search endpoint. Returns ranges such as $1M–$10M and $10M–$50M."
+---
+
+Retrieve the list of available annual revenue range values for filtering companies in `POST /prospecting/company/search`. Use these values to target companies by their reported annual revenue band. Always use the exact strings returned by this endpoint to ensure your filters are applied correctly.
+
+**Endpoint:** `GET https://api.lusha.com/prospecting/filters/companies/revenues`
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/revenues \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "revenues": [
+    "$0 - $1M",
+    "$1M - $10M",
+    "$10M - $50M",
+    "$50M - $100M",
+    "$100M - $500M",
+    "$500M - $1B",
+    "$1B+"
+  ]
+}
+```
+
+## Usage
+
+Pass one or more revenue range strings from the `revenues` array into the `revenues` filter field of your company search request:
+
+```json
+{
+  "revenues": ["$10M - $50M", "$50M - $100M"]
+}
+```
+
+<Tip>
+  Cache the response from this endpoint. Revenue range values are stable and rarely change.
+</Tip>

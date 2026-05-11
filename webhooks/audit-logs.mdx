@@ -1,0 +1,84 @@
+---
+title: "Monitor webhook delivery with Lusha audit logs"
+sidebarTitle: "Audit Logs"
+description: "Query webhook delivery logs and stats to track success rates, diagnose failures, investigate retry behavior, and reactivate disabled subscriptions."
+---
+
+Lusha records every webhook delivery attempt — successful or not — in audit logs. Use these logs to confirm your endpoints are receiving signals correctly, investigate failures, and understand delivery patterns across your account.
+
+## What's logged
+
+Every delivery attempt captures:
+
+- HTTP status code returned by your endpoint
+- Response time in milliseconds
+- Error message (for failed deliveries)
+- Delivery timestamp and total duration
+
+## Log retention
+
+| Delivery status | Retention period |
+|-----------------|-----------------|
+| Successful | 90 days |
+| Failed (permanently disabled) | 180 days |
+
+<Note>
+  The audit log API is subject to the standard rate limit of 100 requests/minute per account.
+</Note>
+
+---
+
+## Get audit logs
+
+**`GET /api/audit-logs`**
+
+Retrieves webhook delivery logs for your account.
+
+### Filtering
+
+Narrow results using query parameters:
+
+- **`subscriptionId`** — return logs for a specific subscription only
+- **`status`** — filter by delivery outcome:
+  - Successful deliveries
+  - Failed deliveries (retries pending or exhausted)
+  - Permanent failures (all retries exhausted, subscription disabled)
+
+---
+
+## Get audit log stats
+
+**`GET /api/audit-logs/stats`**
+
+Returns aggregated delivery statistics for your account, giving you a high-level view of overall webhook health without needing to page through individual log entries.
+
+---
+
+## Interpreting delivery status
+
+| Status | Meaning |
+|--------|---------|
+| Success | Your endpoint responded with an HTTP `2xx` within 10 seconds |
+| Failed | Your endpoint returned a non-`2xx` status or timed out; retries may still be pending |
+| Permanently disabled | All 3 retry attempts were exhausted; the subscription has been automatically disabled |
+
+## What to do when deliveries fail
+
+<Steps>
+  <Step title="Check your endpoint">
+    Use the `subscriptionId` filter on `GET /api/audit-logs` to pull logs for the affected subscription. Look at the HTTP status codes and error messages to identify whether the issue is a timeout, an application error, or a network problem.
+  </Step>
+  <Step title="Fix the underlying issue">
+    Resolve the problem on your endpoint — for example, fix the handler returning a non-`2xx` status, increase the response timeout, or correct a signature verification bug.
+  </Step>
+  <Step title="Reactivate the subscription">
+    If the subscription was automatically disabled after exhausting retries, reactivate it by calling `PATCH /api/subscriptions/{id}` with `isActive: true`. This clears the `blockReason`, resets the retry counter, and allows deliveries to resume.
+  </Step>
+  <Step title="Send a test delivery">
+    Call `POST /api/subscriptions/{id}/test` to verify that your fixed endpoint handles the delivery correctly before waiting for the next real signal.
+  </Step>
+</Steps>
+
+<Tip>
+  Monitor `GET /api/audit-logs/stats` regularly to catch elevated failure rates early, before subscriptions get auto-disabled.
+</Tip>

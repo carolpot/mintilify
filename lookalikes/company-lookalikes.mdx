@@ -1,0 +1,111 @@
+---
+title: "Find similar companies with POST /v3/lookalike/companies"
+sidebarTitle: "Company Lookalikes"
+description: "Identify new target accounts that share firmographics with your best customers by submitting seed companies to the lookalikes endpoint."
+---
+
+The company lookalikes endpoint takes one or more seed companies and returns accounts with similar firmographics — including industry, headcount, revenue range, and geography. Use it to build account lists that mirror your current customer base without manually defining every filter criterion.
+
+**Endpoint:** `POST https://api.lusha.com/v3/lookalike/companies`
+
+## Request body
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `companies` | array | Yes | One or more seed companies. Each object can include a `domain`, `name`, or `companyId`. |
+| `dedupeSessionId` | string | No | Session token from a previous call. Omit on the first request. |
+
+## Paginating without duplicates
+
+The endpoint uses the same `dedupeSessionId` deduplication mechanism as contact lookalikes. On the first request the server generates a session; on subsequent requests you pass that session ID back to receive only new results.
+
+<Steps>
+  <Step title="First call — start a new session">
+    Send your seed companies without a `dedupeSessionId`. The response includes the first batch of lookalike companies and a `dedupeSessionId` to use in follow-up calls.
+
+    ```json
+    {
+      "companies": [{ "domain": "acmecorp.com" }]
+    }
+    ```
+  </Step>
+  <Step title="Subsequent calls — continue the session">
+    Pass the `dedupeSessionId` from the previous response. The server skips companies it has already returned for this session.
+
+    ```json
+    {
+      "companies": [{ "domain": "acmecorp.com" }],
+      "dedupeSessionId": "xyz789"
+    }
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  Sessions are retained for **30 days** from the last activity (sliding window). After 30 days of inactivity the session expires and the next call starts a new one.
+</Note>
+
+## Example: first request
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/v3/lookalike/companies \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "companies": [{ "domain": "acmecorp.com" }]
+  }'
+```
+
+## Example: get more results
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/v3/lookalike/companies \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "companies": [{ "domain": "acmecorp.com" }],
+    "dedupeSessionId": "xyz789"
+  }'
+```
+
+## Example response
+
+```json
+{
+  "dedupeSessionId": "xyz789",
+  "companies": [
+    {
+      "companyId": "5551234567",
+      "name": "Beta Industries",
+      "domain": "betaindustries.com",
+      "industry": "Software",
+      "employeeCount": 320
+    }
+  ]
+}
+```
+
+Always carry the `dedupeSessionId` from the response into your next request to continue fetching results without duplication.
+
+## Identifying seed companies
+
+You can identify each seed company using any of these fields:
+
+| Field | Example |
+|---|---|
+| `domain` | `"acmecorp.com"` |
+| `name` | `"Acme Corp"` |
+| `companyId` | `"5551234567"` |
+
+Providing `domain` is generally the most reliable identifier when you know it.
+
+## Use cases
+
+- **Mirror your customer base** — feed in your top 10 accounts and get back hundreds of companies with similar headcount, funding stage, and industry.
+- **Prioritize outbound accounts** — use lookalike scores to rank new target accounts before handing them off to your sales team.
+
+<Tip>
+  Seed the endpoint with closed-won or high-LTV accounts for the highest-quality results. A focused seed set of 5–20 accounts typically outperforms a broad one.
+</Tip>

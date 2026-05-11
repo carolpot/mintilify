@@ -1,0 +1,179 @@
+---
+title: "Enrich a single contact with GET /v2/person"
+sidebarTitle: "Single Contact"
+description: "Look up verified emails, phone numbers, job title, and LinkedIn data for one contact in real time using the Lusha person enrichment endpoint."
+---
+
+Use `GET /v2/person` to enrich a single contact in real time. Supply one or more identifying parameters and Lusha returns the contact's verified emails, phone numbers, job title, location, social links, and optional signals data.
+
+**Endpoint**
+
+```
+GET https://api.lusha.com/v2/person
+```
+
+**Authentication:** Include your API key in the `api_key` request header.
+
+## Search requirements
+
+You must provide **at least one** of the following combinations:
+
+- `personId` — the Lusha person identifier (most direct lookup)
+- `email`
+- `linkedinUrl`
+- `firstName` **and** `lastName` **and** (`companyName` **or** `companyDomain`)
+
+<Tip>
+  Provide as many parameters as possible. More identifiers improve match accuracy and reduce the chance of returning no results.
+</Tip>
+
+## Query parameters
+
+<ParamField query="firstName" type="string">
+  The first name of the person. Example: `Dustin`
+</ParamField>
+
+<ParamField query="lastName" type="string">
+  The last name of the person. Example: `Moskovitz`
+</ParamField>
+
+<ParamField query="personId" type="string">
+  The unique person identifier in Lusha. Using `personId` is the most direct way to retrieve contact information, as it uniquely identifies a record in Lusha's database. Example: `4183886134`
+</ParamField>
+
+<ParamField query="companyName" type="string">
+  The name of the company the person works at. Example: `Lusha`
+</ParamField>
+
+<ParamField query="companyDomain" type="string">
+  The domain name of the company. Example: `lusha.com`
+</ParamField>
+
+<ParamField query="email" type="string">
+  The email address of the person. Example: `dustin@lusha.com`
+</ParamField>
+
+<ParamField query="linkedinUrl" type="string">
+  The LinkedIn profile URL of the person. Example: `https://www.linkedin.com/in/dustin/`
+</ParamField>
+
+<ParamField query="refreshJobInfo" type="boolean">
+  Set to `true` to refresh and replace outdated job details with the most recent employment data. Example: `true`
+</ParamField>
+
+<ParamField query="filterBy" type="string">
+  Return only contacts that have a specific contact detail. By default, Lusha returns contacts with at least one contact detail available.
+
+  Allowed values: `phoneNumbers`, `emailAddresses`
+</ParamField>
+
+<ParamField query="revealEmails" type="boolean">
+  Set to `true` to retrieve only the email address for the contact. Requires the Unified Credits plan.
+</ParamField>
+
+<ParamField query="revealPhones" type="boolean">
+  Set to `true` to retrieve only the phone number for the contact. Requires the Unified Credits plan.
+</ParamField>
+
+<ParamField query="signals" type="array">
+  Signal types to retrieve for the contact. If no signals are found for the specified period, the `signals` object is still present in the response but empty.
+
+  Allowed values: `allSignals`, `promotion`, `companyChange`
+</ParamField>
+
+<ParamField query="signalsStartDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months ago if not specified. Only applies when `signals` is included. Example: `2025-03-01`
+</ParamField>
+
+<ParamField query="partialProfile" type="boolean">
+  Set to `true` to allow the response to include a partial profile when a full match is not available. Example: `true`
+</ParamField>
+
+<Warning>
+  **Unified Credits plan required**
+
+  `revealEmails` and `revealPhones` are only available on the Unified Credits pricing plan. Using them on any other plan returns a `403 Unauthorized` error. When you omit both parameters, the API returns all available emails and phone numbers by default.
+</Warning>
+
+## Response fields
+
+A successful `200` response returns a `contact` object with the following key fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `contact.isCreditCharged` | boolean | Whether a credit was consumed for this lookup. |
+| `contact.data.personId` | number | The Lusha person identifier. |
+| `contact.data.firstName` | string | First name. |
+| `contact.data.lastName` | string | Last name. |
+| `contact.data.fullName` | string | Full name. |
+| `contact.data.emailAddresses` | array | Email addresses with type (`work`/`private`), confidence score, and update date. |
+| `contact.data.phoneNumbers` | array | Phone numbers with type (`Mobile`, `Direct`, `Phone`), DNC flag, and update date. |
+| `contact.data.jobTitle.title` | string | Current job title. |
+| `contact.data.jobTitle.seniority` | string | Seniority level (e.g. `Director`). |
+| `contact.data.jobTitle.departments` | array | Departments (e.g. `["Engineering", "Operations"]`). |
+| `contact.data.location` | object | Country, city, state, continent, and coordinates. |
+| `contact.data.socialLinks.linkedin` | string | LinkedIn profile URL. |
+| `contact.data.jobStartDate` | string | Start date at current position (`YYYY-MM-DD`). |
+| `contact.data.updateDate` | string | Date the Lusha record was last updated. |
+| `contact.error` | object | Present when the lookup fails. Contains `code`, `name`, and `message`. |
+
+<Note>
+  The `emails` and `phones` fields are deprecated. Use `emailAddresses` and `phoneNumbers` instead for full metadata including type, confidence, and DNC status.
+</Note>
+
+## Example request
+
+```bash
+curl --request GET \
+  --url "https://api.lusha.com/v2/person?firstName=Dustin&lastName=Moskovitz&companyDomain=asana.com" \
+  --header "api_key: YOUR_API_KEY"
+```
+
+## Example response
+
+```json
+{
+  "contact": {
+    "isCreditCharged": true,
+    "data": {
+      "personId": 4183886134,
+      "firstName": "Dustin",
+      "lastName": "Moskovitz",
+      "fullName": "Dustin Moskovitz",
+      "emailAddresses": [
+        {
+          "address": "dustin@asana.com",
+          "emailType": "work",
+          "emailConfidence": "A+",
+          "updateDate": "2024-06-01"
+        }
+      ],
+      "phoneNumbers": [
+        {
+          "number": "+14155550100",
+          "phoneType": "Mobile",
+          "doNotCall": false,
+          "updateDate": "2024-06-01"
+        }
+      ],
+      "jobTitle": {
+        "title": "CEO",
+        "seniority": "C-Suite",
+        "departments": ["General Management"]
+      },
+      "location": {
+        "country": "United States",
+        "countryIso2": "US",
+        "city": "San Francisco",
+        "state": "California",
+        "continent": "North America"
+      },
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/in/dustin/"
+      },
+      "updateDate": "2024-06-01"
+    },
+    "error": null
+  }
+}
+```

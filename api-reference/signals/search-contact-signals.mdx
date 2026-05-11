@@ -1,0 +1,224 @@
+---
+title: "POST /api/signals/contacts/search — Search contact signals"
+sidebarTitle: "POST /api/signals/contacts/search"
+description: "Search and enrich contact signals in one request using LinkedIn URL, email, or name and company as identifiers. Returns contact data plus signals."
+---
+
+Use this endpoint to identify contacts and retrieve their signal data in a single request — without needing a Lusha contact ID upfront. You supply one or more identifying attributes per contact (LinkedIn URL, email address, or full name with company), and the API matches them to Lusha's database and returns both the contact profile and their signals.
+
+<Info>
+  If you already have Lusha contact IDs, use [POST /api/signals/contacts](/api-reference/signals/get-contact-signals) instead for a simpler bulk lookup.
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/api/signals/contacts/search
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="contacts" type="object[]" required>
+  List of contact identifiers to search for. Each object must include `id` and at least one identifying attribute.
+
+  <Expandable title="contact object fields">
+    <ParamField body="contacts[].id" type="string" required>
+      A caller-assigned sequential ID used to correlate objects in the request with results in the response. Example: `"12345"`
+    </ParamField>
+
+    <ParamField body="contacts[].social_link" type="string">
+      LinkedIn profile URL. Example: `"https://www.linkedin.com/in/ron-nabet"`
+    </ParamField>
+
+    <ParamField body="contacts[].email" type="string">
+      Email address. Example: `"ron@lusha.com"`
+    </ParamField>
+
+    <ParamField body="contacts[].full_name" type="string">
+      Full name. Use with `companies` for best match accuracy. Example: `"Ron Nabet"`
+    </ParamField>
+
+    <ParamField body="contacts[].companies" type="object[]">
+      Company associations for this contact. Pairing `full_name` with at least one company greatly improves match precision.
+
+      <Expandable title="company fields">
+        <ParamField body="contacts[].companies[].name" type="string" required>
+          Company name. Example: `"Lusha"`
+        </ParamField>
+
+        <ParamField body="contacts[].companies[].domain" type="string" required>
+          Company domain (FQDN, not a full URL). Example: `"lusha.com"`
+        </ParamField>
+
+        <ParamField body="contacts[].companies[].is_current" type="boolean">
+          Whether this is the contact's current employer. Example: `true`
+        </ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="signals" type="string[]" required>
+  Signal types to retrieve for all contacts in the request.
+
+  Allowed values: `"allSignals"`, `"promotion"`, `"companyChange"`
+</ParamField>
+
+<ParamField body="startDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months before the request date. Example: `"2025-01-01"`
+</ParamField>
+
+<ParamField body="maxResultsPerSignal" type="integer">
+  Maximum number of signal instances to return per signal type per contact. When omitted:
+  - Without `startDate`: all available signals are returned.
+  - With `startDate`: all signals from that date onward are returned.
+
+  Example: `10`
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/api/signals/contacts/search \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contacts": [
+      {
+        "id": "1",
+        "social_link": "https://www.linkedin.com/in/ron-nabet"
+      },
+      {
+        "id": "2",
+        "full_name": "Jane Smith",
+        "companies": [
+          { "name": "Acme Corp", "domain": "acme.com", "is_current": true }
+        ]
+      }
+    ],
+    "signals": ["promotion", "companyChange"],
+    "startDate": "2025-01-01"
+  }'
+```
+
+```json Request body
+{
+  "contacts": [
+    {
+      "id": "1",
+      "social_link": "https://www.linkedin.com/in/ron-nabet"
+    },
+    {
+      "id": "2",
+      "email": "jane@acme.com",
+      "full_name": "Jane Smith",
+      "companies": [
+        {
+          "name": "Acme Corp",
+          "domain": "acme.com",
+          "is_current": true
+        }
+      ]
+    }
+  ],
+  "signals": ["promotion", "companyChange"],
+  "startDate": "2025-01-01",
+  "maxResultsPerSignal": 5
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="contacts" type="object">
+  A map of caller-assigned IDs (from `contacts[].id` in the request) to contact signal data. Each value contains both the matched contact profile and their signal results.
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  The start date of the signal period used for this response. Example: `"2025-01-01"`
+</ResponseField>
+
+<ResponseField name="endDate" type="string">
+  The end date of the signal period. Example: `"2025-07-31"`
+</ResponseField>
+
+<ResponseField name="creditCharged" type="integer">
+  Total credits charged for this request. Example: `2`
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Validation failed — check that `contacts` and `signals` are present and valid. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — your plan does not include signals access. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+
+<ResponseExample>
+
+```json 200
+{
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "creditCharged": 2,
+  "contacts": {
+    "1": {
+      "contactData": {
+        "contactId": 115889,
+        "fullName": "Ron Nabet",
+        "jobTitle": "VP of Sales",
+        "companyName": "Lusha"
+      },
+      "signals": {
+        "promotion": [
+          {
+            "previousTitle": "Director of Sales",
+            "newTitle": "VP of Sales",
+            "signalDate": "2025-04-10"
+          }
+        ],
+        "companyChange": []
+      }
+    },
+    "2": {
+      "contactData": {
+        "contactId": 229301,
+        "fullName": "Jane Smith",
+        "jobTitle": "Head of Marketing",
+        "companyName": "Acme Corp"
+      },
+      "signals": {
+        "promotion": [],
+        "companyChange": []
+      }
+    }
+  }
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": ["contacts is required"]
+}
+```
+
+</ResponseExample>

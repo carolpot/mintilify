@@ -1,0 +1,266 @@
+---
+title: "POST /prospecting/contact/enrich — Enrich contacts"
+sidebarTitle: "POST /prospecting/contact/enrich"
+description: "Get full contact details including emails and phone numbers for contacts found in prospecting search. Step 3 of the prospecting flow."
+---
+
+After searching for contacts with [POST /prospecting/contact/search](/api-reference/prospecting/search-contacts), use this endpoint to retrieve complete contact profiles — including email addresses, phone numbers, location, seniority, and company details — for up to 100 contacts per request. This is **step 3** of the three-step prospecting flow.
+
+<Warning>
+  **Unified Credits plan required for selective reveal**
+
+  The `revealEmails` and `revealPhones` parameters are only available on the Unified Credits pricing plan. Using either parameter on other plans returns a `403` error.
+
+  When you omit both parameters, the API returns all available contact details (emails and phones) by default.
+</Warning>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/prospecting/contact/enrich
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="requestId" type="string" required>
+  The `requestId` returned by the Search Contacts response for the same session. Example: `"b6effae6-35b8-493d-91aa-7d3b1b7c7dc7"`
+</ParamField>
+
+<ParamField body="contactIds" type="string[]" required>
+  Array of `contactId` values from the search results you want to enrich. Minimum 1, maximum 100. Example: `["37b4c536-eaec-11ef-ad4b-a75f8e9e1484"]`
+</ParamField>
+
+<ParamField body="revealEmails" type="boolean">
+  **Unified Credits plan only.** When `true`, the response includes email addresses only (phone numbers are excluded). Omit this field to receive all available data types.
+</ParamField>
+
+<ParamField body="revealPhones" type="boolean">
+  **Unified Credits plan only.** When `true`, the response includes phone numbers only (emails are excluded). Omit this field to receive all available data types.
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/prospecting/contact/enrich \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+    "contactIds": [
+      "37b4c536-eaec-11ef-ad4b-a75f8e9e1484",
+      "48c5d647-fbfd-22fg-be5c-b86g9f0f2595"
+    ]
+  }'
+```
+
+```json Request body
+{
+  "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+  "contactIds": [
+    "37b4c536-eaec-11ef-ad4b-a75f8e9e1484",
+    "48c5d647-fbfd-22fg-be5c-b86g9f0f2595"
+  ]
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="requestId" type="string">
+  The `requestId` that was used in the request.
+</ResponseField>
+
+<ResponseField name="contacts" type="object[]">
+  Array of enriched contact objects, one per requested ID.
+
+  <Expandable title="contact fields">
+    <ResponseField name="contacts.id" type="string">
+      The contact ID from the enrichment request.
+    </ResponseField>
+
+    <ResponseField name="contacts.isSuccess" type="boolean">
+      Whether enrichment succeeded for this contact.
+    </ResponseField>
+
+    <ResponseField name="contacts.data" type="object">
+      Full contact profile. Only present when `isSuccess` is `true`.
+
+      <Expandable title="data fields">
+        <ResponseField name="contacts.data.firstName" type="string">
+          First name. Example: `"Carolina"`
+        </ResponseField>
+
+        <ResponseField name="contacts.data.lastName" type="string">
+          Last name. Example: `"Portela"`
+        </ResponseField>
+
+        <ResponseField name="contacts.data.fullName" type="string">
+          Full name. Example: `"Carolina Portela"`
+        </ResponseField>
+
+        <ResponseField name="contacts.data.jobTitle" type="string">
+          Current job title. Example: `"Solutions Engineer"`
+        </ResponseField>
+
+        <ResponseField name="contacts.data.seniority" type="object[]">
+          Seniority level details.
+
+          <Expandable title="seniority fields">
+            <ResponseField name="contacts.data.seniority.id" type="number">
+              Seniority ID. Example: `4`
+            </ResponseField>
+
+            <ResponseField name="contacts.data.seniority.value" type="string">
+              Seniority label. Example: `"senior"`
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+
+        <ResponseField name="contacts.data.departments" type="string[]">
+          Departments. Example: `["Engineering & Technical"]`
+        </ResponseField>
+
+        <ResponseField name="contacts.data.location" type="object">
+          Contact's location.
+
+          <Expandable title="location fields">
+            <ResponseField name="contacts.data.location.city" type="string">Example: `"Boston"`</ResponseField>
+            <ResponseField name="contacts.data.location.state" type="string">Example: `"Massachusetts"`</ResponseField>
+            <ResponseField name="contacts.data.location.country" type="string">Example: `"United States"`</ResponseField>
+            <ResponseField name="contacts.data.location.country_iso2" type="string">ISO 3166-1 alpha-2 code. Example: `"US"`</ResponseField>
+            <ResponseField name="contacts.data.location.continent" type="string">Example: `"North America"`</ResponseField>
+          </Expandable>
+        </ResponseField>
+
+        <ResponseField name="contacts.data.emailAddresses" type="object[]">
+          Email addresses with metadata.
+
+          <Expandable title="email fields">
+            <ResponseField name="contacts.data.emailAddresses.email" type="string">Email address. Example: `"carolina@lusha.com"`</ResponseField>
+            <ResponseField name="contacts.data.emailAddresses.emailType" type="string">Type of email. Values: `"work"`, `"private"`</ResponseField>
+            <ResponseField name="contacts.data.emailAddresses.emailConfidence" type="string">Confidence rating. Example: `"A+"`</ResponseField>
+            <ResponseField name="contacts.data.emailAddresses.updateDate" type="string">Last updated date. Example: `"2024-03-01"`</ResponseField>
+          </Expandable>
+        </ResponseField>
+
+        <ResponseField name="contacts.data.phoneNumbers" type="object[]">
+          Phone numbers with metadata.
+
+          <Expandable title="phone fields">
+            <ResponseField name="contacts.data.phoneNumbers.number" type="string">Phone number in E.164 format. Example: `"+12125551234"`</ResponseField>
+            <ResponseField name="contacts.data.phoneNumbers.phoneType" type="string">Type of phone. Values: `"Mobile"`, `"Direct"`, `"Phone"`</ResponseField>
+            <ResponseField name="contacts.data.phoneNumbers.doNotCall" type="boolean">Whether the number is on the DNC list.</ResponseField>
+            <ResponseField name="contacts.data.phoneNumbers.updateDate" type="string">Last updated date. Example: `"2024-03-01"`</ResponseField>
+          </Expandable>
+        </ResponseField>
+
+        <ResponseField name="contacts.data.socialLinks" type="object">
+          Social profile URLs.
+
+          <Expandable title="social fields">
+            <ResponseField name="contacts.data.socialLinks.linkedin" type="string">LinkedIn profile URL.</ResponseField>
+            <ResponseField name="contacts.data.socialLinks.xUrl" type="string">Twitter/X profile URL.</ResponseField>
+          </Expandable>
+        </ResponseField>
+
+        <ResponseField name="contacts.data.companyId" type="number">
+          Lusha company identifier. Example: `3553744`
+        </ResponseField>
+
+        <ResponseField name="contacts.data.companyName" type="string">
+          Company name. Example: `"Lusha"`
+        </ResponseField>
+
+        <ResponseField name="contacts.data.company" type="object">
+          Additional company data including funding, intent, industry, and technology stack.
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Validation failed — check that `requestId` and `contactIds` are present and valid. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — `revealEmails` or `revealPhones` requires the Unified Credits plan. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+| `500` | Internal server error — retry with exponential backoff. |
+
+<ResponseExample>
+
+```json 200
+{
+  "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+  "contacts": [
+    {
+      "id": "37b4c536-eaec-11ef-ad4b-a75f8e9e1484",
+      "isSuccess": true,
+      "data": {
+        "firstName": "Carolina",
+        "lastName": "Portela",
+        "fullName": "Carolina Portela",
+        "jobTitle": "Solutions Engineer",
+        "departments": ["Engineering & Technical"],
+        "seniority": [{ "id": 4, "value": "senior" }],
+        "location": {
+          "city": "Boston",
+          "state": "Massachusetts",
+          "country": "United States",
+          "country_iso2": "US",
+          "continent": "North America"
+        },
+        "emailAddresses": [
+          {
+            "email": "carolina@lusha.com",
+            "emailType": "work",
+            "emailConfidence": "A+",
+            "updateDate": "2024-03-01"
+          }
+        ],
+        "phoneNumbers": [
+          {
+            "number": "+16175551234",
+            "phoneType": "Mobile",
+            "doNotCall": false,
+            "updateDate": "2024-03-01"
+          }
+        ],
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/carolinaportela/"
+        },
+        "companyId": 3553744,
+        "companyName": "Lusha"
+      }
+    }
+  ]
+}
+```
+
+```json 403
+{
+  "statusCode": 403,
+  "message": "Forbidden",
+  "errors": ["revealEmails is only available on the Unified Credits plan"]
+}
+```
+
+</ResponseExample>

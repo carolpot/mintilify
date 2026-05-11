@@ -1,0 +1,54 @@
+---
+title: "Lusha API: B2B Contact & Company Data Platform"
+description: "Explore the Lusha API to enrich contacts and companies, prospect by ICP filters, subscribe to real-time signals, and discover lookalike profiles."
+---
+
+The Lusha API gives you programmatic access to one of the world's largest B2B contact and company databases. Use it to enrich existing CRM records with verified emails and phone numbers, search for new prospects that match your ideal customer profile, subscribe to real-time job-change and company-event signals, and discover lookalike contacts or companies similar to your best customers.
+
+<CardGroup cols={2}>
+  <Card title="Get Started" icon="rocket" href="/introduction">
+    Set up your API key and make your first request in minutes.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn how to authenticate every API request with your API key.
+  </Card>
+  <Card title="Enrichment" icon="address-book" href="/enrichment/overview">
+    Add emails, phone numbers, and firmographics to existing contact and company records.
+  </Card>
+  <Card title="Prospecting" icon="magnifying-glass" href="/prospecting/overview">
+    Search Lusha's database by ICP filters to build targeted lists of contacts and companies.
+  </Card>
+  <Card title="Signals" icon="bolt" href="/signals/overview">
+    Detect job changes, promotions, and company events to reach prospects at the right moment.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/webhooks/overview">
+    Receive real-time push notifications when signals occur for your monitored contacts and companies.
+  </Card>
+  <Card title="Lookalikes" icon="users" href="/lookalikes/overview">
+    Discover new prospects that match the profile of your best customers using AI-powered similarity.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/enrichment/search-single-contact">
+    Full endpoint reference with parameters, request and response schemas.
+  </Card>
+</CardGroup>
+
+## How the Lusha API works
+
+<Steps>
+  <Step title="Get your API key">
+    Sign up at [lusha.com](https://www.lusha.com/signup/) and copy your API key from the API settings page.
+  </Step>
+  <Step title="Authenticate requests">
+    Pass your key in the `api_key` header on every request to `https://api.lusha.com`.
+  </Step>
+  <Step title="Enrich or prospect">
+    Call the Enrichment API to fill in missing data on known contacts, or use the Prospecting API to discover new ones.
+  </Step>
+  <Step title="Subscribe to signals">
+    Set up Webhooks to receive instant notifications when tracked contacts change jobs or companies reach growth milestones.
+  </Step>
+</Steps>
+
+<Note>
+  All Lusha API requests are credit-based. Check your current credit balance and usage at any time with the [Account Usage](/account/usage) endpoint.
+</Note>

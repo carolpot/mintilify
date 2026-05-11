@@ -1,0 +1,47 @@
+---
+title: "GET /prospecting/filters/companies/intent_topics"
+sidebarTitle: "GET /filters/companies/intent-topics"
+description: "Retrieve available buying-intent topic values for company prospecting filters. Use returned values to find companies actively researching your category."
+---
+
+Retrieve the list of available intent topic values for filtering companies in `POST /prospecting/company/search`. Intent topics represent categories of online research activity that indicate a company may be actively evaluating solutions in a given area. Filtering by intent topics helps you prioritize outreach to companies that are showing active buying signals right now.
+
+**Endpoint:** `GET https://api.lusha.com/prospecting/filters/companies/intent_topics`
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/intent_topics \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "intent_topics": [
+    "CRM Software",
+    "Sales Intelligence",
+    "Marketing Automation",
+    "Cloud Migration",
+    "Cybersecurity",
+    "HR Software",
+    "Data Analytics"
+  ]
+}
+```
+
+## Usage
+
+Pass one or more intent topic strings from the `intent_topics` array into the `intentTopics` filter field of your company search request:
+
+```json
+{
+  "intentTopics": ["Sales Intelligence", "CRM Software"]
+}
+```
+
+<Tip>
+  Intent topics are updated periodically as new research categories are added. Refresh your cached values occasionally to access the latest topics.
+</Tip>

@@ -1,0 +1,64 @@
+---
+title: "Receive real-time signal notifications via webhooks"
+sidebarTitle: "Overview"
+description: "Push HTTP notifications to your endpoints when contacts or companies trigger signals — promotions, job changes, company events, and more."
+---
+
+Webhooks let Lusha push HTTP POST requests directly to your server the moment a tracked signal fires. Instead of polling the API, you register a subscription for a contact or company and receive a delivery to your endpoint in real time — complete with the signal data, a verifiable signature, and billing details.
+
+## What webhooks deliver
+
+When a subscribed entity triggers a signal, Lusha sends a signed JSON payload to your webhook URL. Signals include contact events such as promotions and job changes, as well as company events such as commercial activity news and growth milestones. For the full list of available signal types, see the [Signal Options](/api-reference/signals/get-signal-options) reference.
+
+## Key features
+
+| Feature | Details |
+|---|---|
+| Real-time notifications | HTTP POST delivered as soon as a signal is detected |
+| Bulk subscription management | Create or delete up to 25 subscriptions per request |
+| Secure delivery | Every delivery is signed with HMAC-SHA256 |
+| Delivery monitoring | Full audit logs with HTTP status codes, response times, and error messages |
+| Automatic retry | 3 attempts with exponential backoff; subscription auto-disables after max retries |
+
+## Available endpoints
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| `POST` | `/api/subscriptions` | Create subscriptions (up to 25 per request) |
+| `GET` | `/api/subscriptions` | List all subscriptions |
+| `GET` | `/api/subscriptions/{id}` | Get a subscription by ID |
+| `PATCH` | `/api/subscriptions/{id}` | Update a subscription |
+| `POST` | `/api/subscriptions/delete` | Delete subscriptions (up to 25 per request) |
+| `POST` | `/api/subscriptions/{id}/test` | Send a test delivery |
+| `GET` | `/api/audit-logs` | Retrieve webhook delivery logs |
+| `GET` | `/api/audit-logs/stats` | Get delivery statistics |
+| `GET` | `/api/account/secret` | Retrieve your account webhook secret |
+| `POST` | `/api/account/secret/regenerate` | Regenerate your account webhook secret |
+
+## Rate limits
+
+| Operation | Limit |
+|-----------|-------|
+| API requests | 100 requests/minute per account |
+| Create subscriptions | 25 items per request |
+| Delete subscriptions | 25 items per request |
+
+## Credits and billing
+
+Credits are charged when a signal is detected and delivered to your webhook. The `billing.creditsCharged` field in each payload shows how many credits were used for that delivery. Each signal is charged once — retries due to delivery failures do not incur additional charges.
+
+## Prerequisites
+
+<Warning>
+  Your account must have a webhook secret before subscriptions can receive deliveries. Generate one by calling `POST /api/account/secret/regenerate` and store it securely — it is only shown once.
+</Warning>
+
+Before creating your first subscription:
+
+1. Call `POST /api/account/secret/regenerate` to generate your account secret.
+2. Store the secret in your secrets manager — you cannot retrieve it again.
+3. Use the secret to [verify signatures](/webhooks/security) on every incoming delivery.
+
+<Note>
+  Webhook URLs must use HTTPS in production. HTTP URLs are not accepted.
+</Note>

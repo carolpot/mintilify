@@ -1,0 +1,148 @@
+---
+title: "Enrich a single company with GET /v2/company"
+sidebarTitle: "Single Company"
+description: "Retrieve firmographics, headcount, funding history, technologies, and signals for one company in real time using the Lusha company enrichment endpoint."
+---
+
+Use `GET /v2/company` to enrich a single company in real time. Provide a domain, company name, or Lusha company ID and receive firmographics, employee count, funding details, technologies, intent data, and optional company signals.
+
+**Endpoint**
+
+```
+GET https://api.lusha.com/v2/company
+```
+
+**Authentication:** Include your API key in the `api_key` request header.
+
+## Search requirements
+
+You must provide **at least one** of the following:
+
+- `domain` — the company's web domain (recommended for highest match accuracy)
+- `company` — the company name
+- `companyId` — the Lusha company identifier
+
+<Note>
+  Signal sub-filters (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) are **not** supported on this endpoint. To filter signal results, use [`POST /bulk/company/v2`](/enrichment/bulk-companies) with the `signalsFilters` parameter instead.
+</Note>
+
+## Query parameters
+
+<ParamField query="domain" type="string">
+  The domain name associated with the company. Example: `lusha.com`
+</ParamField>
+
+<ParamField query="company" type="string">
+  The name of the company. Example: `Lusha`
+</ParamField>
+
+<ParamField query="companyId" type="string">
+  The unique Lusha company identifier. Example: `1234567890`
+</ParamField>
+
+<ParamField query="signals" type="array">
+  Signal types to retrieve for the company. Use `allSignals` to receive all available signal types, or provide one or more specific values.
+
+  Allowed values: `allSignals`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `headcountIncrease1m`, `headcountDecrease1m`, `headcountIncrease3m`, `headcountDecrease3m`, `headcountIncrease6m`, `headcountDecrease6m`, `headcountIncrease12m`, `headcountDecrease12m`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`
+</ParamField>
+
+<ParamField query="signalsStartDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months ago if not specified. Example: `2025-03-01`
+</ParamField>
+
+<ParamField query="partialCompany" type="boolean">
+  Set to `true` to expand coverage by including partial company profiles when a full match is not available.
+</ParamField>
+
+## Response fields
+
+A successful `200` response returns a `data` object with the following key fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `data.id` | number | Lusha's unique company identifier. |
+| `data.name` | string | Company name. |
+| `data.domain` | string | Primary domain used for company emails. |
+| `data.website` | string | Company website URL. |
+| `data.description` | string | Short description of the company. |
+| `data.employees` | string | Employee size range (e.g. `"201 - 500"`). |
+| `data.companySize` | object | Detailed headcount: `min`, `max`, and `employeesInLinkedin`. |
+| `data.founded` | string | The year the company was founded. |
+| `data.mainIndustry` | string | Primary industry (e.g. `"Technology"`). |
+| `data.subIndustry` | string | Sub-sector within the primary industry (e.g. `"Software"`). |
+| `data.revenueRange` | array | Estimated revenue range in USD (e.g. `[1000000, 10000000]`). |
+| `data.companyType` | string | Company type (e.g. `"Private company"`). |
+| `data.location` | object | HQ location: address, city, state, country, and coordinates. |
+| `data.companyLocations` | array | All known company site locations (not just HQ). |
+| `data.funding` | object | Funding rounds, total raised, last round type/amount/date, and IPO status. |
+| `data.technologies` | array | Technologies used by the company. |
+| `data.intent` | object | Detected intent topics with relevance scores and trends. |
+| `data.social` | object | Social profiles including LinkedIn and Crunchbase URLs. |
+| `data.categories` | array | LinkedIn industry tags. |
+| `data.specialities` | array | LinkedIn specialty tags. |
+| `data.linkedinFollowers` | integer | LinkedIn follower count. |
+
+Signal fields such as `riskNews`, `commercialActivityNews`, `surgeInHiring`, `websiteTrafficIncrease`, and `headcountIncrease1m` are included in the response when the corresponding signal type is requested via the `signals` parameter.
+
+## Example request
+
+```bash
+curl --request GET \
+  --url "https://api.lusha.com/v2/company?domain=lusha.com&signals=surgeInHiring" \
+  --header "api_key: YOUR_API_KEY"
+```
+
+## Example response
+
+```json
+{
+  "data": {
+    "id": 33222678,
+    "name": "Lusha",
+    "domain": "lusha.com",
+    "website": "https://lusha.com",
+    "description": "Lusha is the sales intelligence platform designed to help businesses get their next customers.",
+    "employees": "201 - 500",
+    "companySize": {
+      "min": 201,
+      "max": 500,
+      "employeesInLinkedin": 380
+    },
+    "founded": "2016",
+    "mainIndustry": "Technology",
+    "subIndustry": "Software",
+    "revenueRange": [10000000, 50000000],
+    "companyType": "Private company",
+    "location": {
+      "fullLocation": "800 Boylston St, Suite 1410, Boston, Massachusetts 02199, US",
+      "countryIso2": "US",
+      "stateCode": "MA"
+    },
+    "funding": {
+      "totalRounds": 2,
+      "totalRoundsAmount": 245000000,
+      "currency": "USD",
+      "isIpo": false,
+      "lastRoundType": "Private Equity Round",
+      "lastRoundAmount": 205000000,
+      "lastRoundDate": "Nov 10, 2021"
+    },
+    "technologies": [
+      { "name": "salesforce" },
+      { "name": "hubspot" }
+    ],
+    "surgeInHiring": [
+      {
+        "companyId": "33222678",
+        "signalId": "1503905",
+        "signalDate": "2025-06-15",
+        "newJobsPostedLastWeek": 25,
+        "historicalAvg": 10,
+        "changeRatePercent": 150
+      }
+    ]
+  },
+  "errors": null,
+  "meta": {}
+}
+```

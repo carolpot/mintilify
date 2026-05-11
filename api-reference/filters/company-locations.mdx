@@ -1,0 +1,47 @@
+---
+title: "POST /prospecting/filters/companies/locations"
+sidebarTitle: "POST /filters/companies/locations"
+description: "Search for company location values by text to use in prospecting filters. Returns matching cities, regions, and countries for the company search endpoint."
+---
+
+Search for location values by free-text query to use in the `locations` filter field of `POST /prospecting/company/search`. This endpoint returns matching cities, regions, metro areas, and countries as recognized by the Lusha database. Use the exact strings returned here in your search request to ensure results are returned correctly.
+
+**Endpoint:** `POST https://api.lusha.com/prospecting/filters/companies/locations`
+
+## Request body
+
+<ParamField body="query" type="string" required>
+  Free-text search string to match against location names. For example, `"Austin"` or `"San Francisco"`.
+</ParamField>
+
+## Example request
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/companies/locations \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "Austin" }'
+```
+
+## Example response
+
+```json
+{
+  "locations": [
+    "Austin, TX, United States",
+    "Austin, Texas, United States",
+    "Austin Metropolitan Area"
+  ]
+}
+```
+
+## Usage
+
+Pick the location string that matches your target area and pass it into the `locations` filter field of your company search request:
+
+```json
+{
+  "locations": ["Austin, TX, United States"]
+}
+```

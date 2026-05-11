@@ -1,0 +1,196 @@
+---
+title: "POST /api/signals/companies — Get company signals by ID"
+sidebarTitle: "POST /api/signals/companies"
+description: "Retrieve signal data for up to 100 companies by their Lusha IDs. Covers hiring surges, headcount changes, website traffic, and news events."
+---
+
+Use this endpoint when you already have Lusha company IDs and want to retrieve signal data for those companies in bulk — up to 100 per request. The response covers a wide range of company-level signals including hiring surges, headcount changes, website traffic trends, IT spend shifts, and categorized news events. The default time window is the last 6 months; use `startDate` to customize the range.
+
+<Info>
+  If you don't have Lusha company IDs, use [POST /api/signals/companies/search](/api-reference/signals/search-company-signals) to look up companies by name or domain and retrieve their signals in a single request.
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/api/signals/companies
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="companyIds" type="number[]" required>
+  List of Lusha company IDs to retrieve signals for. Maximum 100 per request. Example: `[3416, 33222678]`
+</ParamField>
+
+<ParamField body="signals" type="string[]" required>
+  Signal types to retrieve. Use `"allSignals"` to request all available company signal types at once.
+
+  Allowed values: `"allSignals"`, `"surgeInHiring"`, `"surgeInHiringByDepartment"`, `"surgeInHiringByLocation"`, `"headcountIncrease1m"`, `"headcountDecrease1m"`, `"headcountIncrease3m"`, `"headcountDecrease3m"`, `"headcountIncrease6m"`, `"headcountDecrease6m"`, `"headcountIncrease12m"`, `"headcountDecrease12m"`, `"websiteTrafficIncrease"`, `"websiteTrafficDecrease"`, `"itSpendIncrease"`, `"itSpendDecrease"`, `"commercialActivityNews"`, `"corporateStrategyNews"`, `"financialEventsNews"`, `"marketIntelligenceNews"`, `"peopleNews"`, `"productActivityNews"`, `"riskNews"`
+</ParamField>
+
+<ParamField body="startDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months before the request date. Example: `"2025-01-01"`
+</ParamField>
+
+<ParamField body="maxResultsPerSignal" type="integer">
+  Maximum number of signal instances to return per signal type per company. When omitted:
+  - Without `startDate`: all available signals are returned.
+  - With `startDate`: all signals from that date onward are returned.
+
+  Example: `10`
+</ParamField>
+
+<ParamField body="filters" type="object">
+  Optional filters to narrow signal results within a signal type. All multi-value filters use OR logic. Filter values are not case-sensitive.
+
+  <Expandable title="filters.include fields">
+    <ParamField body="filters.include.newsEventTypes" type="string[]">
+      Narrow news signals to specific event types. See [GET /api/signals/filters/company](/api-reference/signals/get-signal-options) for the full list of valid values.
+
+      Example values: `"Partnership"`, `"Funding Round"`, `"Executive Hire"`, `"Product Launch"`
+    </ParamField>
+
+    <ParamField body="filters.include.hiringByDepartments" type="string[]">
+      Narrow `surgeInHiringByDepartment` signals to specific departments.
+
+      Example values: `"Engineering & Technical"`, `"Sales"`, `"Marketing"`, `"Finance"`, `"Human Resources"`
+    </ParamField>
+
+    <ParamField body="filters.include.hiringByLocations" type="object[]">
+      Narrow `surgeInHiringByLocation` signals to specific countries or states. Each object requires `country`; `state` is optional.
+
+      <Warning>
+        Providing `state` without `country` returns a `400` error.
+      </Warning>
+
+      Example: `[{ "country": "United States", "state": "California" }, { "country": "Germany" }]`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/api/signals/companies \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "companyIds": [3416, 33222678],
+    "signals": ["surgeInHiring", "financialEventsNews", "headcountIncrease6m"],
+    "startDate": "2025-01-01"
+  }'
+```
+
+```json Request body
+{
+  "companyIds": [3416, 33222678],
+  "signals": ["surgeInHiring", "financialEventsNews", "headcountIncrease6m"],
+  "startDate": "2025-01-01",
+  "maxResultsPerSignal": 5,
+  "filters": {
+    "include": {
+      "newsEventTypes": ["Funding Round", "IPO"],
+      "hiringByLocations": [
+        { "country": "United States", "state": "California" }
+      ]
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="companies" type="object">
+  A map of company IDs (as strings) to their signal data. Each key corresponds to a Lusha company ID from the request.
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  The start date of the signal period. Example: `"2025-01-01"`
+</ResponseField>
+
+<ResponseField name="endDate" type="string">
+  The end date of the signal period. Example: `"2025-07-31"`
+</ResponseField>
+
+<ResponseField name="creditCharged" type="integer">
+  Total credits charged for this request. Example: `3`
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Validation failed — check that `companyIds` and `signals` are present; also check that `state` is not provided without `country` in `hiringByLocations`. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — your plan does not include signals access. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+
+<ResponseExample>
+
+```json 200
+{
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "creditCharged": 3,
+  "companies": {
+    "33222678": {
+      "surgeInHiring": [
+        {
+          "companyId": "33222678",
+          "companyName": "Lusha",
+          "domain": "lusha.com",
+          "signalId": "1503905",
+          "signalDate": "2025-06-15",
+          "newJobsPostedLastWeek": 25,
+          "historicalAvg": 10,
+          "changeRatePercent": 150
+        }
+      ],
+      "financialEventsNews": [
+        {
+          "companyId": "33222678",
+          "companyName": "Lusha",
+          "eventType": "Funding Round",
+          "eventSummary": "Lusha secured a new round of investment.",
+          "articlePublishedDate": "2025-05-20",
+          "articleTitle": "Lusha Announces Series B Funding"
+        }
+      ],
+      "headcountIncrease6m": [
+        {
+          "baselineEmployeesCount": 320,
+          "newEmployeesCount": 382,
+          "changeRatePercent": 19
+        }
+      ]
+    }
+  }
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": ["companyIds is required"]
+}
+```
+
+</ResponseExample>

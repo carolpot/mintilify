@@ -1,0 +1,69 @@
+---
+title: "Get started with the Lusha API"
+description: "Learn what the Lusha API offers, make your first request to the base URL, and understand how the credit-based billing model works before you build."
+---
+
+The Lusha API gives you programmatic access to one of the world's largest B2B contact and company databases. All requests go to a single base URL — `https://api.lusha.com` — and are authenticated with an API key you pass in a request header. Whether you are enriching CRM records, prospecting for new leads, or wiring up real-time event signals, every capability is available through a consistent REST interface.
+
+## What you can build
+
+<Columns cols={2}>
+  <Card title="Enrichment" icon="address-book" href="/enrichment/overview">
+    Add verified emails, phone numbers, and firmographics to existing contact and company records.
+  </Card>
+  <Card title="Prospecting" icon="magnifying-glass" href="/prospecting/overview">
+    Search Lusha's database with ICP filters to build targeted lists of contacts and companies.
+  </Card>
+  <Card title="Signals" icon="bolt" href="/signals/overview">
+    Detect job changes, promotions, and company events to reach prospects at the right moment.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/webhooks/overview">
+    Receive real-time push notifications when signals occur for your monitored contacts or companies.
+  </Card>
+  <Card title="Lookalikes" icon="users" href="/lookalikes/overview">
+    Discover new prospects that resemble your best customers using AI-powered similarity search.
+  </Card>
+  <Card title="Account" icon="chart-bar" href="/account/usage">
+    Check your credit balance and usage at any time with the account usage endpoint.
+  </Card>
+</Columns>
+
+## Base URL
+
+All endpoints are served from a single base URL:
+
+```
+https://api.lusha.com
+```
+
+## Credits and billing
+
+The Lusha API uses a credit-based model. Each successful data enrichment or prospecting call consumes one or more credits from your account balance. To check how many credits you have remaining, call the account usage endpoint:
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/account/usage \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+The `contact.isCreditCharged` field in enrichment responses tells you whether a credit was consumed for a given request.
+
+## Your first API call
+
+The example below fetches enriched contact data for a person by first name, last name, and company domain. Replace `YOUR_API_KEY` with your actual key.
+
+```bash
+curl --request GET \
+  --url 'https://api.lusha.com/v2/person?firstName=Dustin&lastName=Moskovitz&companyDomain=lusha.com' \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+A successful response returns a `contact` object containing email addresses, phone numbers, job title, location, and social links.
+
+<Tip>
+  You can also search by `email`, `linkedinUrl`, or `personId` instead of name and company. Providing more identifiers generally improves match accuracy.
+</Tip>
+
+## Next steps
+
+Before making API calls in your application, read the [authentication guide](/authentication) to understand how to pass your API key securely and what to expect when credentials are missing or invalid.

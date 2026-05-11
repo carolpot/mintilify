@@ -1,0 +1,56 @@
+---
+title: "Enrich contacts and companies with Lusha"
+sidebarTitle: "Overview"
+description: "Add missing emails, phone numbers, and firmographics to existing contact and company records in real time or in bulk using the Lusha Enrichment API."
+---
+
+Enrichment is the process of adding missing or updated data to existing contact or company records. Use the Lusha Enrichment API to fill gaps in your CRM, sharpen outbound targeting, and keep records current as people change roles and companies evolve.
+
+## What you can do with enrichment
+
+- **Complete CRM records** — fill in missing emails, phone numbers, job titles, and company firmographics.
+- **Improve outbound accuracy** — reduce bounce rates and wrong-number calls by working with verified, up-to-date contact details.
+- **Keep records current** — re-enrich existing records on a schedule to catch role changes, company moves, and updated contact information.
+
+## Real-time vs. bulk enrichment
+
+Lusha offers two modes depending on your workflow:
+
+| Mode | When to use |
+|------|-------------|
+| **Real-time (GET)** | Enrich a single contact or company on demand — for example, when a new lead enters your CRM. |
+| **Bulk (POST)** | Enrich up to 100 records in one request — for example, during a nightly CRM refresh job. |
+
+## Contact enrichment
+
+Look up a person's emails, phone numbers, job title, location, and LinkedIn profile.
+
+<CardGroup cols={2}>
+  <Card title="Single contact" icon="user" href="/enrichment/single-contact">
+    Enrich one contact at a time with `GET /v2/person`.
+  </Card>
+  <Card title="Bulk contacts" icon="users" href="/enrichment/bulk-contacts">
+    Enrich up to 100 contacts per request with `POST /v2/person`.
+  </Card>
+</CardGroup>
+
+## Company enrichment
+
+Look up firmographics, headcount, funding history, technologies, and company signals.
+
+<CardGroup cols={2}>
+  <Card title="Single company" icon="building" href="/enrichment/single-company">
+    Enrich one company at a time with `GET /v2/company`.
+  </Card>
+  <Card title="Bulk companies" icon="buildings" href="/enrichment/bulk-companies">
+    Enrich up to 100 companies per request with `POST /bulk/company/v2`.
+  </Card>
+</CardGroup>
+
+<Warning>
+  **Unified Credits plan required for `revealEmails` and `revealPhones`**
+
+  The `revealEmails` and `revealPhones` parameters are only available on the Unified Credits pricing plan. Using them on any other plan returns a `403 Unauthorized` error.
+
+  When you omit both parameters, the API returns all available emails and phone numbers for the contact by default.
+</Warning>

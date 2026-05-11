@@ -1,0 +1,138 @@
+---
+title: "GET /api/audit-logs — Retrieve webhook delivery logs"
+sidebarTitle: "GET /api/audit-logs"
+description: "List webhook delivery logs for your account. Filter by subscription ID or status. Logs retained 90 days for success, 180 for failures."
+---
+
+Retrieve a log of all webhook delivery attempts for your account. Every attempt — successful or failed — is recorded with its HTTP status code, response time, error message, and timestamps. Use these logs to diagnose delivery failures, verify that your endpoint is receiving signals correctly, and decide when to reactivate a disabled subscription.
+
+**Endpoint:** `GET https://api.lusha.com/api/audit-logs`
+
+<Note>
+  This endpoint is rate limited to 100 requests per minute per account.
+</Note>
+
+## Query parameters
+
+<ParamField query="subscriptionId" type="string">
+  Filter logs to a specific subscription. Useful for investigating delivery issues on a single subscription without noise from the rest of your account.
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filter logs by delivery outcome. Accepted values: `success`, `failed`, `permanent_failure`.
+
+  - `success` — deliveries where your endpoint returned an HTTP `2xx` within 10 seconds
+  - `failed` — deliveries that failed; retries may still be pending
+  - `permanent_failure` — all 3 retry attempts were exhausted and the subscription was automatically disabled
+</ParamField>
+
+## What's logged
+
+Every delivery attempt captures the following information:
+
+- HTTP status code returned by your endpoint
+- Response time in milliseconds
+- Error message (for failed deliveries)
+- Delivery timestamp and total duration
+
+## Log retention
+
+| Delivery status | Retention period |
+|-----------------|-----------------|
+| Successful | 90 days |
+| Failed (permanently disabled) | 180 days |
+
+## Example request
+
+```bash
+curl --request GET \
+  --url 'https://api.lusha.com/api/audit-logs?subscriptionId=507f1f77bcf86cd799439011&status=failed' \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "data": [
+    {
+      "id": "log_abc123",
+      "subscriptionId": "507f1f77bcf86cd799439011",
+      "status": "failed",
+      "httpStatusCode": 503,
+      "responseTimeMs": 10243,
+      "errorMessage": "Endpoint timed out after 10 seconds",
+      "attemptNumber": 1,
+      "deliveredAt": "2026-01-14T16:16:35.841Z",
+      "durationMs": 10243
+    }
+  ],
+  "pagination": {
+    "total": 5,
+    "limit": 10,
+    "offset": 0
+  }
+}
+```
+
+## Response fields
+
+<ResponseField name="data" type="object[]">
+  Array of delivery log entries.
+
+  <Expandable title="properties">
+    <ResponseField name="id" type="string">
+      Unique log entry identifier.
+    </ResponseField>
+
+    <ResponseField name="subscriptionId" type="string">
+      The subscription that triggered this delivery attempt.
+    </ResponseField>
+
+    <ResponseField name="status" type="string">
+      Delivery outcome: `success`, `failed`, or `permanent_failure`.
+    </ResponseField>
+
+    <ResponseField name="httpStatusCode" type="number">
+      HTTP status code returned by your endpoint.
+    </ResponseField>
+
+    <ResponseField name="responseTimeMs" type="number">
+      Time in milliseconds from delivery to response.
+    </ResponseField>
+
+    <ResponseField name="errorMessage" type="string">
+      Description of the failure. Only present for failed deliveries.
+    </ResponseField>
+
+    <ResponseField name="attemptNumber" type="number">
+      Which attempt this log entry represents (1, 2, or 3).
+    </ResponseField>
+
+    <ResponseField name="deliveredAt" type="string">
+      ISO 8601 timestamp of when this delivery was attempted.
+    </ResponseField>
+
+    <ResponseField name="durationMs" type="number">
+      Total duration of the delivery attempt in milliseconds.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="pagination" type="object">
+  Pagination metadata.
+
+  <Expandable title="properties">
+    <ResponseField name="total" type="number">
+      Total number of log entries matching your filters.
+    </ResponseField>
+
+    <ResponseField name="limit" type="number">
+      Page size used for this response.
+    </ResponseField>
+
+    <ResponseField name="offset" type="number">
+      Offset used for this response.
+    </ResponseField>
+  </Expandable>
+</ResponseField>

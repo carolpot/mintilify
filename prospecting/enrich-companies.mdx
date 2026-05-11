@@ -1,0 +1,106 @@
+---
+title: "Enrich prospecting companies with full company data"
+sidebarTitle: "Enrich Companies"
+description: "Turn company IDs from a prospecting search into full records — firmographics, headcount, revenue, technologies, locations, and more."
+---
+
+`POST https://api.lusha.com/prospecting/company/enrich` is step 3 of the 3-step company prospecting flow. You pass the company IDs returned by [Search Companies](/prospecting/search-companies) and receive back complete company records with firmographics, headcount, revenue estimates, technology stack, and other enriched data. Credits are charged at this step for each company successfully enriched.
+
+## Request body
+
+Send a JSON body with an array of company IDs from your search results. You can enrich up to 25 companies per request.
+
+```json
+{
+  "companyIds": ["cmp_abc123", "cmp_def456", "cmp_ghi789"]
+}
+```
+
+### Request fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `companyIds` | string[] | Yes | Company IDs returned by `/prospecting/company/search` |
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/prospecting/company/enrich \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "companyIds": ["cmp_abc123", "cmp_def456"]
+  }'
+```
+
+```json Request body
+{
+  "companyIds": ["cmp_abc123", "cmp_def456"]
+}
+```
+
+</CodeGroup>
+
+## Example response
+
+```json
+{
+  "data": {
+    "companies": [
+      {
+        "id": "cmp_abc123",
+        "name": "Acme Corp",
+        "domain": "acme.com",
+        "description": "Acme Corp provides cloud-based workflow automation software for mid-market businesses.",
+        "industry": "Software & Technology",
+        "size": "201-500",
+        "headcount": 320,
+        "revenue": "$10M-$50M",
+        "founded": 2012,
+        "headquarters": {
+          "city": "San Francisco",
+          "state": "California",
+          "country": "US"
+        },
+        "locations": [
+          { "city": "San Francisco", "state": "California", "country": "US" },
+          { "city": "New York", "state": "New York", "country": "US" }
+        ],
+        "technologies": ["Salesforce", "AWS", "Slack"],
+        "sicCode": "7372",
+        "naicsCode": "511210",
+        "linkedinUrl": "https://www.linkedin.com/company/acme-corp",
+        "website": "https://acme.com"
+      }
+    ]
+  }
+}
+```
+
+### Response fields
+
+| Field | Description |
+|-------|-------------|
+| `id` | The company ID you submitted |
+| `name` | Legal or trading name of the company |
+| `domain` | Primary web domain |
+| `description` | Short company description |
+| `industry` | Industry classification label |
+| `size` | Employee range (e.g., `"201-500"`) |
+| `headcount` | Estimated current employee count |
+| `revenue` | Annual revenue range |
+| `founded` | Year the company was founded |
+| `headquarters` | Primary office city, state, and country |
+| `locations` | All known office locations |
+| `technologies` | Technologies detected in use |
+| `sicCode` | SIC industry classification code |
+| `naicsCode` | NAICS industry classification code |
+| `linkedinUrl` | LinkedIn company page URL |
+| `website` | Company website URL |
+
+<Tip>
+  Enrich in batches of up to 25 IDs per request. Store the remaining IDs and enrich them on demand as accounts are needed in your CRM or sales workflow.
+</Tip>

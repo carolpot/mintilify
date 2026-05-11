@@ -1,0 +1,44 @@
+---
+title: "GET /prospecting/filters/companies/naics — NAICS codes"
+sidebarTitle: "GET /filters/companies/naics"
+description: "Retrieve valid NAICS (North American Industry Classification System) code values for filtering companies by industry in prospecting."
+---
+
+Retrieve the list of valid NAICS (North American Industry Classification System) code values for filtering companies in `POST /prospecting/company/search`. NAICS codes are the standard used by US federal statistical agencies to classify business establishments by industry activity. They provide more current and detailed industry categories than SIC codes.
+
+**Endpoint:** `GET https://api.lusha.com/prospecting/filters/companies/naics`
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/naics \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "naics": [
+    { "code": "511210", "label": "Software Publishers" },
+    { "code": "518210", "label": "Data Processing, Hosting, and Related Services" },
+    { "code": "541511", "label": "Custom Computer Programming Services" },
+    { "code": "523130", "label": "Commodity Contracts Dealing" }
+  ]
+}
+```
+
+## Usage
+
+Pass one or more NAICS code strings from the `naics` array into the `naicsCodes` filter field of your company search request:
+
+```json
+{
+  "naicsCodes": ["511210", "518210"]
+}
+```
+
+<Tip>
+  Cache the response from this endpoint. NAICS codes are standardized and change only with periodic government updates. For SIC-based industry filtering, use `GET /prospecting/filters/companies/sics`.
+</Tip>

@@ -1,0 +1,319 @@
+---
+title: "POST /prospecting/contact/search — Search contacts"
+sidebarTitle: "POST /prospecting/contact/search"
+description: "Search Lusha's contact database using ICP filters like job title, seniority, location, and department. Step 2 of the prospecting flow."
+---
+
+Use this endpoint to query Lusha's contact database with filters aligned to your Ideal Customer Profile. You get back a list of matching contacts with IDs you then pass to the [Enrich Contacts](/api-reference/prospecting/enrich-contacts) endpoint to retrieve full details. This is **step 2** of the three-step prospecting flow.
+
+<Info>
+  **Prospecting flow**
+
+  | Step | Endpoint | Purpose |
+  |------|----------|---------|
+  | 1 | Filters API | Discover valid filter values for your search |
+  | 2 | **POST /prospecting/contact/search** | Query contacts using your filters |
+  | 3 | POST /prospecting/contact/enrich | Retrieve full contact details by ID |
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/prospecting/contact/search
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="filters" type="object" required>
+  The top-level filter container. At least the `filters` object is required.
+
+  <Expandable title="filters.contacts">
+    <ParamField body="filters.contacts.include" type="object">
+      Criteria that matching contacts must satisfy.
+
+      <Expandable title="include fields">
+        <ParamField body="filters.contacts.include.jobTitles" type="string[]">
+          Free-text job titles to match. Example: `["CTO", "VP Engineering", "Senior Developer"]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.seniority" type="number[]">
+          Seniority level IDs. Example: `[4, 5]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.departments" type="string[]">
+          Department names. Example: `["Engineering & Technical"]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.locations" type="object[]">
+          Geographic filters. Each object may include `continent`, `country`, `state`, `city`, and `country_grouping`.
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.existing_data_points" type="string[]">
+          Only return contacts that have specific data available. Accepted values: `"phone"`, `"work_email"`.
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.linkedinUrls" type="string[]">
+          Filter by specific LinkedIn profile URLs.
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.searchText" type="string">
+          Free-text search across contact fields. Example: `"Amit"`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.signal" type="object">
+          **Premium feature.** Filter contacts that have a signal of the specified types. Credits are charged for each signal type that returns results.
+
+          <Expandable title="signal fields">
+            <ParamField body="filters.contacts.include.signal.names" type="string[]">
+              Signal types to match. Allowed values: `"allSignals"`, `"promotion"`, `"companyChange"`
+            </ParamField>
+
+            <ParamField body="filters.contacts.include.signal.startDate" type="string">
+              Earliest signal date in `YYYY-MM-DD` format. Example: `"2025-01-01"`
+            </ParamField>
+          </Expandable>
+        </ParamField>
+      </Expandable>
+    </ParamField>
+
+    <ParamField body="filters.contacts.exclude" type="object">
+      Same structure as `include`. Contacts matching these criteria are excluded from results.
+    </ParamField>
+  </Expandable>
+
+  <Expandable title="filters.companies">
+    <ParamField body="filters.companies.include" type="object">
+      Company-level include criteria. Same exclusion structure is available under `filters.companies.exclude`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="pages" type="object">
+  Pagination controls.
+
+  <Expandable title="pages fields">
+    <ParamField body="pages.page" type="number" default="0">
+      Page number. Range: `0–1000`.
+    </ParamField>
+
+    <ParamField body="pages.size" type="number" default="25">
+      Results per page. Range: `10–50`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="includePartialContact" type="boolean">
+  When `true`, includes contacts with incomplete data in results. Partial profiles may lack some contact details but can still be useful prospects.
+</ParamField>
+
+<ParamField body="excludeDnc" type="boolean">
+  **Scale plan feature.** When `true`, filters out contacts whose phone numbers are all marked Do Not Call.
+
+  - Contacts with at least one callable phone appear in results.
+  - Only callable phones are returned — DNC phones are hidden.
+  - Contacts with only DNC phones are excluded entirely.
+
+  Returns `403` on unsupported plans.
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/prospecting/contact/search \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "filters": {
+      "contacts": {
+        "include": {
+          "jobTitles": ["CTO", "Chief Technology Officer", "VP Engineering"],
+          "seniority": [4, 5],
+          "departments": ["Engineering & Technical"],
+          "locations": [
+            { "country": "United States", "state": "New York" }
+          ],
+          "existing_data_points": ["work_email"]
+        }
+      }
+    },
+    "pages": { "page": 0, "size": 25 },
+    "excludeDnc": true
+  }'
+```
+
+```json Request body
+{
+  "filters": {
+    "contacts": {
+      "include": {
+        "jobTitles": ["CTO", "Chief Technology Officer", "VP Engineering"],
+        "seniority": [4, 5],
+        "departments": ["Engineering & Technical"],
+        "locations": [
+          { "country": "United States", "state": "New York" }
+        ],
+        "existing_data_points": ["work_email"],
+        "signal": {
+          "names": ["promotion"],
+          "startDate": "2025-01-01"
+        }
+      }
+    }
+  },
+  "pages": { "page": 0, "size": 25 },
+  "excludeDnc": true
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this search. Pass this value to the Enrich Contacts endpoint as `requestId`.
+</ResponseField>
+
+<ResponseField name="currentPage" type="number">
+  The page number returned.
+</ResponseField>
+
+<ResponseField name="pageLength" type="number">
+  Number of results on this page.
+</ResponseField>
+
+<ResponseField name="totalResults" type="number">
+  Total number of contacts matching your filters across all pages.
+</ResponseField>
+
+<ResponseField name="contacts" type="object[]">
+  Array of matching contacts.
+
+  <Expandable title="contact fields">
+    <ResponseField name="contacts.contactId" type="string">
+      Unique serial ID for this contact in this search response. Use this ID in the Enrich endpoint. Example: `"06de9b18-516d-5512-5cb5-6ec5pb215776"`
+    </ResponseField>
+
+    <ResponseField name="contacts.name" type="string">
+      Full name of the contact. Example: `"Chris Karageorge"`
+    </ResponseField>
+
+    <ResponseField name="contacts.jobTitle" type="string">
+      Current job title. Example: `"Senior Director of Technical Operations"`
+    </ResponseField>
+
+    <ResponseField name="contacts.companyId" type="number">
+      Lusha company identifier. Example: `28054532`
+    </ResponseField>
+
+    <ResponseField name="contacts.companyName" type="string">
+      Name of the contact's current employer. Example: `"Lusha"`
+    </ResponseField>
+
+    <ResponseField name="contacts.fqdn" type="string">
+      Company domain. Example: `"lusha.com"`
+    </ResponseField>
+
+    <ResponseField name="contacts.isShown" type="boolean">
+      Whether this contact has already been revealed by any user in your account.
+    </ResponseField>
+
+    <ResponseField name="contacts.signalTypes" type="string[]">
+      Signal types detected for this contact. Example: `["promotion", "companyChange"]`
+    </ResponseField>
+
+    <ResponseField name="contacts.hasEmails" type="boolean">
+      Whether this contact has email addresses available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasPhones" type="boolean">
+      Whether this contact has phone numbers available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasMobilePhone" type="boolean">
+      Whether a mobile phone is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasDirectPhone" type="boolean">
+      Whether a direct phone number is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasWorkEmail" type="boolean">
+      Whether a work email is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasPrivateEmail" type="boolean">
+      Whether a personal email is available.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Validation failed — check your request body for missing or invalid fields. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — your plan does not support this feature (e.g., `excludeDnc` on non-Scale plans, or signal filtering). |
+| `429` | Too many requests — you have exceeded the rate limit. |
+| `500` | Internal server error — retry with exponential backoff. |
+
+<ResponseExample>
+
+```json 200
+{
+  "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+  "currentPage": 0,
+  "pageLength": 2,
+  "totalResults": 142,
+  "contacts": [
+    {
+      "contactId": "06de9b18-516d-5512-5cb5-6ec5pb215776",
+      "name": "Chris Karageorge",
+      "jobTitle": "Senior Director of Technical Operations",
+      "companyId": 28054532,
+      "companyName": "Lusha",
+      "fqdn": "lusha.com",
+      "isShown": false,
+      "hasEmails": true,
+      "hasWorkEmail": true,
+      "hasPhones": true,
+      "hasMobilePhone": true,
+      "hasDirectPhone": false,
+      "signalTypes": ["promotion"]
+    }
+  ]
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": ["filters is required"]
+}
+```
+
+```json 403
+{
+  "statusCode": 403,
+  "message": "Forbidden",
+  "errors": ["excludeDnc is not available on your current plan"]
+}
+```
+
+</ResponseExample>

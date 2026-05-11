@@ -1,0 +1,135 @@
+---
+title: "Search prospecting companies by firmographic filters"
+sidebarTitle: "Search Companies"
+description: "Query Lusha's company database using firmographic filters — industry, size, revenue, location, technologies, and more — to get matching company IDs."
+---
+
+`POST https://api.lusha.com/prospecting/company/search` is step 2 of the 3-step company prospecting flow. You pass firmographic filters that describe your target account profile and receive back a paginated list of matching company IDs. No credits are consumed at this step — credits are charged when you enrich the results in [step 3](/prospecting/enrich-companies).
+
+Before building your request, use the [Company Filters](/filters/company-filters) endpoints to look up valid values for each field.
+
+## Request body
+
+Send a JSON body with a `filters` object. All filter fields are optional — include only the ones relevant to your target accounts.
+
+```json
+{
+  "filters": {
+    "industries": ["Software & Technology"],
+    "sizes": ["51-200", "201-500"],
+    "revenues": ["$10M-$50M"],
+    "locations": [
+      { "country": "US", "state": "New York" }
+    ],
+    "technologies": ["Salesforce", "HubSpot"]
+  },
+  "page": 1,
+  "pageSize": 25
+}
+```
+
+### Common filter fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `industries` | string[] | Industry labels — use [GET /prospecting/filters/companies/industries_labels](/filters/company-filters) for valid values |
+| `sizes` | string[] | Employee range labels — use [GET /prospecting/filters/companies/sizes](/filters/company-filters) |
+| `revenues` | string[] | Annual revenue ranges — use [GET /prospecting/filters/companies/revenues](/filters/company-filters) |
+| `locations` | object[] | Country/state/city objects — use [POST /prospecting/filters/companies/locations](/filters/company-filters) to search |
+| `companyNames` | string[] | Partial or exact company names — use [POST /prospecting/filters/companies/names](/filters/company-filters) to search |
+| `sicCodes` | string[] | SIC industry classification codes — use [GET /prospecting/filters/companies/sics](/filters/company-filters) |
+| `naicsCodes` | string[] | NAICS industry classification codes — use [GET /prospecting/filters/companies/naics](/filters/company-filters) |
+| `technologies` | string[] | Technologies the company uses — use [POST /prospecting/filters/companies/technologies](/filters/company-filters) to search |
+| `intentTopics` | string[] | Buyer intent topic codes — use [GET /prospecting/filters/companies/intent_topics](/filters/company-filters) |
+| `page` | integer | Page number for pagination (default: `1`) |
+| `pageSize` | integer | Results per page (default: `25`, max: `100`) |
+
+## Signal filtering (premium feature)
+
+You can narrow results to companies that have recently undergone a specific business event by filtering on signal types.
+
+<Note>
+  Signal filtering is a premium feature. Credits are charged for each signal type that returns results.
+</Note>
+
+Add a `signals` array to your filter object to match companies with recent activity:
+
+```json
+{
+  "filters": {
+    "industries": ["Software & Technology"],
+    "sizes": ["501-1000"],
+    "signals": [
+      { "type": "fundingRound" },
+      { "type": "executiveHire" }
+    ]
+  },
+  "page": 1,
+  "pageSize": 25
+}
+```
+
+Common signal types include `fundingRound`, `executiveHire`, `expansion`, and `acquisition`. Contact your account team for the full list available on your plan.
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/prospecting/company/search \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "filters": {
+      "industries": ["Software & Technology"],
+      "sizes": ["201-500", "501-1000"],
+      "revenues": ["$10M-$50M"],
+      "locations": [{ "country": "US" }],
+      "technologies": ["Salesforce"]
+    },
+    "page": 1,
+    "pageSize": 25
+  }'
+```
+
+```json Request body
+{
+  "filters": {
+    "industries": ["Software & Technology"],
+    "sizes": ["201-500", "501-1000"],
+    "revenues": ["$10M-$50M"],
+    "locations": [{ "country": "US" }],
+    "technologies": ["Salesforce"]
+  },
+  "page": 1,
+  "pageSize": 25
+}
+```
+
+</CodeGroup>
+
+## Example response
+
+```json
+{
+  "data": {
+    "companies": [
+      { "id": "cmp_abc123", "name": "Acme Corp", "domain": "acme.com", "size": "201-500" },
+      { "id": "cmp_def456", "name": "Globex Inc", "domain": "globex.com", "size": "501-1000" }
+    ],
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "totalResults": 87,
+      "totalPages": 4
+    }
+  }
+}
+```
+
+The `id` field in each company object is what you pass to the [Enrich Companies](/prospecting/enrich-companies) endpoint to retrieve full records.
+
+<Tip>
+  Use the [Company Filters](/filters/company-filters) endpoints to fetch valid values for `industries`, `sizes`, `revenues`, `sicCodes`, `naicsCodes`, `intentTopics`, and `technologies` before building your search request. Passing an unrecognized value silently returns fewer or no results.
+</Tip>

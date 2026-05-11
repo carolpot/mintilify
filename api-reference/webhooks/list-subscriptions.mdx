@@ -1,0 +1,137 @@
+---
+title: "GET /api/subscriptions — List all subscriptions"
+sidebarTitle: "GET /api/subscriptions"
+description: "Retrieve all webhook subscriptions for your account with pagination support. Results are sorted newest first with configurable limit and offset parameters."
+---
+
+Retrieve a paginated list of all webhook subscriptions associated with your account. Use this endpoint to audit active subscriptions, check subscription status, and identify any that have been disabled after delivery failures.
+
+**Endpoint:** `GET https://api.lusha.com/api/subscriptions`
+
+<Note>
+  The webhook secret is never included in list responses to protect your account security.
+</Note>
+
+## Query parameters
+
+<ParamField query="limit" type="number" default="10">
+  Maximum number of subscriptions to return per page. Accepted range: `1`–`100`.
+</ParamField>
+
+<ParamField query="offset" type="number" default="0">
+  Number of subscriptions to skip before returning results. Use in combination with `limit` to paginate through large result sets.
+</ParamField>
+
+## Pagination
+
+Results are sorted by `createdAt` in descending order — the most recently created subscriptions appear first. To page through all subscriptions, increment `offset` by the value of `limit` in each subsequent request until you have retrieved all records.
+
+## Example request
+
+```bash
+curl --request GET \
+  --url 'https://api.lusha.com/api/subscriptions?limit=10&offset=0' \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "data": [
+    {
+      "id": "507f1f77bcf86cd799439011",
+      "entityType": "contact",
+      "entityId": "4158887495",
+      "signalTypes": ["promotion", "jobChange"],
+      "webhookUrl": "https://your-server.com/webhooks/lusha",
+      "isActive": true,
+      "createdAt": "2026-01-10T09:00:00.000Z",
+      "updatedAt": "2026-01-10T09:00:00.000Z"
+    },
+    {
+      "id": "507f1f77bcf86cd799439012",
+      "entityType": "company",
+      "entityId": "33222678",
+      "signalTypes": ["commercialActivityNews"],
+      "webhookUrl": "https://your-server.com/webhooks/lusha",
+      "isActive": false,
+      "blockReason": "Max retries exceeded",
+      "blockedAt": "2026-01-12T14:30:00.000Z",
+      "createdAt": "2026-01-08T11:00:00.000Z",
+      "updatedAt": "2026-01-12T14:30:00.000Z"
+    }
+  ],
+  "pagination": {
+    "total": 42,
+    "limit": 10,
+    "offset": 0
+  }
+}
+```
+
+## Response fields
+
+<ResponseField name="data" type="object[]">
+  Array of subscription objects for the current page.
+
+  <Expandable title="properties">
+    <ResponseField name="id" type="string">
+      Unique subscription identifier.
+    </ResponseField>
+
+    <ResponseField name="entityType" type="string">
+      Type of entity being monitored. One of `contact` or `company`.
+    </ResponseField>
+
+    <ResponseField name="entityId" type="string">
+      Identifier of the monitored entity.
+    </ResponseField>
+
+    <ResponseField name="signalTypes" type="string[]">
+      Signal types this subscription is configured to receive.
+    </ResponseField>
+
+    <ResponseField name="webhookUrl" type="string">
+      The HTTPS URL where signal payloads are delivered.
+    </ResponseField>
+
+    <ResponseField name="isActive" type="boolean">
+      Whether the subscription is currently active. `false` indicates the subscription was disabled, typically after delivery retries were exhausted.
+    </ResponseField>
+
+    <ResponseField name="blockReason" type="string">
+      Human-readable reason the subscription was disabled. Only present when `isActive` is `false`.
+    </ResponseField>
+
+    <ResponseField name="blockedAt" type="string">
+      ISO 8601 timestamp of when the subscription was disabled. Only present when `isActive` is `false`.
+    </ResponseField>
+
+    <ResponseField name="createdAt" type="string">
+      ISO 8601 timestamp of when the subscription was created.
+    </ResponseField>
+
+    <ResponseField name="updatedAt" type="string">
+      ISO 8601 timestamp of the last update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="pagination" type="object">
+  Pagination metadata for the current response.
+
+  <Expandable title="properties">
+    <ResponseField name="total" type="number">
+      Total number of subscriptions in your account.
+    </ResponseField>
+
+    <ResponseField name="limit" type="number">
+      Page size used for this response.
+    </ResponseField>
+
+    <ResponseField name="offset" type="number">
+      Offset used for this response.
+    </ResponseField>
+  </Expandable>
+</ResponseField>

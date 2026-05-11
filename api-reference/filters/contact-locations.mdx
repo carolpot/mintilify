@@ -1,0 +1,47 @@
+---
+title: "POST /prospecting/filters/contacts/locations"
+sidebarTitle: "POST /filters/contacts/locations"
+description: "Search for contact location values by text to use in prospecting filters. Returns matching cities, states, and countries for the contact search endpoint."
+---
+
+Search for location values by free-text query to use in the `locations` filter field of `POST /prospecting/contact/search`. This endpoint returns matching cities, regions, metro areas, and countries that the API recognizes. Use the exact strings returned here in your search request to ensure results are returned correctly.
+
+**Endpoint:** `POST https://api.lusha.com/prospecting/filters/contacts/locations`
+
+## Request body
+
+<ParamField body="query" type="string" required>
+  Free-text search string to match against location names. For example, `"New York"` or `"San Francisco"`.
+</ParamField>
+
+## Example request
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/contacts/locations \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "New York" }'
+```
+
+## Example response
+
+```json
+{
+  "locations": [
+    "New York, NY, United States",
+    "New York City Metropolitan Area",
+    "New York, United States"
+  ]
+}
+```
+
+## Usage
+
+Pick the location string that matches your target area and pass it into the `locations` filter field of your contact search request:
+
+```json
+{
+  "locations": ["New York City Metropolitan Area"]
+}
+```

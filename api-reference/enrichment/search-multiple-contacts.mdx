@@ -1,0 +1,267 @@
+---
+title: "POST /v2/person — Bulk enrich up to 100 contacts"
+sidebarTitle: "POST /v2/person"
+description: "Enrich up to 100 contacts in a single request. Identify each contact by email, LinkedIn URL, personId, or name and company using the Lusha bulk endpoint."
+---
+
+Use this endpoint to enrich multiple contacts in a single request. Submit a list of up to 100 contact objects and receive enriched profile data for each one, including email addresses, phone numbers, and company information. Each contact in the request must include a unique `contactId` so you can correlate results in the response.
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v2/person
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key. Pass it as a request header named `api_key`.
+</ParamField>
+
+<Warning>
+  **Unified Credits plan required for `revealEmails` and `revealPhones`**
+
+  These parameters are only available to customers on the Unified Credits pricing plan. Calling them on any other plan returns a `403` error. When neither parameter is included, the API returns all available email addresses and phone numbers by default.
+</Warning>
+
+## Request body
+
+<ParamField body="contacts" type="object[]" required>
+  A list of contact objects to enrich. You can submit up to 100 contacts per request. Each contact must include a unique `contactId`. At least one of `email`, `linkedinUrl`, or `companies` with `fullName` is required per contact entry.
+
+  <Expandable title="Contact object properties">
+    <ParamField body="contactId" type="string" required>
+      A unique sequential identifier you assign to this contact. Used to match contacts in the response to contacts in your request.
+
+      Example: `1234`
+    </ParamField>
+    <ParamField body="personId" type="string">
+      The unique person identifier in Lusha. Using this field provides the most direct lookup.
+
+      Example: `4183886134`
+    </ParamField>
+    <ParamField body="fullName" type="string">
+      The full name of the person. Required when searching by company.
+
+      Example: `Dustin Moskovitz`
+    </ParamField>
+    <ParamField body="location" type="string">
+      The raw location of the person. Use to disambiguate contacts with similar names.
+
+      Example: `Singapore,Chicago`
+    </ParamField>
+    <ParamField body="linkedinUrl" type="string">
+      The LinkedIn profile URL of the person.
+
+      Example: `https://www.linkedin.com/in/dustin/`
+    </ParamField>
+    <ParamField body="email" type="string">
+      The email address of the person.
+
+      Example: `dustin@lusha.com`
+    </ParamField>
+    <ParamField body="companies" type="object[]">
+      Details about the company where the contact is currently or was previously employed.
+
+      <Expandable title="Company object properties">
+        <ParamField body="name" type="string">
+          Company name. Required if no `domain` is provided.
+
+          Example: `Lusha`
+        </ParamField>
+        <ParamField body="domain" type="string">
+          Company domain. Required if no `name` is provided.
+
+          Example: `lusha.com`
+        </ParamField>
+        <ParamField body="isCurrent" type="boolean" required>
+          Whether this is the contact's current employer.
+
+          Example: `true`
+        </ParamField>
+        <ParamField body="jobTitle" type="string">
+          The contact's job title at this company.
+
+          Example: `Software Engineer`
+        </ParamField>
+        <ParamField body="fqdn" type="string">
+          Fully qualified domain name of the company.
+
+          Example: `https://lusha.com`
+        </ParamField>
+        <ParamField body="companySocialId" type="string">
+          Social ID associated with the company, if available.
+
+          Example: `1234567890`
+        </ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Optional settings that apply to all contacts in the request.
+
+  <Expandable title="Metadata properties">
+    <ParamField body="refreshJobInfo" type="boolean">
+      Set to `true` to refresh job information for all contacts. Replaces outdated job details with the most current data available.
+
+      Example: `true`
+    </ParamField>
+    <ParamField body="filterBy" type="string">
+      Filters results to only return contacts that have a specific type of contact detail. By default, results include contacts with at least one available contact detail.
+
+      Allowed values: `emailAddresses`, `phoneNumbers`
+
+      Example: `emailAddresses`
+    </ParamField>
+    <ParamField body="revealEmails" type="boolean">
+      Set to `true` to retrieve only email addresses for all contacts. Requires the Unified Credits plan.
+
+      Example: `true`
+    </ParamField>
+    <ParamField body="revealPhones" type="boolean">
+      Set to `true` to retrieve only phone numbers for all contacts. Requires the Unified Credits plan.
+
+      Example: `true`
+    </ParamField>
+    <ParamField body="signals" type="string[]">
+      Array of signal types to retrieve for each contact. Omit this field entirely if you do not need signals data.
+
+      Allowed values: `allSignals`, `promotion`, `companyChange`
+    </ParamField>
+    <ParamField body="signalsStartDate" type="string">
+      Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months ago if not specified. Only applies when `signals` is included.
+
+      Example: `2025-03-01`
+    </ParamField>
+    <ParamField body="partialProfile" type="boolean">
+      Set to `true` to allow the API to return partial profiles when full matches are not available.
+
+      Example: `true`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="contacts" type="object" required>
+  A map of enriched contact results, keyed by the `contactId` you provided in the request.
+</ResponseField>
+
+<ResponseField name="companies" type="object" required>
+  A map of company data referenced by the returned contacts, keyed by the Lusha `companyId`.
+</ResponseField>
+
+### Error responses
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — missing or invalid parameters |
+| `401` | Unauthorized — invalid or missing API key |
+| `403` | Forbidden — plan restriction or access denied |
+| `429` | Too many requests — rate limit exceeded |
+| `500` | Internal server error |
+
+All error responses share the same shape:
+
+<ResponseField name="statusCode" type="integer" required>
+  HTTP status code.
+
+  Example: `400`
+</ResponseField>
+<ResponseField name="message" type="string" required>
+  Human-readable error description.
+
+  Example: `Validation failed`
+</ResponseField>
+<ResponseField name="errors" type="string[]">
+  Array of detailed validation error messages. Only present for validation errors.
+
+  Example: `["entityType must be one of: contact, company"]`
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url "https://api.lusha.com/v2/person" \
+  --header "api_key: YOUR_API_KEY" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "contacts": [
+      {
+        "contactId": "1",
+        "email": "dustin@asana.com"
+      },
+      {
+        "contactId": "2",
+        "linkedinUrl": "https://www.linkedin.com/in/example-contact/"
+      },
+      {
+        "contactId": "3",
+        "fullName": "Jane Smith",
+        "companies": [
+          {
+            "domain": "example.com",
+            "isCurrent": true
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "filterBy": "emailAddresses"
+    }
+  }'
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "contacts": {
+    "1": {
+      "error": {},
+      "isCreditCharged": true,
+      "data": {
+        "companyId": 456,
+        "firstName": "Dustin",
+        "lastName": "Moskovitz",
+        "fullName": "Dustin Moskovitz",
+        "emailAddresses": [
+          {
+            "email": "dustin@asana.com",
+            "emailType": "work",
+            "emailConfidence": "A+",
+            "updateDate": "2024-01-15"
+          }
+        ],
+        "personId": 4183886134,
+        "jobTitle": {
+          "seniority": "C-Level",
+          "title": "CEO & Co-Founder",
+          "departments": ["General Management"]
+        }
+      }
+    },
+    "2": {
+      "error": {
+        "code": 3,
+        "name": "EMPTY_DATA",
+        "message": "Could not find requested data"
+      },
+      "isCreditCharged": false
+    }
+  },
+  "companies": {
+    "456": {
+      "name": "Asana",
+      "domain": "asana.com"
+    }
+  }
+}
+```

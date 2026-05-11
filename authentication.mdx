@@ -1,0 +1,57 @@
+---
+title: "Authenticate with the Lusha API"
+description: "Get your Lusha API key from account settings and pass it in the api_key header on every request. Learn what to expect when authentication fails."
+---
+
+Every request to the Lusha API must include your API key. The API uses a simple key-based scheme — there are no OAuth flows or token exchanges. You pass a single header, and the server authenticates the request before processing it.
+
+## Get your API key
+
+<Steps>
+  <Step title="Sign up or log in">
+    Go to [lusha.com](https://www.lusha.com/signup/) and create an account, or log in if you already have one.
+  </Step>
+  <Step title="Open API settings">
+    Navigate to your account settings and select the **API** section. Your API key is displayed there. Copy it to a secure location.
+  </Step>
+</Steps>
+
+## Authenticate requests
+
+Pass your API key in the `api_key` header on every request to `https://api.lusha.com`. The security scheme is named `ApiKeyAuth`.
+
+```bash
+curl --request GET \
+  --url 'https://api.lusha.com/v2/person?firstName=Dustin&lastName=Moskovitz&companyDomain=lusha.com' \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+<Note>
+  The header name is `api_key` (lowercase, with an underscore). Using a different casing or header name will cause the request to be rejected.
+</Note>
+
+## Authentication errors
+
+If your API key is missing or invalid, the API returns a `401 Unauthorized` response:
+
+```json
+{
+  "statusCode": 401,
+  "message": "Unauthorized",
+  "errors": []
+}
+```
+
+Check the following if you receive a `401`:
+
+- Confirm the `api_key` header is present on the request.
+- Verify you are using the correct key from your API settings page.
+- Ensure the key has not been revoked or regenerated since you last copied it.
+
+<Warning>
+  Keep your API key secret. Do not commit it to version control, embed it in client-side code, or share it publicly. If a key is exposed, regenerate it immediately from your API settings page.
+</Warning>
+
+## Next steps
+
+Once authentication is working, review the [rate limits](/rate-limiting) to understand request quotas and how to handle `429` responses in your integration.

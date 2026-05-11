@@ -1,0 +1,237 @@
+---
+title: "Retrieve company signals for business events and growth"
+sidebarTitle: "Company Signals"
+description: "Fetch hiring surges, headcount trends, website traffic changes, and news events for up to 100 companies per request using Lusha Signals."
+---
+
+Company signals give you visibility into what is happening inside your target accounts — funding rounds, surges in hiring, headcount changes, shifts in IT spending, and news events across seven categories. You can retrieve signals for companies you already track by Lusha ID, or search by company name or domain if you don't have IDs stored. Both endpoints support up to 100 companies per request.
+
+<Note>
+  Each signal type you include in a request counts toward your credit usage. Request only the types you need.
+</Note>
+
+## Get company signals by IDs
+
+Use this endpoint when you have Lusha company IDs stored in your CRM or database.
+
+```
+POST https://api.lusha.com/api/signals/companies
+```
+
+Send up to 100 company IDs per request. Results default to the last 6 months; pass `startDate` to change the window.
+
+**Request body**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `companyIds` | array of integers | Yes | List of Lusha company IDs |
+| `signals` | array of strings | Yes | Signal types to retrieve (see full list below) |
+| `startDate` | string | No | Earliest date for signals in `YYYY-MM-DD` format (default: 6 months ago) |
+| `maxResultsPerSignal` | integer | No | Maximum signal instances returned per type per company |
+| `filters` | object | No | Sub-filters to narrow results within a signal type |
+| `filters.include.newsEventTypes` | array | No | Filter news signals to specific event types |
+| `filters.include.hiringByDepartments` | array | No | Filter `surgeInHiringByDepartment` to specific departments |
+| `filters.include.hiringByLocations` | array | No | Filter `surgeInHiringByLocation` to specific countries or states |
+
+**Example request**
+
+```json
+{
+  "companyIds": [3416, 98201],
+  "signals": ["financialEventsNews", "surgeInHiring"],
+  "startDate": "2025-01-01",
+  "maxResultsPerSignal": 10
+}
+```
+
+**Example response**
+
+```json
+{
+  "companies": {
+    "3416": {
+      "financialEventsNews": [...],
+      "surgeInHiring": [...]
+    }
+  },
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "creditCharged": 3
+}
+```
+
+## Search company signals
+
+Use this endpoint when you have company names or domains but not Lusha company IDs. It combines company matching and signal enrichment in a single request.
+
+```
+POST https://api.lusha.com/api/signals/companies/search
+```
+
+Each company in the request must include at least one of the following identifiers:
+
+- Company ID (as a string)
+- Company name
+- Company domain
+
+**Request body**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `companies` | array of objects | Yes | List of company identifiers |
+| `companies[].id` | string | Yes | Your internal reference ID for this company (returned as the key in the response) |
+| `companies[].name` | string | No | Company name |
+| `companies[].domain` | string | No | Company domain (e.g. `lusha.com`) |
+| `signals` | array of strings | Yes | Signal types to retrieve |
+| `startDate` | string | No | Earliest date for signals in `YYYY-MM-DD` format (default: 6 months ago) |
+| `maxResultsPerSignal` | integer | No | Maximum signal instances returned per type per company |
+| `filters` | object | No | Sub-filters to narrow results within a signal type |
+
+**Example request**
+
+<CodeGroup>
+
+```json By company name
+{
+  "companies": [
+    {
+      "id": "ref-001",
+      "name": "Lusha"
+    }
+  ],
+  "signals": ["financialEventsNews", "headcountIncrease3m"],
+  "startDate": "2025-01-01"
+}
+```
+
+```json By domain
+{
+  "companies": [
+    {
+      "id": "ref-002",
+      "domain": "lusha.com"
+    }
+  ],
+  "signals": ["surgeInHiringByDepartment"],
+  "startDate": "2025-01-01",
+  "filters": {
+    "include": {
+      "hiringByDepartments": ["Engineering & Technical", "Sales"]
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+## Available company signal types
+
+<AccordionGroup>
+  <Accordion title="Hiring and workforce">
+    | Signal type | Description |
+    |---|---|
+    | `allSignals` | All available company signal types |
+    | `surgeInHiring` | Overall increase in open job postings |
+    | `surgeInHiringByDepartment` | Hiring surge scoped to a specific department |
+    | `surgeInHiringByLocation` | Hiring surge scoped to a specific country or state |
+  </Accordion>
+
+  <Accordion title="Headcount trends">
+    | Signal type | Description |
+    |---|---|
+    | `headcountIncrease1m` | Employee count increased over 1 month |
+    | `headcountDecrease1m` | Employee count decreased over 1 month |
+    | `headcountIncrease3m` | Employee count increased over 3 months |
+    | `headcountDecrease3m` | Employee count decreased over 3 months |
+    | `headcountIncrease6m` | Employee count increased over 6 months |
+    | `headcountDecrease6m` | Employee count decreased over 6 months |
+    | `headcountIncrease12m` | Employee count increased over 12 months |
+    | `headcountDecrease12m` | Employee count decreased over 12 months |
+  </Accordion>
+
+  <Accordion title="Technology and digital presence">
+    | Signal type | Description |
+    |---|---|
+    | `websiteTrafficIncrease` | Website traffic growth |
+    | `websiteTrafficDecrease` | Website traffic decline |
+    | `itSpendIncrease` | IT spending increase |
+    | `itSpendDecrease` | IT spending decrease |
+  </Accordion>
+
+  <Accordion title="News events">
+    | Signal type | Included events |
+    |---|---|
+    | `commercialActivityNews` | Partnership, New Customer, New Vendor |
+    | `corporateStrategyNews` | M&A, Facilities Expansion, New Location, Facility Closure, Asset Sale, Lawsuit Filed |
+    | `financialEventsNews` | Funding Round, Asset Investment, Strategic Investment, IPO |
+    | `marketIntelligenceNews` | Event Participation, Recognition, Competitor Activity |
+    | `peopleNews` | Executive Hire, Executive Departure, Executive Promotion, Headcount Increase, Headcount Decrease |
+    | `productActivityNews` | Product Launch, Product Development, Product Integration |
+    | `riskNews` | Security Issue, Lawsuit Faced |
+  </Accordion>
+</AccordionGroup>
+
+## Sub-filters
+
+You can narrow results within certain signal types using the `filters.include` object:
+
+| Sub-filter | Applies to | Behavior |
+|---|---|---|
+| `newsEventTypes` | All news signals | Returns only matching event types (OR logic) |
+| `hiringByDepartments` | `surgeInHiringByDepartment` | Returns only matching departments (OR logic) |
+| `hiringByLocations` | `surgeInHiringByLocation` | Returns only matching country/state combinations (OR logic) |
+
+<Warning>
+  When filtering by `hiringByLocations`, you must always include `country`. Providing `state` without `country` returns an HTTP 400 error. Filter values are not case-sensitive.
+</Warning>
+
+**Example: filter by location and news event type**
+
+```json
+{
+  "companyIds": [3416],
+  "signals": ["surgeInHiringByLocation", "financialEventsNews"],
+  "startDate": "2025-01-01",
+  "filters": {
+    "include": {
+      "hiringByLocations": [
+        { "country": "United States", "state": "California" },
+        { "country": "Germany" }
+      ],
+      "newsEventTypes": ["Funding Round", "IPO"]
+    }
+  }
+}
+```
+
+## Example use case: reach out after a funding round
+
+To find companies that recently closed a funding round and trigger outreach:
+
+<Steps>
+  <Step title="Request financialEventsNews signals">
+    Call `POST /api/signals/companies` with `signals: ["financialEventsNews"]` and `filters.include.newsEventTypes: ["Funding Round"]`.
+  </Step>
+  <Step title="Filter the response">
+    Parse the response for companies with at least one `Funding Round` event within your target date range.
+  </Step>
+  <Step title="Trigger outreach">
+    Pass the matched company IDs or contact IDs to your CRM or sales engagement tool to start a sequence.
+  </Step>
+</Steps>
+
+## Get available signal options
+
+To retrieve the full list of valid signal types, department values, location values, and news event types for companies, call:
+
+```bash
+GET https://api.lusha.com/api/signals/filters/company
+```
+
+The response includes valid enum values for `newsEventTypes`, `hiringByDepartments`, and `hiringByLocations` that you can pass directly into `filters.include`.
+
+## Related pages
+
+- [Signals overview](/signals/overview) — time windows, credits, and delivery options
+- [Contact signals](/signals/contact-signals) — retrieve job change and promotion signals for contacts
+- [Webhooks](/webhooks/overview) — receive company signal events as push notifications

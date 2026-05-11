@@ -1,0 +1,48 @@
+---
+title: "POST /prospecting/filters/companies/technologies"
+sidebarTitle: "POST /filters/companies/technologies"
+description: "Search for technology stack values by text for use in company prospecting filters. Find companies using specific software or platforms."
+---
+
+Search for technology stack values by free-text query to use in the `technologies` filter field of `POST /prospecting/company/search`. This endpoint returns matching software products, platforms, and tools as recognized by the Lusha database. Use it to find companies that use a specific technology — for example, companies running Salesforce, HubSpot, or AWS.
+
+**Endpoint:** `POST https://api.lusha.com/prospecting/filters/companies/technologies`
+
+## Request body
+
+<ParamField body="query" type="string" required>
+  Free-text search string to match against technology names. For example, `"Salesforce"` or `"AWS"`.
+</ParamField>
+
+## Example request
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/companies/technologies \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "Salesforce" }'
+```
+
+## Example response
+
+```json
+{
+  "technologies": [
+    "Salesforce CRM",
+    "Salesforce Marketing Cloud",
+    "Salesforce Service Cloud",
+    "Salesforce Pardot"
+  ]
+}
+```
+
+## Usage
+
+Pick the technology name that matches your target and pass it into the `technologies` filter field of your company search request:
+
+```json
+{
+  "technologies": ["Salesforce CRM"]
+}
+```

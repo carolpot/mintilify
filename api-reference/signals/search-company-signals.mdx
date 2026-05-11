@@ -1,0 +1,215 @@
+---
+title: "POST /api/signals/companies/search"
+sidebarTitle: "POST /api/signals/companies/search"
+description: "Search and enrich company signals in one request using company ID, name, or domain as identifiers. Combines lookup and signal retrieval."
+---
+
+Use this endpoint to identify companies and retrieve their signal data in a single request — without requiring a Lusha company ID upfront. You provide at least one identifier per company (a string company ID, a name, or a domain), and the API matches them to Lusha's database and returns the signal results. This combines what would otherwise be a separate lookup and signal retrieval step.
+
+<Info>
+  If you already have Lusha company IDs, use [POST /api/signals/companies](/api-reference/signals/get-company-signals) for a direct bulk lookup.
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/api/signals/companies/search
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="companies" type="object[]" required>
+  List of company identifiers to search for. Each object must include `id` and at least one of `name` or `domain`.
+
+  <Expandable title="company object fields">
+    <ParamField body="companies[].id" type="string" required>
+      A caller-assigned sequential ID used to correlate objects in the request with results in the response. Example: `"12345"`
+    </ParamField>
+
+    <ParamField body="companies[].name" type="string">
+      Company name. Example: `"Lusha"`
+    </ParamField>
+
+    <ParamField body="companies[].domain" type="string">
+      Company domain. Example: `"lusha.com"`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="signals" type="string[]" required>
+  Signal types to retrieve. Use `"allSignals"` to request all available company signal types.
+
+  Allowed values: `"allSignals"`, `"surgeInHiring"`, `"surgeInHiringByDepartment"`, `"surgeInHiringByLocation"`, `"headcountIncrease1m"`, `"headcountDecrease1m"`, `"headcountIncrease3m"`, `"headcountDecrease3m"`, `"headcountIncrease6m"`, `"headcountDecrease6m"`, `"headcountIncrease12m"`, `"headcountDecrease12m"`, `"websiteTrafficIncrease"`, `"websiteTrafficDecrease"`, `"itSpendIncrease"`, `"itSpendDecrease"`, `"commercialActivityNews"`, `"corporateStrategyNews"`, `"financialEventsNews"`, `"marketIntelligenceNews"`, `"peopleNews"`, `"productActivityNews"`, `"riskNews"`
+</ParamField>
+
+<ParamField body="startDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months before the request date. Example: `"2025-01-01"`
+</ParamField>
+
+<ParamField body="maxResultsPerSignal" type="integer">
+  Maximum number of signal instances to return per signal type per company. When omitted:
+  - Without `startDate`: all available signals are returned.
+  - With `startDate`: all signals from that date onward are returned.
+
+  Example: `10`
+</ParamField>
+
+<ParamField body="filters" type="object">
+  Optional filters to narrow signal results. All multi-value filters use OR logic. Filter values are not case-sensitive.
+
+  <Expandable title="filters.include fields">
+    <ParamField body="filters.include.newsEventTypes" type="string[]">
+      Narrow news signals to specific event types. See [GET /api/signals/filters/company](/api-reference/signals/get-signal-options) for valid values. Example: `["Funding Round", "Partnership"]`
+    </ParamField>
+
+    <ParamField body="filters.include.hiringByDepartments" type="string[]">
+      Narrow `surgeInHiringByDepartment` signals to specific departments. Example: `["Engineering & Technical", "Sales"]`
+    </ParamField>
+
+    <ParamField body="filters.include.hiringByLocations" type="object[]">
+      Narrow `surgeInHiringByLocation` signals to specific countries or states. Each object requires `country`; `state` is optional.
+
+      <Warning>
+        Providing `state` without `country` returns a `400` error.
+      </Warning>
+
+      Example: `[{ "country": "United States", "state": "California" }, { "country": "Germany" }]`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/api/signals/companies/search \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "companies": [
+      { "id": "1", "domain": "lusha.com" },
+      { "id": "2", "name": "Salesforce" }
+    ],
+    "signals": ["surgeInHiring", "financialEventsNews"],
+    "startDate": "2025-01-01"
+  }'
+```
+
+```json Request body
+{
+  "companies": [
+    { "id": "1", "domain": "lusha.com" },
+    { "id": "2", "name": "Salesforce", "domain": "salesforce.com" }
+  ],
+  "signals": ["surgeInHiring", "financialEventsNews"],
+  "startDate": "2025-01-01",
+  "maxResultsPerSignal": 5,
+  "filters": {
+    "include": {
+      "newsEventTypes": ["Funding Round", "Partnership"]
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="companies" type="object">
+  A map of caller-assigned IDs (from `companies[].id` in the request) to signal data. Each value contains the matched company data and their signal results.
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  The start date of the signal period. Example: `"2025-01-01"`
+</ResponseField>
+
+<ResponseField name="endDate" type="string">
+  The end date of the signal period. Example: `"2025-07-31"`
+</ResponseField>
+
+<ResponseField name="creditCharged" type="integer">
+  Total credits charged for this request. Example: `3`
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Validation failed — check that `companies` and `signals` are present; also check that `state` is not provided without `country` in `hiringByLocations`. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — your plan does not include signals access. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+
+<ResponseExample>
+
+```json 200
+{
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "creditCharged": 3,
+  "companies": {
+    "1": {
+      "companyData": {
+        "companyId": "33222678",
+        "name": "Lusha",
+        "domain": "lusha.com"
+      },
+      "signals": {
+        "surgeInHiring": [
+          {
+            "companyId": "33222678",
+            "companyName": "Lusha",
+            "signalDate": "2025-06-15",
+            "newJobsPostedLastWeek": 25,
+            "historicalAvg": 10,
+            "changeRatePercent": 150
+          }
+        ],
+        "financialEventsNews": []
+      }
+    },
+    "2": {
+      "companyData": {
+        "companyId": "1586",
+        "name": "Salesforce",
+        "domain": "salesforce.com"
+      },
+      "signals": {
+        "surgeInHiring": [],
+        "financialEventsNews": [
+          {
+            "eventType": "Partnership",
+            "eventSummary": "Salesforce announced a new partner program.",
+            "articlePublishedDate": "2025-03-10"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": ["companies is required"]
+}
+```
+
+</ResponseExample>

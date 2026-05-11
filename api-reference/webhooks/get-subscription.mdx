@@ -1,0 +1,91 @@
+---
+title: "GET /api/subscriptions/{id} — Get subscription by ID"
+sidebarTitle: "GET /api/subscriptions/{id}"
+description: "Retrieve full details of a single webhook subscription by its unique ID, including active status, monitored signal types, entity IDs, and delivery URL."
+---
+
+Retrieve the full details of a single webhook subscription using its unique identifier. Use this endpoint to check whether a specific subscription is active, inspect its configured signal types and webhook URL, and review any block information if it was disabled.
+
+**Endpoint:** `GET https://api.lusha.com/api/subscriptions/{id}`
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the webhook subscription to retrieve.
+</ParamField>
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/api/subscriptions/507f1f77bcf86cd799439011 \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "id": "507f1f77bcf86cd799439011",
+  "entityType": "contact",
+  "entityId": "4158887495",
+  "signalTypes": ["promotion", "jobChange"],
+  "webhookUrl": "https://your-server.com/webhooks/lusha",
+  "isActive": true,
+  "createdAt": "2026-01-10T09:00:00.000Z",
+  "updatedAt": "2026-01-10T09:00:00.000Z"
+}
+```
+
+## Response fields
+
+<ResponseField name="id" type="string">
+  Unique subscription identifier.
+</ResponseField>
+
+<ResponseField name="entityType" type="string">
+  Type of entity being monitored. One of `contact` or `company`.
+</ResponseField>
+
+<ResponseField name="entityId" type="string">
+  Identifier of the monitored entity.
+</ResponseField>
+
+<ResponseField name="signalTypes" type="string[]">
+  Signal types this subscription is configured to receive.
+</ResponseField>
+
+<ResponseField name="webhookUrl" type="string">
+  The HTTPS URL where signal payloads are delivered.
+</ResponseField>
+
+<ResponseField name="isActive" type="boolean">
+  Whether the subscription is currently active. `false` indicates the subscription was disabled, typically after delivery retries were exhausted.
+</ResponseField>
+
+<ResponseField name="blockReason" type="string">
+  Human-readable reason the subscription was disabled. Only present when `isActive` is `false`.
+</ResponseField>
+
+<ResponseField name="blockedAt" type="string">
+  ISO 8601 timestamp of when the subscription was disabled. Only present when `isActive` is `false`.
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  ISO 8601 timestamp of when the subscription was created.
+</ResponseField>
+
+<ResponseField name="updatedAt" type="string">
+  ISO 8601 timestamp of the last update.
+</ResponseField>
+
+## Error responses
+
+If the subscription ID does not exist or does not belong to your account, the API returns a `404` response:
+
+```json
+{
+  "statusCode": 404,
+  "message": "Subscription not found"
+}
+```

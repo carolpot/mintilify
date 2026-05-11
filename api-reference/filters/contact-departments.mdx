@@ -1,0 +1,50 @@
+---
+title: "GET /prospecting/filters/contacts/departments"
+sidebarTitle: "GET /filters/contacts/departments"
+description: "Retrieve valid department values for filtering contacts in prospecting searches. Use returned values in the departments field of your search request."
+---
+
+Retrieve the list of valid department values you can use to filter contacts in `POST /prospecting/contact/search`. Passing unrecognized values causes searches to return no results, so always fetch valid options from this endpoint first.
+
+**Endpoint:** `GET https://api.lusha.com/prospecting/filters/contacts/departments`
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/contacts/departments \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "departments": [
+    "Engineering",
+    "Sales",
+    "Marketing",
+    "Finance",
+    "Operations",
+    "Human Resources",
+    "Customer Success",
+    "Product",
+    "Legal",
+    "Other"
+  ]
+}
+```
+
+## Usage
+
+Pass one or more values from the `departments` array directly into the `departments` filter field of your contact search request:
+
+```json
+{
+  "departments": ["Engineering", "Product"]
+}
+```
+
+<Tip>
+  Cache the response from this endpoint. Department values rarely change and do not need to be fetched on every search run.
+</Tip>

@@ -1,0 +1,66 @@
+---
+title: "Rate limits for the Lusha API"
+description: "Understand the per-minute request limits for each Lusha API endpoint group and learn how to implement retry logic for 429 Too Many Requests responses."
+---
+
+The Lusha API enforces rate limits to ensure fair usage and stable performance for all customers. Limits are applied per account and reset on a rolling per-minute basis. If your application exceeds a limit, the API returns a `429 Too Many Requests` response.
+
+## Limits by endpoint group
+
+| Endpoint group | Limit |
+|---|---|
+| All endpoints (default) | 100 requests per minute |
+| `GET /account/usage` | 5 requests per minute |
+| Webhooks endpoints | 100 requests per minute |
+
+<Note>
+  Rate limits are applied at the account level, not per API key. If multiple systems share the same account, their requests count against the same quota.
+</Note>
+
+## 429 Too Many Requests
+
+When you exceed a rate limit, the API returns:
+
+```json
+{
+  "statusCode": 429,
+  "message": "Too Many Requests",
+  "errors": []
+}
+```
+
+Your client must detect this status code and pause before retrying.
+
+## Handling rate limit errors
+
+<Tip>
+  Implement exponential backoff with jitter when retrying after a `429`. Start with a short wait (for example, 1 second), double it on each subsequent retry, and add a small random delay to avoid synchronized retries from multiple clients.
+</Tip>
+
+A minimal retry pattern looks like this:
+
+```python
+import time
+import random
+import requests
+
+def call_with_backoff(url, headers, max_retries=5):
+    wait = 1
+    for attempt in range(max_retries):
+        response = requests.get(url, headers=headers)
+        if response.status_code != 429:
+            return response
+        time.sleep(wait + random.uniform(0, 0.5))
+        wait *= 2
+    return response
+```
+
+Additional best practices:
+
+- **Batch requests thoughtfully.** If you need to enrich thousands of records, spread requests over time rather than sending them all at once.
+- **Monitor the account usage endpoint sparingly.** Its limit is stricter (5 requests per minute), so poll it infrequently — for example, once at the start of a job rather than before every API call.
+- **Distinguish `429` from other errors.** Do not retry `400` or `401` responses; those indicate problems with your request or credentials that retrying will not fix.
+
+## Next steps
+
+If your integration encounters unexpected errors beyond rate limiting, review the full list of [error codes](/error-codes) to understand what each HTTP status code means and how to respond.

@@ -1,0 +1,151 @@
+---
+title: "POST /api/signals/contacts — Get contact signals by ID"
+sidebarTitle: "POST /api/signals/contacts"
+description: "Retrieve signal data for up to 100 contacts by their Lusha IDs. Returns promotion and job-change signals from the last 6 months by default."
+---
+
+Use this endpoint when you already have Lusha contact IDs and want to retrieve signal data for those contacts in bulk — up to 100 per request. The default time window is the last 6 months; use `startDate` to look further back. Each signal type you request counts toward your credit usage.
+
+<Info>
+  If you don't have contact IDs yet, use [POST /api/signals/contacts/search](/api-reference/signals/search-contact-signals) to identify contacts by LinkedIn URL, email, or name and retrieve their signals in a single request.
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/api/signals/contacts
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="contactIds" type="number[]" required>
+  List of Lusha contact IDs to retrieve signals for. Maximum 100 per request. Example: `[115889, 229301]`
+</ParamField>
+
+<ParamField body="signals" type="string[]" required>
+  Signal types to retrieve. Each type requested counts separately toward credit usage.
+
+  Allowed values: `"allSignals"`, `"promotion"`, `"companyChange"`
+
+  Use `"allSignals"` to retrieve all available contact signal types in one call.
+</ParamField>
+
+<ParamField body="startDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. When omitted, defaults to 6 months before the request date. Example: `"2025-01-01"`
+</ParamField>
+
+<ParamField body="maxResultsPerSignal" type="integer">
+  Maximum number of signal instances to return per signal type per contact. When omitted:
+  - Without `startDate`: all available signals are returned.
+  - With `startDate`: all signals from that date onward are returned.
+
+  Example: `10`
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/api/signals/contacts \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contactIds": [115889, 229301],
+    "signals": ["promotion", "companyChange"],
+    "startDate": "2025-01-01"
+  }'
+```
+
+```json Request body
+{
+  "contactIds": [115889, 229301],
+  "signals": ["promotion", "companyChange"],
+  "startDate": "2025-01-01",
+  "maxResultsPerSignal": 10
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="contacts" type="object">
+  A map of contact IDs to their signal data. Each key is a string representation of a contact ID.
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  The start date of the signal period used for this response. Example: `"2025-01-01"`
+</ResponseField>
+
+<ResponseField name="endDate" type="string">
+  The end date of the signal period. Example: `"2025-07-31"`
+</ResponseField>
+
+<ResponseField name="creditCharged" type="integer">
+  Total credits charged for this request. Example: `2`
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Validation failed — check that `contactIds` and `signals` are present and valid. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — your plan does not include signals access. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+
+<ResponseExample>
+
+```json 200
+{
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "creditCharged": 2,
+  "contacts": {
+    "115889": {
+      "promotion": [
+        {
+          "previousTitle": "Account Executive",
+          "newTitle": "Senior Account Executive",
+          "signalDate": "2025-03-15"
+        }
+      ],
+      "companyChange": []
+    },
+    "229301": {
+      "promotion": [],
+      "companyChange": [
+        {
+          "previousCompany": "Acme Corp",
+          "newCompany": "Lusha",
+          "signalDate": "2025-02-01"
+        }
+      ]
+    }
+  }
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": ["contactIds is required"]
+}
+```
+
+</ResponseExample>

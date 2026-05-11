@@ -1,0 +1,297 @@
+---
+title: "POST /prospecting/company/enrich — Enrich companies"
+sidebarTitle: "POST /prospecting/company/enrich"
+description: "Retrieve full company profiles from prospecting search results. Returns firmographics, headcount, revenue, technologies, locations, and classification codes."
+---
+
+After searching for companies with [POST /prospecting/company/search](/api-reference/prospecting/search-companies), use this endpoint to retrieve complete firmographic profiles for up to 100 companies at once. The response includes headcount, revenue ranges, technologies, funding history, intent signals, location details, and more. This is **step 3** of the three-step prospecting flow.
+
+## Endpoint
+
+```
+POST https://api.lusha.com/prospecting/company/enrich
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="requestId" type="string" required>
+  The `requestId` returned by the Search Companies response for the same session. Example: `"5ad275c8-7dd4-462a-bd45-6bc1970da64e"`
+</ParamField>
+
+<ParamField body="companiesIds" type="string[]" required>
+  Array of company `id` values from the search results you want to enrich. Minimum 1, maximum 100. Example: `["33222678"]`
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/prospecting/company/enrich \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "requestId": "5ad275c8-7dd4-462a-bd45-6bc1970da64e",
+    "companiesIds": ["33222678", "1586"]
+  }'
+```
+
+```json Request body
+{
+  "requestId": "5ad275c8-7dd4-462a-bd45-6bc1970da64e",
+  "companiesIds": ["33222678", "1586"]
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="requestId" type="string">
+  The `requestId` used in the request.
+</ResponseField>
+
+<ResponseField name="companies" type="object[]">
+  Array of enriched company objects, one per requested ID.
+
+  <Expandable title="company fields">
+    <ResponseField name="companies.id" type="number">
+      Lusha company identifier. Example: `33222678`
+    </ResponseField>
+
+    <ResponseField name="companies.name" type="string">
+      Company name. Example: `"Lusha"`
+    </ResponseField>
+
+    <ResponseField name="companies.description" type="string">
+      Company description.
+    </ResponseField>
+
+    <ResponseField name="companies.fqdn" type="string">
+      Primary domain. Example: `"www.lusha.com"`
+    </ResponseField>
+
+    <ResponseField name="companies.domains" type="object">
+      Domain details.
+
+      <Expandable title="domains fields">
+        <ResponseField name="companies.domains.email" type="string">Email domain. Example: `"lusha.com"`</ResponseField>
+        <ResponseField name="companies.domains.homepage" type="string">Homepage domain. Example: `"lusha.com"`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="companies.companySize" type="object">
+      Employee count range.
+
+      <Expandable title="companySize fields">
+        <ResponseField name="companies.companySize.min" type="number">Minimum employee count. Example: `11`</ResponseField>
+        <ResponseField name="companies.companySize.max" type="number">Maximum employee count. Example: `50`</ResponseField>
+        <ResponseField name="companies.companySize.employees_in_linkedin" type="number">LinkedIn-reported employee count. Example: `32`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="companies.employees" type="string">
+      Formatted employee range string. Example: `"10001 - 100000"`
+    </ResponseField>
+
+    <ResponseField name="companies.revenueRange" type="number[]">
+      Revenue range in USD as `[min, max]`. Example: `[10000000, 50000000]`
+    </ResponseField>
+
+    <ResponseField name="companies.mainIndustry" type="string">
+      Primary industry classification. Example: `"Technology, Information & Media"`
+    </ResponseField>
+
+    <ResponseField name="companies.subIndustry" type="string">
+      Sub-industry classification. Example: `"Software Development"`
+    </ResponseField>
+
+    <ResponseField name="companies.industryTags" type="string[][]">
+      Full industry tag hierarchy.
+    </ResponseField>
+
+    <ResponseField name="companies.city" type="string">HQ city. Example: `"Boston"`</ResponseField>
+    <ResponseField name="companies.state" type="string">HQ state. Example: `"Massachusetts"`</ResponseField>
+    <ResponseField name="companies.country" type="string">HQ country. Example: `"United States"`</ResponseField>
+    <ResponseField name="companies.countryIso2" type="string">ISO 3166-1 alpha-2 country code. Example: `"US"`</ResponseField>
+    <ResponseField name="companies.continent" type="string">Continent. Example: `"North America"`</ResponseField>
+    <ResponseField name="companies.rawLocation" type="string">Full address string.</ResponseField>
+    <ResponseField name="companies.coordinates" type="number[]">Geo coordinates as `[longitude, latitude]`.</ResponseField>
+
+    <ResponseField name="companies.companyLocations" type="object[]">
+      All known office locations (not just HQ).
+
+      <Expandable title="companyLocations fields">
+        <ResponseField name="companies.companyLocations.country_iso2" type="string">ISO country code.</ResponseField>
+        <ResponseField name="companies.companyLocations.state_code" type="string">State code.</ResponseField>
+        <ResponseField name="companies.companyLocations.location_coordinates" type="number[]">Coordinates.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="companies.social" type="object">
+      Social profile URLs.
+
+      <Expandable title="social fields">
+        <ResponseField name="companies.social.linkedin" type="string">LinkedIn company page URL.</ResponseField>
+        <ResponseField name="companies.social.crunchbase" type="string">Crunchbase profile URL.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="companies.logoUrl" type="string">
+      Company logo URL.
+    </ResponseField>
+
+    <ResponseField name="companies.specialities" type="string[]">
+      Company specialties. Example: `["data enrichment", "sales intelligence"]`
+    </ResponseField>
+
+    <ResponseField name="companies.companyType" type="string">
+      Company type. Example: `"Private company"`
+    </ResponseField>
+
+    <ResponseField name="companies.linkedinFollowers" type="integer">
+      LinkedIn follower count. Example: `1950`
+    </ResponseField>
+
+    <ResponseField name="companies.funding" type="object">
+      Funding history.
+
+      <Expandable title="funding fields">
+        <ResponseField name="companies.funding.rounds" type="object[]">List of funding rounds with `currency`, `roundAmount`, `roundType`, and `roundDate`.</ResponseField>
+        <ResponseField name="companies.funding.totalRounds" type="number">Total number of funding rounds.</ResponseField>
+        <ResponseField name="companies.funding.totalRoundsAmount" type="number">Total amount raised across all rounds.</ResponseField>
+        <ResponseField name="companies.funding.isIpo" type="boolean">Whether the company has gone public.</ResponseField>
+        <ResponseField name="companies.funding.lastRoundType" type="string">Type of the most recent round. Example: `"Private Equity Round"`</ResponseField>
+        <ResponseField name="companies.funding.lastRoundAmount" type="number">Amount of the most recent round.</ResponseField>
+        <ResponseField name="companies.funding.lastRoundDate" type="string">Date of the most recent round.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="companies.intent" type="object">
+      Buyer intent signals.
+
+      <Expandable title="intent fields">
+        <ResponseField name="companies.intent.detectedTopics" type="object[]">Detected intent topics with `topicName`, `topicScore`, and `topicTrend`.</ResponseField>
+        <ResponseField name="companies.intent.topicCount" type="number">Number of topics detected.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="companies.technologies" type="object[]">
+      Technologies in use. Each object has a `name` field. Example: `[{ "name": "salesforce" }]`
+    </ResponseField>
+
+    <ResponseField name="companies.surgeInHiring" type="object[]">
+      Overall hiring surge signals with `newJobsPostedLastWeek`, `historicalAvg`, and `changeRatePercent`.
+    </ResponseField>
+
+    <ResponseField name="companies.surgeInHiringByDepartment" type="object[]">
+      Department-level hiring surge signals.
+    </ResponseField>
+
+    <ResponseField name="companies.surgeInHiringByLocation" type="object[]">
+      Location-level hiring surge signals.
+    </ResponseField>
+
+    <ResponseField name="companies.headcountIncrease1m" type="object[]">
+      1-month headcount increase signals with `baselineEmployeesCount`, `newEmployeesCount`, and `changeRatePercent`.
+    </ResponseField>
+
+    <ResponseField name="companies.websiteTrafficIncrease" type="object[]">
+      Website traffic increase signals with `historicalAvg`, `lastMonthVisits`, and `changeRatePercent`.
+    </ResponseField>
+
+    <ResponseField name="companies.itSpendIncrease" type="object[]">
+      IT spend increase signals with `estimatedAnnualItSpend` and `changeRatePercent`.
+    </ResponseField>
+
+    <ResponseField name="companies.commercialActivityNews" type="object[]">
+      Partnership and go-to-market news signals.
+    </ResponseField>
+
+    <ResponseField name="companies.financialEventsNews" type="object[]">
+      Funding, IPO, and investment news signals.
+    </ResponseField>
+
+    <ResponseField name="companies.riskNews" type="object[]">
+      Litigation and security risk news signals.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Validation failed — check that `requestId` and `companiesIds` are present and valid. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+| `500` | Internal server error — retry with exponential backoff. |
+
+<ResponseExample>
+
+```json 200
+{
+  "requestId": "5ad275c8-7dd4-462a-bd45-6bc1970da64e",
+  "companies": [
+    {
+      "id": 33222678,
+      "name": "Lusha",
+      "fqdn": "www.lusha.com",
+      "description": "Lusha is the sales intelligence platform designed to help businesses get their next customers.",
+      "companySize": { "min": 201, "max": 500, "employees_in_linkedin": 382 },
+      "employees": "201 - 500",
+      "revenueRange": [10000000, 50000000],
+      "mainIndustry": "Technology, Information & Media",
+      "subIndustry": "Software Development",
+      "city": "Boston",
+      "state": "Massachusetts",
+      "country": "United States",
+      "countryIso2": "US",
+      "continent": "North America",
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/lushadata",
+        "crunchbase": "https://www.crunchbase.com/organization/lusha"
+      },
+      "funding": {
+        "totalRounds": 2,
+        "totalRoundsAmount": 245000000,
+        "isIpo": false,
+        "lastRoundType": "Private Equity Round",
+        "lastRoundAmount": 205000000,
+        "lastRoundDate": "Nov 10, 2021"
+      },
+      "technologies": [{ "name": "salesforce" }, { "name": "hubspot" }],
+      "surgeInHiring": [
+        {
+          "newJobsPostedLastWeek": 25,
+          "historicalAvg": 10,
+          "changeRatePercent": 150
+        }
+      ]
+    }
+  ]
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "errors": ["requestId is required"]
+}
+```
+
+</ResponseExample>

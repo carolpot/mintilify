@@ -1,0 +1,96 @@
+---
+title: "Verify Lusha webhook signatures with HMAC-SHA256"
+sidebarTitle: "Security"
+description: "Authenticate every incoming webhook delivery using HMAC-SHA256 signature verification to prevent spoofed requests reaching your endpoint."
+---
+
+Every webhook delivery Lusha sends includes a cryptographic signature you can use to confirm the request genuinely came from Lusha. Verifying signatures before processing any payload protects your endpoint from spoofed or replayed requests.
+
+## How signatures work
+
+Lusha signs each delivery using HMAC-SHA256 with your account webhook secret as the key. Two headers are included in every request:
+
+| Header | Description |
+|--------|-------------|
+| `X-Lusha-Signature` | HMAC-SHA256 hex digest of the signed payload |
+| `X-Lusha-Timestamp` | Unix timestamp of when the request was sent |
+| `Content-Type` | `application/json` |
+| `User-Agent` | `Lusha-Webhooks/1.0` |
+
+The signed payload is formed by concatenating the timestamp, a period, and the JSON-serialized request body:
+
+```
+timestamp + "." + JSON.stringify(payload)
+```
+
+## Step-by-step verification
+
+<Steps>
+  <Step title="Extract the headers">
+    Read `X-Lusha-Signature` and `X-Lusha-Timestamp` from the incoming request headers.
+  </Step>
+  <Step title="Build the signed payload string">
+    Concatenate the raw timestamp value, a literal `.`, and the JSON-serialized request body:
+
+    ```
+    signedPayload = timestamp + "." + JSON.stringify(payload)
+    ```
+  </Step>
+  <Step title="Compute the expected signature">
+    Calculate an HMAC-SHA256 digest of the signed payload using your account webhook secret as the key, then encode the result as a hex string.
+  </Step>
+  <Step title="Compare signatures">
+    Use a **timing-safe comparison** to check whether the computed signature matches the value in `X-Lusha-Signature`. Reject the request if they differ.
+  </Step>
+</Steps>
+
+## Verification example
+
+```javascript
+const crypto = require('crypto');
+
+function verifySignature(payload, signature, timestamp, secret) {
+  const signedPayload = `${timestamp}.${JSON.stringify(payload)}`;
+  const expectedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(signedPayload)
+    .digest('hex');
+
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expectedSignature)
+  );
+}
+```
+
+<Warning>
+  Always use a timing-safe comparison such as `crypto.timingSafeEqual`. Standard string equality is vulnerable to timing attacks.
+</Warning>
+
+## Account secret management
+
+Your account webhook secret is the key used to sign and verify all deliveries.
+
+| Endpoint | Purpose |
+|----------|---------|
+| `GET /api/account/secret` | Retrieve your current account webhook secret |
+| `POST /api/account/secret/regenerate` | Generate a new secret (upsert — works whether or not one already exists) |
+
+When you regenerate the secret:
+
+- The new secret **immediately invalidates** the old one across all subscriptions
+- The secret is **returned only once** in the response — store it in your secrets manager before the response is gone
+- If no secret existed, a new one is created automatically
+
+<Note>
+  An account secret must exist before Lusha can deliver webhooks. Call `POST /api/account/secret/regenerate` as the first step when setting up webhooks.
+</Note>
+
+## Security best practices
+
+- **Store the secret securely.** Use a secrets manager (for example, AWS Secrets Manager, HashiCorp Vault, or environment variables injected at runtime). Never commit the secret to source control.
+- **Verify every request.** Check the signature on every incoming delivery, not just during initial setup.
+- **Reject invalid signatures immediately.** Return `401 Unauthorized` and do not process the payload.
+- **Use HTTPS endpoints.** Lusha requires HTTPS for production webhook URLs. This protects the headers and payload in transit.
+- **Check the timestamp.** To prevent replay attacks, reject deliveries where `X-Lusha-Timestamp` is significantly older than the current time (for example, more than five minutes).
+- **Rotate secrets periodically.** Use `POST /api/account/secret/regenerate` to rotate your secret and update your stored value promptly.

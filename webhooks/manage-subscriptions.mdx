@@ -1,0 +1,240 @@
+---
+title: "Create and manage Lusha webhook subscriptions"
+sidebarTitle: "Subscriptions"
+description: "Create, list, update, test, and delete webhook subscriptions to receive real-time signal notifications for contacts and companies."
+---
+
+Webhook subscriptions tell Lusha which entities to watch and where to send notifications when signals fire. Each subscription links one entity (a contact or company) to a webhook URL and a set of signal types. You can manage up to 25 subscriptions per request and monitor all deliveries through audit logs.
+
+## Setup flow
+
+<Steps>
+  <Step title="Generate your account secret">
+    Call `POST /api/account/secret/regenerate` to create your account-level webhook secret. Store it securely — it is displayed only once and is required to verify every incoming delivery.
+
+    ```bash
+    POST https://api.lusha.com/api/account/secret/regenerate
+    ```
+  </Step>
+  <Step title="Create a subscription">
+    Call `POST /api/subscriptions` with the entity details and your webhook URL. Specify `entityType`, `entityId`, the `signalTypes` you want to receive, and your `webhookUrl`.
+  </Step>
+  <Step title="Test the subscription">
+    Call `POST /api/subscriptions/{id}/test` to send a test payload to your endpoint and confirm the full delivery pipeline works before going live.
+  </Step>
+  <Step title="Go live and monitor">
+    Your endpoint will now receive real-time deliveries. Use `GET /api/audit-logs` to monitor delivery success rates, inspect failures, and reactivate any disabled subscriptions.
+  </Step>
+</Steps>
+
+---
+
+## Create subscriptions
+
+**`POST /api/subscriptions`**
+
+Creates one or more webhook subscriptions for real-time signal notifications.
+
+<Note>
+  You can create up to 25 subscriptions per request. Your account must have a webhook secret before deliveries can be received.
+</Note>
+
+### Delivery and reliability
+
+Lusha retries failed deliveries automatically:
+
+- **3 retry attempts** with exponential backoff
+- **Auto-disable**: a subscription is disabled after all retries are exhausted
+- All delivery attempts are recorded in [audit logs](/webhooks/audit-logs)
+
+### Webhook payload examples
+
+When a signal fires, Lusha sends a POST request to your webhook URL with a JSON body. Below are examples for a contact promotion signal and a company news signal.
+
+<CodeGroup>
+
+```json Promotion signal (contact)
+{
+  "id": "f3b87e05-0402-4f3e-8e26-6a38fd0ad62c",
+  "type": "promotion",
+  "entityType": "contact",
+  "entityId": "4158887495",
+  "subscriptionId": "507f1f77bcf86cd799439011",
+  "data": {
+    "personId": 4158887495,
+    "currentCompanyId": 40823133,
+    "currentCompanyName": "OMG Hospitality Group LLC",
+    "currentDomain": "omghospitalitygroup.com",
+    "currentTitle": "Bartender",
+    "currentDepartments": [
+      { "id": 7, "value": "Other" }
+    ],
+    "previousCompanyName": "First Watch Restaurants",
+    "previousDomain": "firstwatch.com",
+    "signalDate": "2025-07-01"
+  },
+  "timestamp": "2026-01-14T16:16:35.841Z",
+  "billing": {
+    "creditsCharged": 1
+  }
+}
+```
+
+```json Commercial activity news signal (company)
+{
+  "id": "a7c92f14-1234-4b3e-9d22-8b4fe1d0bc45",
+  "type": "commercialActivityNews",
+  "entityType": "company",
+  "entityId": "33222678",
+  "subscriptionId": "507f1f77bcf86cd799439011",
+  "data": {
+    "companyId": "33222678",
+    "companyName": "Lusha",
+    "domain": "lusha.com",
+    "signalId": "1503910",
+    "eventType": "partnership",
+    "eventSummary": "Lusha announced a strategic partnership with Salesforce.",
+    "articlePublishedDate": "2025-06-15",
+    "articleTitle": "Lusha Partners with Salesforce",
+    "articleHighlight": "The partnership enables Salesforce users to access Lusha data directly within their CRM.",
+    "eventEffectiveDate": "2025-06-10",
+    "articleUrl": "https://example.com/lusha-salesforce-partnership"
+  },
+  "timestamp": "2026-01-14T16:16:35.841Z",
+  "billing": {
+    "creditsCharged": 1
+  }
+}
+```
+
+</CodeGroup>
+
+### Required acknowledgment response
+
+Your endpoint must respond within **10 seconds** with an HTTP `2xx` status and the following JSON body:
+
+```json
+{
+  "received": true,
+  "timestamp": "2026-02-05T10:30:45.123Z",
+  "webhookId": "f3b87e05-0402-4f3e-8e26-6a38fd0ad62c"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `received` | boolean | Must be `true` |
+| `timestamp` | string | ISO 8601 timestamp of when your server received the request |
+| `webhookId` | string | The `id` value from the incoming webhook payload |
+
+<Warning>
+  A non-`2xx` response triggers the retry mechanism. After 3 failed retries the subscription is automatically disabled.
+</Warning>
+
+Return the acknowledgment before performing any heavy processing. Queue the payload for async handling if needed:
+
+```javascript
+app.post('/webhook', async (req, res) => {
+  // 1. Verify signature first
+  if (!verifyWebhookSignature(req)) {
+    return res.status(401).json({ error: 'Invalid signature' });
+  }
+
+  // 2. Queue for async processing
+  await queueWebhook(req.body);
+
+  // 3. Acknowledge immediately
+  res.status(201).json({
+    received: true,
+    timestamp: new Date().toISOString(),
+    webhookId: req.body.id
+  });
+});
+```
+
+---
+
+## List subscriptions
+
+**`GET /api/subscriptions`**
+
+Returns all webhook subscriptions for your account with pagination support.
+
+- Results are sorted by `createdAt` in descending order (newest first)
+- Default page size: `10`; maximum: `100`
+- Use `offset` to paginate through large result sets
+
+<Note>
+  The webhook secret is never returned in list responses for security.
+</Note>
+
+---
+
+## Get a subscription
+
+**`GET /api/subscriptions/{id}`**
+
+Returns a single webhook subscription by its ID.
+
+---
+
+## Update a subscription
+
+**`PATCH /api/subscriptions/{id}`**
+
+Updates an existing subscription. All fields are optional — include only the fields you want to change.
+
+### Reactivating a disabled subscription
+
+If a subscription was disabled after exhausting retries, set `isActive: true` to reactivate it. The system automatically:
+
+- Clears the `blockReason` field
+- Clears the `blockedAt` timestamp
+- Resets the retry counter
+
+### Regenerating your account secret
+
+Set `regenerateSecret: true` in the request body to rotate your webhook secret. Keep in mind:
+
+- The new secret **affects all subscriptions** for your account
+- The secret is **shown only once** in the response — store it immediately
+- The old secret is **immediately invalidated**
+
+---
+
+## Delete subscriptions
+
+**`POST /api/subscriptions/delete`**
+
+Deletes one or more subscriptions in a single request.
+
+<Warning>
+  Deletion is permanent and cannot be undone.
+</Warning>
+
+- Up to **25 subscriptions** can be deleted per request
+- Duplicate IDs in the request are automatically deduplicated
+- Each subscription is processed independently; the response includes a result for each item
+- Invalid ID formats are gracefully handled and reported as `NOT_FOUND`
+
+---
+
+## Test a subscription
+
+**`POST /api/subscriptions/{id}/test`**
+
+Sends a test payload to your webhook endpoint without consuming credits.
+
+<Tip>
+  Run a test delivery before going live to confirm your endpoint handles signatures and acknowledgments correctly.
+</Tip>
+
+Choose a test mode based on what you want to validate:
+
+| Mode | What it tests |
+|------|---------------|
+| `direct` | HTTP reachability only — validates that your URL responds correctly |
+| `handler` | Handler-only test — validates message processing without full delivery |
+| `full` | Complete end-to-end delivery pipeline (default) |
+
+Test payloads use mock data and do not trigger credit charges.

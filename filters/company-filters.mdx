@@ -1,0 +1,161 @@
+---
+title: "Available company filters for prospecting searches"
+sidebarTitle: "Company Filters"
+description: "Retrieve valid filter values for industries, sizes, revenues, locations, SIC codes, NAICS codes, intent topics, and technologies for company search."
+---
+
+Use these filter endpoints to retrieve the exact values the API accepts before building a company search request. Passing values outside the API's taxonomy causes searches to return no results, so fetching valid options first ensures your queries work as expected.
+
+All filter values returned here are intended for use in `POST /prospecting/company/search`.
+
+## Available filter endpoints
+
+| Filter | Endpoint | Method |
+|---|---|---|
+| Company names | `/prospecting/filters/companies/names` | POST (text search) |
+| Industries | `/prospecting/filters/companies/industries_labels` | GET |
+| Sizes | `/prospecting/filters/companies/sizes` | GET |
+| Revenues | `/prospecting/filters/companies/revenues` | GET |
+| Locations | `/prospecting/filters/companies/locations` | POST (text search) |
+| SIC codes | `/prospecting/filters/companies/sics` | GET |
+| NAICS codes | `/prospecting/filters/companies/naics` | GET |
+| Intent topics | `/prospecting/filters/companies/intent_topics` | GET |
+| Technologies | `/prospecting/filters/companies/technologies` | POST (text search) |
+
+## How to use these endpoints
+
+<Steps>
+  <Step title="Fetch valid filter values">
+    Call the filter endpoint for the dimension you want to filter on. For example, to get the list of industries:
+
+    ```bash
+    curl --request GET \
+      --url https://api.lusha.com/prospecting/filters/companies/industries_labels \
+      --header 'api_key: YOUR_API_KEY'
+    ```
+
+    The response returns an array of industry labels:
+
+    ```json
+    {
+      "industries": ["Software", "Financial Services", "Healthcare", "Manufacturing"]
+    }
+    ```
+  </Step>
+  <Step title="Pick the values that match your ICP">
+    Select the labels that apply to your target market. For example: `"Software"` and `"Financial Services"`.
+  </Step>
+  <Step title="Pass them into your company search request">
+    Use the selected values as filter parameters in `POST /prospecting/company/search`:
+
+    ```json
+    {
+      "industries": ["Software", "Financial Services"],
+      "sizes": ["51-200", "201-500"],
+      "revenues": ["$10M-$50M"]
+    }
+    ```
+  </Step>
+</Steps>
+
+## Text-search endpoints
+
+Three filter endpoints use `POST` with a text query to search for matching values rather than returning a fixed list.
+
+<CodeGroup>
+
+```bash company names
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/companies/names \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "Salesforce" }'
+```
+
+```bash locations
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/companies/locations \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "Austin" }'
+```
+
+```bash technologies
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/companies/technologies \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "Salesforce" }'
+```
+
+</CodeGroup>
+
+## Endpoint details
+
+### GET /prospecting/filters/companies/industries_labels
+
+Returns the full list of industry labels available for filtering.
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/industries_labels \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### GET /prospecting/filters/companies/sizes
+
+Returns available employee headcount ranges (e.g., `"1-10"`, `"11-50"`, `"51-200"`).
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/sizes \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### GET /prospecting/filters/companies/revenues
+
+Returns available annual revenue ranges (e.g., `"$1M-$10M"`, `"$10M-$50M"`).
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/revenues \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### GET /prospecting/filters/companies/sics
+
+Returns available Standard Industrial Classification (SIC) codes for industry-based filtering.
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/sics \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### GET /prospecting/filters/companies/naics
+
+Returns available North American Industry Classification System (NAICS) codes.
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/naics \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### GET /prospecting/filters/companies/intent_topics
+
+Returns intent topic labels you can use to target companies actively researching specific subjects.
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/intent_topics \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+<Tip>
+  Cache responses from the GET endpoints — industries, sizes, revenues, SIC codes, NAICS codes, and intent topics change infrequently. Refresh your cache weekly or when a search returns unexpected results.
+</Tip>
+
+<Note>
+  SIC and NAICS codes provide more granular industry targeting than industry labels. Use them when you need to narrow your search to a specific sub-sector that does not map cleanly to a label.
+</Note>

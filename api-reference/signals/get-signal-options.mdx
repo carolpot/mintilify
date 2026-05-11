@@ -1,0 +1,188 @@
+---
+title: "GET /api/signals/filters/{objectType} — Signal options"
+sidebarTitle: "GET /api/signals/filters/{objectType}"
+description: "Retrieve available signal types for contacts or companies. Returns valid values for allSignals, promotion, companyChange, and company-level signals."
+---
+
+Before filtering contacts or companies by signals, call this endpoint to discover which signal types are available and what values are valid for signal sub-filters like news event types, hiring departments, and hiring locations. The endpoint returns different signal types depending on whether you query for `contact` or `company`.
+
+## Endpoints
+
+```
+GET https://api.lusha.com/api/signals/filters/contact
+GET https://api.lusha.com/api/signals/filters/company
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Path parameter
+
+<ParamField path="objectType" type="string" required>
+  The entity type to retrieve signal options for.
+
+  Allowed values: `"contact"` | `"company"`
+</ParamField>
+
+---
+
+## Available signal types
+
+### Contact signals
+
+| Signal | Description |
+|--------|-------------|
+| `allSignals` | All available contact signal types |
+| `promotion` | Job title promotions within the same company |
+| `companyChange` | Contact has moved to a new employer |
+
+### Company signals
+
+**Hiring & Workforce**
+
+| Signal | Description |
+|--------|-------------|
+| `allSignals` | All available company signal types |
+| `surgeInHiring` | Overall hiring activity increase |
+| `surgeInHiringByDepartment` | Department-specific hiring surge |
+| `surgeInHiringByLocation` | Location-specific hiring surge |
+
+**Headcount Trends**
+
+| Signal | Description |
+|--------|-------------|
+| `headcountIncrease1m` / `headcountDecrease1m` | 1-month employee count change |
+| `headcountIncrease3m` / `headcountDecrease3m` | 3-month employee count change |
+| `headcountIncrease6m` / `headcountDecrease6m` | 6-month employee count change |
+| `headcountIncrease12m` / `headcountDecrease12m` | 12-month employee count change |
+
+**Technology & Digital Presence**
+
+| Signal | Description |
+|--------|-------------|
+| `websiteTrafficIncrease` | Website traffic growth |
+| `websiteTrafficDecrease` | Website traffic decline |
+| `itSpendIncrease` | IT spending increase |
+| `itSpendDecrease` | IT spending decrease |
+
+**News Events**
+
+| Signal | Included event types |
+|--------|----------------------|
+| `commercialActivityNews` | Partnership, New Customer, New Vendor |
+| `corporateStrategyNews` | M&A, Facilities Expansion, New Location, Facility Closure, Asset Sale, Lawsuit Filed |
+| `financialEventsNews` | Funding Round, Asset Investment, Strategic Investment, IPO |
+| `marketIntelligenceNews` | Event Participation, Recognition, Competitor Activity |
+| `peopleNews` | Executive Hire, Executive Departure, Executive Promotion, Headcount Increase, Headcount Decrease |
+| `productActivityNews` | Product Launch, Product Development, Product Integration |
+| `riskNews` | Security Issue, Lawsuit Faced |
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="objectType" type="string">
+  The entity type from the request. Example: `"contact"` or `"company"`
+</ResponseField>
+
+<ResponseField name="signals" type="string[]">
+  List of available signal type identifiers for this entity type. Example: `["promotion", "companyChange"]`
+</ResponseField>
+
+<ResponseField name="filterOptions" type="object">
+  Available enum values for signal sub-filters. Only present in the company (`/company`) response.
+
+  <Expandable title="filterOptions fields">
+    <ResponseField name="filterOptions.newsEventTypes" type="string[]">
+      Valid values for the `newsEventTypes` sub-filter when requesting news signals.
+    </ResponseField>
+
+    <ResponseField name="filterOptions.hiringByDepartments" type="string[]">
+      Valid department values for the `surgeInHiringByDepartment` signal filter.
+    </ResponseField>
+
+    <ResponseField name="filterOptions.hiringByLocations" type="object[]">
+      Available `{ country, state }` combinations for the `surgeInHiringByLocation` filter.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — your plan does not include signals access. |
+
+---
+
+## Example responses
+
+<ResponseExample>
+
+```json Contact signal options
+{
+  "objectType": "contact",
+  "signals": ["allSignals", "promotion", "companyChange"]
+}
+```
+
+```json Company signal options (abbreviated)
+{
+  "objectType": "company",
+  "signals": [
+    "allSignals",
+    "surgeInHiring",
+    "surgeInHiringByDepartment",
+    "surgeInHiringByLocation",
+    "headcountIncrease1m",
+    "headcountDecrease1m",
+    "headcountIncrease3m",
+    "headcountDecrease3m",
+    "headcountIncrease6m",
+    "headcountDecrease6m",
+    "headcountIncrease12m",
+    "headcountDecrease12m",
+    "websiteTrafficIncrease",
+    "websiteTrafficDecrease",
+    "itSpendIncrease",
+    "itSpendDecrease",
+    "commercialActivityNews",
+    "corporateStrategyNews",
+    "financialEventsNews",
+    "marketIntelligenceNews",
+    "peopleNews",
+    "productActivityNews",
+    "riskNews"
+  ],
+  "filterOptions": {
+    "newsEventTypes": [
+      "Partnership",
+      "New Customer",
+      "Funding Round",
+      "IPO",
+      "Executive Hire",
+      "Product Launch"
+    ],
+    "hiringByDepartments": [
+      "Engineering & Technical",
+      "Sales",
+      "Marketing",
+      "Finance",
+      "Human Resources"
+    ],
+    "hiringByLocations": [
+      { "country": "United States", "state": "California" },
+      { "country": "United States", "state": "New York" },
+      { "country": "Germany" }
+    ]
+  }
+}
+```
+
+</ResponseExample>

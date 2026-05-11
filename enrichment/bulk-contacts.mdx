@@ -1,0 +1,198 @@
+---
+title: "Bulk enrich up to 100 contacts with POST /v2/person"
+sidebarTitle: "Bulk Contacts"
+description: "Submit up to 100 contacts in one request and receive verified emails, phone numbers, and job details for each using the Lusha bulk enrichment endpoint."
+---
+
+Use `POST /v2/person` to enrich multiple contacts in a single request. Submit a list of up to 100 contact objects and Lusha returns enriched data for each one, including emails, phone numbers, job details, and company information.
+
+**Endpoint**
+
+```
+POST https://api.lusha.com/v2/person
+```
+
+**Authentication:** Include your API key in the `api_key` request header.
+
+## Request requirements
+
+Each contact object in the `contacts` array must include a `contactId` (your own sequential identifier used to match results back to inputs) and at least one of the following:
+
+- `email`
+- `linkedinUrl`
+- `personId` — the most direct identifier; uniquely identifies a record in Lusha's database
+- `fullName` **and** a company object with `name` or `domain`
+
+<Warning>
+  **Unified Credits plan required for `revealEmails` and `revealPhones`**
+
+  The `metadata.revealEmails` and `metadata.revealPhones` parameters are only available on the Unified Credits pricing plan. Using them on any other plan returns a `403 Unauthorized` error. When you omit both parameters, the API returns all available emails and phone numbers for each contact by default.
+</Warning>
+
+## Request body fields
+
+### `contacts` array (required)
+
+<ParamField body="contacts[].contactId" type="string" required>
+  Your own unique sequential ID for this contact. Used to match each result in the response back to your input. Example: `"1234"`
+</ParamField>
+
+<ParamField body="contacts[].personId" type="string">
+  The Lusha person identifier. The most direct lookup method. Example: `"4183886134"`
+</ParamField>
+
+<ParamField body="contacts[].fullName" type="string">
+  The full name of the person. Example: `"Dustin Moskovitz"`
+</ParamField>
+
+<ParamField body="contacts[].email" type="string">
+  The email address of the person. Example: `"dustin@lusha.com"`
+</ParamField>
+
+<ParamField body="contacts[].linkedinUrl" type="string">
+  The LinkedIn profile URL of the person. Example: `"https://www.linkedin.com/in/dustin/"`
+</ParamField>
+
+<ParamField body="contacts[].location" type="string">
+  The raw location of the person. Example: `"Chicago"` or `"Singapore,Chicago"`
+</ParamField>
+
+<ParamField body="contacts[].companies" type="array">
+  Details of the company where the contact is currently (or previously) employed. Each entry includes:
+  - `name` (string) — company name; required if `domain` is not provided.
+  - `domain` (string) — company domain; required if `name` is not provided.
+  - `isCurrent` (boolean, required) — whether this is the person's current employer.
+  - `jobTitle` (string) — the person's job title at this company.
+  - `fqdn` (string) — fully qualified domain name.
+  - `companySocialId` (string) — social ID for the company.
+</ParamField>
+
+### `metadata` object
+
+<ParamField body="metadata.refreshJobInfo" type="boolean">
+  Set to `true` to replace outdated job details with the most current information. Example: `true`
+</ParamField>
+
+<ParamField body="metadata.filterBy" type="string">
+  Return only contacts that have a specific contact detail. Allowed values: `emailAddresses`, `phoneNumbers`
+</ParamField>
+
+<ParamField body="metadata.revealEmails" type="boolean">
+  Set to `true` to retrieve only email addresses. Requires the Unified Credits plan.
+</ParamField>
+
+<ParamField body="metadata.revealPhones" type="boolean">
+  Set to `true` to retrieve only phone numbers. Requires the Unified Credits plan.
+</ParamField>
+
+<ParamField body="metadata.signals" type="array">
+  Signal types to retrieve for each contact. Allowed values: `allSignals`, `promotion`, `companyChange`
+</ParamField>
+
+<ParamField body="metadata.signalsStartDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months ago. Example: `"2025-03-01"`
+</ParamField>
+
+<ParamField body="metadata.partialProfile" type="boolean">
+  Set to `true` to accept simplified contact profiles when a full match is unavailable. Example: `true`
+</ParamField>
+
+## Response fields
+
+A successful `200` response includes:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `contacts` | object | Enriched contact data keyed by `contactId`. |
+| `companies` | object | Company data keyed by `companyId`. |
+
+## Example request
+
+```bash
+curl --request POST \
+  --url "https://api.lusha.com/v2/person" \
+  --header "api_key: YOUR_API_KEY" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "contacts": [
+      {
+        "contactId": "1",
+        "email": "dustin@asana.com"
+      },
+      {
+        "contactId": "2",
+        "fullName": "Jane Smith",
+        "companies": [
+          {
+            "name": "Lusha",
+            "domain": "lusha.com",
+            "isCurrent": true
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "refreshJobInfo": false,
+      "filterBy": "emailAddresses"
+    }
+  }'
+```
+
+## Example response
+
+```json
+{
+  "contacts": {
+    "1": {
+      "isCreditCharged": true,
+      "data": {
+        "personId": 4183886134,
+        "fullName": "Dustin Moskovitz",
+        "emailAddresses": [
+          {
+            "address": "dustin@asana.com",
+            "emailType": "work",
+            "emailConfidence": "A+",
+            "updateDate": "2024-06-01"
+          }
+        ],
+        "phoneNumbers": [],
+        "jobTitle": {
+          "title": "CEO",
+          "seniority": "C-Suite",
+          "departments": ["General Management"]
+        }
+      },
+      "error": null
+    },
+    "2": {
+      "isCreditCharged": true,
+      "data": {
+        "personId": 987654321,
+        "fullName": "Jane Smith",
+        "emailAddresses": [
+          {
+            "address": "jane.smith@lusha.com",
+            "emailType": "work",
+            "emailConfidence": "A",
+            "updateDate": "2024-05-15"
+          }
+        ],
+        "phoneNumbers": [],
+        "jobTitle": {
+          "title": "Senior Account Executive",
+          "seniority": "Senior",
+          "departments": ["Sales"]
+        }
+      },
+      "error": null
+    }
+  },
+  "companies": {
+    "33222678": {
+      "name": "Lusha",
+      "domain": "lusha.com"
+    }
+  }
+}
+```

@@ -1,0 +1,92 @@
+---
+title: "POST /v3/lookalike/companies — Find similar companies"
+sidebarTitle: "POST /v3/lookalike/companies"
+description: "Discover lookalike companies based on seed company profiles using firmographic similarity. Use dedupeSessionId for paginated, duplicate-free results."
+---
+
+The `/v3/lookalike/companies` endpoint returns new company prospects that share firmographic characteristics with your seed companies. Lusha's AI matches on industry, size, revenue, technology stack, and other company attributes to surface accounts you haven't targeted yet.
+
+**Endpoint:** `POST https://api.lusha.com/v3/lookalike/companies`
+
+**Authentication:** `api_key` header required
+
+## How deduplication sessions work
+
+Omit `dedupeSessionId` on your first request — the server generates one and returns it. Include the returned value in all subsequent calls to get more results without seeing the same companies twice. Sessions are retained for 30 days from last activity (sliding window).
+
+## Request body
+
+<ParamField body="companies" type="array" required>
+  Array of seed company objects. Each entry must include at least one identifier.
+
+  <Expandable title="Company object fields">
+    <ParamField body="companyId" type="string">
+      Lusha company ID for the seed company.
+    </ParamField>
+    <ParamField body="domain" type="string">
+      Company domain (e.g., `lusha.com`).
+    </ParamField>
+    <ParamField body="name" type="string">
+      Company name (e.g., `Lusha`).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="dedupeSessionId" type="string">
+  Session ID from a previous response. Omit on the first call; include on all subsequent "get more" calls.
+</ParamField>
+
+## Request examples
+
+<CodeGroup>
+```bash First request
+curl -X POST https://api.lusha.com/v3/lookalike/companies \
+  -H "api_key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "companies": [
+      { "domain": "lusha.com" },
+      { "companyId": "40823133" }
+    ]
+  }'
+```
+
+```bash Get more (subsequent request)
+curl -X POST https://api.lusha.com/v3/lookalike/companies \
+  -H "api_key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "companies": [
+      { "domain": "lusha.com" }
+    ],
+    "dedupeSessionId": "sess_xyz789abc"
+  }'
+```
+</CodeGroup>
+
+## Response fields
+
+<ResponseField name="companies" type="array">
+  Array of lookalike company objects with firmographic data.
+</ResponseField>
+
+<ResponseField name="dedupeSessionId" type="string">
+  Session ID to include in your next "get more" request. Store this between calls.
+</ResponseField>
+
+<ResponseField name="totalResults" type="number">
+  Total number of lookalike companies available for this seed set.
+</ResponseField>
+
+## Error responses
+
+| Status | Meaning |
+|--------|---------|
+| 400 | Invalid request body or missing required fields |
+| 401 | Missing or invalid API key |
+| 429 | Rate limit exceeded |
+| 500 | Internal server error |
+
+<Tip>
+  Use company lookalikes to expand your total addressable market. Follow up with the Prospecting API to find contacts at the returned companies.
+</Tip>

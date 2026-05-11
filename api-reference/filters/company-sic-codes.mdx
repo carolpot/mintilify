@@ -1,0 +1,44 @@
+---
+title: "GET /prospecting/filters/companies/sics — SIC codes"
+sidebarTitle: "GET /filters/companies/sics"
+description: "Retrieve valid SIC (Standard Industrial Classification) code values for filtering companies by industry classification in prospecting."
+---
+
+Retrieve the list of valid SIC (Standard Industrial Classification) code values for filtering companies in `POST /prospecting/company/search`. SIC codes are a US government system that classifies businesses into industry groups. Use SIC codes when you need more granular industry targeting than the `industries` filter provides.
+
+**Endpoint:** `GET https://api.lusha.com/prospecting/filters/companies/sics`
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/companies/sics \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "sics": [
+    { "code": "7372", "label": "Prepackaged Software" },
+    { "code": "7371", "label": "Computer Programming, Data Processing" },
+    { "code": "5045", "label": "Computers & Peripherals" },
+    { "code": "6282", "label": "Investment Advice" }
+  ]
+}
+```
+
+## Usage
+
+Pass one or more SIC code strings from the `sics` array into the `sicCodes` filter field of your company search request:
+
+```json
+{
+  "sicCodes": ["7372", "7371"]
+}
+```
+
+<Tip>
+  Cache the response from this endpoint. SIC code definitions are standardized and rarely change. For NAICS-based industry filtering, use `GET /prospecting/filters/companies/naics`.
+</Tip>

@@ -1,0 +1,132 @@
+---
+title: "Available contact filters for prospecting searches"
+sidebarTitle: "Contact Filters"
+description: "Retrieve valid filter values for departments, seniority, data points, countries, and locations to use in contact prospecting searches."
+---
+
+Before building a contact search request, use these filter endpoints to retrieve the exact values the API accepts. Passing unrecognized values causes searches to return no results, so fetching valid options first is the recommended approach.
+
+All filter values returned here are intended for use in `POST /prospecting/contact/search`.
+
+## Available filter endpoints
+
+| Filter | Endpoint | Method |
+|---|---|---|
+| Departments | `/prospecting/filters/contacts/departments` | GET |
+| Seniority | `/prospecting/filters/contacts/seniority` | GET |
+| Data points | `/prospecting/filters/contacts/existing_data_points` | GET |
+| Countries | `/prospecting/filters/contacts/all_countries` | GET |
+| Locations | `/prospecting/filters/contacts/locations` | POST (text search) |
+
+## How to use these endpoints
+
+The typical workflow is to call a filter endpoint, pick the values you want, and pass them directly into your search request body.
+
+<Steps>
+  <Step title="Fetch valid filter values">
+    Call the filter endpoint for the dimension you want to filter on. For example, to get the list of departments:
+
+    ```bash
+    curl --request GET \
+      --url https://api.lusha.com/prospecting/filters/contacts/departments \
+      --header 'api_key: YOUR_API_KEY'
+    ```
+
+    The response returns an array of valid department values:
+
+    ```json
+    {
+      "departments": ["Engineering", "Sales", "Marketing", "Finance", "Operations"]
+    }
+    ```
+  </Step>
+  <Step title="Pick the values you need">
+    Select the values that match your ideal customer profile. For example: `"Engineering"`.
+  </Step>
+  <Step title="Pass them into your search request">
+    Use the selected values as filter parameters in `POST /prospecting/contact/search`:
+
+    ```json
+    {
+      "departments": ["Engineering"],
+      "seniority": ["Director", "VP", "C-Level"]
+    }
+    ```
+  </Step>
+</Steps>
+
+## Location search
+
+The locations endpoint accepts a text query and returns matching location values you can use in your search. This is useful when you want to target a specific city or region and need the exact string the API recognizes.
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/contacts/locations \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "New York" }'
+```
+
+```json
+{
+  "locations": ["New York, NY, United States", "New York City Metropolitan Area"]
+}
+```
+
+## Endpoint details
+
+### GET /prospecting/filters/contacts/departments
+
+Returns the list of departments available for filtering contacts.
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/contacts/departments \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### GET /prospecting/filters/contacts/seniority
+
+Returns all seniority levels (e.g., Manager, Director, VP, C-Level).
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/contacts/seniority \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### GET /prospecting/filters/contacts/existing_data_points
+
+Returns available data point types you can require to be present on returned contacts (e.g., email, phone).
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/contacts/existing_data_points \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### GET /prospecting/filters/contacts/all_countries
+
+Returns the full list of countries available for contact location filtering.
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/prospecting/filters/contacts/all_countries \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+### POST /prospecting/filters/contacts/locations
+
+Searches for location strings by free-text query. Use the returned values in your search request.
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/prospecting/filters/contacts/locations \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{ "query": "San Francisco" }'
+```
+
+<Tip>
+  Cache responses from the GET filter endpoints. Department, seniority, country, and data point values rarely change and do not need to be fetched on every search run.
+</Tip>

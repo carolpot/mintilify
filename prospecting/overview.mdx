@@ -1,0 +1,69 @@
+---
+title: "Prospect and build ICP lists with Lusha"
+sidebarTitle: "Overview"
+description: "Search Lusha's B2B database by ICP filters, then enrich matching results to generate net-new contact and company records for your CRM."
+---
+
+The Prospecting API lets you query Lusha's extensive B2B database using filters that match your Ideal Customer Profile — job title, seniority, location, industry, company size, and more. Unlike the Enrichment API, which fills in data on records you already know, Prospecting generates entirely new records you can load directly into your CRM.
+
+## How prospecting works
+
+The process runs in three ordered steps: choose your filters, run a search to get matching IDs, then enrich those IDs to retrieve full contact or company data.
+
+<Steps>
+  <Step title="Choose your filters">
+    Use the [Contact Filters](/filters/contact-filters) or [Company Filters](/filters/company-filters) endpoints to retrieve the valid values for each filter field — departments, seniority levels, industry labels, company sizes, locations, and more. Always look up filter values before building a search request; passing an unrecognized value will return no results.
+  </Step>
+  <Step title="Search">
+    POST your filter criteria to `/prospecting/contact/search` or `/prospecting/company/search`. The response returns a list of matching record IDs and basic metadata. No credits are consumed at this step.
+  </Step>
+  <Step title="Enrich">
+    POST the IDs from your search results to `/prospecting/contact/enrich` or `/prospecting/company/enrich` to retrieve full records — verified emails, phone numbers, job details, firmographics, and more. Credits are charged at the enrich step.
+  </Step>
+</Steps>
+
+## Prospecting flows
+
+<Tabs>
+  <Tab title="Contacts">
+    | Step | Endpoint | Purpose |
+    |------|----------|---------|
+    | 1 | `GET /prospecting/filters/contacts/*` | Look up valid filter values |
+    | 2 | `POST /prospecting/contact/search` | Search for matching contacts |
+    | 3 | `POST /prospecting/contact/enrich` | Retrieve full contact data |
+
+    See [Search Contacts](/prospecting/search-contacts) and [Enrich Contacts](/prospecting/enrich-contacts) for full details.
+  </Tab>
+  <Tab title="Companies">
+    | Step | Endpoint | Purpose |
+    |------|----------|---------|
+    | 1 | `GET /prospecting/filters/companies/*` | Look up valid filter values |
+    | 2 | `POST /prospecting/company/search` | Search for matching companies |
+    | 3 | `POST /prospecting/company/enrich` | Retrieve full company data |
+
+    See [Search Companies](/prospecting/search-companies) and [Enrich Companies](/prospecting/enrich-companies) for full details.
+  </Tab>
+</Tabs>
+
+## Premium and plan-specific features
+
+<Note>
+  **Signal filtering** is a premium feature available on select plans. When you filter by signal type (such as `promotion` or `companyChange`), credits are charged for each signal type that returns results. See [Search Contacts](/prospecting/search-contacts) and [Search Companies](/prospecting/search-companies) for signal filter syntax.
+</Note>
+
+<Note>
+  **DNC filtering** is a Scale plan feature. Pass `"excludeDnc": true` at the top level of any contact search request to exclude contacts whose phone numbers are all marked Do Not Call. Contacts with at least one callable number remain in results, and only callable phones are returned. Calling this parameter on an unsupported plan returns a `403` error.
+</Note>
+
+## Filter reference
+
+Both filter categories expose dedicated endpoints for discovering valid values before you search.
+
+<CardGroup cols={2}>
+  <Card title="Contact Filters" icon="person" href="/filters/contact-filters">
+    Look up departments, seniority levels, data points, countries, and locations for contact searches.
+  </Card>
+  <Card title="Company Filters" icon="building" href="/filters/company-filters">
+    Look up industries, sizes, revenues, locations, SIC/NAICS codes, intent topics, and technologies for company searches.
+  </Card>
+</CardGroup>

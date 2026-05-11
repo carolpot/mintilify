@@ -1,0 +1,227 @@
+---
+title: "POST /bulk/company/v2 — Bulk enrich up to 100 companies"
+sidebarTitle: "POST /bulk/company/v2"
+description: "Enrich up to 100 companies in a single request with firmographics, funding, technologies, and optional signal data using the Lusha bulk company endpoint."
+---
+
+Use this endpoint to enrich multiple company records in a single request. Submit a list of up to 100 companies identified by domain, name, or Lusha company ID, and receive firmographic data for each one. This endpoint also supports `signalsFilters` for narrowing signal results by event type, department, or location — functionality that is not available on the single-company endpoint.
+
+## Endpoint
+
+```
+POST https://api.lusha.com/bulk/company/v2
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key. Pass it as a request header named `api_key`.
+</ParamField>
+
+## Request body
+
+<ParamField body="companies" type="object[]" required>
+  A list of company objects to enrich. You can submit up to 100 companies per request. Each entry must include at least one of `domain`, `name`, or `companyId`.
+
+  <Expandable title="Company object properties">
+    <ParamField body="id" type="string" required>
+      A unique sequential identifier you assign to this company entry. Used to correlate results in the response to entries in your request.
+
+      Example: `1`
+    </ParamField>
+    <ParamField body="domain" type="string">
+      The domain name associated with the company. Required if no `name` or `companyId` is provided.
+
+      Example: `lusha.com`
+    </ParamField>
+    <ParamField body="fqdn" type="string">
+      The fully qualified domain name (FQDN) of the company.
+    </ParamField>
+    <ParamField body="name" type="string">
+      The company name. Required if no `domain` or `companyId` is provided.
+
+      Example: `Lusha`
+    </ParamField>
+    <ParamField body="companyId" type="string">
+      A unique identifier for the company in Lusha's database. Note: this field is intended for deprecation — values may be removed or merged without historical logging.
+
+      Example: `1234567890`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="signals" type="string[]">
+  Array of signal types to retrieve for all companies in the request. Omit this parameter if you do not need signals data.
+
+  Allowed values: `allSignals`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `headcountIncrease1m`, `headcountDecrease1m`, `headcountIncrease3m`, `headcountDecrease3m`, `headcountIncrease6m`, `headcountDecrease6m`, `headcountIncrease12m`, `headcountDecrease12m`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`
+</ParamField>
+
+<ParamField body="signalsStartDate" type="string">
+  Start date for signal retrieval in `YYYY-MM-DD` format. Defaults to 6 months ago if not specified. Only applies when `signals` is included.
+
+  Example: `2025-03-01`
+</ParamField>
+
+<ParamField body="signalsFilters" type="object">
+  Optional filters to narrow signal results within the requested signal types. Unrecognized values are silently ignored. Multiple values within a filter use OR logic. Filter values are not case-sensitive.
+
+  <Expandable title="properties">
+    <ParamField body="include" type="object">
+      Sub-filters to narrow results within a signal type.
+
+      <Expandable title="properties">
+        <ParamField body="newsEventTypes" type="string[]">
+          Filter news signals by specific event types. Only applies when a news signal type is included in `signals`.
+
+          Allowed values: `Asset Investment`, `Asset Sale`, `Competitor Activity`, `Event Participation`, `Executive Departure`, `Executive Hire`, `Executive Promotion`, `Facilities Expansion`, `Facility Closure`, `Funding Round`, `Headcount Decrease`, `Headcount Increase`, `IPO`, `Lawsuit Faced`, `Lawsuit Filed`, `M&A`, `New Customer`, `New Location`, `New Vendor`, `Partnership`, `Product Development`, `Product Integration`, `Product Launch`, `Recognition`, `Security Issue`, `Strategic Investment`
+        </ParamField>
+        <ParamField body="hiringByDepartments" type="string[]">
+          Filter `surgeInHiringByDepartment` signals by department. Only applies when `surgeInHiringByDepartment` is included in `signals`.
+
+          Allowed values: `Business Development`, `Consulting`, `Customer Service`, `Engineering & Technical`, `Finance`, `General Management`, `Health Care & Medical`, `Human Resources`, `Information Technology`, `Legal`, `Marketing`, `Operations`, `Other`, `Product`, `Research & Analytics`, `Sales`
+        </ParamField>
+        <ParamField body="hiringByLocations" type="object[]">
+          Filter `surgeInHiringByLocation` signals by country and optional state. Only applies when `surgeInHiringByLocation` is included in `signals`.
+
+          <Warning>
+            Providing a `state` without a `country` returns an HTTP `400` error.
+          </Warning>
+
+          <Expandable title="Location object properties">
+            <ParamField body="country" type="string" required>
+              Country name.
+
+              Example: `United States`
+            </ParamField>
+            <ParamField body="state" type="string">
+              State or province within the country.
+
+              Example: `California`
+            </ParamField>
+          </Expandable>
+
+          Example: `[{"country": "United States", "state": "California"}, {"country": "Germany"}]`
+        </ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="partialCompany" type="boolean">
+  Set to `true` to expand coverage by returning partial company profiles when a full match is not available.
+</ParamField>
+
+## Response
+
+### 200 — Success
+
+The response contains enriched company data keyed by the `id` you provided for each entry. Each company object in the response follows the same schema as the `GET /v2/company` response, including all firmographic fields and any requested signals.
+
+### Error responses
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — missing or invalid parameters (including `state` without `country` in `hiringByLocations`) |
+| `401` | Unauthorized — invalid or missing API key |
+| `429` | Too many requests — rate limit exceeded |
+| `500` | Internal server error |
+
+All error responses share the same shape:
+
+<ResponseField name="statusCode" type="integer" required>
+  HTTP status code.
+
+  Example: `400`
+</ResponseField>
+<ResponseField name="message" type="string" required>
+  Human-readable error description.
+
+  Example: `Validation failed`
+</ResponseField>
+<ResponseField name="errors" type="string[]">
+  Array of detailed validation error messages. Only present for validation errors.
+
+  Example: `["entityType must be one of: contact, company"]`
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url "https://api.lusha.com/bulk/company/v2" \
+  --header "api_key: YOUR_API_KEY" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "companies": [
+      {
+        "id": "1",
+        "domain": "lusha.com"
+      },
+      {
+        "id": "2",
+        "name": "Salesforce",
+        "domain": "salesforce.com"
+      }
+    ],
+    "signals": ["surgeInHiring", "surgeInHiringByDepartment", "fundingEvents"],
+    "signalsStartDate": "2025-01-01",
+    "signalsFilters": {
+      "include": {
+        "hiringByDepartments": ["Engineering & Technical", "Sales"],
+        "hiringByLocations": [
+          { "country": "United States", "state": "California" },
+          { "country": "Germany" }
+        ]
+      }
+    }
+  }'
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "1": {
+    "data": {
+      "id": 123,
+      "name": "Lusha",
+      "domain": "lusha.com",
+      "employees": "201 - 500",
+      "mainIndustry": "Technology",
+      "surgeInHiring": [
+        {
+          "companyId": "123",
+          "signalId": "1503905",
+          "signalDate": "2025-06-15",
+          "newJobsPostedLastWeek": 25,
+          "historicalAvg": 10,
+          "changeRatePercent": 150,
+          "companyName": "Lusha",
+          "domain": "lusha.com"
+        }
+      ],
+      "surgeInHiringByDepartment": [
+        {
+          "department": "Engineering & Technical",
+          "newJobsPostedLast4Weeks": 15,
+          "historicalAvg": 5
+        }
+      ]
+    },
+    "errors": {},
+    "meta": {}
+  },
+  "2": {
+    "data": {
+      "id": 456,
+      "name": "Salesforce",
+      "domain": "salesforce.com",
+      "employees": "10001+"
+    },
+    "errors": {},
+    "meta": {}
+  }
+}
+```

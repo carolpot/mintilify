@@ -1,0 +1,159 @@
+---
+title: "Search prospecting contacts by ICP filters"
+sidebarTitle: "Search Contacts"
+description: "Query Lusha's contact database by ICP filters — job title, seniority, department, location, and company size — to get a list of matching contact IDs."
+---
+
+`POST https://api.lusha.com/prospecting/contact/search` is step 2 of the 3-step prospecting flow. You pass a set of filters that describe your Ideal Customer Profile and receive back a paginated list of matching contact IDs. No credits are consumed at this step — credits are charged when you enrich the results in [step 3](/prospecting/enrich-contacts).
+
+Before building your request, use the [Contact Filters](/filters/contact-filters) endpoints to look up the valid values for each field.
+
+## Request body
+
+Send a JSON body with a `filters` object. All filter fields are optional — include only the ones relevant to your ICP.
+
+```json
+{
+  "filters": {
+    "jobTitles": ["VP of Sales", "Head of Sales"],
+    "seniority": ["vp", "director"],
+    "departments": ["sales"],
+    "locations": [
+      { "country": "US", "state": "California" }
+    ],
+    "companySizes": ["51-200", "201-500"],
+    "industries": ["Software & Technology"]
+  },
+  "page": 1,
+  "pageSize": 25
+}
+```
+
+### Common filter fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `jobTitles` | string[] | Free-text job titles to match |
+| `seniority` | string[] | Seniority level codes — use [GET /prospecting/filters/contacts/seniority](/filters/contact-filters) for valid values |
+| `departments` | string[] | Department codes — use [GET /prospecting/filters/contacts/departments](/filters/contact-filters) |
+| `locations` | object[] | Country/state/city objects — use [POST /prospecting/filters/contacts/locations](/filters/contact-filters) to search |
+| `companySizes` | string[] | Employee range labels — use company size filter for valid values |
+| `industries` | string[] | Industry labels — use company industry filter for valid values |
+| `existingDataPoints` | string[] | Require specific data types (e.g., `email`, `phone`) — use [GET /prospecting/filters/contacts/existing_data_points](/filters/contact-filters) |
+| `page` | integer | Page number for pagination (default: `1`) |
+| `pageSize` | integer | Results per page (default: `25`, max: `100`) |
+
+## Signal filtering (premium feature)
+
+You can narrow results to contacts at key career moments by filtering on signal types.
+
+<Note>
+  Signal filtering is a premium feature. Credits are charged for each signal type that returns results.
+</Note>
+
+Add a `signals` array to your filter object to match contacts who have recently experienced a specific event:
+
+```json
+{
+  "filters": {
+    "seniority": ["director", "vp"],
+    "departments": ["engineering"],
+    "signals": [
+      { "type": "promotion" },
+      { "type": "companyChange" }
+    ]
+  },
+  "page": 1,
+  "pageSize": 25
+}
+```
+
+Common signal types include `promotion`, `companyChange`, `newHire`, and `executiveHire`. Contact your account team for the full list available on your plan.
+
+## DNC filtering (Scale feature)
+
+<Warning>
+  `excludeDnc` is a Scale plan feature. Passing this parameter on an unsupported plan returns a `403` error.
+</Warning>
+
+Set `"excludeDnc": true` at the top level of the request body to filter out contacts whose phone numbers are all marked Do Not Call:
+
+```json
+{
+  "excludeDnc": true,
+  "filters": {
+    "seniority": ["vp"],
+    "departments": ["sales"]
+  },
+  "page": 1,
+  "pageSize": 25
+}
+```
+
+When `excludeDnc` is enabled:
+- Contacts with at least one callable phone number remain in results.
+- Only callable phone numbers are shown — DNC numbers are hidden.
+- Contacts whose phones are all DNC are excluded entirely.
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/prospecting/contact/search \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "filters": {
+      "jobTitles": ["VP of Engineering"],
+      "seniority": ["vp"],
+      "departments": ["engineering"],
+      "locations": [{ "country": "US" }],
+      "companySizes": ["201-500", "501-1000"]
+    },
+    "page": 1,
+    "pageSize": 25
+  }'
+```
+
+```json Request body
+{
+  "filters": {
+    "jobTitles": ["VP of Engineering"],
+    "seniority": ["vp"],
+    "departments": ["engineering"],
+    "locations": [{ "country": "US" }],
+    "companySizes": ["201-500", "501-1000"]
+  },
+  "page": 1,
+  "pageSize": 25
+}
+```
+
+</CodeGroup>
+
+## Example response
+
+```json
+{
+  "data": {
+    "contacts": [
+      { "id": "cnt_abc123", "name": "Jane Smith", "title": "VP of Engineering" },
+      { "id": "cnt_def456", "name": "John Doe", "title": "VP of Engineering" }
+    ],
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "totalResults": 142,
+      "totalPages": 6
+    }
+  }
+}
+```
+
+The `id` field in each contact object is what you pass to the [Enrich Contacts](/prospecting/enrich-contacts) endpoint to retrieve full records.
+
+<Tip>
+  Use the [Contact Filters](/filters/contact-filters) endpoints to fetch valid values for `seniority`, `departments`, `locations`, and `existingDataPoints` before building your search request. Passing an unrecognized value silently returns fewer or no results.
+</Tip>

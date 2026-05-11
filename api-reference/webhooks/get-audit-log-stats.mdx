@@ -1,0 +1,63 @@
+---
+title: "GET /api/audit-logs/stats — Get delivery statistics"
+sidebarTitle: "GET /api/audit-logs/stats"
+description: "Retrieve aggregated webhook delivery statistics for your account, including success rates, failure counts, and delivery trends across all subscriptions."
+---
+
+Retrieve aggregated delivery statistics for your account. Instead of paging through individual log entries, this endpoint gives you a high-level view of overall webhook health — including total delivery counts, success and failure rates, and trends over time. Use it to detect elevated failure rates early, before subscriptions are auto-disabled.
+
+**Endpoint:** `GET https://api.lusha.com/api/audit-logs/stats`
+
+## Example request
+
+```bash
+curl --request GET \
+  --url https://api.lusha.com/api/audit-logs/stats \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Example response
+
+```json
+{
+  "stats": {
+    "total": 1240,
+    "successful": 1198,
+    "failed": 30,
+    "dlq": 12,
+    "successRate": 96.6
+  }
+}
+```
+
+## Response fields
+
+<ResponseField name="stats" type="object">
+  Aggregated delivery statistics for your account.
+
+  <Expandable title="properties">
+    <ResponseField name="total" type="number">
+      Total number of delivery attempts recorded across all subscriptions.
+    </ResponseField>
+
+    <ResponseField name="successful" type="number">
+      Number of deliveries where your endpoint responded with an HTTP `2xx` within 10 seconds.
+    </ResponseField>
+
+    <ResponseField name="failed" type="number">
+      Number of deliveries that failed due to a non-`2xx` response or timeout.
+    </ResponseField>
+
+    <ResponseField name="dlq" type="number">
+      Number of deliveries that reached the dead-letter queue after all 3 retry attempts were exhausted.
+    </ResponseField>
+
+    <ResponseField name="successRate" type="number">
+      Percentage of total deliveries that succeeded, expressed as a number from 0 to 100.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Tip>
+  Monitor this endpoint regularly to catch elevated failure rates early, before subscriptions are automatically disabled. A declining success rate is a signal to check your endpoint health and review recent [audit log entries](/api-reference/webhooks/get-audit-logs).
+</Tip>

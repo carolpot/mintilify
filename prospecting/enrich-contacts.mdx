@@ -1,0 +1,111 @@
+---
+title: "Enrich prospecting contacts with full contact data"
+sidebarTitle: "Enrich Contacts"
+description: "Turn contact IDs from a prospecting search into full records — verified emails, phone numbers, job title, company details, and location data."
+---
+
+`POST https://api.lusha.com/prospecting/contact/enrich` is step 3 of the 3-step prospecting flow. You pass the contact IDs returned by [Search Contacts](/prospecting/search-contacts) and receive back complete contact records with verified emails, phone numbers, job details, and company information. Credits are charged at this step for each contact successfully enriched.
+
+## Request body
+
+Send a JSON body with an array of contact IDs from your search results. You can enrich up to 25 contacts per request.
+
+```json
+{
+  "contactIds": ["cnt_abc123", "cnt_def456", "cnt_ghi789"]
+}
+```
+
+### Request fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `contactIds` | string[] | Yes | Contact IDs returned by `/prospecting/contact/search` |
+| `revealEmails` | boolean | No | Return email addresses. Requires Unified Credits plan. |
+| `revealPhones` | boolean | No | Return phone numbers. Requires Unified Credits plan. |
+
+## Unified Credits plan requirement
+
+<Warning>
+  `revealEmails` and `revealPhones` are only available to customers on the **Unified Credits** pricing plan. Passing either parameter on another plan returns a `403` error. When you omit both parameters, the API returns all available contact data — including emails and phones — if your plan permits it.
+</Warning>
+
+```json
+{
+  "contactIds": ["cnt_abc123"],
+  "revealEmails": true,
+  "revealPhones": true
+}
+```
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/prospecting/contact/enrich \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contactIds": ["cnt_abc123", "cnt_def456"]
+  }'
+```
+
+```json Request body
+{
+  "contactIds": ["cnt_abc123", "cnt_def456"]
+}
+```
+
+</CodeGroup>
+
+## Example response
+
+```json
+{
+  "data": {
+    "contacts": [
+      {
+        "id": "cnt_abc123",
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "title": "VP of Engineering",
+        "company": {
+          "name": "Acme Corp",
+          "domain": "acme.com",
+          "size": "201-500",
+          "industry": "Software & Technology"
+        },
+        "emails": [
+          { "email": "jane.smith@acme.com", "type": "professional", "verified": true }
+        ],
+        "phones": [
+          { "phone": "+14155550101", "type": "direct", "dnc": false }
+        ],
+        "location": {
+          "city": "San Francisco",
+          "state": "California",
+          "country": "US"
+        }
+      }
+    ]
+  }
+}
+```
+
+### Response fields
+
+| Field | Description |
+|-------|-------------|
+| `id` | The contact ID you submitted |
+| `firstName` / `lastName` | Contact's full name |
+| `title` | Current job title |
+| `company` | Basic company details: name, domain, size, industry |
+| `emails` | Array of email objects with address, type, and verification status |
+| `phones` | Array of phone objects with number, type, and DNC status |
+| `location` | City, state, and country of the contact |
+
+<Tip>
+  Enrich in batches of up to 25 IDs per request. If your search returned more results than you want to enrich immediately, store the IDs and enrich them on demand as contacts are needed in your CRM.
+</Tip>

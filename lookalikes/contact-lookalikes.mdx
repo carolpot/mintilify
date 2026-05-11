@@ -1,0 +1,114 @@
+---
+title: "Find similar contacts with POST /v3/lookalike/contacts"
+sidebarTitle: "Contact Lookalikes"
+description: "Discover new contacts who match your best prospects by submitting seed contact IDs, LinkedIn URLs, or emails to the Lusha contact lookalikes endpoint."
+---
+
+The contact lookalikes endpoint takes one or more seed contacts and returns new contacts who share similar roles, seniority levels, and industry patterns. Use it to expand your total addressable market or fill your pipeline with prospects who look like your highest-converting leads.
+
+**Endpoint:** `POST https://api.lusha.com/v3/lookalike/contacts`
+
+## Request body
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `contacts` | array | Yes | One or more seed contacts. Each object must include a `personId`. |
+| `dedupeSessionId` | string | No | Session token returned from a previous call. Omit on the first request. |
+| `exclude` | object | No | Contacts to exclude from results on every request, combined with session-level deduplication. |
+
+## Paginating without duplicates
+
+The endpoint uses a `dedupeSessionId` to track which contacts have already been returned. Follow this pattern to retrieve more results across multiple calls.
+
+<Steps>
+  <Step title="First call — no dedupeSessionId">
+    Send your seed contacts without a `dedupeSessionId`. The server creates a new session and returns the first batch of lookalikes along with a `dedupeSessionId` you will use in the next call.
+
+    ```json
+    {
+      "contacts": [{ "personId": "4183886134" }]
+    }
+    ```
+  </Step>
+  <Step title="Subsequent calls — pass the session ID">
+    Include the `dedupeSessionId` returned in the previous response. The server skips contacts it has already returned for this session.
+
+    ```json
+    {
+      "contacts": [{ "personId": "4183886134" }],
+      "dedupeSessionId": "abc123"
+    }
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  Sessions are retained for **30 days** from the last activity (sliding window). After 30 days of inactivity the session expires and the next call starts a new one.
+</Note>
+
+## Example: first request
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/v3/lookalike/contacts \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contacts": [{ "personId": "4183886134" }]
+  }'
+```
+
+## Example: get more results
+
+```bash
+curl --request POST \
+  --url https://api.lusha.com/v3/lookalike/contacts \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contacts": [{ "personId": "4183886134" }],
+    "dedupeSessionId": "abc123"
+  }'
+```
+
+## Example response
+
+```json
+{
+  "dedupeSessionId": "abc123",
+  "contacts": [
+    {
+      "personId": "9876543210",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "jobTitle": "VP of Engineering",
+      "companyName": "Acme Corp"
+    }
+  ]
+}
+```
+
+The response always includes the `dedupeSessionId` — carry it forward to the next request to continue the session.
+
+## Excluding specific contacts
+
+Pass an `exclude` object to filter out contacts you already own or do not want to see, regardless of session state. The server applies your exclusions on top of session-level deduplication on every call.
+
+```json
+{
+  "contacts": [{ "personId": "4183886134" }],
+  "dedupeSessionId": "abc123",
+  "exclude": {
+    "personIds": ["1111111111", "2222222222"]
+  }
+}
+```
+
+## Use cases
+
+- **Expand total addressable market** — start from your top-performing contacts and discover hundreds of similarly qualified prospects you have not yet reached.
+- **Fill pipeline gaps** — when a segment goes cold, use lookalikes to quickly identify new prospects with a comparable profile.
+
+<Tip>
+  Seed the endpoint with your closed-won contacts for the best match quality. The more specific and consistent the seed set, the more relevant the lookalike results.
+</Tip>

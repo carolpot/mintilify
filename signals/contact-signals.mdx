@@ -1,0 +1,183 @@
+---
+title: "Retrieve contact signals for job changes and promotions"
+sidebarTitle: "Contact Signals"
+description: "Fetch job-change and promotion signals for up to 100 contacts per request. Identify contacts by Lusha ID, LinkedIn URL, email, or name and company."
+---
+
+Contact signals tell you when someone in your pipeline or CRM has changed jobs or received a promotion. You can retrieve signals for contacts you already have Lusha IDs for, or search by LinkedIn URL, email, or name and company if you don't. Both endpoints return signals for up to 100 contacts per request.
+
+<Note>
+  Each signal type you include in a request counts toward your credit usage. Request only the types you need.
+</Note>
+
+## Signal types for contacts
+
+| Signal type | Description |
+|---|---|
+| `allSignals` | All available contact signal types |
+| `promotion` | Job title promotions within the same company |
+| `companyChange` | Moves to a new employer |
+
+## Get contact signals by IDs
+
+Use this endpoint when you already have Lusha contact IDs stored in your CRM or database.
+
+```
+POST https://api.lusha.com/api/signals/contacts
+```
+
+Send up to 100 contact IDs per request. Results default to the last 6 months; pass `startDate` to change the window.
+
+**Request body**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `contactIds` | array of integers | Yes | List of Lusha contact IDs |
+| `signals` | array of strings | Yes | Signal types to retrieve: `allSignals`, `promotion`, `companyChange` |
+| `startDate` | string | No | Earliest date for signals in `YYYY-MM-DD` format (default: 6 months ago) |
+| `maxResultsPerSignal` | integer | No | Maximum signal instances returned per type per contact |
+
+**Example request**
+
+```json
+{
+  "contactIds": [115889, 204730],
+  "signals": ["promotion", "companyChange"],
+  "startDate": "2025-01-01",
+  "maxResultsPerSignal": 10
+}
+```
+
+**Example response**
+
+```json
+{
+  "contacts": {
+    "115889": {
+      "promotion": [...],
+      "companyChange": [...]
+    }
+  },
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "creditCharged": 2
+}
+```
+
+## Search contact signals
+
+Use this endpoint when you have LinkedIn URLs, email addresses, or names with company information but not Lusha contact IDs. It combines contact matching and signal enrichment in a single request.
+
+```
+POST https://api.lusha.com/api/signals/contacts/search
+```
+
+Each contact in the request must include at least one of the following identifiers:
+
+- Contact ID
+- LinkedIn profile URL
+- Email address
+- Full name plus company name or domain
+
+**Request body**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `contacts` | array of objects | Yes | List of contact identifiers |
+| `contacts[].id` | string | Yes | Your internal reference ID for this contact (returned in the response to match results) |
+| `contacts[].social_link` | string | No | LinkedIn profile URL |
+| `contacts[].full_name` | string | No | Full name of the contact |
+| `contacts[].email` | string | No | Email address |
+| `contacts[].companies` | array | No | Company associations for name-based matching |
+| `contacts[].companies[].name` | string | No | Company name |
+| `contacts[].companies[].domain` | string | No | Company domain (e.g. `lusha.com`) |
+| `contacts[].companies[].is_current` | boolean | No | Whether this is the contact's current employer |
+| `signals` | array of strings | Yes | Signal types to retrieve: `allSignals`, `promotion`, `companyChange` |
+| `startDate` | string | No | Earliest date for signals in `YYYY-MM-DD` format (default: 6 months ago) |
+| `maxResultsPerSignal` | integer | No | Maximum signal instances returned per type per contact |
+
+**Example request**
+
+<CodeGroup>
+
+```json By LinkedIn URL
+{
+  "contacts": [
+    {
+      "id": "ref-001",
+      "social_link": "https://www.linkedin.com/in/ron-nabet"
+    }
+  ],
+  "signals": ["promotion", "companyChange"],
+  "startDate": "2025-01-01"
+}
+```
+
+```json By email
+{
+  "contacts": [
+    {
+      "id": "ref-002",
+      "email": "dustin@lusha.com"
+    }
+  ],
+  "signals": ["companyChange"],
+  "startDate": "2025-01-01"
+}
+```
+
+```json By name and company
+{
+  "contacts": [
+    {
+      "id": "ref-003",
+      "full_name": "Ron Nabet",
+      "companies": [
+        {
+          "name": "Lusha",
+          "domain": "lusha.com",
+          "is_current": true
+        }
+      ]
+    }
+  ],
+  "signals": ["allSignals"],
+  "startDate": "2025-01-01"
+}
+```
+
+</CodeGroup>
+
+**Example response**
+
+```json
+{
+  "contacts": {
+    "ref-001": {
+      "promotion": [...],
+      "companyChange": [...]
+    }
+  },
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "creditCharged": 2
+}
+```
+
+<Tip>
+  The `id` field in each contact object is your own reference identifier. Lusha returns this value as the key in the response map, so you can match results back to your records without knowing Lusha contact IDs in advance.
+</Tip>
+
+## Get available signal options
+
+To retrieve the full list of valid signal types for contacts, call:
+
+```bash
+GET https://api.lusha.com/api/signals/filters/contact
+```
+
+## Related pages
+
+- [Signals overview](/signals/overview) — time windows, credits, and delivery options
+- [Company signals](/signals/company-signals) — retrieve signals for companies
+- [Webhooks](/webhooks/overview) — receive contact signal events as push notifications
