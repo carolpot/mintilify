@@ -1,80 +1,82 @@
 ---
-title: "Lusha Developer Docs"
-description: "Everything you need to build with Lusha data — enrich records, find prospects, detect signals, and connect to AI tools."
+title: "Lusha API Documentation"
+description: "Unified B2B data for enrichment, prospecting, signals, and AI workflows."
 mode: "custom"
 ---
 
-<div style={{ maxWidth: "860px", margin: "0 auto", padding: "48px 24px" }}>
+<div style={{ maxWidth: "800px", margin: "0 auto", padding: "64px 24px 48px" }}>
 
-## What do you want to do?
+<h1 style={{ fontSize: "2.25rem", fontWeight: 700, marginBottom: "12px", lineHeight: 1.2 }}>
+  Unified B2B data for prospecting, enrichment & signals
+</h1>
 
-<CardGroup cols={3}>
-  <Card title="Enrich records" icon="address-book" href="/enrichment/overview">
-    Add verified emails, phone numbers, and firmographics to contacts and companies you already have.
+<p style={{ fontSize: "1.1rem", color: "var(--colors-content-secondary)", marginBottom: "32px", maxWidth: "560px" }}>
+  Build with Lusha's API to enrich records, find new prospects, detect account changes, and connect to AI workflows.
+</p>
+
+<div style={{ display: "flex", gap: "12px", marginBottom: "56px" }}>
+  <a href="/api-reference/enrichment/search-single-contact" style={{ background: "var(--colors-accent-default)", color: "#fff", padding: "10px 20px", borderRadius: "6px", textDecoration: "none", fontWeight: 600, fontSize: "0.95rem" }}>
+    Browse API Reference →
+  </a>
+  <a href="/introduction" style={{ border: "1px solid var(--colors-border-default)", color: "var(--colors-content-primary)", padding: "10px 20px", borderRadius: "6px", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem" }}>
+    Get started
+  </a>
+</div>
+
+<CardGroup cols={2}>
+  <Card title="Enrich contacts & companies" icon="address-book" href="/enrichment/overview">
+    Add verified emails, phones, and firmographics to existing records.
   </Card>
   <Card title="Find new prospects" icon="magnifying-glass" href="/prospecting/overview">
-    Query Lusha's database by job title, seniority, location, and company attributes to build targeted lists.
+    Search by job title, seniority, location, and company filters.
   </Card>
   <Card title="Detect account changes" icon="bolt" href="/signals/overview">
-    Identify job changes, promotions, and company events so you reach the right person at the right time.
+    Identify job changes and company events with real-time signals.
   </Card>
-  <Card title="Get notified in real time" icon="webhook" href="/webhooks/overview">
-    Push signal data to your systems the moment it happens — no polling required.
-  </Card>
-  <Card title="Use Lusha with AI tools" icon="robot" href="/mcp/overview">
-    Connect Lusha data to any MCP-compatible AI assistant or agent workflow.
-  </Card>
-  <Card title="Discover lookalikes" icon="users" href="/lookalikes/overview">
-    Find contacts and companies similar to your best customers using AI-powered similarity.
+  <Card title="Connect to AI tools" icon="robot" href="/mcp/overview">
+    Use Lusha data inside Claude, Cursor, and MCP-compatible agents.
   </Card>
 </CardGroup>
 
 ---
 
-## New to Lusha?
+## API Documentation
 
-<CardGroup cols={2}>
-  <Card title="Quickstart" icon="rocket" href="/introduction">
-    Get your API key and make your first request in under 5 minutes.
+The full interactive reference — every endpoint, parameter, request schema, and response example. Try requests directly from the browser.
+
+<CardGroup cols={3}>
+  <Card title="Enrichment" icon="address-book" href="/api-reference/enrichment/search-single-contact">
+    `/v2/person` · `/v2/company`
   </Card>
-  <Card title="Authentication" icon="key" href="/authentication">
-    Every request uses a single `api_key` header — here's how it works.
+  <Card title="Prospecting" icon="magnifying-glass" href="/api-reference/prospecting/search-contacts">
+    Search & enrich contacts and companies
   </Card>
-  <Card title="Credits & Plans" icon="credit-card" href="/credits/overview">
-    Understand how credits are charged across endpoints and plans.
+  <Card title="Signals" icon="bolt" href="/api-reference/signals/get-contact-signals">
+    Contact & company change events
   </Card>
-  <Card title="Error codes" icon="triangle-exclamation" href="/error-codes">
-    A complete reference for every HTTP status code the API returns.
+  <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks/create-subscription">
+    Real-time push notifications
+  </Card>
+  <Card title="Lookalikes" icon="users" href="/api-reference/lookalikes/contact-lookalikes">
+    AI-powered similarity search
+  </Card>
+  <Card title="Filters" icon="sliders" href="/api-reference/filters/contact-departments">
+    Valid values for prospecting filters
   </Card>
 </CardGroup>
 
 ---
 
-## Reference
-
-<CardGroup cols={2}>
-  <Card title="API Reference" icon="code" href="/api-reference/enrichment/search-single-contact">
-    Full endpoint reference with interactive playground — try any request directly from the docs.
-  </Card>
+<CardGroup cols={3}>
   <Card title="Data Catalog" icon="database" href="/data-catalog/overview">
-    Every field Lusha returns: types, descriptions, coverage notes, and deprecation status.
+    Every field Lusha returns, with types and coverage notes.
   </Card>
-  <Card title="Changelog" icon="clock-rotate-left" href="/changelog/may-2026">
-    What's new, what changed, and what was deprecated — versioned by release date.
+  <Card title="MCP" icon="robot" href="/mcp/overview">
+    Use Lusha inside AI assistants with Model Context Protocol.
   </Card>
-  <Card title="FAQ" icon="circle-question" href="/faq/api">
-    Answers to the most common questions about the API, data coverage, billing, and MCP.
+  <Card title="User Guide" icon="book-open" href="/user-guide/overview">
+    Platform, browser extensions, and CRM integrations.
   </Card>
 </CardGroup>
-
----
-
-## Using the Lusha platform?
-
-The **User Guide** covers the Lusha web app, browser extensions, and CRM integrations for non-developer users.
-
-<Card title="Go to User Guide" icon="book-open" href="/user-guide/overview">
-  Dashboards, Chrome extension, Salesforce & HubSpot integrations, team management, and billing.
-</Card>
 
 </div>
