@@ -2,6 +2,7 @@
 title: "POST /api/subscriptions/delete — Delete subscriptions"
 sidebarTitle: "POST /api/subscriptions/delete"
 description: "Permanently delete one or more webhook subscriptions in a single request. Supports up to 25 subscription IDs with per-item success and error reporting."
+openapi: "post /api/subscriptions/delete"
 ---
 
 Permanently delete one or more webhook subscriptions in a single request. Each subscription is processed independently and the response includes a detailed result for every item, making it easy to confirm which deletions succeeded and which did not.

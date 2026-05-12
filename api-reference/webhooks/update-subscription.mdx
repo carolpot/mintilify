@@ -2,6 +2,7 @@
 title: "PATCH /api/subscriptions/{id} — Update a subscription"
 sidebarTitle: "PATCH /api/subscriptions/{id}"
 description: "Update a webhook subscription's URL, signal types, or active status. Reactivate disabled subscriptions or rotate the webhook secret with a single PATCH."
+openapi: "patch /api/subscriptions/{id}"
 ---
 
 Update any combination of fields on an existing webhook subscription. All request body fields are optional — include only the fields you want to change. Use this endpoint to reactivate a disabled subscription, change signal types, update your webhook URL, or rotate your account webhook secret.

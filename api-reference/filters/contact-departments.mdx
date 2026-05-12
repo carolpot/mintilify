@@ -2,6 +2,7 @@
 title: "GET /prospecting/filters/contacts/departments"
 sidebarTitle: "GET /filters/contacts/departments"
 description: "Retrieve valid department values for filtering contacts in prospecting searches. Use returned values in the departments field of your search request."
+openapi: "get /prospecting/filters/contacts/departments"
 ---
 
 Retrieve the list of valid department values you can use to filter contacts in `POST /prospecting/contact/search`. Passing unrecognized values causes searches to return no results, so always fetch valid options from this endpoint first.

@@ -2,6 +2,7 @@
 title: "POST /api/subscriptions — Create webhook subscriptions"
 sidebarTitle: "POST /api/subscriptions"
 description: "Create up to 25 webhook subscriptions per request. Specify the entity type, entity IDs, signal types to monitor, and your HTTPS webhook endpoint URL."
+openapi: "post /api/subscriptions"
 ---
 
 Send a single request to subscribe one or more contacts or companies to real-time signal notifications. Each subscription links an entity to a webhook URL and the set of signal types you want to receive. Lusha delivers a signed JSON payload to your endpoint whenever a matching signal fires.

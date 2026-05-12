@@ -2,6 +2,7 @@
 title: "GET /api/signals/filters/{objectType} — Signal options"
 sidebarTitle: "GET /api/signals/filters/{objectType}"
 description: "Retrieve available signal types for contacts or companies. Returns valid values for allSignals, promotion, companyChange, and company-level signals."
+openapi: "get /api/signals/filters/{objectType}"
 ---
 
 Before filtering contacts or companies by signals, call this endpoint to discover which signal types are available and what values are valid for signal sub-filters like news event types, hiring departments, and hiring locations. The endpoint returns different signal types depending on whether you query for `contact` or `company`.

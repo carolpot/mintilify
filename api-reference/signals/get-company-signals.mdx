@@ -2,6 +2,7 @@
 title: "POST /api/signals/companies — Get company signals by ID"
 sidebarTitle: "POST /api/signals/companies"
 description: "Retrieve signal data for up to 100 companies by their Lusha IDs. Covers hiring surges, headcount changes, website traffic, and news events."
+openapi: "post /api/signals/companies"
 ---
 
 Use this endpoint when you already have Lusha company IDs and want to retrieve signal data for those companies in bulk — up to 100 per request. The response covers a wide range of company-level signals including hiring surges, headcount changes, website traffic trends, IT spend shifts, and categorized news events. The default time window is the last 6 months; use `startDate` to customize the range.

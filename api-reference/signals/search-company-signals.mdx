@@ -2,6 +2,7 @@
 title: "POST /api/signals/companies/search"
 sidebarTitle: "POST /api/signals/companies/search"
 description: "Search and enrich company signals in one request using company ID, name, or domain as identifiers. Combines lookup and signal retrieval."
+openapi: "post /api/signals/companies/search"
 ---
 
 Use this endpoint to identify companies and retrieve their signal data in a single request — without requiring a Lusha company ID upfront. You provide at least one identifier per company (a string company ID, a name, or a domain), and the API matches them to Lusha's database and returns the signal results. This combines what would otherwise be a separate lookup and signal retrieval step.

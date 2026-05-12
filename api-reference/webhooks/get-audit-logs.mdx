@@ -2,6 +2,7 @@
 title: "GET /api/audit-logs — Retrieve webhook delivery logs"
 sidebarTitle: "GET /api/audit-logs"
 description: "List webhook delivery logs for your account. Filter by subscription ID or status. Logs retained 90 days for success, 180 for failures."
+openapi: "get /api/audit-logs"
 ---
 
 Retrieve a log of all webhook delivery attempts for your account. Every attempt — successful or failed — is recorded with its HTTP status code, response time, error message, and timestamps. Use these logs to diagnose delivery failures, verify that your endpoint is receiving signals correctly, and decide when to reactivate a disabled subscription.

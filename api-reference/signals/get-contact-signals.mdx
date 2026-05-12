@@ -2,6 +2,7 @@
 title: "POST /api/signals/contacts — Get contact signals by ID"
 sidebarTitle: "POST /api/signals/contacts"
 description: "Retrieve signal data for up to 100 contacts by their Lusha IDs. Returns promotion and job-change signals from the last 6 months by default."
+openapi: "post /api/signals/contacts"
 ---
 
 Use this endpoint when you already have Lusha contact IDs and want to retrieve signal data for those contacts in bulk — up to 100 per request. The default time window is the last 6 months; use `startDate` to look further back. Each signal type you request counts toward your credit usage.
