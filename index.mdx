@@ -4,109 +4,119 @@ description: "Unified B2B data for enrichment, prospecting, signals, and AI work
 mode: "custom"
 ---
 
-<style>{`
-  .ld-wrap { max-width: 860px; margin: 0 auto; padding: 60px 24px 56px; }
+<div style={{ maxWidth: "860px", margin: "0 auto", padding: "60px 24px 56px" }}>
 
-  .ld-hero {
-    background: linear-gradient(135deg, #f4f0ff 0%, #fdf6ff 60%, #ffffff 100%);
-    border: 1px solid #ede8ff;
-    border-radius: 16px;
-    padding: 48px 44px;
-    margin-bottom: 48px;
-  }
-  .dark .ld-hero {
-    background: linear-gradient(135deg, #1e1030 0%, #17102a 100%);
-    border-color: #2d1f58;
-  }
-
-  .ld-hero h1 { font-size: 2.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 14px; color: #141414; }
-  .dark .ld-hero h1 { color: #f0f0f0; }
-
-  .ld-hero p { font-size: 1.05rem; color: #555; line-height: 1.7; margin-bottom: 32px; max-width: 500px; }
-  .dark .ld-hero p { color: #999; }
-
-  .ld-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-
-  .ld-btn-primary {
-    display: inline-block; background: #863fff; color: #ffffff !important;
-    padding: 11px 24px; border-radius: 7px; text-decoration: none !important;
-    font-weight: 600; font-size: 0.95rem;
-  }
-  .ld-btn-secondary {
-    display: inline-block; background: #ffffff; color: #141414 !important;
-    padding: 11px 24px; border-radius: 7px; text-decoration: none !important;
-    font-weight: 500; font-size: 0.95rem; border: 1px solid #ddd;
-  }
-  .dark .ld-btn-secondary { background: transparent; color: #f0f0f0 !important; border-color: #444; }
-
-  .ld-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-
-  .ld-card {
-    border: 1px solid #e8e8e8; border-top: 3px solid #863fff;
-    border-radius: 12px; padding: 28px 24px;
-  }
-  .dark .ld-card { border-color: #2a2a3e; border-top-color: #863fff; background: #13121f; }
-
-  .ld-card h2 { font-size: 1rem; font-weight: 700; color: #141414; margin-bottom: 8px; margin-top: 0; }
-  .dark .ld-card h2 { color: #f0f0f0; }
-
-  .ld-card p { font-size: 0.875rem; color: #666; line-height: 1.6; margin-bottom: 20px; margin-top: 0; }
-  .dark .ld-card p { color: #888; }
-
-  .ld-links { display: flex; flex-direction: column; gap: 9px; }
-  .ld-links a { font-size: 0.875rem; color: #863fff !important; text-decoration: none !important; font-weight: 500; }
-  .ld-links a:hover { opacity: 0.75; }
-`}</style>
-
-<div className="ld-wrap">
-
-  <div className="ld-hero">
-    <h1>Unified B2B data for prospecting,<br />enrichment &amp; signals</h1>
-    <p>Build with Lusha's API to enrich records, find new prospects, detect account changes, and connect to AI workflows.</p>
-    <div className="ld-btns">
-      <a href="/api-reference/enrichment/search-single-contact" className="ld-btn-primary">Browse API Reference →</a>
-      <a href="/introduction" className="ld-btn-secondary">Get started</a>
+  <div
+    className="border border-violet-100 dark:border-violet-900 bg-gradient-to-br from-violet-50 via-purple-50 to-white dark:from-violet-950 dark:via-purple-950 dark:to-gray-950"
+    style={{ borderRadius: "16px", padding: "48px 44px", marginBottom: "48px" }}
+  >
+    <h1
+      className="text-gray-900 dark:text-gray-100"
+      style={{ fontSize: "2.4rem", fontWeight: 700, lineHeight: 1.2, marginBottom: "14px" }}
+    >
+      Unified B2B data for prospecting,<br />enrichment &amp; signals
+    </h1>
+    <p
+      className="text-gray-500 dark:text-gray-400"
+      style={{ fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "32px", maxWidth: "500px" }}
+    >
+      Build with Lusha's API to enrich records, find new prospects,
+      detect account changes, and connect to AI workflows.
+    </p>
+    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+      <a
+        href="/api-reference/enrichment/search-single-contact"
+        style={{ display: "inline-block", background: "#863fff", color: "#ffffff", padding: "11px 24px", borderRadius: "7px", textDecoration: "none", fontWeight: 600, fontSize: "0.95rem" }}
+      >
+        Browse API Reference →
+      </a>
+      <a
+        href="/introduction"
+        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600"
+        style={{ display: "inline-block", padding: "11px 24px", borderRadius: "7px", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem" }}
+      >
+        Get started
+      </a>
     </div>
   </div>
 
-  <div className="ld-grid">
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px" }}>
 
-    <div className="ld-card">
-      <h2>API & Developers</h2>
-      <p>REST API reference, authentication, rate limits, and code examples.</p>
-      <div className="ld-links">
-        <a href="/introduction">Quickstart</a>
-        <a href="/authentication">Authentication</a>
-        <a href="/api-reference/enrichment/search-single-contact">Enrichment API</a>
-        <a href="/api-reference/prospecting/search-contacts">Prospecting API</a>
-        <a href="/api-reference/signals/get-contact-signals">Signals & Webhooks</a>
-        <a href="/error-codes">Error codes</a>
+    <div
+      className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+      style={{ borderTop: "3px solid #863fff", borderRadius: "12px", padding: "28px 24px" }}
+    >
+      <h2
+        className="text-gray-900 dark:text-gray-100"
+        style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "8px", marginTop: 0 }}
+      >
+        API & Developers
+      </h2>
+      <p
+        className="text-gray-500 dark:text-gray-400"
+        style={{ fontSize: "0.875rem", lineHeight: 1.6, marginBottom: "20px", marginTop: 0 }}
+      >
+        REST API reference, authentication, rate limits, and code examples.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+        <a href="/introduction" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Quickstart</a>
+        <a href="/authentication" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Authentication</a>
+        <a href="/api-reference/enrichment/search-single-contact" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Enrichment API</a>
+        <a href="/api-reference/prospecting/search-contacts" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Prospecting API</a>
+        <a href="/api-reference/signals/get-contact-signals" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Signals & Webhooks</a>
+        <a href="/error-codes" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Error codes</a>
       </div>
     </div>
 
-    <div className="ld-card">
-      <h2>User Guide</h2>
-      <p>Platform features, browser extensions, and CRM integrations.</p>
-      <div className="ld-links">
-        <a href="/user-guide/overview">Platform overview</a>
-        <a href="/user-guide/chrome-extension">Chrome extension</a>
-        <a href="/user-guide/salesforce">Salesforce integration</a>
-        <a href="/user-guide/hubspot">HubSpot integration</a>
-        <a href="/user-guide/team-management">Team management</a>
-        <a href="/user-guide/billing-and-plans">Billing & plans</a>
+    <div
+      className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+      style={{ borderTop: "3px solid #863fff", borderRadius: "12px", padding: "28px 24px" }}
+    >
+      <h2
+        className="text-gray-900 dark:text-gray-100"
+        style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "8px", marginTop: 0 }}
+      >
+        User Guide
+      </h2>
+      <p
+        className="text-gray-500 dark:text-gray-400"
+        style={{ fontSize: "0.875rem", lineHeight: 1.6, marginBottom: "20px", marginTop: 0 }}
+      >
+        Platform features, browser extensions, and CRM integrations.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+        <a href="/user-guide/overview" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Platform overview</a>
+        <a href="/user-guide/chrome-extension" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Chrome extension</a>
+        <a href="/user-guide/salesforce" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Salesforce integration</a>
+        <a href="/user-guide/hubspot" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>HubSpot integration</a>
+        <a href="/user-guide/team-management" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Team management</a>
+        <a href="/user-guide/billing-and-plans" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Billing & plans</a>
       </div>
     </div>
 
-    <div className="ld-card">
-      <h2>Data & Reference</h2>
-      <p>Field definitions, coverage, signal types, and MCP tools.</p>
-      <div className="ld-links">
-        <a href="/data-catalog/overview">Data catalog</a>
-        <a href="/data-catalog/contact-identity">Contact fields</a>
-        <a href="/data-catalog/company-firmographics">Company fields</a>
-        <a href="/data-catalog/signal-types">Signal types</a>
-        <a href="/mcp/overview">MCP overview</a>
-        <a href="/faq/api">FAQ</a>
+    <div
+      className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+      style={{ borderTop: "3px solid #863fff", borderRadius: "12px", padding: "28px 24px" }}
+    >
+      <h2
+        className="text-gray-900 dark:text-gray-100"
+        style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "8px", marginTop: 0 }}
+      >
+        Data & Reference
+      </h2>
+      <p
+        className="text-gray-500 dark:text-gray-400"
+        style={{ fontSize: "0.875rem", lineHeight: 1.6, marginBottom: "20px", marginTop: 0 }}
+      >
+        Field definitions, coverage, signal types, and MCP tools.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+        <a href="/data-catalog/overview" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Data catalog</a>
+        <a href="/data-catalog/contact-identity" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Contact fields</a>
+        <a href="/data-catalog/company-firmographics" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Company fields</a>
+        <a href="/data-catalog/signal-types" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Signal types</a>
+        <a href="/mcp/overview" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>MCP overview</a>
+        <a href="/faq/api" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>FAQ</a>
       </div>
     </div>
 
