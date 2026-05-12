@@ -4,17 +4,9 @@ description: "Unified B2B data for enrichment, prospecting, signals, and AI work
 mode: "custom"
 ---
 
-<div style={{ maxWidth: "780px", margin: "0 auto", padding: "60px 24px 56px" }}>
+<div style={{ maxWidth: "860px", margin: "0 auto", padding: "60px 24px 56px" }}>
 
-  <div style={{ marginBottom: "40px" }}>
-    <img
-      src="https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg"
-      alt="Lusha"
-      style={{ height: "36px", display: "block" }}
-    />
-  </div>
-
-  <div style={{ background: "linear-gradient(135deg, #f4f0ff 0%, #fdf6ff 60%, #ffffff 100%)", borderRadius: "16px", padding: "48px 44px", marginBottom: "56px", border: "1px solid #ede8ff" }}>
+  <div style={{ background: "linear-gradient(135deg, #f4f0ff 0%, #fdf6ff 60%, #ffffff 100%)", borderRadius: "16px", padding: "48px 44px", marginBottom: "48px", border: "1px solid #ede8ff" }}>
     <h1 style={{ fontSize: "2.4rem", fontWeight: 700, lineHeight: 1.2, marginBottom: "14px", color: "#141414" }}>
       Unified B2B data for prospecting,<br />enrichment &amp; signals
     </h1>
@@ -38,67 +30,56 @@ mode: "custom"
     </div>
   </div>
 
-  <div style={{ marginBottom: "48px" }}>
-    <h2 style={{ fontSize: "1.1rem", fontWeight: 600, color: "#863fff", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "16px" }}>
-      What you can build
-    </h2>
-    <CardGroup cols={2}>
-      <Card title="Enrich contacts & companies" icon="address-book" href="/enrichment/overview">
-        Add verified emails, phones, and firmographics to existing records.
-      </Card>
-      <Card title="Find new prospects" icon="magnifying-glass" href="/prospecting/overview">
-        Search by job title, seniority, location, and company filters.
-      </Card>
-      <Card title="Detect account changes" icon="bolt" href="/signals/overview">
-        Identify job changes and company events with real-time signals.
-      </Card>
-      <Card title="Connect to AI tools" icon="robot" href="/mcp/overview">
-        Use Lusha data inside Claude, Cursor, and MCP-compatible agents.
-      </Card>
-    </CardGroup>
-  </div>
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px" }}>
 
-  <div style={{ paddingTop: "40px", borderTop: "1px solid #e8e8e8", marginBottom: "48px" }}>
-    <h2 style={{ fontSize: "1.1rem", fontWeight: 600, color: "#863fff", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "6px" }}>
-      API Reference
-    </h2>
-    <p style={{ color: "#666", fontSize: "0.95rem", marginBottom: "20px" }}>
-      Every endpoint with an interactive playground — try any request directly from the browser.
-    </p>
-    <CardGroup cols={3}>
-      <Card title="Enrichment" icon="address-book" href="/api-reference/enrichment/search-single-contact">
-        `/v2/person` · `/v2/company`
-      </Card>
-      <Card title="Prospecting" icon="magnifying-glass" href="/api-reference/prospecting/search-contacts">
-        Search &amp; enrich contacts and companies
-      </Card>
-      <Card title="Signals" icon="bolt" href="/api-reference/signals/get-contact-signals">
-        Contact &amp; company change events
-      </Card>
-      <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks/create-subscription">
-        Real-time push notifications
-      </Card>
-      <Card title="Lookalikes" icon="users" href="/api-reference/lookalikes/contact-lookalikes">
-        AI-powered similarity search
-      </Card>
-      <Card title="Filters" icon="sliders" href="/api-reference/filters/contact-departments">
-        Valid values for prospecting filters
-      </Card>
-    </CardGroup>
-  </div>
+    <div style={{ border: "1px solid #e8e8e8", borderRadius: "12px", padding: "28px 24px" }}>
+      <div style={{ fontSize: "1.4rem", marginBottom: "10px" }}>⚡</div>
+      <h2 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#141414", marginBottom: "8px" }}>API & Developers</h2>
+      <p style={{ fontSize: "0.9rem", color: "#666", lineHeight: 1.6, marginBottom: "20px" }}>
+        REST API reference, authentication, rate limits, and code examples.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <a href="/introduction" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Quickstart</a>
+        <a href="/authentication" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Authentication</a>
+        <a href="/api-reference/enrichment/search-single-contact" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Enrichment API</a>
+        <a href="/api-reference/prospecting/search-contacts" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Prospecting API</a>
+        <a href="/api-reference/signals/get-contact-signals" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Signals & Webhooks</a>
+        <a href="/error-codes" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Error codes</a>
+      </div>
+    </div>
 
-  <div style={{ paddingTop: "40px", borderTop: "1px solid #e8e8e8" }}>
-    <CardGroup cols={3}>
-      <Card title="Data Catalog" icon="database" href="/data-catalog/overview">
-        Every field Lusha returns, with types and coverage notes.
-      </Card>
-      <Card title="MCP" icon="robot" href="/mcp/overview">
-        Use Lusha inside AI assistants with Model Context Protocol.
-      </Card>
-      <Card title="User Guide" icon="book-open" href="/user-guide/overview">
-        Platform, browser extensions, and CRM integrations.
-      </Card>
-    </CardGroup>
+    <div style={{ border: "1px solid #e8e8e8", borderRadius: "12px", padding: "28px 24px" }}>
+      <div style={{ fontSize: "1.4rem", marginBottom: "10px" }}>📖</div>
+      <h2 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#141414", marginBottom: "8px" }}>User Guide</h2>
+      <p style={{ fontSize: "0.9rem", color: "#666", lineHeight: 1.6, marginBottom: "20px" }}>
+        Platform features, browser extensions, and CRM integrations.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <a href="/user-guide/overview" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Platform overview</a>
+        <a href="/user-guide/chrome-extension" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Chrome extension</a>
+        <a href="/user-guide/salesforce" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Salesforce integration</a>
+        <a href="/user-guide/hubspot" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ HubSpot integration</a>
+        <a href="/user-guide/team-management" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Team management</a>
+        <a href="/user-guide/billing-and-plans" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Billing & plans</a>
+      </div>
+    </div>
+
+    <div style={{ border: "1px solid #e8e8e8", borderRadius: "12px", padding: "28px 24px" }}>
+      <div style={{ fontSize: "1.4rem", marginBottom: "10px" }}>🗄️</div>
+      <h2 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#141414", marginBottom: "8px" }}>Data & Reference</h2>
+      <p style={{ fontSize: "0.9rem", color: "#666", lineHeight: 1.6, marginBottom: "20px" }}>
+        Field definitions, coverage, signal types, and MCP tools.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <a href="/data-catalog/overview" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Data catalog</a>
+        <a href="/data-catalog/contact-identity" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Contact fields</a>
+        <a href="/data-catalog/company-firmographics" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Company fields</a>
+        <a href="/data-catalog/signal-types" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ Signal types</a>
+        <a href="/mcp/overview" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ MCP overview</a>
+        <a href="/faq/api" style={{ fontSize: "0.9rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>→ FAQ</a>
+      </div>
+    </div>
+
   </div>
 
 </div>
