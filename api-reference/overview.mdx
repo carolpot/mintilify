@@ -1,0 +1,69 @@
+---
+title: "API Overview"
+description: "Lusha's REST API gives you programmatic access to a comprehensive dataset of business profiles and company information."
+---
+
+Lusha is a RESTful API that lets you query verified contact and company data for prospecting, enrichment, automation, and analytics workflows. All requests are made over HTTPS and return JSON.
+
+**Base URL**
+
+```
+https://api.lusha.com
+```
+
+## Authentication
+
+All API requests require your API key passed as a request header.
+
+```bash
+curl https://api.lusha.com/v2/person \
+  -H "api_key: YOUR_API_KEY"
+```
+
+Get your API key from the [Lusha dashboard](https://www.lusha.com/). Keep it secret — never expose it in client-side code or public repositories.
+
+## Rate Limiting
+
+The API enforces **25 requests per second** by default. Each response includes headers to help you track your quota:
+
+| Header | Description |
+|---|---|
+| `X-RateLimit-Limit-day` | Daily request allowance |
+| `X-RateLimit-Remaining-day` | Requests remaining today |
+| `X-RateLimit-Limit-minute` | Per-minute request allowance |
+| `X-RateLimit-Remaining-minute` | Requests remaining this minute |
+
+When you exceed the limit, the API returns `429 Too Many Requests`. Back off and retry after the reset window.
+
+## Error Codes
+
+| Status | Meaning |
+|---|---|
+| `200` | Success |
+| `400` | Bad request — check your parameters |
+| `401` | Unauthorized — invalid or missing API key |
+| `429` | Rate limit exceeded |
+| `5XX` | Server error — retry with exponential backoff |
+
+## API Modules
+
+<CardGroup cols={2}>
+  <Card title="Enrichment" icon="address-book" href="/api-reference/enrichment/search-single-contact">
+    Add emails, phones, and firmographics to existing contact and company records.
+  </Card>
+  <Card title="Prospecting" icon="magnifying-glass" href="/api-reference/prospecting/search-contacts">
+    Search Lusha's database by title, seniority, location, industry, and more.
+  </Card>
+  <Card title="Signals" icon="bolt" href="/api-reference/signals/get-contact-signals">
+    Detect job changes, promotions, and company events in real time.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks/create-subscription">
+    Receive push notifications when contacts or companies trigger signal events.
+  </Card>
+  <Card title="Lookalikes" icon="users" href="/api-reference/lookalikes/contact-lookalikes">
+    Find contacts and companies that match your best existing customers.
+  </Card>
+  <Card title="Filters" icon="sliders" href="/api-reference/filters/contact-departments">
+    Retrieve valid filter values for prospecting searches.
+  </Card>
+</CardGroup>
