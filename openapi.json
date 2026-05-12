@@ -885,7 +885,9 @@
             "$ref": "#/components/responses/InternalServerError"
           }
         }
-      },
+      }
+    },
+    "/bulk/company/v2": {
       "post": {
         "tags": [
           "Enrichment"

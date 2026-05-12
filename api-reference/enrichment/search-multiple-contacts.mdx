@@ -2,6 +2,7 @@
 title: "POST /v2/person — Bulk enrich up to 100 contacts"
 sidebarTitle: "POST /v2/person"
 description: "Enrich up to 100 contacts in a single request. Identify each contact by email, LinkedIn URL, personId, or name and company using the Lusha bulk endpoint."
+openapi: "post /v2/person"
 ---
 
 Use this endpoint to enrich multiple contacts in a single request. Submit a list of up to 100 contact objects and receive enriched profile data for each one, including email addresses, phone numbers, and company information. Each contact in the request must include a unique `contactId` so you can correlate results in the response.

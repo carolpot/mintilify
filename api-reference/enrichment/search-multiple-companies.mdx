@@ -2,6 +2,7 @@
 title: "POST /bulk/company/v2 — Bulk enrich up to 100 companies"
 sidebarTitle: "POST /bulk/company/v2"
 description: "Enrich up to 100 companies in a single request with firmographics, funding, technologies, and optional signal data using the Lusha bulk company endpoint."
+openapi: "post /bulk/company/v2"
 ---
 
 Use this endpoint to enrich multiple company records in a single request. Submit a list of up to 100 companies identified by domain, name, or Lusha company ID, and receive firmographic data for each one. This endpoint also supports `signalsFilters` for narrowing signal results by event type, department, or location — functionality that is not available on the single-company endpoint.
