@@ -1,0 +1,23 @@
+---
+title: "Credit costs by endpoint"
+description: "How many credits each Lusha API endpoint consumes per successful result."
+---
+
+<Note>
+  This page is a placeholder. Add your actual credit pricing per endpoint here once confirmed with your team.
+</Note>
+
+| Endpoint | Credits per result |
+|---|---|
+| `GET /v2/person` | 1 |
+| `POST /v2/person` (bulk) | 1 per match |
+| `GET /v2/company` | 1 |
+| `POST /bulk/company/v2` | 1 per match |
+| `POST /prospecting/contact/search` | — (no charge) |
+| `POST /prospecting/contact/enrich` | 1 per contact |
+| `POST /prospecting/company/search` | — (no charge) |
+| `POST /prospecting/company/enrich` | 1 per company |
+| Signals | 1 per signal type returned |
+| Lookalikes | 1 per profile returned |
+| Webhooks | 1 per signal delivered |
+| Filters | — (no charge) |

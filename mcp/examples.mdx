@@ -1,0 +1,42 @@
+---
+title: "MCP prompt examples"
+description: "Example prompts for common Lusha tasks using any MCP-compatible AI client."
+---
+
+These prompts work in Claude, Cursor, or any client with the Lusha MCP server configured.
+
+## Enrich a contact
+
+```
+Enrich the contact dustin@asana.com and tell me their current job title,
+direct phone number, and LinkedIn URL.
+```
+
+## Build a prospect list
+
+```
+Find 25 VP of Sales contacts at B2B SaaS companies with 50–200 employees
+in the United States. Return their names, companies, and LinkedIn URLs.
+```
+
+## Detect job changes
+
+```
+Check whether John Smith (personId: 4183886134) has changed jobs in the
+last 3 months and summarize any signals you find.
+```
+
+## Enrich and write to CRM
+
+```
+Enrich the contact at linkedin.com/in/dustin, then create a new contact
+record in HubSpot with the verified email and direct phone.
+```
+*(Requires both Lusha MCP and HubSpot MCP to be configured.)*
+
+## Find lookalike companies
+
+```
+I have a company called Lusha (lusha.com). Find 10 similar companies —
+same size, same industry, same geography — and return their names and domains.
+```

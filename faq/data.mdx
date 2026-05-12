@@ -1,0 +1,32 @@
+---
+title: "Data & Coverage FAQ"
+description: "Common questions about Lusha's data sources, coverage, accuracy, and freshness."
+---
+
+<AccordionGroup>
+
+<Accordion title="Where does Lusha's data come from?">
+  Lusha aggregates data from publicly available sources and contributions from trusted business partners. Data is not created or directly managed by Lusha. For full details, see the [Privacy Policy](https://lusha.com/legal/privacy-notice/).
+</Accordion>
+
+<Accordion title="How fresh is the data?">
+  Contact records are refreshed continuously when signals are detected (job changes, company changes). The `updateDate` field on any record shows when it was last verified. Signal data has a default lookback window of 6 months, configurable via `signalsStartDate`.
+</Accordion>
+
+<Accordion title="What happens when a contact is not found?">
+  The API returns a `200 OK` with an `error` object inside the contact payload (e.g., `"name": "EMPTY_DATA"`). No credit is charged for records with no match.
+</Accordion>
+
+<Accordion title="What is a partial profile?">
+  A partial profile is a contact record that exists in Lusha's database but has incomplete data. Use the `partialProfile: true` parameter on enrichment endpoints to include these results — useful when you need any available data rather than a full match.
+</Accordion>
+
+<Accordion title="What does GDPR mean for the data returned?">
+  Lusha applies GDPR compliance automatically. For contacts in the EU, data is returned subject to applicable regulations. Requests that cannot be fulfilled due to legal reasons return `451 Unavailable for Legal Reasons`.
+</Accordion>
+
+<Accordion title="What is the Do Not Call (DNC) flag?">
+  Phone numbers marked `doNotCall: true` are on the Do Not Call registry. The `excludeDnc` parameter (Scale plan) filters out contacts whose phone numbers are all DNC, so only contacts with at least one callable number appear in results.
+</Accordion>
+
+</AccordionGroup>

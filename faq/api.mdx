@@ -1,0 +1,45 @@
+---
+title: "API & Integration FAQ"
+description: "Common questions about using the Lusha API, authentication, rate limits, and integration patterns."
+---
+
+<AccordionGroup>
+
+<Accordion title="How do I authenticate API requests?">
+  Pass your Lusha API key in the `api_key` header on every request:
+
+  ```bash
+  curl --request GET \
+    --url "https://api.lusha.com/v2/person?email=dustin@asana.com" \
+    --header "api_key: YOUR_API_KEY"
+  ```
+
+  You can generate and manage API keys from the [Lusha dashboard](https://dashboard.lusha.com/enrich/api).
+</Accordion>
+
+<Accordion title="What is the rate limit?">
+  The default rate limit is **25 requests per second** per endpoint. The Account Usage endpoint has a lower limit of **5 requests per minute**.
+
+  Rate limit headers are included in every response (`x-rate-limit-minute`, `x-minute-requests-left`, etc.). When you exceed the limit, the API returns `429 Too Many Requests`.
+</Accordion>
+
+<Accordion title="Can I use the API without an API key?">
+  No. All requests to `api.lusha.com` require a valid API key in the `api_key` header. Requests without a key return `401 Unauthorized`.
+</Accordion>
+
+<Accordion title="What does a 403 error mean?">
+  A `403 Forbidden` response usually means one of:
+  - Your account is inactive — contact support@lusha.com
+  - You used `revealEmails` or `revealPhones` but you are not on the Unified Credits plan
+  - You used `excludeDnc` but you are not on the Scale plan
+</Accordion>
+
+<Accordion title="How do I handle 429 rate limit errors?">
+  Implement exponential backoff: wait 1 second after the first 429, 2 seconds after the second, 4 seconds after the third, and so on. Check the `x-minute-requests-left` header proactively to avoid hitting the limit.
+</Accordion>
+
+<Accordion title="Is there an SDK?">
+  Lusha does not currently publish an official SDK. The API is a standard REST/JSON API — you can use any HTTP client (Axios, Requests, Fetch, cURL) or generate a client from the [OpenAPI spec](https://github.com/carolpot/mintilify/blob/main/openapi.json).
+</Accordion>
+
+</AccordionGroup>

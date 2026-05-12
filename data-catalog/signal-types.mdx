@@ -1,0 +1,26 @@
+---
+title: "Signal types"
+description: "What each Lusha signal means, how it is detected, and how long the lookback window is."
+---
+
+Signals are real-world changes detected for contacts and companies. They are available via the [Signals API](/signals/overview) and [Webhooks](/webhooks/overview).
+
+## Contact signals
+
+| Signal | Value | Description |
+|---|---|---|
+| All signals | `allSignals` | Returns all available signal types for the contact |
+| Promotion | `promotion` | The contact changed roles at the same company |
+| Company change | `companyChange` | The contact moved to a new employer |
+
+## Company signals
+
+| Signal | Description |
+|---|---|
+| Funding | A new funding round was announced |
+| Headcount growth | The company's employee count grew significantly |
+| Technology adoption | The company added a new tool to its tech stack |
+
+## Lookback window
+
+By default, signals are returned for the past **6 months**. Use the `signalsStartDate` parameter (`YYYY-MM-DD`) to extend or restrict the window.

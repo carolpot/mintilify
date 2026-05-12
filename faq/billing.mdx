@@ -1,0 +1,28 @@
+---
+title: "Credits & Billing FAQ"
+description: "Common questions about Lusha credits, plan limits, and billing."
+---
+
+<AccordionGroup>
+
+<Accordion title="When am I charged a credit?">
+  Credits are charged per successful enrichment result — when the API returns matched data for a contact or company. No credit is deducted for requests that return no match, or for API errors.
+</Accordion>
+
+<Accordion title="Are credits shared across my team?">
+  Yes. All users and API keys on your Lusha account draw from the same credit pool.
+</Accordion>
+
+<Accordion title="How do I check my current credit balance?">
+  Use the [Account Usage endpoint](/api-reference/account/usage-stats) to retrieve your balance, daily usage, and plan limits programmatically. You can also view it in the [Lusha dashboard](https://dashboard.lusha.com).
+</Accordion>
+
+<Accordion title="What is the Unified Credits plan?">
+  Unified Credits is a pricing tier that lets you use a single credit pool for all data types. It also unlocks the `revealEmails` and `revealPhones` parameters on enrichment endpoints. Contact your account manager or visit [lusha.com](https://www.lusha.com) to learn more.
+</Accordion>
+
+<Accordion title="What happens when I run out of credits?">
+  Once your credit balance is exhausted, API calls that would consume credits return a `429` error with a message indicating your daily or plan quota has been reached.
+</Accordion>
+
+</AccordionGroup>

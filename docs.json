@@ -27,15 +27,23 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Get Started",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Overview",
             "pages": [
               "introduction",
               "authentication",
               "rate-limiting",
               "error-codes"
+            ]
+          },
+          {
+            "group": "Credits & Plans",
+            "pages": [
+              "credits/overview",
+              "credits/costs",
+              "credits/unified-credits"
             ]
           },
           {
@@ -99,8 +107,137 @@
         ]
       },
       {
+        "tab": "User Guide",
+        "groups": [
+          {
+            "group": "The Platform",
+            "pages": [
+              "user-guide/overview",
+              "user-guide/dashboard",
+              "user-guide/search-and-lists"
+            ]
+          },
+          {
+            "group": "Browser Extensions",
+            "pages": [
+              "user-guide/chrome-extension",
+              "user-guide/linkedin-extension"
+            ]
+          },
+          {
+            "group": "CRM Integrations",
+            "pages": [
+              "user-guide/salesforce",
+              "user-guide/hubspot",
+              "user-guide/other-integrations"
+            ]
+          },
+          {
+            "group": "Account & Team",
+            "pages": [
+              "user-guide/team-management",
+              "user-guide/billing-and-plans",
+              "user-guide/privacy-and-compliance"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Reference",
         "openapi": "openapi.json"
+      },
+      {
+        "tab": "Data Catalog",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "data-catalog/overview"
+            ]
+          },
+          {
+            "group": "Contact Data",
+            "pages": [
+              "data-catalog/contact-identity",
+              "data-catalog/contact-emails",
+              "data-catalog/contact-phones",
+              "data-catalog/contact-employment"
+            ]
+          },
+          {
+            "group": "Company Data",
+            "pages": [
+              "data-catalog/company-firmographics",
+              "data-catalog/company-technologies",
+              "data-catalog/company-funding"
+            ]
+          },
+          {
+            "group": "Signals",
+            "pages": [
+              "data-catalog/signal-types"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "MCP",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "mcp/overview",
+              "mcp/setup"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "mcp/tools",
+              "mcp/examples"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "2026",
+            "pages": [
+              "changelog/may-2026"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "FAQ",
+        "groups": [
+          {
+            "group": "API & Integration",
+            "pages": [
+              "faq/api"
+            ]
+          },
+          {
+            "group": "Data & Coverage",
+            "pages": [
+              "faq/data"
+            ]
+          },
+          {
+            "group": "Credits & Billing",
+            "pages": [
+              "faq/billing"
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              "faq/mcp"
+            ]
+          }
+        ]
       }
     ]
   }

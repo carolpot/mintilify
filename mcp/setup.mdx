@@ -1,0 +1,41 @@
+---
+title: "MCP setup"
+description: "Install and configure the Lusha MCP server for Claude, Cursor, or any MCP-compatible client."
+---
+
+<Note>
+  This page is a placeholder. Add your actual MCP server installation steps, config file format, and client-specific setup guides here.
+</Note>
+
+## Prerequisites
+
+- A Lusha API key ([get one here](https://dashboard.lusha.com/enrich/api))
+- Node.js 18+ (for the npm package) or Docker
+- An MCP-compatible client: Claude Desktop, Cursor, Windsurf, or similar
+
+## Installation
+
+```bash
+npm install -g @lusha/mcp-server
+```
+
+## Configuration
+
+Add the Lusha MCP server to your client's MCP config file:
+
+```json
+{
+  "mcpServers": {
+    "lusha": {
+      "command": "lusha-mcp",
+      "env": {
+        "LUSHA_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+Config file locations:
+- **Claude Desktop** (Mac): `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Cursor**: `.cursor/mcp.json` in your project root

@@ -1,0 +1,22 @@
+---
+title: "MCP tools reference"
+description: "Every tool the Lusha MCP server exposes, with input and output schemas."
+---
+
+<Note>
+  This page is a placeholder. Document each MCP tool name, description, input schema, and example output here.
+</Note>
+
+## Available tools
+
+| Tool | Description | Underlying endpoint |
+|---|---|---|
+| `enrich_contact` | Enrich a single contact by email, LinkedIn URL, or name | `GET /v2/person` |
+| `enrich_contacts_bulk` | Enrich up to 100 contacts in one call | `POST /v2/person` |
+| `enrich_company` | Enrich a single company by domain or name | `GET /v2/company` |
+| `search_contacts` | Find contacts matching ICP filters | `POST /prospecting/contact/search` |
+| `search_companies` | Find companies matching firmographic filters | `POST /prospecting/company/search` |
+| `get_contact_signals` | Retrieve job-change and promotion signals for a contact | `POST /api/signals/contacts` |
+| `get_company_signals` | Retrieve growth signals for a company | `POST /api/signals/companies` |
+| `find_similar_contacts` | Find contacts similar to a given profile | `POST /v3/lookalike/contacts` |
+| `find_similar_companies` | Find companies similar to a given profile | `POST /v3/lookalike/companies` |

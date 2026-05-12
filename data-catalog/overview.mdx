@@ -1,0 +1,60 @@
+---
+title: "Data Catalog"
+description: "Every field Lusha returns — types, descriptions, coverage notes, and deprecation status."
+---
+
+The Data Catalog documents every field available across Lusha's contact and company data model. Use it to understand what data you can expect in API responses, map Lusha fields to your CRM schema, or audit which fields are deprecated.
+
+## Coverage at a glance
+
+| Data type | Coverage |
+|---|---|
+| Business email addresses | 150M+ contacts globally |
+| Direct phone numbers | 50M+ verified numbers |
+| Mobile phones | Available where publicly sourced |
+| Company firmographics | 40M+ companies |
+| Technologies (tech stack) | 20M+ companies tracked |
+| Funding & growth signals | Major funding rounds and headcount changes |
+| Job change signals | 6-month lookback window by default |
+
+## Data freshness
+
+Lusha's database is continuously updated. Contact records are refreshed when signals (job changes, company changes) are detected. You can use the `updateDate` field on any record to see when it was last verified.
+
+## Deprecated fields
+
+Some fields are deprecated in favor of newer equivalents. Deprecated fields are still returned for backwards compatibility but will be removed in a future release.
+
+| Deprecated field | Use instead |
+|---|---|
+| `emails` (string[]) | `emailAddresses` (object[]) |
+| `phones` (string) | `phoneNumbers` (object[]) |
+
+## Explore the catalog
+
+<CardGroup cols={2}>
+  <Card title="Contact identity" icon="user" href="/data-catalog/contact-identity">
+    Name, personId, LinkedIn URL, location, and social links.
+  </Card>
+  <Card title="Contact emails" icon="envelope" href="/data-catalog/contact-emails">
+    Email address fields, types, confidence scores, and update dates.
+  </Card>
+  <Card title="Contact phones" icon="phone" href="/data-catalog/contact-phones">
+    Phone number fields, types (mobile/direct), and DNC status.
+  </Card>
+  <Card title="Contact employment" icon="briefcase" href="/data-catalog/contact-employment">
+    Job title, seniority, departments, company, and previous employment.
+  </Card>
+  <Card title="Company firmographics" icon="building" href="/data-catalog/company-firmographics">
+    Name, domain, size, revenue, industry, location, and headcount.
+  </Card>
+  <Card title="Company technologies" icon="microchip" href="/data-catalog/company-technologies">
+    Tech stack data — tools and platforms a company uses.
+  </Card>
+  <Card title="Company funding" icon="chart-line" href="/data-catalog/company-funding">
+    Funding rounds, investors, and growth stage.
+  </Card>
+  <Card title="Signal types" icon="bolt" href="/data-catalog/signal-types">
+    Job changes, promotions, and company events — what each signal means.
+  </Card>
+</CardGroup>

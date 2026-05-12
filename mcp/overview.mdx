@@ -1,0 +1,44 @@
+---
+title: "Lusha MCP"
+description: "Connect Lusha's B2B data to any MCP-compatible AI assistant, agent, or workflow."
+---
+
+The **Lusha MCP server** implements the [Model Context Protocol](https://modelcontextprotocol.io/) — a standard that lets AI assistants and agents call external tools directly. Once configured, any MCP-compatible client (Claude, Cursor, Windsurf, and others) can enrich contacts, search for prospects, and retrieve company data using natural language — without you writing a single API call.
+
+## What you can do with Lusha MCP
+
+- Ask an AI assistant to "enrich this contact" and get back verified emails and phone numbers
+- Instruct an agent to "find 20 VP of Engineering contacts at Series B companies in New York"
+- Trigger a prospect list build from inside a Claude or Cursor session
+- Chain Lusha tools with other MCP tools (CRM writes, email sends, Slack notifications) in a single agent workflow
+
+## How it works
+
+```
+Your AI client (Claude, Cursor…)
+        ↓  MCP tool call
+Lusha MCP server
+        ↓  REST API call
+Lusha API  →  enriched data
+        ↑
+returned to your AI client
+```
+
+The MCP server translates natural-language tool calls into authenticated Lusha API requests and returns structured results that the AI can reason over or pass downstream.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Setup" icon="plug" href="/mcp/setup">
+    Install and configure the Lusha MCP server in under 10 minutes.
+  </Card>
+  <Card title="Available tools" icon="wrench" href="/mcp/tools">
+    Browse every tool the MCP server exposes and its input/output schema.
+  </Card>
+  <Card title="Examples" icon="sparkles" href="/mcp/examples">
+    Prompt examples for common enrichment and prospecting tasks.
+  </Card>
+  <Card title="Get API Key" icon="key" href="https://dashboard.lusha.com/enrich/api">
+    You need a Lusha API key to use the MCP server.
+  </Card>
+</CardGroup>

@@ -1,0 +1,21 @@
+---
+title: "Unified Credits plan"
+description: "What the Unified Credits pricing plan unlocks and how to use plan-exclusive parameters."
+---
+
+The **Unified Credits** plan is Lusha's flexible pricing tier that lets you use a single credit pool across all data types — emails, phones, enrichment, prospecting, and signals.
+
+## Plan-exclusive parameters
+
+Two enrichment parameters are only available on the Unified Credits plan:
+
+| Parameter | Endpoint | What it does |
+|---|---|---|
+| `revealEmails` | `GET /v2/person`, `POST /v2/person` | Returns only the contact's email address — does not charge for phone data |
+| `revealPhones` | `GET /v2/person`, `POST /v2/person` | Returns only the contact's phone numbers — does not charge for email data |
+
+Using either parameter on a non-Unified Credits plan returns a `403 Forbidden` error. When neither parameter is provided, the API returns all available data by default.
+
+<Warning>
+  Attempting to use `revealEmails` or `revealPhones` on a non-Unified Credits plan returns `403 Forbidden`. Contact your account manager to upgrade.
+</Warning>

@@ -1,0 +1,37 @@
+---
+title: "Credits & Plans"
+description: "How Lusha credits work, what they cost per endpoint, and how to track your usage."
+---
+
+Lusha uses a credit-based system to meter API usage. Every successful API call that returns enriched data deducts one or more credits from your account balance, depending on the endpoint and the data types requested.
+
+<Info>
+  Credits are shared across your entire Lusha account — all users and API keys draw from the same pool.
+</Info>
+
+## How credits are charged
+
+Credits are charged **per successful enrichment result**, not per request. If a request returns no match (contact not found, company not found), no credit is deducted.
+
+| Scenario | Credit charge |
+|---|---|
+| Contact enrichment returns a match | 1 credit |
+| Company enrichment returns a match | 1 credit |
+| Bulk request with 50 matches out of 100 | 50 credits |
+| No match found | 0 credits |
+| API error (4xx / 5xx) | 0 credits |
+
+## Checking your balance
+
+Use the [Account Usage](/api-reference/account/usage-stats) endpoint to retrieve your current credit balance, daily usage, and plan limits programmatically.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Credit costs by endpoint" icon="list" href="/credits/costs">
+    See exactly how many credits each endpoint consumes.
+  </Card>
+  <Card title="Unified Credits plan" icon="star" href="/credits/unified-credits">
+    Learn about the Unified Credits pricing model and its exclusive parameters.
+  </Card>
+</CardGroup>
