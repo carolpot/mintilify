@@ -3,9 +3,9 @@
   "theme": "luma",
   "name": "Lusha API",
   "colors": {
-    "primary": "#8c8c8e",
-    "light": "#1e191f",
-    "dark": "#d2d1d2"
+    "primary": "#863fff",
+    "light": "#863fff",
+    "dark": "#be97ff"
   },
   "favicon": "https://media.brand.dev/7d0f1b56-a288-4914-af30-aefaa00e11e9.png",
   "logo": {

@@ -4,79 +4,88 @@ description: "Unified B2B data for enrichment, prospecting, signals, and AI work
 mode: "custom"
 ---
 
-<div style={{ maxWidth: "800px", margin: "0 auto", padding: "64px 24px 48px" }}>
+<div style={{ maxWidth: "780px", margin: "0 auto", padding: "60px 24px 56px" }}>
 
-<h1 style={{ fontSize: "2.25rem", fontWeight: 700, marginBottom: "12px", lineHeight: 1.2 }}>
-  Unified B2B data for prospecting, enrichment & signals
-</h1>
+  <h1 style={{ fontSize: "2.5rem", fontWeight: 700, lineHeight: 1.2, marginBottom: "14px", color: "#141414" }}>
+    Unified B2B data for prospecting,<br />enrichment &amp; signals
+  </h1>
 
-<p style={{ fontSize: "1.1rem", color: "var(--colors-content-secondary)", marginBottom: "32px", maxWidth: "560px" }}>
-  Build with Lusha's API to enrich records, find new prospects, detect account changes, and connect to AI workflows.
-</p>
+  <p style={{ fontSize: "1.05rem", color: "#555", lineHeight: 1.7, marginBottom: "36px", maxWidth: "520px" }}>
+    Build with Lusha's API to enrich records, find new prospects,
+    detect account changes, and connect to AI workflows.
+  </p>
 
-<div style={{ display: "flex", gap: "12px", marginBottom: "56px" }}>
-  <a href="/api-reference/enrichment/search-single-contact" style={{ background: "var(--colors-accent-default)", color: "#fff", padding: "10px 20px", borderRadius: "6px", textDecoration: "none", fontWeight: 600, fontSize: "0.95rem" }}>
-    Browse API Reference →
-  </a>
-  <a href="/introduction" style={{ border: "1px solid var(--colors-border-default)", color: "var(--colors-content-primary)", padding: "10px 20px", borderRadius: "6px", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem" }}>
-    Get started
-  </a>
-</div>
+  <div style={{ display: "flex", gap: "12px", marginBottom: "60px", flexWrap: "wrap" }}>
+    <a
+      href="/api-reference/enrichment/search-single-contact"
+      style={{ display: "inline-block", background: "#141414", color: "#ffffff", padding: "11px 24px", borderRadius: "7px", textDecoration: "none", fontWeight: 600, fontSize: "0.95rem" }}
+    >
+      Browse API Reference →
+    </a>
+    <a
+      href="/introduction"
+      style={{ display: "inline-block", background: "#f4f0ff", color: "#141414", padding: "11px 24px", borderRadius: "7px", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem" }}
+    >
+      Get started
+    </a>
+  </div>
 
-<CardGroup cols={2}>
-  <Card title="Enrich contacts & companies" icon="address-book" href="/enrichment/overview">
-    Add verified emails, phones, and firmographics to existing records.
-  </Card>
-  <Card title="Find new prospects" icon="magnifying-glass" href="/prospecting/overview">
-    Search by job title, seniority, location, and company filters.
-  </Card>
-  <Card title="Detect account changes" icon="bolt" href="/signals/overview">
-    Identify job changes and company events with real-time signals.
-  </Card>
-  <Card title="Connect to AI tools" icon="robot" href="/mcp/overview">
-    Use Lusha data inside Claude, Cursor, and MCP-compatible agents.
-  </Card>
-</CardGroup>
+  <CardGroup cols={2}>
+    <Card title="Enrich contacts & companies" icon="address-book" href="/enrichment/overview">
+      Add verified emails, phones, and firmographics to existing records.
+    </Card>
+    <Card title="Find new prospects" icon="magnifying-glass" href="/prospecting/overview">
+      Search by job title, seniority, location, and company filters.
+    </Card>
+    <Card title="Detect account changes" icon="bolt" href="/signals/overview">
+      Identify job changes and company events with real-time signals.
+    </Card>
+    <Card title="Connect to AI tools" icon="robot" href="/mcp/overview">
+      Use Lusha data inside Claude, Cursor, and MCP-compatible agents.
+    </Card>
+  </CardGroup>
 
----
+  <div style={{ marginTop: "56px", paddingTop: "40px", borderTop: "1px solid #e8e8e8" }}>
+    <h2 style={{ fontSize: "1.35rem", fontWeight: 700, color: "#141414", marginBottom: "6px" }}>
+      API Documentation
+    </h2>
+    <p style={{ color: "#666", fontSize: "0.95rem", marginBottom: "24px" }}>
+      Every endpoint, with interactive playground — try any request directly from the browser.
+    </p>
+    <CardGroup cols={3}>
+      <Card title="Enrichment" icon="address-book" href="/api-reference/enrichment/search-single-contact">
+        `/v2/person` · `/v2/company`
+      </Card>
+      <Card title="Prospecting" icon="magnifying-glass" href="/api-reference/prospecting/search-contacts">
+        Search &amp; enrich contacts and companies
+      </Card>
+      <Card title="Signals" icon="bolt" href="/api-reference/signals/get-contact-signals">
+        Contact &amp; company change events
+      </Card>
+      <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks/create-subscription">
+        Real-time push notifications
+      </Card>
+      <Card title="Lookalikes" icon="users" href="/api-reference/lookalikes/contact-lookalikes">
+        AI-powered similarity search
+      </Card>
+      <Card title="Filters" icon="sliders" href="/api-reference/filters/contact-departments">
+        Valid values for prospecting filters
+      </Card>
+    </CardGroup>
+  </div>
 
-## API Documentation
-
-The full interactive reference — every endpoint, parameter, request schema, and response example. Try requests directly from the browser.
-
-<CardGroup cols={3}>
-  <Card title="Enrichment" icon="address-book" href="/api-reference/enrichment/search-single-contact">
-    `/v2/person` · `/v2/company`
-  </Card>
-  <Card title="Prospecting" icon="magnifying-glass" href="/api-reference/prospecting/search-contacts">
-    Search & enrich contacts and companies
-  </Card>
-  <Card title="Signals" icon="bolt" href="/api-reference/signals/get-contact-signals">
-    Contact & company change events
-  </Card>
-  <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks/create-subscription">
-    Real-time push notifications
-  </Card>
-  <Card title="Lookalikes" icon="users" href="/api-reference/lookalikes/contact-lookalikes">
-    AI-powered similarity search
-  </Card>
-  <Card title="Filters" icon="sliders" href="/api-reference/filters/contact-departments">
-    Valid values for prospecting filters
-  </Card>
-</CardGroup>
-
----
-
-<CardGroup cols={3}>
-  <Card title="Data Catalog" icon="database" href="/data-catalog/overview">
-    Every field Lusha returns, with types and coverage notes.
-  </Card>
-  <Card title="MCP" icon="robot" href="/mcp/overview">
-    Use Lusha inside AI assistants with Model Context Protocol.
-  </Card>
-  <Card title="User Guide" icon="book-open" href="/user-guide/overview">
-    Platform, browser extensions, and CRM integrations.
-  </Card>
-</CardGroup>
+  <div style={{ marginTop: "48px", paddingTop: "40px", borderTop: "1px solid #e8e8e8" }}>
+    <CardGroup cols={3}>
+      <Card title="Data Catalog" icon="database" href="/data-catalog/overview">
+        Every field Lusha returns, with types and coverage notes.
+      </Card>
+      <Card title="MCP" icon="robot" href="/mcp/overview">
+        Use Lusha inside AI assistants with Model Context Protocol.
+      </Card>
+      <Card title="User Guide" icon="book-open" href="/user-guide/overview">
+        Platform, browser extensions, and CRM integrations.
+      </Card>
+    </CardGroup>
+  </div>
 
 </div>
