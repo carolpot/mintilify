@@ -1,8 +1,57 @@
 ---
 title: "Salesforce integration"
-description: "Connect Lusha to Salesforce to enrich records and push contacts directly to your CRM."
+description: "Connect Lusha to Salesforce to export enriched contacts, leads, and accounts automatically."
 ---
 
-<Note>
-  This page is a placeholder. Migrate the corresponding article from your help center here.
-</Note>
+Lusha's Salesforce integration lets you export revealed contacts directly into Salesforce as leads, contacts, or accounts, without manual data entry — from the web app, Workspace, or the browser extension.
+
+<Info>
+  Setting up the integration requires Admin or Manager access in Lusha, plus a Salesforce Admin user with permission to connect third-party applications and full read, write, and edit access to Lead, Contact, and Account objects.
+</Info>
+
+## Connect Salesforce
+
+<Steps>
+  <Step title="Open Integrations settings">
+    In Lusha, go to **Settings → Integrations**.
+  </Step>
+  <Step title="Select Salesforce">
+    Choose whether to connect to your Production or Sandbox environment.
+  </Step>
+  <Step title="Authorize the connection">
+    Sign in with your Salesforce Admin credentials to authorize Lusha.
+  </Step>
+</Steps>
+
+## Configure field mapping
+
+Once connected, map Lusha fields to the corresponding Salesforce fields across three record types:
+
+- **Lead** — email, phone, job title, company, website, name fields, and lead source.
+- **Contact** — email, phone, job title, name fields, and department.
+- **Account** — company name, website, description, and employee count.
+
+You can enable **Allow Override** so exports update existing Salesforce records rather than only creating new ones. Optional predefined values let you auto-populate fixed data on every export, and conditional mapping can trigger additional field updates when an email or phone number is enriched.
+
+<Tip>
+  Use the **Test Mapping** feature to validate your configuration before relying on it — it creates and removes dummy records in your Salesforce environment so you can confirm mappings work as expected.
+</Tip>
+
+## Account export preferences
+
+Admins can control whether team members can create new Salesforce accounts on export, or only export contacts to accounts that already exist. Lusha's autocomplete also matches account names to existing Salesforce accounts during export to reduce duplicates.
+
+## Troubleshooting
+
+If you see a "Reconnect to Salesforce" prompt, your OAuth token has likely expired — each user needs to reauthenticate individually from **Settings → Integrations**.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="HubSpot integration" icon="hubspot" href="/user-guide/hubspot">
+    Set up a similar field-mapped export flow for HubSpot.
+  </Card>
+  <Card title="Other integrations" icon="puzzle-piece" href="/user-guide/other-integrations">
+    See Lusha's other native CRM and sales-engagement integrations.
+  </Card>
+</CardGroup>

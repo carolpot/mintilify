@@ -5,6 +5,8 @@ description: "Look up a company by domain, name, or companyId to retrieve firmog
 openapi: "get /v2/company"
 ---
 
+<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the v2 GET /v2/company contract the Mintlify playground binds to. Kept v2 here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+
 Use this endpoint to enrich a single company record in real time. Provide a domain name, company name, or Lusha company ID to retrieve firmographic data including employee count, revenue range, funding history, location, technologies, and intent signals.
 
 ## Endpoint
@@ -184,6 +186,9 @@ You must supply at least one of: `domain`, `company`, or `companyId`.
       HQ location only. For all company site locations, see `companyLocations`.
 
       <Expandable title="properties">
+        <ResponseField name="city" type="string">City name. Example: `Boston`</ResponseField>
+        <ResponseField name="state" type="string">State or province. Example: `Massachusetts`</ResponseField>
+        <ResponseField name="country" type="string">Country name. Example: `United States`</ResponseField>
         <ResponseField name="fullLocation" type="string">Full location string. Example: `800 Boylston St, Suite 1410, Boston, Massachusetts 02199, US`</ResponseField>
         <ResponseField name="stateCode" type="string">State/province code. Example: `MA`</ResponseField>
         <ResponseField name="countryIso2" type="string">ISO 3166-1 alpha-2 country code. Example: `US`</ResponseField>
@@ -218,14 +223,22 @@ You must supply at least one of: `domain`, `company`, or `companyId`.
     <ResponseField name="industryPrimaryGroupDetails" type="object">
       Industry classification codes.
 
+      <!-- VERIFY: openapi.json is internally inconsistent here — the CompanySic/CompanyNaics schemas declare properties named `sicCodes`/`naicsCodes` (number) but list `sic`/`naics` as the required field names, and the spec's own /bulk/company/v2 example payload uses `sic`/`naics`. Documented as `sic`/`naics` below to match the example and required list; a human should confirm against a live response. -->
       <Expandable title="properties">
         <ResponseField name="sicCodes" type="object[]">
           SIC code entries.
           <Expandable title="properties">
+            <ResponseField name="sic" type="number">Numeric SIC code. Example: `7371`</ResponseField>
             <ResponseField name="description" type="string" required>SIC code description. Example: `Software Publishing`</ResponseField>
           </Expandable>
         </ResponseField>
-        <ResponseField name="naicsCodes" type="object[]">NAICS code entries.</ResponseField>
+        <ResponseField name="naicsCodes" type="object[]">
+          NAICS code entries.
+          <Expandable title="properties">
+            <ResponseField name="naics" type="number">Numeric NAICS code. Example: `541511`</ResponseField>
+            <ResponseField name="description" type="string" required>NAICS code description. Example: `Custom Computer Programming Services`</ResponseField>
+          </Expandable>
+        </ResponseField>
       </Expandable>
     </ResponseField>
     <ResponseField name="funding" type="object">

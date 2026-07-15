@@ -3,4 +3,78 @@ title: "Contact identity fields"
 description: "Name, personId, LinkedIn URL, location, and social links returned on contact records."
 ---
 
-<Note>This page is a placeholder — fill in field-by-field documentation from the API response schema.</Note>
+Identity fields identify a person and describe where they're located. They're returned by [`GET /v2/person`](/enrichment/single-contact) and [`POST /v2/person`](/enrichment/bulk-contacts) (contact enrichment), and in a slightly different shape by [`POST /prospecting/contact/enrich`](/prospecting/enrich-contacts) — see [Prospecting enrichment shape](#prospecting-enrichment-shape) below.
+
+## Core identity
+
+| Field | Type | Description |
+|---|---|---|
+| `personId` | number | Lusha's unique identifier for the person. The most direct way to look up a contact again later. |
+| `companyId` | number | Lusha's unique identifier for the person's associated company. |
+| `firstName` | string | The person's first name. |
+| `lastName` | string | The person's last name. |
+| `fullName` | string | The person's full name. |
+| `updateDate` | string | The date the contact record was last updated by Lusha, in `YYYY-MM-DD` format. |
+| `contactTags` | array | Tags applied to the contact in your Lusha workspace. Each entry has `id`, `name`, and `color`. |
+
+## Location
+
+Returned in the `location` object.
+
+| Field | Type | Description |
+|---|---|---|
+| `country` | string | The person's country. |
+| `countryIso2` | string | ISO 3166-1 alpha-2 country code, for example `US`. |
+| `continent` | string | The person's continent. |
+| `region` | string | The person's region. |
+| `city` | string | The person's city. |
+| `cityId` | number | Lusha's internal identifier for the city. |
+| `state` | string | The person's state or province. |
+| `stateCode` | string | The state or province code. |
+| `street` | string | The street portion of the address, when available. |
+| `rawLocation` | string | The full, unstructured location string as sourced. |
+| `locationCoordinates` | array | `[longitude, latitude]` coordinates for the location. |
+| `isEuContact` | boolean | Whether the person is located in the EU. Useful for GDPR-aware handling of the record. |
+
+<Note>
+  `country`, `countryIso2`, `continent`, and `rawLocation` are always present when location data exists; the remaining fields are returned when available.
+</Note>
+
+## Social links
+
+Returned in the `socialLinks` object.
+
+| Field | Type | Description |
+|---|---|---|
+| `linkedin` | string | The person's LinkedIn profile URL. Always present when social data exists. |
+| `xUrl` | string | The person's X (Twitter) profile URL, when available. |
+
+## LinkedIn profile data
+
+Additional fields sourced from the person's LinkedIn profile.
+
+| Field | Type | Description |
+|---|---|---|
+| `linkedinFollowersCount` | integer | Number of LinkedIn followers. |
+| `linkedinConnectionsCount` | integer | Number of LinkedIn connections. |
+| `linkedinSkills` | array of strings | Skills listed on the LinkedIn profile, for example `"Project Management"`. |
+| `linkedinCertifications` | array | Certifications listed on LinkedIn. Each entry can include `title`, `companyName` (issuer), `credentialId`, `dateMonth`/`dateYear`, `expireDateMonth`/`expireDateYear`, `verifyUrl`, and `summary`. |
+| `linkedinCourses` | array | Education history from the LinkedIn profile — despite the field name, entries describe schooling rather than individual courses. Each entry can include `school`, `degree`, `fieldOfStudy`, `grade`, `startDate`/`startDateMonth`/`startDateYear`, `endDate`/`endDateMonth`/`endDateYear`, and `activities`. |
+| `linkedinAwards` | array | Honors and awards listed on LinkedIn. Each entry can include `title`, `companyName` (issuing organization), `dateDay`/`dateMonth`/`dateYear`, and `summary`. |
+
+## Prospecting enrichment shape
+
+`POST /prospecting/contact/enrich` returns the same underlying identity, but structured differently and without a `personId`:
+
+- `jobTitle` is a plain string instead of a nested object (see [Contact employment fields](/data-catalog/contact-employment)).
+- `seniority` is an array of `{ id, value }` objects instead of a single string.
+- `departments` is a top-level array on the contact instead of nested under `jobTitle`.
+- `companyId` and `companyName` are top-level fields, and a nested `company` object carries a subset of firmographic data (`mainIndustry`, `subIndustry`, `revenueRange`, `technologies`, `funding`, `intent`) — see [Company firmographic fields](/data-catalog/company-firmographics).
+- An `isShown` boolean indicates whether the contact is visible in your current plan's results.
+
+## See also
+
+- [Contact email fields](/data-catalog/contact-emails)
+- [Contact phone fields](/data-catalog/contact-phones)
+- [Contact employment fields](/data-catalog/contact-employment)
+- [Enrich a single contact](/enrichment/single-contact)

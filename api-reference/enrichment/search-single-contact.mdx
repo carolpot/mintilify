@@ -5,6 +5,8 @@ description: "Enrich one contact in real time using name, email, LinkedIn URL, o
 openapi: "get /v2/person"
 ---
 
+<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the v2 GET /v2/person contract the Mintlify playground binds to. Kept v2 here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+
 Use this endpoint to enrich a single contact record in real time. You can look up a contact by email address, LinkedIn URL, Lusha person ID, or a combination of first name, last name, and company. The response includes contact details such as phone numbers, email addresses, job title, location, and optional signals data.
 
 ## Endpoint
@@ -132,8 +134,8 @@ You must supply at least one of the following combinations:
   The enriched contact result.
 
   <Expandable title="properties">
-    <ResponseField name="error" type="object" required>
-      Error details for this contact lookup, if any.
+    <ResponseField name="error" type="object | null" required>
+      Error details for this contact lookup. `null` when the lookup succeeds.
 
       <Expandable title="properties">
         <ResponseField name="code" type="number">
@@ -571,6 +573,82 @@ You must supply at least one of the following combinations:
 
           Example: `["Microsoft Office", "Project Management", "Strategic Planning"]`
         </ResponseField>
+        <ResponseField name="company" type="object" required>
+          The contact's current company. Unlike the bulk endpoint, the single-contact response nests company data directly inside `data` instead of returning it as a separate top-level map.
+
+          <Expandable title="properties">
+            <ResponseField name="name" type="string" required>
+              Company name.
+
+              Example: `Lusha`
+            </ResponseField>
+            <ResponseField name="fqdn" type="string" required>
+              Fully qualified domain name of the company.
+
+              Example: `lusha.com`
+            </ResponseField>
+            <ResponseField name="description" type="string">
+              A brief description of the company.
+            </ResponseField>
+            <ResponseField name="domains" type="object">
+              <Expandable title="properties">
+                <ResponseField name="homepage" type="string">Homepage URL. Example: `https://www.lusha.com`</ResponseField>
+                <ResponseField name="email" type="string">Contact email address. Example: `contact@lusha.com`</ResponseField>
+              </Expandable>
+            </ResponseField>
+            <ResponseField name="homepageUrl" type="string">
+              The company's homepage URL.
+            </ResponseField>
+            <ResponseField name="location" type="object">
+              Shares the same shape as the contact's `location` field.
+            </ResponseField>
+            <ResponseField name="companySize" type="number[]">
+              Employee count range. Example: `[201, 500]`
+            </ResponseField>
+            <ResponseField name="revenueRange" type="number[]">
+              Estimated revenue range in USD. Example: `[1000000, 10000000]`
+            </ResponseField>
+            <ResponseField name="industryPrimaryGroup" type="string">
+              Primary industry classification. Example: `Software`
+            </ResponseField>
+            <ResponseField name="logoUrl" type="string">
+              URL of the company's logo image.
+            </ResponseField>
+            <ResponseField name="social" type="object">
+              <Expandable title="properties">
+                <ResponseField name="linkedin" type="string">LinkedIn company URL.</ResponseField>
+                <ResponseField name="crunchbase" type="string">Crunchbase profile URL.</ResponseField>
+                <ResponseField name="twitter" type="string">Twitter/X profile URL.</ResponseField>
+                <ResponseField name="facebook" type="string">Facebook page URL.</ResponseField>
+              </Expandable>
+            </ResponseField>
+            <ResponseField name="specialities" type="string[]">
+              LinkedIn specialty tags associated with the company.
+            </ResponseField>
+            <ResponseField name="technologies" type="object[]">
+              Technologies used by the company.
+
+              <Expandable title="properties">
+                <ResponseField name="name" type="string">Technology name. Example: `salesforce`</ResponseField>
+              </Expandable>
+            </ResponseField>
+            <ResponseField name="funding" type="object">
+              Funding history and summary. Shares the same shape as the `funding` field on `GET /v2/company`.
+            </ResponseField>
+            <ResponseField name="industry" type="object">
+              <Expandable title="properties">
+                <ResponseField name="mainIndustry" type="string">Primary industry. Example: `Technology`</ResponseField>
+                <ResponseField name="subIndustry" type="string">Sub-sector within the primary industry. Example: `Software`</ResponseField>
+              </Expandable>
+            </ResponseField>
+            <ResponseField name="intent" type="object">
+              Buyer intent data. Shares the same shape as the `intent` field on `GET /v2/company`.
+            </ResponseField>
+            <ResponseField name="industryPrimaryGroupDetails" type="object">
+              SIC and NAICS classification codes for the company.
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
       </Expandable>
     </ResponseField>
   </Expandable>
@@ -621,7 +699,7 @@ curl --request GET \
 ```json Example response
 {
   "contact": {
-    "error": {},
+    "error": null,
     "isCreditCharged": true,
     "data": {
       "companyId": 123,
@@ -653,7 +731,20 @@ curl --request GET \
       "socialLinks": {
         "linkedin": "https://www.linkedin.com/in/dustin/"
       },
-      "jobStartDate": "2008-01-01"
+      "jobStartDate": "2008-01-01",
+      "company": {
+        "name": "Asana",
+        "fqdn": "asana.com",
+        "domains": {
+          "homepage": "https://www.asana.com"
+        },
+        "location": {
+          "country": "United States",
+          "countryIso2": "US"
+        },
+        "companySize": [1001, 5000],
+        "industryPrimaryGroup": "Software"
+      }
     }
   }
 }

@@ -1,11 +1,11 @@
 ---
 title: "GET /prospecting/filters/companies/industries_labels"
 sidebarTitle: "GET /filters/companies/industries"
-description: "Retrieve the full list of valid industry label values for filtering companies in prospecting searches. Pass returned values in your company search request."
+description: "Retrieve the full industry hierarchy for filtering companies in prospecting searches. Pass the returned numeric IDs into your company search request."
 openapi: "get /prospecting/filters/companies/industries_labels"
 ---
 
-Retrieve the list of valid industry values you can use to filter companies in `POST /prospecting/company/search`. Use the exact strings returned by this endpoint to ensure your industry filters are recognized correctly.
+Retrieve the industry hierarchy you can use to filter companies in `POST /prospecting/company/search`. Companies are filtered by numeric industry ID, not by label string — use the `main_industry_id` and `sub_industries[].id` values returned by this endpoint.
 
 **Endpoint:** `GET https://api.lusha.com/prospecting/filters/companies/industries_labels`
 
@@ -20,27 +20,23 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "industries": [
-    "Technology",
-    "Financial Services",
-    "Healthcare",
-    "Manufacturing",
-    "Retail",
-    "Education",
-    "Real Estate",
-    "Media & Entertainment"
-  ]
-}
+[
+  {
+    "main_industry": "Hospitality",
+    "main_industry_id": 1,
+    "sub_industries": [{ "value": "Other", "id": 778 }]
+  }
+]
 ```
 
 ## Usage
 
-Pass one or more values from the `industries` array into the `industries` filter field of your company search request:
+There's no `industries` string filter field. Instead, pass `main_industry_id` values into `mainIndustriesIds`, and any `sub_industries[].id` values into `subIndustriesIds`, in your company search request:
 
 ```json
 {
-  "industries": ["Technology", "Financial Services"]
+  "mainIndustriesIds": [1],
+  "subIndustriesIds": [778]
 }
 ```
 

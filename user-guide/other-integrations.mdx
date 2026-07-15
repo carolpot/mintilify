@@ -1,8 +1,72 @@
 ---
 title: "Other integrations"
-description: "Outreach, Salesloft, Pipedrive, and other native Lusha integrations."
+description: "Pipedrive, Outreach, Salesloft, Bullhorn, and other native Lusha integrations."
 ---
 
+Beyond Salesforce and HubSpot, Lusha natively integrates with several other CRM and sales-engagement platforms. Setup follows a similar pattern across all of them: connect the account, map fields, and choose whether existing records can be overridden.
+
+## Supported platforms
+
+| Platform | Typical export limit | Notes |
+|---|---|---|
+| Pipedrive | 25 contacts per export | Maps to Contacts and Organizations |
+| Outreach | 25 contacts per export | Save-to-sequence available |
+| Salesloft | 25 contacts per export | Save-to-cadence available |
+| Bullhorn | 25 contacts per export | Maps to Leads, Candidates, Contacts, and Companies |
+| Zoho CRM | 50 contacts per export | — |
+| Microsoft Dynamics | 25 contacts per export | — |
+
 <Note>
-  This page is a placeholder. Migrate the corresponding article from your help center here.
+  Export limits are set by Lusha and may change — check the export dialog in your account for the current limit on each platform.
 </Note>
+
+## Connecting an integration
+
+<Steps>
+  <Step title="Open Integrations settings">
+    In Lusha, go to **Settings → Integrations**.
+  </Step>
+  <Step title="Select your platform">
+    Choose the CRM or sales-engagement tool you want to connect, and click **Connect**.
+  </Step>
+  <Step title="Authenticate">
+    Sign in with an admin account on the target platform to authorize the connection.
+  </Step>
+  <Step title="Configure field mapping">
+    Map Lusha fields to the corresponding fields on the other platform for each supported record type.
+  </Step>
+  <Step title="Set export preferences">
+    Optionally enable **Allow Override** to update existing records, and set predefined or conditional field values.
+  </Step>
+</Steps>
+
+<Info>
+  Admins can typically restrict which record types (for example, new accounts or organizations) team members are allowed to create on export, limiting exports to updates on existing records only.
+</Info>
+
+## Pipedrive
+
+Pushes enriched contact and organization data into Pipedrive. Default mappings send full name, email, and phone to Contacts, and company name and address to Organizations.
+
+## Outreach and Salesloft
+
+Both integrations push enriched prospect and account data into your sequences or cadences. Outreach maps to Prospects and Accounts; Salesloft maps to People and Accounts. Both support adding contacts to a sequence or cadence directly from an export.
+
+## Bullhorn
+
+Built for recruiting workflows, Bullhorn's integration maps enriched data to Leads, Candidates, Contacts, and Companies, with identifier-based duplicate checking before saving a record.
+
+## Zapier, Clay, and other connectors
+
+Lusha also connects with workflow tools like Zapier, Clay, and Make for custom automations, along with a handful of Lusha partner integrations (for example, Chili Piper, monday.com, and SourceWhale). <!-- VERIFY: could not confirm full current partner list or setup details on live site -->
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Salesforce integration" icon="cloud" href="/user-guide/salesforce">
+    See the full field-mapping flow for Salesforce.
+  </Card>
+  <Card title="HubSpot integration" icon="hubspot" href="/user-guide/hubspot">
+    See the full field-mapping flow for HubSpot.
+  </Card>
+</CardGroup>

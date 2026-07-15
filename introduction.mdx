@@ -38,7 +38,7 @@ https://api.lusha.com
 
 ## Credits and billing
 
-The Lusha API uses a credit-based model. Each successful data enrichment or prospecting call consumes one or more credits from your account balance. To check how many credits you have remaining, call the account usage endpoint:
+The Lusha API uses a credit-based model. Credits are charged per data point revealed (for example, an email address or phone number), with a minimum of 1 credit per request — even if no match is found. See [credits and plans](/credits/overview) for the full breakdown. To check how many credits you have remaining, call the account usage endpoint:
 
 ```bash
 curl --request GET \
@@ -63,6 +63,10 @@ A successful response returns a `contact` object containing email addresses, pho
 <Tip>
   You can also search by `email`, `linkedinUrl`, or `personId` instead of name and company. Providing more identifiers generally improves match accuracy.
 </Tip>
+
+<Info>
+  Lusha is rolling out a V3 API (endpoints under `/v3/`) alongside the current endpoints shown in this guide. V2 and V3 run in parallel, and V2 endpoints keep working — see the [V3 migration guide](https://docs.lusha.com/tutorials/v3-migration-guide) if you want to plan ahead.
+</Info>
 
 ## Next steps
 

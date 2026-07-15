@@ -8,14 +8,14 @@ Every webhook delivery Lusha sends includes a cryptographic signature you can us
 
 ## How signatures work
 
-Lusha signs each delivery using HMAC-SHA256 with your account webhook secret as the key. Two headers are included in every request:
+Lusha signs each delivery using HMAC-SHA256 with your account webhook secret as the key. Two signature-related headers are included in every request, alongside standard delivery headers:
 
 | Header | Description |
 |--------|-------------|
 | `X-Lusha-Signature` | HMAC-SHA256 hex digest of the signed payload |
 | `X-Lusha-Timestamp` | Unix timestamp of when the request was sent |
-| `Content-Type` | `application/json` |
-| `User-Agent` | `Lusha-Webhooks/1.0` |
+
+Every delivery also includes `Content-Type: application/json` and `User-Agent: Lusha-Webhooks/1.0`.
 
 The signed payload is formed by concatenating the timestamp, a period, and the JSON-serialized request body:
 

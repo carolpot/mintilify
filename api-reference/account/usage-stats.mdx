@@ -24,6 +24,10 @@ curl -X GET https://api.lusha.com/account/usage \
 
 ## Response fields
 
+<ResponseField name="usage" type="object" required>
+  An object with one entry per credit type on your plan (for example `bulkCredits`). Each entry has the following fields.
+</ResponseField>
+
 <ResponseField name="used" type="number" required>
   Number of credits consumed in the current billing period.
 </ResponseField>
@@ -40,9 +44,13 @@ curl -X GET https://api.lusha.com/account/usage \
 
 ```json
 {
-  "used": 450,
-  "remaining": 550,
-  "total": 1000
+  "usage": {
+    "bulkCredits": {
+      "used": 150,
+      "total": 1000,
+      "remaining": 850
+    }
+  }
 }
 ```
 

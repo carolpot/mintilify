@@ -5,13 +5,13 @@ description: "Search for contact location values by text to use in prospecting f
 openapi: "post /prospecting/filters/contacts/locations"
 ---
 
-Search for location values by free-text query to use in the `locations` filter field of `POST /prospecting/contact/search`. This endpoint returns matching cities, regions, metro areas, and countries that the API recognizes. Use the exact strings returned here in your search request to ensure results are returned correctly.
+Search for location values by free-text query to use in the `locations` filter field of `POST /prospecting/contact/search`. This endpoint returns matching location objects — with continent, country, city, state, and country grouping — that the API recognizes. Use the returned objects (or the fields you need from them) in your search request to ensure results are returned correctly.
 
 **Endpoint:** `POST https://api.lusha.com/prospecting/filters/contacts/locations`
 
 ## Request body
 
-<ParamField body="query" type="string" required>
+<ParamField body="text" type="string" required>
   Free-text search string to match against location names. For example, `"New York"` or `"San Francisco"`.
 </ParamField>
 
@@ -22,27 +22,37 @@ curl --request POST \
   --url https://api.lusha.com/prospecting/filters/contacts/locations \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --data '{ "query": "New York" }'
+  --data '{ "text": "New York" }'
 ```
 
 ## Example response
 
 ```json
-{
-  "locations": [
-    "New York, NY, United States",
-    "New York City Metropolitan Area",
-    "New York, United States"
-  ]
-}
+[
+  {
+    "continent": "North America",
+    "country": "United States",
+    "city": "New York",
+    "state": "New York",
+    "country_grouping": "na"
+  }
+]
 ```
 
 ## Usage
 
-Pick the location string that matches your target area and pass it into the `locations` filter field of your contact search request:
+Pick the location object that matches your target area and pass it into the `locations` filter field of your contact search request:
 
 ```json
 {
-  "locations": ["New York City Metropolitan Area"]
+  "locations": [
+    {
+      "continent": "North America",
+      "country": "United States",
+      "city": "New York",
+      "state": "New York",
+      "country_grouping": "na"
+    }
+  ]
 }
 ```

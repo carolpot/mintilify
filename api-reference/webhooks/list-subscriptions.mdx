@@ -44,8 +44,9 @@ curl --request GET \
       "id": "507f1f77bcf86cd799439011",
       "entityType": "contact",
       "entityId": "4158887495",
-      "signalTypes": ["promotion", "jobChange"],
-      "webhookUrl": "https://your-server.com/webhooks/lusha",
+      "signalTypes": ["promotion", "companyChange"],
+      "url": "https://your-server.com/webhooks/lusha",
+      "name": "Contact Promotion Tracker",
       "isActive": true,
       "createdAt": "2026-01-10T09:00:00.000Z",
       "updatedAt": "2026-01-10T09:00:00.000Z"
@@ -55,7 +56,7 @@ curl --request GET \
       "entityType": "company",
       "entityId": "33222678",
       "signalTypes": ["commercialActivityNews"],
-      "webhookUrl": "https://your-server.com/webhooks/lusha",
+      "url": "https://your-server.com/webhooks/lusha",
       "isActive": false,
       "blockReason": "Max retries exceeded",
       "blockedAt": "2026-01-12T14:30:00.000Z",
@@ -66,7 +67,8 @@ curl --request GET \
   "pagination": {
     "total": 42,
     "limit": 10,
-    "offset": 0
+    "offset": 0,
+    "hasMore": true
   }
 }
 ```
@@ -93,8 +95,12 @@ curl --request GET \
       Signal types this subscription is configured to receive.
     </ResponseField>
 
-    <ResponseField name="webhookUrl" type="string">
+    <ResponseField name="url" type="string">
       The HTTPS URL where signal payloads are delivered.
+    </ResponseField>
+
+    <ResponseField name="name" type="string">
+      The subscription's display name, if one was set.
     </ResponseField>
 
     <ResponseField name="isActive" type="boolean">
@@ -133,6 +139,10 @@ curl --request GET \
 
     <ResponseField name="offset" type="number">
       Offset used for this response.
+    </ResponseField>
+
+    <ResponseField name="hasMore" type="boolean">
+      Whether more results are available beyond this page.
     </ResponseField>
   </Expandable>
 </ResponseField>

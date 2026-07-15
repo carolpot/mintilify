@@ -24,11 +24,17 @@ curl --request GET \
 
 ```json
 {
-  "used": 450,
-  "remaining": 550,
-  "total": 1000
+  "usage": {
+    "bulkCredits": {
+      "used": 150,
+      "total": 1000,
+      "remaining": 850
+    }
+  }
 }
 ```
+
+The response nests usage under a `usage` object, with one entry per credit type on your plan (for example `bulkCredits`). Each entry has the same shape:
 
 | Field | Type | Description |
 |---|---|---|
@@ -50,13 +56,17 @@ curl --request GET \
     Fetch usage once per hour or at the start of each pipeline run rather than after every individual API call. This keeps you well within the 5 requests/minute rate limit.
   </Step>
   <Step title="Set a low-credit alert threshold">
-    When `remaining` drops below a threshold meaningful to your workflow (for example, 10% of `total`), trigger an alert or pause automated jobs to avoid unexpected failures.
+    When a credit type's `remaining` drops below a threshold meaningful to your workflow (for example, 10% of `total`), trigger an alert or pause automated jobs to avoid unexpected failures.
 
     ```json
     {
-      "used": 920,
-      "remaining": 80,
-      "total": 1000
+      "usage": {
+        "bulkCredits": {
+          "used": 920,
+          "remaining": 80,
+          "total": 1000
+        }
+      }
     }
     ```
   </Step>

@@ -4,6 +4,8 @@ sidebarTitle: "Overview"
 description: "Search Lusha's B2B database by ICP filters, then enrich matching results to generate net-new contact and company records for your CRM."
 ---
 
+<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide positions v3 (POST /v3/contacts/prospecting, POST /v3/contacts/enrich, POST /v3/companies/prospecting, POST /v3/companies/enrich) as the current prospecting API, with the legacy /prospecting/* endpoints documented below sunsetting Nov 18, 2026. openapi.json in this repo only defines the legacy paths, so this page (and its child pages) intentionally still document them. Revisit once openapi.json is updated with v3 paths. -->
+
 The Prospecting API lets you query Lusha's extensive B2B database using filters that match your Ideal Customer Profile — job title, seniority, location, industry, company size, and more. Unlike the Enrichment API, which fills in data on records you already know, Prospecting generates entirely new records you can load directly into your CRM.
 
 ## How prospecting works
@@ -28,7 +30,7 @@ The process runs in three ordered steps: choose your filters, run a search to ge
   <Tab title="Contacts">
     | Step | Endpoint | Purpose |
     |------|----------|---------|
-    | 1 | `GET /prospecting/filters/contacts/*` | Look up valid filter values |
+    | 1 | `/prospecting/filters/contacts/*` (mostly `GET`, `locations` is `POST`) | Look up valid filter values |
     | 2 | `POST /prospecting/contact/search` | Search for matching contacts |
     | 3 | `POST /prospecting/contact/enrich` | Retrieve full contact data |
 
@@ -37,7 +39,7 @@ The process runs in three ordered steps: choose your filters, run a search to ge
   <Tab title="Companies">
     | Step | Endpoint | Purpose |
     |------|----------|---------|
-    | 1 | `GET /prospecting/filters/companies/*` | Look up valid filter values |
+    | 1 | `/prospecting/filters/companies/*` (mostly `GET`; `names`, `locations`, and `technologies` are `POST`) | Look up valid filter values |
     | 2 | `POST /prospecting/company/search` | Search for matching companies |
     | 3 | `POST /prospecting/company/enrich` | Retrieve full company data |
 

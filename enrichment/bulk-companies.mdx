@@ -92,6 +92,25 @@ Each company object in the `companies` array must include an `id` (your own sequ
   Set to `true` to expand coverage by including partial company profiles when a full match is not available.
 </ParamField>
 
+## Response fields
+
+A successful `200` response is an object keyed by the `id` you provided for each company. Unlike `GET /v2/company`, each entry here is **flat** — firmographic and signal fields sit directly on the object rather than under a nested `data` key, and location is returned as flat `city`, `state`, `country`, `countryIso2`, `continent`, and `rawLocation` fields instead of a nested `location` object.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | number | Lusha's unique company identifier. |
+| `name` | string | Company name. |
+| `fqdn` | string | Fully qualified domain name. |
+| `companySize` | array | Employee count range, e.g. `[201, 500]`. |
+| `employeesInLinkedin` | number | Employee count as reported on LinkedIn. |
+| `mainIndustry` / `subIndustry` | string | Industry classification. |
+| `city` / `state` / `country` / `countryIso2` / `continent` / `rawLocation` | string | Flat location fields. |
+| `funding` | object | Funding rounds and totals. |
+| `technologies` | array | Technologies used by the company. |
+| `intent` | object | Detected intent topics. |
+
+Signal fields such as `surgeInHiring`, `surgeInHiringByDepartment`, and `financialEventsNews` are included when the corresponding signal type is requested via `signals`.
+
 ## Example request
 
 ```bash
@@ -111,7 +130,7 @@ curl --request POST \
         "domain": "salesforce.com"
       }
     ],
-    "signals": ["surgeInHiringByDepartment", "fundingRound"],
+    "signals": ["surgeInHiringByDepartment", "financialEventsNews"],
     "signalsStartDate": "2025-01-01",
     "signalsFilters": {
       "include": {
@@ -129,42 +148,44 @@ curl --request POST \
 ```json
 {
   "1": {
-    "data": {
-      "id": 33222678,
-      "name": "Lusha",
-      "domain": "lusha.com",
-      "employees": "201 - 500",
-      "mainIndustry": "Technology",
-      "subIndustry": "Software",
-      "companyType": "Private company",
-      "surgeInHiringByDepartment": [
-        {
-          "department": "Engineering & Technical",
-          "newJobsPostedLast4Weeks": 15,
-          "historicalAvg": 5
-        }
-      ]
-    },
-    "errors": null
+    "id": 33222678,
+    "name": "Lusha",
+    "fqdn": "www.lusha.com",
+    "companySize": [201, 500],
+    "mainIndustry": "Technology, Information & Media",
+    "subIndustry": "Software Development",
+    "companyType": "Private company",
+    "city": "Boston",
+    "state": "Massachusetts",
+    "country": "United States",
+    "countryIso2": "US",
+    "surgeInHiringByDepartment": [
+      {
+        "department": "Engineering & Technical",
+        "newJobsPostedLast4Weeks": 15,
+        "historicalAvg": 5
+      }
+    ]
   },
   "2": {
-    "data": {
-      "id": 112233,
-      "name": "Salesforce",
-      "domain": "salesforce.com",
-      "employees": "10001+",
-      "mainIndustry": "Technology",
-      "subIndustry": "Software",
-      "companyType": "Public company",
-      "surgeInHiringByDepartment": [
-        {
-          "department": "Sales",
-          "newJobsPostedLast4Weeks": 120,
-          "historicalAvg": 80
-        }
-      ]
-    },
-    "errors": null
+    "id": 112233,
+    "name": "Salesforce",
+    "fqdn": "www.salesforce.com",
+    "companySize": [10001, 100000],
+    "mainIndustry": "Technology, Information & Media",
+    "subIndustry": "Software Development",
+    "companyType": "Public company",
+    "city": "San Francisco",
+    "state": "California",
+    "country": "United States",
+    "countryIso2": "US",
+    "surgeInHiringByDepartment": [
+      {
+        "department": "Sales",
+        "newJobsPostedLast4Weeks": 120,
+        "historicalAvg": 80
+      }
+    ]
   }
 }
 ```

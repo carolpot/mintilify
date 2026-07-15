@@ -32,45 +32,57 @@ The typical workflow is to call a filter endpoint, pick the values you want, and
       --header 'api_key: YOUR_API_KEY'
     ```
 
-    The response returns an array of valid department values:
+    The response is a bare array of valid department values:
 
     ```json
-    {
-      "departments": ["Engineering", "Sales", "Marketing", "Finance", "Operations"]
-    }
+    ["Engineering", "Sales", "Marketing", "Finance", "Operations"]
     ```
   </Step>
   <Step title="Pick the values you need">
     Select the values that match your ideal customer profile. For example: `"Engineering"`.
   </Step>
   <Step title="Pass them into your search request">
-    Use the selected values as filter parameters in `POST /prospecting/contact/search`:
+    Nest the selected values under `filters.contacts.include` in `POST /prospecting/contact/search`:
 
     ```json
     {
-      "departments": ["Engineering"],
-      "seniority": ["Director", "VP", "C-Level"]
+      "filters": {
+        "contacts": {
+          "include": {
+            "departments": ["Engineering"],
+            "seniority": [4, 5]
+          }
+        }
+      }
     }
     ```
+
+    Seniority is filtered by the numeric `id` values returned by the seniority filter endpoint, not by name strings.
   </Step>
 </Steps>
 
 ## Location search
 
-The locations endpoint accepts a text query and returns matching location values you can use in your search. This is useful when you want to target a specific city or region and need the exact string the API recognizes.
+The locations endpoint accepts a text query in the `text` field and returns matching location objects you can use in your search. This is useful when you want to target a specific city or region and need the exact values the API recognizes.
 
 ```bash
 curl --request POST \
   --url https://api.lusha.com/prospecting/filters/contacts/locations \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --data '{ "query": "New York" }'
+  --data '{ "text": "New York" }'
 ```
 
 ```json
-{
-  "locations": ["New York, NY, United States", "New York City Metropolitan Area"]
-}
+[
+  {
+    "continent": "North America",
+    "country": "United States",
+    "city": "New York",
+    "state": "New York",
+    "country_grouping": "na"
+  }
+]
 ```
 
 ## Endpoint details
@@ -87,7 +99,7 @@ curl --request GET \
 
 ### GET /prospecting/filters/contacts/seniority
 
-Returns all seniority levels (e.g., Manager, Director, VP, C-Level).
+Returns all seniority levels as `{id, name}` objects (e.g., founder, c-suite, vice president). Filter by the numeric `id` values.
 
 ```bash
 curl --request GET \
@@ -97,7 +109,7 @@ curl --request GET \
 
 ### GET /prospecting/filters/contacts/existing_data_points
 
-Returns available data point types you can require to be present on returned contacts (e.g., email, phone).
+Returns available data point types you can require to be present on returned contacts (e.g., work_email, phone, direct_phone).
 
 ```bash
 curl --request GET \
@@ -107,7 +119,7 @@ curl --request GET \
 
 ### GET /prospecting/filters/contacts/all_countries
 
-Returns the full list of countries available for contact location filtering.
+Returns the full list of countries available for contact location filtering. There is no standalone `countries` filter field — use the `country` values returned here inside a `locations` entry (see [Location search](#location-search)).
 
 ```bash
 curl --request GET \
@@ -117,14 +129,14 @@ curl --request GET \
 
 ### POST /prospecting/filters/contacts/locations
 
-Searches for location strings by free-text query. Use the returned values in your search request.
+Searches for location objects by free-text query. Use the returned objects (or the fields you need from them) in your search request.
 
 ```bash
 curl --request POST \
   --url https://api.lusha.com/prospecting/filters/contacts/locations \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --data '{ "query": "San Francisco" }'
+  --data '{ "text": "San Francisco" }'
 ```
 
 <Tip>

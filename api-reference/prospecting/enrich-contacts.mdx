@@ -5,6 +5,8 @@ description: "Get full contact details including emails and phone numbers for co
 openapi: "post /prospecting/contact/enrich"
 ---
 
+<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/enrich) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/contact/enrich contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+
 After searching for contacts with [POST /prospecting/contact/search](/api-reference/prospecting/search-contacts), use this endpoint to retrieve complete contact profiles — including email addresses, phone numbers, location, seniority, and company details — for up to 100 contacts per request. This is **step 3** of the three-step prospecting flow.
 
 <Warning>
@@ -113,6 +115,10 @@ curl --request POST \
           Full name. Example: `"Carolina Portela"`
         </ResponseField>
 
+        <ResponseField name="contacts.data.isShown" type="boolean">
+          Whether this contact has already been revealed by any user in your account.
+        </ResponseField>
+
         <ResponseField name="contacts.data.jobTitle" type="string">
           Current job title. Example: `"Solutions Engineer"`
         </ResponseField>
@@ -187,7 +193,7 @@ curl --request POST \
         </ResponseField>
 
         <ResponseField name="contacts.data.company" type="object">
-          Additional company data including funding, intent, industry, and technology stack.
+          Additional company data including `revenueRange`, `funding`, `intent`, `mainIndustry`/`subIndustry`, and `technologies`.
         </ResponseField>
       </Expandable>
     </ResponseField>

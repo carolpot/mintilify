@@ -1,8 +1,96 @@
 ---
 title: "Search & lists"
-description: "Build, save, and export prospect lists from Lusha's database."
+description: "Build, enrich, and export prospect tables in Lusha Workspace."
 ---
 
+Lusha Workspace is where you build persistent contact and company tables, enrich them with data and signals, and export them to a CRM or CSV. Workspace is rolling out to replace Lusha's classic search-and-save experience, so depending on your plan you may see either the newer Workspace or the classic tables interface.
+
+<Info>
+  Workspace is currently unavailable to some legacy Scale plan users. If your account doesn't show Workspace yet, you're likely still on the classic experience.
+</Info>
+
+## Three ways to build a table
+
+<CardGroup cols={3}>
+  <Card title="AI chat" icon="wand-magic-sparkles">
+    Describe your target audience in plain language — for example, "VPs of Sales at Series B SaaS companies in Boston" — and Lusha builds a preview table for you.
+  </Card>
+  <Card title="Filter panel" icon="sliders">
+    Use structured filters for job title, seniority, industry, location, company size, funding stage, and more.
+  </Card>
+  <Card title="CRM import" icon="arrow-right-arrow-left">
+    Bring existing Salesforce records into Workspace, enrich them, and sync updates back.
+  </Card>
+</CardGroup>
+
+You can combine AI chat and filters on the same table for more precise results.
+
+## Building a table with AI chat
+
+<Steps>
+  <Step title="Open the chat">
+    Start from the "Create new" button in the left navigation, the homepage prompt ("What table do you want to build?"), or the "+" button next to Recents.
+  </Step>
+  <Step title="Describe your audience">
+    Enter your criteria in plain English — job titles, seniority, industry, location, and technology preferences all work.
+  </Step>
+  <Step title="Review the preview table">
+    Lusha returns a preview with default columns such as contact name, job title, LinkedIn profile, company details, and contact information.
+  </Step>
+  <Step title="Refine through conversation">
+    Keep chatting to narrow or adjust the results. Refining the preview doesn't use credits — only saving contacts does.
+  </Step>
+  <Step title="Save your table">
+    Save the results to turn the preview into a persistent Workspace table.
+  </Step>
+</Steps>
+
+## Filtering contacts and companies
+
+From the Workspace home screen, you can filter contacts or companies directly instead of (or alongside) using AI chat. Available filter categories include:
+
+**Contact filters** — job title, seniority, department, industry, location, company size, revenue, technology stack, funding stage, skills, education, languages, and a "Not in my CRM" toggle.
+
+**Company filters** — industry, company type (B2B/B2C/B2G), size, revenue, location, technology stack, funding stage, founded year, and a "Not in my CRM" toggle.
+
+<Tip>
+  The "Not in my CRM" toggle currently checks against connected Salesforce records only.
+</Tip>
+
+You can also use the **Get API request** option to view your current search as ready-to-use API code in cURL, Python, or TypeScript — useful if you want to reproduce the same query programmatically.
+
+## Enriching your table
+
+Workspace tables support a few types of enrichment, each with its own credit cost:
+
+| Enrichment type | What it does |
+|---|---|
+| Lusha Data | Standard contact/company fields |
+| AI Data | Real-time web enrichment, applied per cell |
+| Signals | Behavioral and intent signals, such as job changes or hiring surges |
+| CRM | Live values pulled from your connected CRM |
+
+<!-- VERIFY: could not confirm exact current credit costs for each enrichment type on live site; costs are subject to change under Lusha's unified credit system — see Billing & plans -->
+
+## Exporting your table
+
+Once your table is built, you can export it in a few ways:
+
+- **CSV** — export selected rows, the current page, or all matching rows, including every visible column.
+- **CRM sync** — push contacts directly into a connected Salesforce or HubSpot account, using your configured field mappings.
+- **Engage sequences** — enroll selected contacts into an existing Lusha Engage email sequence.
+
 <Note>
-  This page is a placeholder. Migrate the corresponding article from your help center here.
+  Hidden columns are excluded from CSV exports. Selection limits apply — up to 10,000 rows for searches or filters, and up to 150 rows for saved tables at a time.
 </Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Chrome extension" icon="chrome" href="/user-guide/chrome-extension">
+    Save contacts to a Workspace table directly from LinkedIn or any website.
+  </Card>
+  <Card title="Salesforce integration" icon="cloud" href="/user-guide/salesforce">
+    Set up field mapping so exported contacts land in the right Salesforce fields.
+  </Card>
+</CardGroup>

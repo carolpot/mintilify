@@ -19,7 +19,7 @@ All error responses follow this structure:
 }
 ```
 
-The `errors` array is present only on validation errors (`400`). For other status codes it may be empty.
+The `errors` array is most commonly populated on `400` and `403` responses, where it names the specific parameter or restriction that caused the failure. For other status codes it may be empty.
 
 ## HTTP status codes
 
@@ -27,11 +27,18 @@ The `errors` array is present only on validation errors (`400`). For other statu
 |---|---|---|
 | `400` Bad Request | The request failed validation. | A required parameter is missing, a parameter value is invalid, or the search criteria combination is not supported. |
 | `401` Unauthorized | Authentication failed. | The `api_key` header is missing or the key is invalid. See [authentication](/authentication). |
-| `403` Forbidden | Access denied. | Your plan does not include access to the requested feature. See the note on Unified Credits below. |
+| `402` Payment Required | Insufficient credits. | Your account has run out of credits, or otherwise requires payment before the request can be completed. Check your balance with the [account usage endpoint](/credits/overview). |
+| `403` Forbidden | Access denied. | Your account is inactive, or the request uses a feature your plan doesn't include — for example, `revealEmails`/`revealPhones` outside the Unified Credits plan (see below), or `excludeDnc` filtering outside a plan that supports it. |
 | `404` Not Found | The resource does not exist. | The endpoint path is incorrect or the requested record is not in Lusha's database. |
-| `429` Too Many Requests | Rate limit exceeded. | You sent more requests per minute than your account allows. See [rate limits](/rate-limiting). |
-| `451` Unavailable for Legal Reasons | Legal or compliance restriction. | The requested contact data cannot be returned due to a legal or regulatory requirement. |
+| `412` Precondition Failed | The request body has invalid syntax. | For example, a full name field that doesn't contain a valid first and last name. |
+| `429` Too Many Requests | Rate limit exceeded. | You exceeded a per-second, per-minute, hourly, or daily quota, or a trial account limit. See [rate limits](/rate-limiting). |
+| `451` Unavailable for Legal Reasons | Legal or compliance restriction. | The requested contact data cannot be returned due to a GDPR or other legal/regulatory requirement. |
+| `499` Client Closed Request | The request timed out. | The client closed the connection before the server could respond. Retry the request. |
 | `500` Internal Server Error | Unexpected server error. | A problem occurred on Lusha's side. Retry the request, and contact [support@lusha.com](mailto:support@lusha.com) if the error persists. |
+
+<Note>
+  `403` responses use the same response shape as other errors but the `errors` array will name the specific restriction — for example, `"excludeDnc is not available on your current plan"`.
+</Note>
 
 ## Contact-level errors
 
@@ -58,7 +65,7 @@ Check `contact.isCreditCharged` to confirm whether a credit was consumed for the
 
 ## Unified Credits plan restriction
 
-The `revealEmails` and `revealPhones` query parameters on enrichment endpoints are available only to accounts on the Unified Credits pricing plan.
+The `revealEmails` and `revealPhones` parameters on enrichment endpoints — including `GET /v2/person`, `POST /v2/person`, and `POST /prospecting/contact/enrich` — are available only to accounts on the Unified Credits pricing plan.
 
 <Warning>
   If you pass `revealEmails=true` or `revealPhones=true` on a plan that does not include Unified Credits, the API returns `403 Forbidden`. Contact your Lusha account manager to upgrade your plan.
@@ -66,11 +73,15 @@ The `revealEmails` and `revealPhones` query parameters on enrichment endpoints a
 
 When neither parameter is used, the API returns all available email addresses and phone numbers by default.
 
+<!-- VERIFY: could not confirm on live site whether excludeDnc is a Unified Credits feature or a separate plan add-on -->
+Similarly, `excludeDnc` (DNC filtering on prospecting search) returns `403 Forbidden` on plans that don't support it.
+
 ## Debugging tips
 
 - **Start with the status code.** A `4xx` error is always a client-side problem; a `5xx` error is server-side.
 - **Read the `message` and `errors` fields.** Validation errors (`400`) list exactly which parameters failed and why.
 - **Check your API key first on `401`.** Confirm the `api_key` header is present and the value matches what is shown in your API settings.
-- **Do not retry `400` or `401` without fixing the request.** These errors will repeat until you correct the underlying issue.
-- **Retry `500` with exponential backoff.** Transient server errors usually resolve quickly.
+- **Check your credit balance on `402`.** Use the [account usage endpoint](/credits/overview) to confirm you have credits remaining before retrying.
+- **Do not retry `400`, `401`, `402`, or `403` without fixing the request.** These errors will repeat until you correct the underlying issue — a bad parameter, a bad key, an empty credit balance, or a plan restriction.
+- **Retry `500` and `499` with exponential backoff.** Transient server errors and timeouts usually resolve quickly.
 - **Log the full response body.** The `errors` array often contains the information you need to fix the request immediately.

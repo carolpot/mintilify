@@ -5,7 +5,7 @@ description: "Retrieve all country values for contact prospecting filters. Use r
 openapi: "get /prospecting/filters/contacts/all_countries"
 ---
 
-Retrieve the full list of country values you can use to filter contacts by location in `POST /prospecting/contact/search`. Use the exact strings returned by this endpoint in your search request — mismatched values will produce no results.
+Retrieve the full list of countries available for contact location filtering, returned as `{name, code}` objects. There is no standalone `countries` filter field on `POST /prospecting/contact/search` — use a country `name` from this endpoint inside a `locations` entry (see `POST /prospecting/filters/contacts/locations`).
 
 **Endpoint:** `GET https://api.lusha.com/prospecting/filters/contacts/all_countries`
 
@@ -20,27 +20,25 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "countries": [
-    "United States",
-    "United Kingdom",
-    "Canada",
-    "Germany",
-    "France",
-    "Australia",
-    "Israel",
-    "India"
-  ]
-}
+[
+  { "name": "United States", "code": "US" },
+  { "name": "United Kingdom", "code": "GB" }
+]
 ```
 
 ## Usage
 
-Pass one or more country names from the `countries` array into the `countries` filter field of your contact search request:
+There's no standalone `countries` filter field. Instead, put the `name` value into a `locations` entry under `filters.contacts.include` in your contact search request:
 
 ```json
 {
-  "countries": ["United States", "Canada"]
+  "filters": {
+    "contacts": {
+      "include": {
+        "locations": [{ "country": "United States" }]
+      }
+    }
+  }
 }
 ```
 

@@ -1,10 +1,10 @@
 ---
 title: "Find similar contacts with POST /v3/lookalike/contacts"
 sidebarTitle: "Contact Lookalikes"
-description: "Discover new contacts who match your best prospects by submitting seed contact IDs, LinkedIn URLs, or emails to the Lusha contact lookalikes endpoint."
+description: "Discover new contacts who match your best prospects by submitting seed contact identifiers, LinkedIn URLs, or emails to the Lusha contact lookalikes endpoint."
 ---
 
-The contact lookalikes endpoint takes one or more seed contacts and returns new contacts who share similar roles, seniority levels, and industry patterns. Use it to expand your total addressable market or fill your pipeline with prospects who look like your highest-converting leads.
+The contact lookalikes endpoint takes a set of seed contacts and returns new contacts who share similar roles, seniority levels, and industry patterns. Use it to expand your total addressable market or fill your pipeline with prospects who look like your highest-converting leads.
 
 **Endpoint:** `POST https://api.lusha.com/v3/lookalike/contacts`
 
@@ -12,9 +12,12 @@ The contact lookalikes endpoint takes one or more seed contacts and returns new 
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `contacts` | array | Yes | One or more seed contacts. Each object must include a `personId`. |
+| `seeds` | object | Yes | Seed contacts, identified via `linkedinUrls`, `emails`, `contactIds`, and/or `contacts` (name + company). Provide at least one; 5–100 unique identifiers total across all four arrays. |
 | `dedupeSessionId` | string | No | Session token returned from a previous call. Omit on the first request. |
-| `exclude` | object | No | Contacts to exclude from results on every request, combined with session-level deduplication. |
+| `exclude` | object | No | Contacts to exclude from results, in the same shape as `seeds` (up to 500 identifiers total). Applied on every request, combined with session-level deduplication. |
+| `limit` | integer | No | Results per call. Range `1`–`100`, default `25`. |
+
+Each entry in `seeds.contacts` needs `firstName`, `lastName`, and at least one of `companyDomain` or `companyName`.
 
 ## Paginating without duplicates
 
@@ -26,7 +29,9 @@ The endpoint uses a `dedupeSessionId` to track which contacts have already been 
 
     ```json
     {
-      "contacts": [{ "personId": "4183886134" }]
+      "seeds": {
+        "contactIds": [4183886134]
+      }
     }
     ```
   </Step>
@@ -35,8 +40,10 @@ The endpoint uses a `dedupeSessionId` to track which contacts have already been 
 
     ```json
     {
-      "contacts": [{ "personId": "4183886134" }],
-      "dedupeSessionId": "abc123"
+      "seeds": {
+        "contactIds": [4183886134]
+      },
+      "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613"
     }
     ```
   </Step>
@@ -54,7 +61,13 @@ curl --request POST \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
-    "contacts": [{ "personId": "4183886134" }]
+    "seeds": {
+      "linkedinUrls": ["https://www.linkedin.com/in/johndoe"],
+      "emails": ["jane@acme.com"],
+      "contacts": [
+        { "firstName": "Alice", "lastName": "Smith", "companyDomain": "sap.com" }
+      ]
+    }
   }'
 ```
 
@@ -66,8 +79,10 @@ curl --request POST \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
-    "contacts": [{ "personId": "4183886134" }],
-    "dedupeSessionId": "abc123"
+    "seeds": {
+      "linkedinUrls": ["https://www.linkedin.com/in/johndoe"]
+    },
+    "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613"
   }'
 ```
 
@@ -75,38 +90,63 @@ curl --request POST \
 
 ```json
 {
-  "dedupeSessionId": "abc123",
-  "contacts": [
+  "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
+  "results": [
     {
-      "personId": "9876543210",
-      "firstName": "Jane",
-      "lastName": "Smith",
-      "jobTitle": "VP of Engineering",
-      "companyName": "Acme Corp"
+      "contactId": "9659196",
+      "firstName": "Sarah",
+      "lastName": "Johnson",
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/in/sarahjohnson"
+      },
+      "company": {
+        "companyId": "8605368",
+        "name": "Marriott International",
+        "domain": "marriott.com"
+      },
+      "jobTitle": {
+        "title": "VP of Sales",
+        "departments": ["Sales"],
+        "seniority": "Director"
+      },
+      "location": {
+        "country": "United States",
+        "state": "Maryland",
+        "city": "Bethesda"
+      }
     }
-  ]
+  ],
+  "meta": {
+    "returned": 1,
+    "hasMore": true
+  },
+  "creditsCharged": 3
 }
 ```
 
-The response always includes the `dedupeSessionId` — carry it forward to the next request to continue the session.
+The response always includes `dedupeSessionId` and `meta.hasMore` — carry `dedupeSessionId` forward and check `hasMore` to decide whether to keep paging.
+
+Results are lightweight previews (name, current company, job title, location). Pipe `contactId` values into an enrichment call to retrieve emails and phone numbers.
 
 ## Excluding specific contacts
 
-Pass an `exclude` object to filter out contacts you already own or do not want to see, regardless of session state. The server applies your exclusions on top of session-level deduplication on every call.
+Pass an `exclude` object — shaped like `seeds` — to filter out contacts you already own or do not want to see, regardless of session state. The server applies your exclusions on top of session-level deduplication on every call.
 
 ```json
 {
-  "contacts": [{ "personId": "4183886134" }],
-  "dedupeSessionId": "abc123",
+  "seeds": {
+    "contactIds": [4183886134]
+  },
+  "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
   "exclude": {
-    "personIds": ["1111111111", "2222222222"]
+    "contactIds": [1111111111, 2222222222]
   }
 }
 ```
 
 ## Use cases
 
-- **Expand total addressable market** — start from your top-performing contacts and discover hundreds of similarly qualified prospects you have not yet reached.
+- **Expand total addressable market** — start from your top-performing contacts and discover similarly qualified prospects you have not yet reached.
 - **Fill pipeline gaps** — when a segment goes cold, use lookalikes to quickly identify new prospects with a comparable profile.
 
 <Tip>

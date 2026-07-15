@@ -5,6 +5,8 @@ description: "Search Lusha's contact database using ICP filters like job title, 
 openapi: "post /prospecting/contact/search"
 ---
 
+<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/contact/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+
 Use this endpoint to query Lusha's contact database with filters aligned to your Ideal Customer Profile. You get back a list of matching contacts with IDs you then pass to the [Enrich Contacts](/api-reference/prospecting/enrich-contacts) endpoint to retrieve full details. This is **step 2** of the three-step prospecting flow.
 
 <Info>
@@ -54,7 +56,7 @@ POST https://api.lusha.com/prospecting/contact/search
         </ParamField>
 
         <ParamField body="filters.contacts.include.existing_data_points" type="string[]">
-          Only return contacts that have specific data available. Accepted values: `"phone"`, `"work_email"`.
+          Only return contacts that have specific data available. Example values: `"phone"`, `"work_email"`, `"mobile_phone"`, `"direct_phone"`. See [Contact filters](/filters/contact-filters) for the full list of valid values.
         </ParamField>
 
         <ParamField body="filters.contacts.include.linkedinUrls" type="string[]">
@@ -101,7 +103,7 @@ POST https://api.lusha.com/prospecting/contact/search
       Page number. Range: `0–1000`.
     </ParamField>
 
-    <ParamField body="pages.size" type="number" default="25">
+    <ParamField body="pages.size" type="number" default="20">
       Results per page. Range: `10–50`.
     </ParamField>
   </Expandable>
@@ -227,6 +229,14 @@ curl --request POST \
       Company domain. Example: `"lusha.com"`
     </ResponseField>
 
+    <ResponseField name="contacts.companyDescription" type="string">
+      Description of the contact's current company.
+    </ResponseField>
+
+    <ResponseField name="contacts.logoUrl" type="string">
+      URL of the company's logo.
+    </ResponseField>
+
     <ResponseField name="contacts.isShown" type="boolean">
       Whether this contact has already been revealed by any user in your account.
     </ResponseField>
@@ -257,6 +267,58 @@ curl --request POST \
 
     <ResponseField name="contacts.hasPrivateEmail" type="boolean">
       Whether a personal email is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasDepartment" type="boolean">
+      Whether department data is available for this contact.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasSeniority" type="boolean">
+      Whether seniority data is available for this contact.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasContactLocation" type="boolean">
+      Whether location data is available for this contact.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasSocialLink" type="boolean">
+      Whether a social profile link (e.g. LinkedIn) is available for this contact.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanyEmployeesCount" type="boolean">
+      Whether the company's headcount is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanyRevenue" type="boolean">
+      Whether the company's revenue range is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanyMainIndustry" type="boolean">
+      Whether the company's main industry classification is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanySubIndustry" type="boolean">
+      Whether the company's sub-industry classification is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanyFunding" type="boolean">
+      Whether the company's funding data is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanyIntent" type="boolean">
+      Whether the company's buyer intent data is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanyTechnologies" type="boolean">
+      Whether the company's technology stack data is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanyCity" type="boolean">
+      Whether the company's city is available.
+    </ResponseField>
+
+    <ResponseField name="contacts.hasCompanyCountry" type="boolean">
+      Whether the company's country is available.
     </ResponseField>
   </Expandable>
 </ResponseField>

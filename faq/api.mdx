@@ -18,13 +18,19 @@ description: "Common questions about using the Lusha API, authentication, rate l
 </Accordion>
 
 <Accordion title="What is the rate limit?">
-  The default rate limit is **25 requests per second** per endpoint. The Account Usage endpoint has a lower limit of **5 requests per minute**.
+  The documented default is **25 requests per second** per endpoint, with the Account Usage endpoint limited to **5 requests per minute**. Rate limits are ultimately set by your plan, and some endpoints (particularly bulk prospecting/enrichment) are also governed by per-minute, per-hour, and per-day caps rather than a flat per-second limit.
 
-  Rate limit headers are included in every response (`x-rate-limit-minute`, `x-minute-requests-left`, etc.). When you exceed the limit, the API returns `429 Too Many Requests`.
+  Rate limit headers are included in every response (`x-rate-limit-minute`, `x-minute-requests-left`, and similar). When you exceed the limit, the API returns `429 Too Many Requests`.
+
+  <!-- VERIFY: the Migration Plan flags rate-limiting.mdx as needing confirmation from Engineering, and header naming is inconsistent across the current OpenAPI spec (some sections use `x-rate-limit-minute`/`x-minute-requests-left`, others use `X-RateLimit-Remaining-Daily`/`X-RateLimit-Reset-Daily`). Confirm the exact, current per-endpoint limits and canonical header names with Eng before treating this as final. -->
 </Accordion>
 
 <Accordion title="Can I use the API without an API key?">
   No. All requests to `api.lusha.com` require a valid API key in the `api_key` header. Requests without a key return `401 Unauthorized`.
+</Accordion>
+
+<Accordion title="What does a 402 error mean?">
+  A `402 Insufficient credits` response means your account has run out of credits for the action you're calling. It's distinct from `429` (rate limit) and `403` (plan or account restriction) — see the [billing FAQ](/faq/billing) for what to do next.
 </Accordion>
 
 <Accordion title="What does a 403 error mean?">

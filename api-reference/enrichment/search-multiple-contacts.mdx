@@ -5,6 +5,8 @@ description: "Enrich up to 100 contacts in a single request. Identify each conta
 openapi: "post /v2/person"
 ---
 
+<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the v2 POST /v2/person contract the Mintlify playground binds to. Kept v2 here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+
 Use this endpoint to enrich multiple contacts in a single request. Submit a list of up to 100 contact objects and receive enriched profile data for each one, including email addresses, phone numbers, and company information. Each contact in the request must include a unique `contactId` so you can correlate results in the response.
 
 ## Endpoint

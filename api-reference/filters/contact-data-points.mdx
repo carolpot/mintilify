@@ -20,23 +20,21 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "data_points": [
-    "email",
-    "phone",
-    "mobile_phone",
-    "direct_dial"
-  ]
-}
+[
+  "phone",
+  "work_email",
+  "mobile_phone",
+  "direct_phone"
+]
 ```
 
 ## Usage
 
-Pass one or more values from the `data_points` array into the `existing_data_points` filter field of your contact search request to return only contacts that have the specified data available:
+Pass one or more values from the response into the `existing_data_points` filter field of your contact search request to return only contacts that have the specified data available:
 
 ```json
 {
-  "existing_data_points": ["email", "direct_dial"]
+  "existing_data_points": ["work_email", "direct_phone"]
 }
 ```
 

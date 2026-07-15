@@ -20,22 +20,20 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "intent_topics": [
-    "CRM Software",
-    "Sales Intelligence",
-    "Marketing Automation",
-    "Cloud Migration",
-    "Cybersecurity",
-    "HR Software",
-    "Data Analytics"
-  ]
-}
+[
+  "CRM Software",
+  "Sales Intelligence",
+  "Marketing Automation",
+  "Cloud Migration",
+  "Cybersecurity",
+  "HR Software",
+  "Data Analytics"
+]
 ```
 
 ## Usage
 
-Pass one or more intent topic strings from the `intent_topics` array into the `intentTopics` filter field of your company search request:
+Pass one or more intent topic strings from the response into the `intentTopics` filter field of your company search request:
 
 ```json
 {

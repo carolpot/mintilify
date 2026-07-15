@@ -4,15 +4,16 @@ sidebarTitle: "Enrich Contacts"
 description: "Turn contact IDs from a prospecting search into full records — verified emails, phone numbers, job title, company details, and location data."
 ---
 
-`POST https://api.lusha.com/prospecting/contact/enrich` is step 3 of the 3-step prospecting flow. You pass the contact IDs returned by [Search Contacts](/prospecting/search-contacts) and receive back complete contact records with verified emails, phone numbers, job details, and company information. Credits are charged at this step for each contact successfully enriched.
+`POST https://api.lusha.com/prospecting/contact/enrich` is step 3 of the 3-step prospecting flow. You pass the `requestId` and `contactId` values returned by [Search Contacts](/prospecting/search-contacts) and receive back complete contact records with verified emails, phone numbers, job details, and company information. Credits are charged at this step for each contact successfully enriched.
 
 ## Request body
 
-Send a JSON body with an array of contact IDs from your search results. You can enrich up to 25 contacts per request.
+Send a JSON body with the `requestId` from your search response and an array of `contactIds` to enrich. You can enrich up to 100 contacts per request.
 
 ```json
 {
-  "contactIds": ["cnt_abc123", "cnt_def456", "cnt_ghi789"]
+  "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+  "contactIds": ["06de9b18-516d-5512-5cb5-6ec5pb215776"]
 }
 ```
 
@@ -20,19 +21,21 @@ Send a JSON body with an array of contact IDs from your search results. You can 
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `contactIds` | string[] | Yes | Contact IDs returned by `/prospecting/contact/search` |
-| `revealEmails` | boolean | No | Return email addresses. Requires Unified Credits plan. |
-| `revealPhones` | boolean | No | Return phone numbers. Requires Unified Credits plan. |
+| `requestId` | string | Yes | The `requestId` returned by `/prospecting/contact/search` for the same session |
+| `contactIds` | string[] | Yes | `contactId` values from the search results. Minimum 1, maximum 100 |
+| `revealEmails` | boolean | No | Return only email addresses. Requires the Unified Credits plan |
+| `revealPhones` | boolean | No | Return only phone numbers. Requires the Unified Credits plan |
 
 ## Unified Credits plan requirement
 
 <Warning>
-  `revealEmails` and `revealPhones` are only available to customers on the **Unified Credits** pricing plan. Passing either parameter on another plan returns a `403` error. When you omit both parameters, the API returns all available contact data — including emails and phones — if your plan permits it.
+  `revealEmails` and `revealPhones` are only available to customers on the **Unified Credits** pricing plan. Passing either parameter on another plan returns a `403` error. When you omit both parameters, the API returns all available contact data — including emails and phones.
 </Warning>
 
 ```json
 {
-  "contactIds": ["cnt_abc123"],
+  "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+  "contactIds": ["06de9b18-516d-5512-5cb5-6ec5pb215776"],
   "revealEmails": true,
   "revealPhones": true
 }
@@ -48,13 +51,15 @@ curl --request POST \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
-    "contactIds": ["cnt_abc123", "cnt_def456"]
+    "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+    "contactIds": ["37b4c536-eaec-11ef-ad4b-a75f8e9e1484"]
   }'
 ```
 
 ```json Request body
 {
-  "contactIds": ["cnt_abc123", "cnt_def456"]
+  "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+  "contactIds": ["37b4c536-eaec-11ef-ad4b-a75f8e9e1484"]
 }
 ```
 
@@ -64,33 +69,39 @@ curl --request POST \
 
 ```json
 {
-  "data": {
-    "contacts": [
-      {
-        "id": "cnt_abc123",
+  "requestId": "b6effae6-35b8-493d-91aa-7d3b1b7c7dc7",
+  "contacts": [
+    {
+      "id": "37b4c536-eaec-11ef-ad4b-a75f8e9e1484",
+      "isSuccess": true,
+      "data": {
         "firstName": "Jane",
         "lastName": "Smith",
-        "title": "VP of Engineering",
-        "company": {
-          "name": "Acme Corp",
-          "domain": "acme.com",
-          "size": "201-500",
-          "industry": "Software & Technology"
-        },
-        "emails": [
-          { "email": "jane.smith@acme.com", "type": "professional", "verified": true }
-        ],
-        "phones": [
-          { "phone": "+14155550101", "type": "direct", "dnc": false }
-        ],
+        "fullName": "Jane Smith",
+        "jobTitle": "VP of Engineering",
+        "departments": ["Engineering & Technical"],
+        "seniority": [{ "id": 5, "value": "vp" }],
         "location": {
           "city": "San Francisco",
           "state": "California",
-          "country": "US"
+          "country": "United States",
+          "country_iso2": "US"
+        },
+        "emailAddresses": [
+          { "email": "jane.smith@acme.com", "emailType": "work", "emailConfidence": "A+", "updateDate": "2025-01-15" }
+        ],
+        "phoneNumbers": [
+          { "number": "+14155550101", "phoneType": "Direct", "doNotCall": false, "updateDate": "2025-01-15" }
+        ],
+        "companyId": 3553744,
+        "companyName": "Acme Corp",
+        "company": {
+          "mainIndustry": "Technology, Information & Media",
+          "subIndustry": "Software Development"
         }
       }
-    ]
-  }
+    }
+  ]
 }
 ```
 
@@ -98,14 +109,19 @@ curl --request POST \
 
 | Field | Description |
 |-------|-------------|
-| `id` | The contact ID you submitted |
-| `firstName` / `lastName` | Contact's full name |
-| `title` | Current job title |
-| `company` | Basic company details: name, domain, size, industry |
-| `emails` | Array of email objects with address, type, and verification status |
-| `phones` | Array of phone objects with number, type, and DNC status |
-| `location` | City, state, and country of the contact |
+| `id` | The `contactId` you submitted |
+| `isSuccess` | Whether enrichment succeeded for this contact |
+| `data.firstName` / `lastName` / `fullName` | Contact's name |
+| `data.jobTitle` | Current job title |
+| `data.departments` / `seniority` | Department and seniority level details |
+| `data.location` | City, state, country, and continent |
+| `data.emailAddresses` | Array of email objects with type, confidence, and update date |
+| `data.phoneNumbers` | Array of phone objects with type and DNC status |
+| `data.companyId` / `companyName` | Current employer identifier and name |
+| `data.company` | Additional firmographics: revenue range, funding, intent, industry, technologies |
+
+See the [full API reference](/api-reference/prospecting/enrich-contacts) for the complete response schema.
 
 <Tip>
-  Enrich in batches of up to 25 IDs per request. If your search returned more results than you want to enrich immediately, store the IDs and enrich them on demand as contacts are needed in your CRM.
+  Enrich in batches of up to 100 IDs per request. If your search returned more results than you want to enrich immediately, store the `requestId` and `contactId` values and enrich them on demand as contacts are needed in your CRM.
 </Tip>

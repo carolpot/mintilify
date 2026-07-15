@@ -3,4 +3,55 @@ title: "Contact phone fields"
 description: "Phone number objects, types (mobile/direct/phone), DNC status, and update dates."
 ---
 
-<Note>This page is a placeholder — fill in field-by-field documentation from the API response schema.</Note>
+Phone data is returned on the contact record as an array of phone number objects, and via the deprecated flat `phones` string kept for backwards compatibility.
+
+## `phoneNumbers` (recommended)
+
+Each entry in `phoneNumbers` is an object with the following fields.
+
+| Field | Type | Description |
+|---|---|---|
+| `number` | string | The phone number, including country code. |
+| `phoneType` | string | The type of phone number. One of `Mobile`, `Direct`, or `Phone`. |
+| `doNotCall` | boolean | Whether the number is listed as Do Not Call (DNC). |
+| `updateDate` | string | The date this phone number was last verified, in `YYYY-MM-DD` format. |
+
+```json
+{
+  "phoneNumbers": [
+    {
+      "number": "+1-555-123-4567",
+      "phoneType": "Mobile",
+      "doNotCall": false,
+      "updateDate": "2024-01-15"
+    }
+  ]
+}
+```
+
+## `phones` (deprecated)
+
+`phones` is a single string value with no type, DNC flag, or update date. Use `phoneNumbers` for new integrations — see [Deprecated fields](/data-catalog/overview#deprecated-fields).
+
+```json
+{
+  "phones": "+1 555-123-4567"
+}
+```
+
+## Working with DNC numbers
+
+Contacts can have a mix of callable and DNC-listed phone numbers. Two related controls are available on [`POST /prospecting/contact/search`](/prospecting/search-contacts):
+
+- Set `excludeDnc: true` to exclude contacts whose phones are **all** marked DNC. Contacts with at least one callable phone are still returned, but only the callable phones are included — DNC phones are hidden.
+- Contacts with only DNC phones are excluded entirely when `excludeDnc` is set.
+
+<Note>
+  `excludeDnc` is a premium filter available on the Scale plan.
+</Note>
+
+## See also
+
+- [Contact email fields](/data-catalog/contact-emails)
+- [Enrich a single contact](/enrichment/single-contact)
+- [Bulk enrich contacts](/enrichment/bulk-contacts)

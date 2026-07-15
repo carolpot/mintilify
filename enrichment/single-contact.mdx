@@ -115,7 +115,8 @@ A successful `200` response returns a `contact` object with the following key fi
 | `contact.data.socialLinks.linkedin` | string | LinkedIn profile URL. |
 | `contact.data.jobStartDate` | string | Start date at current position (`YYYY-MM-DD`). |
 | `contact.data.updateDate` | string | Date the Lusha record was last updated. |
-| `contact.error` | object | Present when the lookup fails. Contains `code`, `name`, and `message`. |
+| `contact.data.company` | object | The contact's current company — name, `fqdn`, location, size, industry, and more. Nested here rather than returned separately, unlike the bulk endpoint. |
+| `contact.error` | object \| null | `null` on success. Otherwise contains `code`, `name`, and `message`. |
 
 <Note>
   The `emails` and `phones` fields are deprecated. Use `emailAddresses` and `phoneNumbers` instead for full metadata including type, confidence, and DNC status.
@@ -171,7 +172,17 @@ curl --request GET \
       "socialLinks": {
         "linkedin": "https://www.linkedin.com/in/dustin/"
       },
-      "updateDate": "2024-06-01"
+      "updateDate": "2024-06-01",
+      "company": {
+        "name": "Asana",
+        "fqdn": "asana.com",
+        "location": {
+          "country": "United States",
+          "countryIso2": "US"
+        },
+        "companySize": [1001, 5000],
+        "industryPrimaryGroup": "Software"
+      }
     },
     "error": null
   }

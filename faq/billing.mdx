@@ -22,7 +22,7 @@ description: "Common questions about Lusha credits, plan limits, and billing."
 </Accordion>
 
 <Accordion title="What happens when I run out of credits?">
-  Once your credit balance is exhausted, API calls that would consume credits return a `429` error with a message indicating your daily or plan quota has been reached.
+  Once your credit balance is exhausted, API calls that would consume credits return `402 Insufficient credits` rather than returning data. This is separate from `429 Too Many Requests`, which signals a rate-limit issue, not a credit issue. In the Lusha MCP server, a `402` on a credit-consuming tool call surfaces purchase options (or an admin-request email) so you can top up without leaving the conversation.
 </Accordion>
 
 </AccordionGroup>

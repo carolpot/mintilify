@@ -20,25 +20,23 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "departments": [
-    "Engineering",
-    "Sales",
-    "Marketing",
-    "Finance",
-    "Operations",
-    "Human Resources",
-    "Customer Success",
-    "Product",
-    "Legal",
-    "Other"
-  ]
-}
+[
+  "Engineering",
+  "Sales",
+  "Marketing",
+  "Finance",
+  "Operations",
+  "Human Resources",
+  "Customer Success",
+  "Product",
+  "Legal",
+  "Other"
+]
 ```
 
 ## Usage
 
-Pass one or more values from the `departments` array directly into the `departments` filter field of your contact search request:
+Pass one or more values from the response directly into the `departments` filter field of your contact search request:
 
 ```json
 {

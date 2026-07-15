@@ -5,6 +5,8 @@ description: "Retrieve full company profiles from prospecting search results. Re
 openapi: "post /prospecting/company/enrich"
 ---
 
+<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/enrich) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/company/enrich contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+
 After searching for companies with [POST /prospecting/company/search](/api-reference/prospecting/search-companies), use this endpoint to retrieve complete firmographic profiles for up to 100 companies at once. The response includes headcount, revenue ranges, technologies, funding history, intent signals, location details, and more. This is **step 3** of the three-step prospecting flow.
 
 ## Endpoint
@@ -118,25 +120,33 @@ curl --request POST \
       Sub-industry classification. Example: `"Software Development"`
     </ResponseField>
 
-    <ResponseField name="companies.industryTags" type="string[][]">
-      Full industry tag hierarchy.
+    <ResponseField name="companies.industryTags" type="string[]">
+      Industry tag hierarchy, from broadest to most specific. Example: `["Technology, Information & Media", "Software Development"]`
     </ResponseField>
 
     <ResponseField name="companies.city" type="string">HQ city. Example: `"Boston"`</ResponseField>
     <ResponseField name="companies.state" type="string">HQ state. Example: `"Massachusetts"`</ResponseField>
+    <ResponseField name="companies.stateCode" type="string">HQ state/province code. Example: `"MA"`</ResponseField>
     <ResponseField name="companies.country" type="string">HQ country. Example: `"United States"`</ResponseField>
     <ResponseField name="companies.countryIso2" type="string">ISO 3166-1 alpha-2 country code. Example: `"US"`</ResponseField>
     <ResponseField name="companies.continent" type="string">Continent. Example: `"North America"`</ResponseField>
     <ResponseField name="companies.rawLocation" type="string">Full address string.</ResponseField>
     <ResponseField name="companies.coordinates" type="number[]">Geo coordinates as `[longitude, latitude]`.</ResponseField>
+    <ResponseField name="companies.emailDomain" type="string">Company email domain. Example: `"lusha.com"`</ResponseField>
+    <ResponseField name="companies.alternativeName" type="string">Normalized alternative company name. Example: `"lusha systems"`</ResponseField>
+    <ResponseField name="companies.lushaPopularityTier" type="integer">Lusha's proprietary ranking for the company based on platform popularity.</ResponseField>
 
     <ResponseField name="companies.companyLocations" type="object[]">
       All known office locations (not just HQ).
 
       <Expandable title="companyLocations fields">
+        <ResponseField name="companies.companyLocations.city" type="string">City name.</ResponseField>
+        <ResponseField name="companies.companyLocations.continent" type="string">Continent name.</ResponseField>
+        <ResponseField name="companies.companyLocations.country" type="string">Country name.</ResponseField>
         <ResponseField name="companies.companyLocations.country_iso2" type="string">ISO country code.</ResponseField>
-        <ResponseField name="companies.companyLocations.state_code" type="string">State code.</ResponseField>
-        <ResponseField name="companies.companyLocations.location_coordinates" type="number[]">Coordinates.</ResponseField>
+        <ResponseField name="companies.companyLocations.state" type="string | null">State or province.</ResponseField>
+        <ResponseField name="companies.companyLocations.state_code" type="string | null">State code.</ResponseField>
+        <ResponseField name="companies.companyLocations.location_coordinates" type="number[]">Coordinates as `[longitude, latitude]`.</ResponseField>
       </Expandable>
     </ResponseField>
 
@@ -208,21 +218,39 @@ curl --request POST \
       1-month headcount increase signals with `baselineEmployeesCount`, `newEmployeesCount`, and `changeRatePercent`.
     </ResponseField>
 
+    <ResponseField name="companies.headcountDecrease1m" type="object[]">1-month headcount decrease signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="companies.headcountIncrease3m" type="object[]">3-month headcount increase signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="companies.headcountDecrease3m" type="object[]">3-month headcount decrease signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="companies.headcountIncrease6m" type="object[]">6-month headcount increase signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="companies.headcountDecrease6m" type="object[]">6-month headcount decrease signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="companies.headcountIncrease12m" type="object[]">12-month headcount increase signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+    <ResponseField name="companies.headcountDecrease12m" type="object[]">12-month headcount decrease signals. Shares the same shape as `headcountIncrease1m`.</ResponseField>
+
     <ResponseField name="companies.websiteTrafficIncrease" type="object[]">
       Website traffic increase signals with `historicalAvg`, `lastMonthVisits`, and `changeRatePercent`.
     </ResponseField>
+
+    <ResponseField name="companies.websiteTrafficDecrease" type="object[]">Website traffic decrease signals. Shares the same shape as `websiteTrafficIncrease`.</ResponseField>
 
     <ResponseField name="companies.itSpendIncrease" type="object[]">
       IT spend increase signals with `estimatedAnnualItSpend` and `changeRatePercent`.
     </ResponseField>
 
+    <ResponseField name="companies.itSpendDecrease" type="object[]">IT spend decrease signals. Shares the same shape as `itSpendIncrease`.</ResponseField>
+
     <ResponseField name="companies.commercialActivityNews" type="object[]">
       Partnership and go-to-market news signals.
     </ResponseField>
 
+    <ResponseField name="companies.corporateStrategyNews" type="object[]">M&A, restructuring, or strategic direction change signals. Shares the same shape as `commercialActivityNews`.</ResponseField>
+
     <ResponseField name="companies.financialEventsNews" type="object[]">
       Funding, IPO, and investment news signals.
     </ResponseField>
+
+    <ResponseField name="companies.peopleNews" type="object[]">Hiring, layoff, or leadership change signals. Shares the same shape as `commercialActivityNews`.</ResponseField>
+    <ResponseField name="companies.marketIntelligenceNews" type="object[]">Event participation, recognition, and competitor activity signals. Shares the same shape as `commercialActivityNews`.</ResponseField>
+    <ResponseField name="companies.productActivityNews" type="object[]">Product launch, development, and integration news signals. Shares the same shape as `commercialActivityNews`.</ResponseField>
 
     <ResponseField name="companies.riskNews" type="object[]">
       Litigation and security risk news signals.

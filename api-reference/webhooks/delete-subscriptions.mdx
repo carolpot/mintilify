@@ -42,23 +42,27 @@ curl --request POST \
 
 ```json
 {
+  "total": 2,
+  "successful": 1,
+  "failed": 1,
   "results": [
     {
-      "id": "507f1f77bcf86cd799439011",
-      "status": "DELETED",
+      "index": 0,
+      "success": true,
       "subscription": {
         "id": "507f1f77bcf86cd799439011",
         "entityType": "contact",
-        "entityId": "4158887495",
-        "signalTypes": ["promotion"],
-        "webhookUrl": "https://your-server.com/webhooks/lusha",
-        "createdAt": "2026-01-10T09:00:00.000Z"
+        "entityId": "123",
+        "name": "Contact Webhook"
       }
     },
     {
-      "id": "invalid-id-format",
-      "status": "NOT_FOUND",
-      "error": "Subscription not found"
+      "index": 1,
+      "success": false,
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Subscription with id '507f1f77bcf86cd799439012' not found"
+      }
     }
   ]
 }
@@ -66,24 +70,36 @@ curl --request POST \
 
 ## Response fields
 
+<ResponseField name="total" type="integer">
+  Total number of deletion attempts.
+</ResponseField>
+
+<ResponseField name="successful" type="integer">
+  Number of subscriptions deleted successfully.
+</ResponseField>
+
+<ResponseField name="failed" type="integer">
+  Number of deletion attempts that failed.
+</ResponseField>
+
 <ResponseField name="results" type="object[]">
-  Per-item results, one entry for each ID in the request.
+  Per-item results, one entry for each ID in the request, in the same order.
 
   <Expandable title="properties">
-    <ResponseField name="id" type="string">
-      The subscription ID from the request.
+    <ResponseField name="index" type="integer">
+      Index of the ID in the request `ids` array.
     </ResponseField>
 
-    <ResponseField name="status" type="string">
-      Outcome for this item. `DELETED` indicates success. `NOT_FOUND` indicates the ID did not match an existing subscription (including invalid ID formats).
+    <ResponseField name="success" type="boolean">
+      Whether this deletion succeeded.
     </ResponseField>
 
     <ResponseField name="subscription" type="object">
-      The deleted subscription object. Only present when `status` is `DELETED`.
+      Information about the deleted subscription (`id`, `entityType`, `entityId`, `name`). Only present when `success` is `true`.
     </ResponseField>
 
-    <ResponseField name="error" type="string">
-      Human-readable error message. Only present when `status` is not `DELETED`.
+    <ResponseField name="error" type="object">
+      An error object with `code` and `message`, for example `NOT_FOUND` for an ID that doesn't match an existing subscription. Only present when `success` is `false`.
     </ResponseField>
   </Expandable>
 </ResponseField>

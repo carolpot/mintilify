@@ -17,7 +17,7 @@ Webhook subscriptions tell Lusha which entities to watch and where to send notif
     ```
   </Step>
   <Step title="Create a subscription">
-    Call `POST /api/subscriptions` with the entity details and your webhook URL. Specify `entityType`, `entityId`, the `signalTypes` you want to receive, and your `webhookUrl`.
+    Call `POST /api/subscriptions` with a `defaults` object (containing your webhook `url` and, optionally, a default `entityType` and `signalTypes`) and a `subscriptions` array with one entry per entity you want to watch. Each entry requires at least `entityId`, and can override `entityType`, `signalTypes`, or `name`.
   </Step>
   <Step title="Test the subscription">
     Call `POST /api/subscriptions/{id}/test` to send a test payload to your endpoint and confirm the full delivery pipeline works before going live.
@@ -229,12 +229,12 @@ Sends a test payload to your webhook endpoint without consuming credits.
   Run a test delivery before going live to confirm your endpoint handles signatures and acknowledgments correctly.
 </Tip>
 
-Choose a test mode based on what you want to validate:
+Choose a test mode using the `mode` query parameter, based on what you want to validate:
 
 | Mode | What it tests |
 |------|---------------|
 | `direct` | HTTP reachability only — validates that your URL responds correctly |
-| `handler` | Handler-only test — validates message processing without full delivery |
+| `kafka` | Fanout handler only — validates message processing without a full delivery |
 | `full` | Complete end-to-end delivery pipeline (default) |
 
 Test payloads use mock data and do not trigger credit charges.

@@ -130,7 +130,7 @@ curl --request POST \
 ### 200 — Success
 
 <ResponseField name="companies" type="object">
-  A map of caller-assigned IDs (from `companies[].id` in the request) to signal data. Each value contains the matched company data and their signal results.
+  A map of caller-assigned IDs (from `companies[].id` in the request) to signal data. Each value includes `companyId`, `companyName`, and `domain` for the matched company, plus one array per requested signal type.
 </ResponseField>
 
 <ResponseField name="startDate" type="string">
@@ -165,41 +165,43 @@ curl --request POST \
   "creditCharged": 3,
   "companies": {
     "1": {
-      "companyData": {
-        "companyId": "33222678",
-        "name": "Lusha",
-        "domain": "lusha.com"
-      },
-      "signals": {
-        "surgeInHiring": [
-          {
-            "companyId": "33222678",
-            "companyName": "Lusha",
-            "signalDate": "2025-06-15",
-            "newJobsPostedLastWeek": 25,
-            "historicalAvg": 10,
-            "changeRatePercent": 150
-          }
-        ],
-        "financialEventsNews": []
-      }
+      "companyId": "33222678",
+      "companyName": "Lusha",
+      "domain": "lusha.com",
+      "surgeInHiring": [
+        {
+          "companyId": "33222678",
+          "companyName": "Lusha",
+          "domain": "lusha.com",
+          "signalId": "1503905",
+          "signalDate": "2025-06-15",
+          "newJobsPostedLastWeek": 25,
+          "historicalAvg": 10,
+          "changeRatePercent": 150
+        }
+      ],
+      "financialEventsNews": []
     },
     "2": {
-      "companyData": {
-        "companyId": "1586",
-        "name": "Salesforce",
-        "domain": "salesforce.com"
-      },
-      "signals": {
-        "surgeInHiring": [],
-        "financialEventsNews": [
-          {
-            "eventType": "Partnership",
-            "eventSummary": "Salesforce announced a new partner program.",
-            "articlePublishedDate": "2025-03-10"
-          }
-        ]
-      }
+      "companyId": "1586",
+      "companyName": "Salesforce",
+      "domain": "salesforce.com",
+      "surgeInHiring": [],
+      "financialEventsNews": [
+        {
+          "companyId": "1586",
+          "companyName": "Salesforce",
+          "domain": "salesforce.com",
+          "signalId": "1503912",
+          "eventType": "partnership",
+          "eventSummary": "Salesforce announced a new partner program.",
+          "articlePublishedDate": "2025-03-10",
+          "articleTitle": "Salesforce Launches New Partner Program",
+          "articleHighlight": "The program gives partners access to co-selling resources.",
+          "eventEffectiveDate": "2025-03-05",
+          "articleUrl": "https://example.com/salesforce-partner-program"
+        }
+      ]
     }
   }
 }

@@ -9,16 +9,25 @@ description: "Common questions about Lusha's data sources, coverage, accuracy, a
   Lusha aggregates data from publicly available sources and contributions from trusted business partners. Data is not created or directly managed by Lusha. For full details, see the [Privacy Policy](https://lusha.com/legal/privacy-notice/).
 </Accordion>
 
+<Accordion title="How much data does Lusha cover?">
+  Lusha's data catalog spans roughly 290 million contacts and 29 million companies, across around 98 verified contact and company fields — split between "Data Points" (static verified attributes, such as job title, industry, or revenue) and "Signals" (real-time events, such as hiring surges, role changes, or funding news).
+</Accordion>
+
 <Accordion title="How fresh is the data?">
-  Contact records are refreshed continuously when signals are detected (job changes, company changes). The `updateDate` field on any record shows when it was last verified. Signal data has a default lookback window of 6 months, configurable via `signalsStartDate`.
+  Most Data Points refresh on a regular cadence (commonly weekly). Signal-driven fields — like a contact's current job — update as soon as the underlying signal (a job change, a company change) is detected. The `updateDate` field on any record shows when it was last verified. Signal lookback defaults to 6 months, configurable via `signalsStartDate` (REST API) or `startDate` (MCP signals tools).
 </Accordion>
 
 <Accordion title="What happens when a contact is not found?">
-  The API returns a `200 OK` with an `error` object inside the contact payload (e.g., `"name": "EMPTY_DATA"`). No credit is charged for records with no match.
+  The API returns a `200 OK` with an `error` object inside the contact payload (e.g., `"name": "EMPTY_DATA"`, `"message": "Could not find requested data"`). No credit is charged for records with no match.
 </Accordion>
 
 <Accordion title="What is a partial profile?">
-  A partial profile is a contact record that exists in Lusha's database but has incomplete data. Use the `partialProfile: true` parameter on enrichment endpoints to include these results — useful when you need any available data rather than a full match.
+  A partial profile is a contact record that exists in Lusha's database but has incomplete data — still potentially useful as a prospect. How you opt in depends on the endpoint:
+
+  - Single-contact enrichment endpoints use a `partialProfile: true` parameter.
+  - The prospecting search-and-enrich endpoint uses `includePartialContact: true` in the request body.
+
+  <!-- VERIFY: hands-on testing against a v3 search-and-enrich payload found contacts were silently dropped unless `options.includePartialProfiles` was set — a third naming variant not found in openapi.json. The exact parameter name and nesting differ across API versions/endpoints in the current spec. Confirm the authoritative name per endpoint with Engineering (this matches the Migration Plan's own flagged task to audit the OpenAPI spec) before treating this answer as final. -->
 </Accordion>
 
 <Accordion title="What does GDPR mean for the data returned?">

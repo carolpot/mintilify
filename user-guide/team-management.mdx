@@ -1,8 +1,58 @@
 ---
 title: "Team management"
-description: "Invite teammates, assign roles, and monitor credit usage across your organization."
+description: "Invite teammates, assign roles, and manage permissions across your Lusha account."
 ---
 
+Lusha organizes team access around three roles, each with a different scope of permissions and a different effect on your seat count.
+
+## Roles
+
+| Role | Access | Counts as a seat |
+|---|---|---|
+| **User** | Credits and Lusha's core features | Yes |
+| **Admin** | Credits, plus full admin rights | Yes |
+| **Manager** | Admin rights, but no access to credits | No — Scale plan only |
+
+Admins and Managers can manage team members, configure integrations, and control privacy and billing settings. Managers are a Scale-plan-only role designed for people who need administrative oversight without consuming credits themselves.
+
+<!-- VERIFY: could not confirm the full permissions matrix (export rights, credit adjustment, invitations, etc.) in detail for each role on the live site -->
+
+## Changing a team member's role
+
+<Steps>
+  <Step title="Go to Team Management">
+    As an Admin, navigate to **Settings → Team Management**.
+  </Step>
+  <Step title="Select the team member">
+    Choose one or more users — role changes can be made individually or in bulk.
+  </Step>
+  <Step title="Click Change role">
+    Select **Change role** from the available actions.
+  </Step>
+  <Step title="Choose the new role and save">
+    Pick the new role and confirm to apply it.
+  </Step>
+</Steps>
+
 <Note>
-  This page is a placeholder. Migrate the corresponding article from your help center here.
+  Changing roles in bulk and the Manager role are available on Scale plans.
 </Note>
+
+## Inviting teammates
+
+New team members join your Lusha account by being invited to your organization, or by requesting to join if their email domain matches your company's account. If someone on your team needs to change their login email or transfer admin access, this is handled through account settings — reach out to Lusha support if you need help with an admin transfer.
+
+## Monitoring team activity
+
+Admins can review team-level usage — credit consumption, seat allocation, and activity — from the analytics dashboard in account settings.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Billing & plans" icon="credit-card" href="/user-guide/billing-and-plans">
+    See how seats and credits map to your plan tier.
+  </Card>
+  <Card title="Privacy & compliance" icon="shield" href="/user-guide/privacy-and-compliance">
+    Configure SSO, session settings, and privacy controls for your team.
+  </Card>
+</CardGroup>

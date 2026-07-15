@@ -1,22 +1,86 @@
 ---
 title: "MCP tools reference"
-description: "Every tool the Lusha MCP server exposes, with input and output schemas."
+description: "Every tool the Lusha MCP server exposes, grouped by category."
 ---
 
+The Lusha MCP server exposes over 20 tools. Most map closely to the underlying Lusha API, so the same plan, credit, and rate-limit rules that apply to the REST API apply to MCP tool calls — see the [API FAQ](/faq/api) and [credits FAQ](/faq/billing).
+
 <Note>
-  This page is a placeholder. Document each MCP tool name, description, input schema, and example output here.
+  Tool names and behavior can change as Lusha ships new capabilities. Ask your MCP client to list its available Lusha tools for the exact, current set.
 </Note>
 
-## Available tools
+## Known contacts and companies
 
-| Tool | Description | Underlying endpoint |
-|---|---|---|
-| `enrich_contact` | Enrich a single contact by email, LinkedIn URL, or name | `GET /v2/person` |
-| `enrich_contacts_bulk` | Enrich up to 100 contacts in one call | `POST /v2/person` |
-| `enrich_company` | Enrich a single company by domain or name | `GET /v2/company` |
-| `search_contacts` | Find contacts matching ICP filters | `POST /prospecting/contact/search` |
-| `search_companies` | Find companies matching firmographic filters | `POST /prospecting/company/search` |
-| `get_contact_signals` | Retrieve job-change and promotion signals for a contact | `POST /api/signals/contacts` |
-| `get_company_signals` | Retrieve growth signals for a company | `POST /api/signals/companies` |
-| `find_similar_contacts` | Find contacts similar to a given profile | `POST /v3/lookalike/contacts` |
-| `find_similar_companies` | Find companies similar to a given profile | `POST /v3/lookalike/companies` |
+| Tool | What it does |
+|---|---|
+| `contacts_search` | Look up 1–25 known contacts by Lusha ID, name + company, LinkedIn URL, or email. |
+| `companies_search` | Look up 1–25 known companies by name, domain, or FQDN. |
+
+## Prospecting
+
+| Tool | What it does |
+|---|---|
+| `prospecting_contact_search` | Find contacts by job title, seniority, department, location, and company-level filters. |
+| `prospecting_contact_filters` | Look up valid values (departments, seniority, countries, locations, existing data points) before calling `prospecting_contact_search`. |
+| `prospecting_contact_enrich` | Reveal emails and phone numbers for contacts already returned by a search. |
+| `prospecting_company_search` | Find companies by industry, size, revenue, technology, founded year, and location filters. |
+| `prospecting_company_filters` | Look up valid values (industries, sizes, revenues, technologies, and more) before calling `prospecting_company_search`. |
+| `prospecting_company_enrich` | Reveal detailed firmographic data for companies already returned by a search. |
+
+## Decision makers
+
+| Tool | What it does |
+|---|---|
+| `decision_makers_search` | Rank the buying-committee contacts at up to 20 companies (by domain or Lusha company ID). |
+
+## Lookalikes
+
+| Tool | What it does |
+|---|---|
+| `lookalike_contacts` | Find contacts similar to 5–100 seed contacts. |
+| `lookalike_companies` | Find companies similar to 5–100 seed companies. |
+
+## Signals
+
+| Tool | What it does |
+|---|---|
+| `signals_contacts_search` | Resolve contacts by LinkedIn URL, email, or name + company, and return recent promotion / company-change signals. |
+| `signals_contacts_get` | Get signals for contacts you already have a Lusha ID for. |
+| `signals_contact_filters` | List the contact signal types the API currently supports. |
+| `signals_companies_search` | Resolve companies by domain or name, and return recent hiring, headcount, and news signals. |
+| `signals_companies_get` | Get signals for companies you already have a Lusha ID for. |
+| `signals_company_filters` | List company signal types and the values for sub-filters like news event types or hiring departments. |
+
+Signal lookback defaults to 6 months and 10 results per signal type unless you specify otherwise.
+
+## Website visits
+
+| Tool | What it does |
+|---|---|
+| `website_visits_search` | Rank companies that visited your tracked websites, by engagement score (cold/warm/hot), sessions, and geography. Lookback defaults to 30 days and cannot exceed 3 months. |
+
+## Recommendations
+
+<Note>
+  Recommendation tools are OAuth-only. API-key connections (Cursor, VS Code, Gemini CLI, n8n) get a `403` if they call these.
+</Note>
+
+| Tool | What it does |
+|---|---|
+| `recommendations_contacts` | AI-ranked contact recommendations by lead, signal, and ICP-fit score. |
+| `recommendations_contacts_filters` | List the target ICPs and signal types accepted by `recommendations_contacts`. |
+| `recommendations_companies` | AI-ranked company recommendations by lead, signal, and ICP-fit score. |
+| `recommendations_companies_filters` | List the target ICPs and signal types accepted by `recommendations_companies`. |
+
+## Account
+
+| Tool | What it does |
+|---|---|
+| `account_usage` | Check credit balance, rate-limit headroom, plan, and per-action credit pricing. Doesn't consume credits. |
+| `purchase_options` | View credit packages available for in-chat purchase, or (for non-admins) get an email template to request more credits from an account admin. |
+
+## Credits and rate limits
+
+- Lookup and search tools generally consume credits only for successful, matched results — no charge for a miss.
+- Filter-discovery tools (`*_filters`), `account_usage`, `decision_makers_search`, and `website_visits_search` don't consume credits.
+- Rate limits follow your Lusha plan, the same as the REST API. `account_usage` returns your current limits and remaining headroom.

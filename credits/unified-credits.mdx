@@ -11,10 +11,10 @@ Two enrichment parameters are only available on the Unified Credits plan:
 
 | Parameter | Endpoint | What it does |
 |---|---|---|
-| `revealEmails` | `GET /v2/person`, `POST /v2/person` | Returns only the contact's email address — does not charge for phone data |
-| `revealPhones` | `GET /v2/person`, `POST /v2/person` | Returns only the contact's phone numbers — does not charge for email data |
+| `revealEmails` | `GET /v2/person`, `POST /v2/person`, `POST /prospecting/contact/enrich` | Returns only the contact's email address — you're charged the email credit but not the (higher) phone credit |
+| `revealPhones` | `GET /v2/person`, `POST /v2/person`, `POST /prospecting/contact/enrich` | Returns only the contact's phone numbers — you're charged the phone credit but not the email credit |
 
-Using either parameter on a non-Unified Credits plan returns a `403 Forbidden` error. When neither parameter is provided, the API returns all available data by default.
+Using either parameter on a non-Unified Credits plan returns a `403 Forbidden` error. When neither parameter is provided, the API returns all available data by default, and you're charged for every data point returned. See [credit costs by endpoint](/credits/costs) for exact per-data-point pricing.
 
 <Warning>
   Attempting to use `revealEmails` or `revealPhones` on a non-Unified Credits plan returns `403 Forbidden`. Contact your account manager to upgrade.

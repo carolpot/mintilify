@@ -1,21 +1,42 @@
 ---
 title: "Rate limits for the Lusha API"
-description: "Understand the per-minute request limits for each Lusha API endpoint group and learn how to implement retry logic for 429 Too Many Requests responses."
+description: "Understand the request limits for each Lusha API endpoint group and learn how to implement retry logic for 429 Too Many Requests responses."
 ---
 
-The Lusha API enforces rate limits to ensure fair usage and stable performance for all customers. Limits are applied per account and reset on a rolling per-minute basis. If your application exceeds a limit, the API returns a `429 Too Many Requests` response.
+The Lusha API enforces rate limits to ensure fair usage and stable performance for all customers. Limits are applied per account, and some are tracked over multiple windows (per second, per minute, per hour, and per day). If your application exceeds a limit, the API returns a `429 Too Many Requests` response.
 
 ## Limits by endpoint group
 
 | Endpoint group | Limit |
 |---|---|
-| All endpoints (default) | 100 requests per minute |
+| All endpoints (default) | 25 requests per second |
 | `GET /account/usage` | 5 requests per minute |
-| Webhooks endpoints | 100 requests per minute |
+| Webhooks API (all `/api/subscriptions` and related endpoints) | 100 requests per minute |
+| Create or delete webhook subscriptions | 25 items per bulk request |
 
 <Note>
-  Rate limits are applied at the account level, not per API key. If multiple systems share the same account, their requests count against the same quota.
+  Rate limits are applied at the account level, not per API key. If multiple systems share the same account, their requests count against the same quota. Higher-tier plans may have higher daily and hourly quotas — contact your account manager if you need a limit increase.
 </Note>
+
+## Rate limit response headers
+
+Every response includes headers you can use to track your current usage against each rate limit window:
+
+| Header | Description |
+|---|---|
+| `x-rate-limit-minute` | Total requests allowed per minute on your current plan |
+| `x-minute-requests-left` | Requests remaining in the current minute window |
+| `x-minute-usage` | Requests made in the current minute window |
+| `x-rate-limit-hourly` | Total requests allowed per hour on your current plan |
+| `x-hourly-requests-left` | Requests remaining in the current hourly window |
+| `x-hourly-usage` | Requests made in the current hourly window |
+| `x-rate-limit-daily` | Total requests allowed per day on your current plan |
+| `x-daily-requests-left` | Requests remaining in the current daily window |
+| `x-daily-usage` | Requests made in the current daily window |
+
+<Tip>
+  Poll these headers instead of guessing when you are close to a limit — they tell you exactly how much headroom is left in each window.
+</Tip>
 
 ## 429 Too Many Requests
 
@@ -29,7 +50,7 @@ When you exceed a rate limit, the API returns:
 }
 ```
 
-Your client must detect this status code and pause before retrying.
+The `message` reflects which limit was hit — for example, a per-second/per-minute burst, an hourly quota, a daily quota, or a trial account limit. Your client must detect the `429` status code and pause before retrying regardless of the exact message.
 
 ## Handling rate limit errors
 

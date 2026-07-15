@@ -5,7 +5,7 @@ description: "Retrieve valid seniority level values for filtering contacts in pr
 openapi: "get /prospecting/filters/contacts/seniority"
 ---
 
-Retrieve the list of valid seniority level values for filtering contacts in `POST /prospecting/contact/search`. Seniority levels range from entry-level individual contributors to C-suite executives. Always use values returned by this endpoint to ensure your search filters are recognized correctly.
+Retrieve the list of valid seniority levels for filtering contacts in `POST /prospecting/contact/search`. Seniority levels range from entry-level individual contributors to C-suite executives. Each level is returned as an `{id, name}` object, and contacts are filtered by the numeric `id`, not by the name string.
 
 **Endpoint:** `GET https://api.lusha.com/prospecting/filters/contacts/seniority`
 
@@ -20,27 +20,20 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "seniority": [
-    "Entry",
-    "Manager",
-    "Director",
-    "VP",
-    "C-Level",
-    "Partner",
-    "Owner",
-    "Founder"
-  ]
-}
+[
+  { "id": 10, "name": "founder" },
+  { "id": 9, "name": "c-suite" },
+  { "id": 8, "name": "vice president" }
+]
 ```
 
 ## Usage
 
-Pass one or more values from the `seniority` array into the `seniority` filter field of your contact search request:
+Pass one or more `id` values from the response into the `seniority` filter field of your contact search request:
 
 ```json
 {
-  "seniority": ["Director", "VP", "C-Level"]
+  "seniority": [10, 9, 8]
 }
 ```
 

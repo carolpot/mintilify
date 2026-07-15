@@ -1,8 +1,47 @@
 ---
 title: "HubSpot integration"
-description: "Sync Lusha-enriched contacts and companies to HubSpot automatically."
+description: "Push contacts and companies revealed in Lusha directly into HubSpot."
 ---
 
-<Note>
-  This page is a placeholder. Migrate the corresponding article from your help center here.
-</Note>
+Lusha's HubSpot integration lets you push contacts and companies revealed in Lusha directly into HubSpot, with field mapping and duplicate prevention built in.
+
+<Info>
+  Setting up the integration requires Admin or Manager access in Lusha, plus a HubSpot account with permission to connect third-party applications.
+</Info>
+
+## Connect HubSpot
+
+<Steps>
+  <Step title="Open Integrations settings">
+    Log in to Lusha and go to **Settings → Integrations**.
+  </Step>
+  <Step title="Select HubSpot">
+    Choose HubSpot and click **Connect**.
+  </Step>
+  <Step title="Authenticate">
+    Sign in with your HubSpot credentials to authorize the connection.
+  </Step>
+</Steps>
+
+## Configure field mapping
+
+Map Lusha fields to the corresponding HubSpot fields for both contacts and companies. Default mappings cover email, phone, job title, company name, and domain — you can adjust these, add predefined (fixed) values for specific fields, and set conditional mapping that updates fields when email or phone data is enriched.
+
+## Duplicate prevention
+
+HubSpot exports use identifier matching — on email, on a name-and-company combination, or on domain — to avoid creating duplicate records. Admins can also enable or disable whether new contact or company records can be created on export, restricting exports to existing records only if preferred.
+
+## Troubleshooting
+
+Common issues include a missing Lusha widget in HubSpot, contacts that can't be located, owner mapping errors, and unexpected duplicate records. Most of these trace back to identifier configuration or to mapped fields that don't contain the expected data — check your field mapping first.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Salesforce integration" icon="cloud" href="/user-guide/salesforce">
+    Set up the equivalent export flow for Salesforce.
+  </Card>
+  <Card title="Other integrations" icon="puzzle-piece" href="/user-guide/other-integrations">
+    See Lusha's integrations with Pipedrive, Outreach, Salesloft, and more.
+  </Card>
+</CardGroup>

@@ -7,6 +7,8 @@ openapi: "post /v3/lookalike/contacts"
 
 The `/v3/lookalike/contacts` endpoint returns new contact prospects that match the profile of your seed contacts. Lusha's AI compares role, seniority, industry, and firmographic patterns to surface similar contacts you haven't seen yet.
 
+<!-- VERIFY: live site page (docs.lusha.com/apis/openapi/lookalikes/getcontactlookalikes) describes this endpoint as POST /v3/contacts/lookalike, but openapi.json defines the path as POST /v3/lookalike/contacts. This page follows openapi.json since it is the source the Mintlify API playground binds to; a human should confirm which path is actually live. -->
+
 **Endpoint:** `POST https://api.lusha.com/v3/lookalike/contacts`
 
 **Authentication:** `api_key` header required
@@ -17,90 +19,210 @@ On your first request, omit `dedupeSessionId`. The server generates one and retu
 
 ## Request body
 
-<ParamField body="contacts" type="array" required>
-  Array of seed contact objects. Each entry should include at least one identifier.
+<ParamField body="seeds" type="object" required>
+  Seed contacts to match against. Provide at least one of `linkedinUrls`, `contacts`, `emails`, or `contactIds`. Across all four arrays combined, provide 5–100 unique identifiers.
 
-  <Expandable title="Contact object fields">
-    <ParamField body="personId" type="string">
-      Lusha person ID for the seed contact.
+  <Expandable title="seeds fields">
+    <ParamField body="seeds.linkedinUrls" type="string[]">
+      LinkedIn profile URLs of seed contacts. Maximum 100 items. Example: `"https://www.linkedin.com/in/johndoe"`
     </ParamField>
-    <ParamField body="linkedinUrl" type="string">
-      LinkedIn profile URL of the seed contact.
+
+    <ParamField body="seeds.emails" type="string[]">
+      Email addresses of seed contacts. Maximum 100 items. Example: `"john@acme.com"`
     </ParamField>
-    <ParamField body="email" type="string">
-      Email address of the seed contact.
+
+    <ParamField body="seeds.contactIds" type="integer[]">
+      Lusha person IDs of seed contacts. Maximum 100 items. Example: `[1234, 4567]`
+    </ParamField>
+
+    <ParamField body="seeds.contacts" type="object[]">
+      Seed contacts identified by name and company. Maximum 100 items.
+
+      <Expandable title="contact object fields">
+        <ParamField body="seeds.contacts[].firstName" type="string" required>
+          First name. Example: `"John"`
+        </ParamField>
+
+        <ParamField body="seeds.contacts[].lastName" type="string" required>
+          Last name. Example: `"Doe"`
+        </ParamField>
+
+        <ParamField body="seeds.contacts[].companyDomain" type="string">
+          Company domain. At least one of `companyDomain` or `companyName` is required. Example: `"acme.com"`
+        </ParamField>
+
+        <ParamField body="seeds.contacts[].companyName" type="string">
+          Company name. Alternative to `companyDomain`. Example: `"Acme Inc"`
+        </ParamField>
+      </Expandable>
     </ParamField>
   </Expandable>
 </ParamField>
 
 <ParamField body="dedupeSessionId" type="string">
-  Session ID returned from a previous call. Omit on the first request. Include on all subsequent "get more" requests to avoid duplicate results.
+  Session ID returned from a previous call. Omit on the first request to start a new run. Include on all subsequent "get more" requests to avoid duplicate results.
 </ParamField>
 
 <ParamField body="exclude" type="object">
-  Optional exclusion filters applied on every request, combined with server-side deduplication.
+  Contacts to exclude from results, in the same shape as `seeds` (`linkedinUrls`, `contacts`, `emails`, `contactIds`; up to 500 identifiers total). Applied on every request and combined with server-side session deduplication.
+</ParamField>
 
-  <Expandable title="Exclude fields">
-    <ParamField body="exclude.personIds" type="array">
-      Array of Lusha person IDs to exclude from results.
-    </ParamField>
-    <ParamField body="exclude.linkedinUrls" type="array">
-      Array of LinkedIn URLs to exclude from results.
-    </ParamField>
-  </Expandable>
+<ParamField body="limit" type="integer" default="25">
+  Number of results to return per call. Accepted range: `1`–`100`.
 </ParamField>
 
 ## Request examples
 
 <CodeGroup>
+
 ```bash First request
-curl -X POST https://api.lusha.com/v3/lookalike/contacts \
-  -H "api_key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "contacts": [
-      { "personId": "4183886134" },
-      { "linkedinUrl": "https://www.linkedin.com/in/dustin/" }
-    ]
+curl --request POST \
+  --url https://api.lusha.com/v3/lookalike/contacts \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "seeds": {
+      "linkedinUrls": ["https://www.linkedin.com/in/johndoe"],
+      "emails": ["jane@acme.com", "bob@example.com"],
+      "contacts": [
+        { "firstName": "Alice", "lastName": "Smith", "companyDomain": "sap.com" }
+      ],
+      "contactIds": [1234, 4567]
+    },
+    "exclude": {
+      "emails": ["existing@customer.com"],
+      "linkedinUrls": ["https://www.linkedin.com/in/already-contacted/"],
+      "contactIds": [9999]
+    },
+    "limit": 25
   }'
 ```
 
 ```bash Get more (subsequent request)
-curl -X POST https://api.lusha.com/v3/lookalike/contacts \
-  -H "api_key: YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "contacts": [
-      { "personId": "4183886134" }
-    ],
-    "dedupeSessionId": "sess_abc123xyz"
+curl --request POST \
+  --url https://api.lusha.com/v3/lookalike/contacts \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
+    "seeds": {
+      "linkedinUrls": ["https://www.linkedin.com/in/johndoe"],
+      "emails": ["jane@acme.com", "bob@example.com"],
+      "contacts": [
+        { "firstName": "Alice", "lastName": "Smith", "companyDomain": "sap.com" }
+      ],
+      "contactIds": [1234, 4567]
+    },
+    "limit": 25
   }'
 ```
+
 </CodeGroup>
 
-## Response fields
+## Response
 
-<ResponseField name="contacts" type="array">
-  Array of lookalike contact objects with profile data.
-</ResponseField>
+### 200 — Success
 
 <ResponseField name="dedupeSessionId" type="string">
-  Session ID to use in your next "get more" request. Store this value between calls.
+  Server-generated session ID to use for subsequent "get more" requests. `null` when there are no results on the first request.
 </ResponseField>
 
-<ResponseField name="totalResults" type="number">
-  Total number of lookalike contacts available for this seed set.
+<ResponseField name="results" type="object[]">
+  Array of lookalike contacts.
+
+  <Expandable title="properties">
+    <ResponseField name="contactId" type="string">
+      Lusha person ID. Example: `"9659196"`
+    </ResponseField>
+
+    <ResponseField name="firstName" type="string">
+      First name.
+    </ResponseField>
+
+    <ResponseField name="lastName" type="string">
+      Last name.
+    </ResponseField>
+
+    <ResponseField name="socialLinks.linkedin" type="string">
+      LinkedIn profile URL.
+    </ResponseField>
+
+    <ResponseField name="company" type="object">
+      `companyId`, `name`, and `domain` of the contact's current company.
+    </ResponseField>
+
+    <ResponseField name="jobTitle" type="object">
+      `title`, `departments`, and `seniority` for the contact.
+    </ResponseField>
+
+    <ResponseField name="location" type="object">
+      `country`, `state`, and `city` for the contact.
+    </ResponseField>
+  </Expandable>
 </ResponseField>
+
+<ResponseField name="meta" type="object">
+  `returned` (number of results in this response) and `hasMore` (whether more results are available for the same seeds and `dedupeSessionId`).
+</ResponseField>
+
+<ResponseField name="creditsCharged" type="integer">
+  Number of credits charged for this request.
+</ResponseField>
+
+```json 200
+{
+  "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
+  "results": [
+    {
+      "contactId": "9659196",
+      "firstName": "Sarah",
+      "lastName": "Johnson",
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/in/sarahjohnson"
+      },
+      "company": {
+        "companyId": "8605368",
+        "name": "Marriott International",
+        "domain": "marriott.com"
+      },
+      "jobTitle": {
+        "title": "VP of Sales",
+        "departments": ["Sales"],
+        "seniority": "Director"
+      },
+      "location": {
+        "country": "United States",
+        "state": "Maryland",
+        "city": "Bethesda"
+      }
+    }
+  ],
+  "meta": {
+    "returned": 1,
+    "hasMore": true
+  },
+  "creditsCharged": 3
+}
+```
 
 ## Error responses
 
 | Status | Meaning |
 |--------|---------|
-| 400 | Invalid request body or missing required fields |
-| 401 | Missing or invalid API key |
-| 429 | Rate limit exceeded |
-| 500 | Internal server error |
+| `400` | Invalid request body or missing required fields |
+| `401` | Missing or invalid API key |
+| `402` | Insufficient credits |
+| `403` | Account inactive or feature not available on your plan |
+| `410` | `dedupeSessionId` is invalid or expired — start a new run by omitting it |
+| `500` | Internal server error |
+
+```json 410
+{
+  "code": "DEDUPE_SESSION_INVALID",
+  "message": "The provided dedupeSessionId is invalid or expired. Generate a new request without dedupeSessionId to start a fresh run."
+}
+```
 
 <Tip>
-  Combine lookalikes with the Enrichment API to immediately get emails and phone numbers for the returned contacts.
+  Combine lookalikes with the Enrichment API to get full contact details — including emails and phone numbers — for the returned contacts.
 </Tip>

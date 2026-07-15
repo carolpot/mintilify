@@ -34,25 +34,36 @@ All filter values returned here are intended for use in `POST /prospecting/compa
       --header 'api_key: YOUR_API_KEY'
     ```
 
-    The response returns an array of industry labels:
+    The response is a bare array of industry objects, each with a `main_industry` label, a `main_industry_id`, and a list of `sub_industries`:
 
     ```json
-    {
-      "industries": ["Software", "Financial Services", "Healthcare", "Manufacturing"]
-    }
+    [
+      {
+        "main_industry": "Hospitality",
+        "main_industry_id": 1,
+        "sub_industries": [{ "value": "Other", "id": 778 }]
+      }
+    ]
     ```
   </Step>
   <Step title="Pick the values that match your ICP">
-    Select the labels that apply to your target market. For example: `"Software"` and `"Financial Services"`.
+    Industries are filtered by numeric ID, not by label string. Note the `main_industry_id` (and any `sub_industries[].id`) that apply to your target market.
   </Step>
   <Step title="Pass them into your company search request">
-    Use the selected values as filter parameters in `POST /prospecting/company/search`:
+    Nest the selected values under `filters.companies.include` in `POST /prospecting/company/search`:
 
     ```json
     {
-      "industries": ["Software", "Financial Services"],
-      "sizes": ["51-200", "201-500"],
-      "revenues": ["$10M-$50M"]
+      "filters": {
+        "companies": {
+          "include": {
+            "mainIndustriesIds": [1],
+            "subIndustriesIds": [778],
+            "sizes": [{ "min": 51, "max": 200 }],
+            "revenues": [{ "min": 10000001, "max": 50000000 }]
+          }
+        }
+      }
     }
     ```
   </Step>
@@ -69,7 +80,7 @@ curl --request POST \
   --url https://api.lusha.com/prospecting/filters/companies/names \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --data '{ "query": "Salesforce" }'
+  --data '{ "text": "Salesforce" }'
 ```
 
 ```bash locations
@@ -77,7 +88,7 @@ curl --request POST \
   --url https://api.lusha.com/prospecting/filters/companies/locations \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --data '{ "query": "Austin" }'
+  --data '{ "text": "Austin" }'
 ```
 
 ```bash technologies
@@ -85,7 +96,7 @@ curl --request POST \
   --url https://api.lusha.com/prospecting/filters/companies/technologies \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --data '{ "query": "Salesforce" }'
+  --data '{ "text": "Salesforce" }'
 ```
 
 </CodeGroup>
@@ -94,7 +105,7 @@ curl --request POST \
 
 ### GET /prospecting/filters/companies/industries_labels
 
-Returns the full list of industry labels available for filtering.
+Returns the full industry hierarchy, with each main industry's `main_industry_id` and its `sub_industries` IDs, for filtering by numeric ID.
 
 ```bash
 curl --request GET \
@@ -104,7 +115,7 @@ curl --request GET \
 
 ### GET /prospecting/filters/companies/sizes
 
-Returns available employee headcount ranges (e.g., `"1-10"`, `"11-50"`, `"51-200"`).
+Returns available employee headcount ranges as `{min, max}` objects (e.g., `{"min": 1, "max": 10}`, `{"min": 11, "max": 50}`).
 
 ```bash
 curl --request GET \
@@ -114,7 +125,7 @@ curl --request GET \
 
 ### GET /prospecting/filters/companies/revenues
 
-Returns available annual revenue ranges (e.g., `"$1M-$10M"`, `"$10M-$50M"`).
+Returns available annual revenue ranges as `{min, max}` objects, in raw USD (e.g., `{"min": 1, "max": 1000000}`).
 
 ```bash
 curl --request GET \

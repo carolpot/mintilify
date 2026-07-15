@@ -5,7 +5,7 @@ description: "Retrieve valid employee count ranges for company prospecting filte
 openapi: "get /prospecting/filters/companies/sizes"
 ---
 
-Retrieve the list of available company size range values for filtering companies by headcount in `POST /prospecting/company/search`. Each value represents a headcount band. Use the exact strings returned by this endpoint in your search request.
+Retrieve the list of available company size ranges for filtering companies by headcount in `POST /prospecting/company/search`. Each range is a `{min, max}` object representing a headcount band. Use the exact objects returned by this endpoint in your search request.
 
 **Endpoint:** `GET https://api.lusha.com/prospecting/filters/companies/sizes`
 
@@ -20,27 +20,23 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "sizes": [
-    "1-10",
-    "11-50",
-    "51-200",
-    "201-500",
-    "501-1000",
-    "1001-5000",
-    "5001-10000",
-    "10001+"
-  ]
-}
+[
+  { "min": 1, "max": 10 },
+  { "min": 11, "max": 50 },
+  { "min": 51, "max": 200 }
+]
 ```
 
 ## Usage
 
-Pass one or more size range strings from the `sizes` array into the `companySizes` filter field of your company search request:
+Pass one or more `{min, max}` objects from the response into the `sizes` filter field of your company search request:
 
 ```json
 {
-  "companySizes": ["51-200", "201-500"]
+  "sizes": [
+    { "min": 51, "max": 200 },
+    { "min": 201, "max": 500 }
+  ]
 }
 ```
 

@@ -1,11 +1,11 @@
 ---
 title: "GET /prospecting/filters/companies/revenues"
 sidebarTitle: "GET /filters/companies/revenues"
-description: "Retrieve available annual revenue range values accepted by the company prospecting search endpoint. Returns ranges such as $1M–$10M and $10M–$50M."
+description: "Retrieve available annual revenue range values accepted by the company prospecting search endpoint. Returns raw USD min/max ranges."
 openapi: "get /prospecting/filters/companies/revenues"
 ---
 
-Retrieve the list of available annual revenue range values for filtering companies in `POST /prospecting/company/search`. Use these values to target companies by their reported annual revenue band. Always use the exact strings returned by this endpoint to ensure your filters are applied correctly.
+Retrieve the list of available annual revenue ranges for filtering companies in `POST /prospecting/company/search`. Use these ranges to target companies by their reported annual revenue band. Always use the exact `{min, max}` objects returned by this endpoint to ensure your filters are applied correctly.
 
 **Endpoint:** `GET https://api.lusha.com/prospecting/filters/companies/revenues`
 
@@ -20,26 +20,21 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "revenues": [
-    "$0 - $1M",
-    "$1M - $10M",
-    "$10M - $50M",
-    "$50M - $100M",
-    "$100M - $500M",
-    "$500M - $1B",
-    "$1B+"
-  ]
-}
+[
+  { "min": 1, "max": 1000000 },
+  { "min": 1000001, "max": 10000000 }
+]
 ```
+
+Each range is a raw USD `{min, max}` pair, not a formatted string.
 
 ## Usage
 
-Pass one or more revenue range strings from the `revenues` array into the `revenues` filter field of your company search request:
+Pass one or more `{min, max}` objects from the response into the `revenues` filter field of your company search request:
 
 ```json
 {
-  "revenues": ["$10M - $50M", "$50M - $100M"]
+  "revenues": [{ "min": 1000001, "max": 10000000 }]
 }
 ```
 

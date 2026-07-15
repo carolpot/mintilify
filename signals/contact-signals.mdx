@@ -54,8 +54,35 @@ Send up to 100 contact IDs per request. Results default to the last 6 months; pa
 {
   "contacts": {
     "115889": {
-      "promotion": [...],
-      "companyChange": [...]
+      "personId": "115889",
+      "companyChange": [
+        {
+          "personId": "115889",
+          "currentCompanyId": 8217,
+          "currentCompanyName": "Callaway Golf",
+          "currentDepartments": "R&D",
+          "currentSeniorityLabel": "c-suite",
+          "currentTitle": "Senior Manager, IT Solutions",
+          "signalDate": "2025-05-01",
+          "previousCompanyName": "Previous Corp",
+          "previousDomain": "nextgen.com",
+          "currentDomain": "vendavo.com"
+        }
+      ],
+      "promotion": [
+        {
+          "personId": "115889",
+          "currentCompanyId": 8217,
+          "currentCompanyName": "Callaway Golf",
+          "currentDepartments": "R&D",
+          "currentSeniorityLabel": "c-suite",
+          "currentTitle": "Senior Manager, IT Solutions",
+          "signalDate": "2025-05-01",
+          "previousCompanyName": "Previous Corp",
+          "previousDomain": "nextgen.com",
+          "currentDomain": "vendavo.com"
+        }
+      ]
     }
   },
   "startDate": "2025-01-01",
@@ -89,9 +116,9 @@ Each contact in the request must include at least one of the following identifie
 | `contacts[].full_name` | string | No | Full name of the contact |
 | `contacts[].email` | string | No | Email address |
 | `contacts[].companies` | array | No | Company associations for name-based matching |
-| `contacts[].companies[].name` | string | No | Company name |
-| `contacts[].companies[].domain` | string | No | Company domain (e.g. `lusha.com`) |
-| `contacts[].companies[].is_current` | boolean | No | Whether this is the contact's current employer |
+| `contacts[].companies[].name` | string | Yes, if `companies` is included | Company name |
+| `contacts[].companies[].domain` | string | Yes, if `companies` is included | Company domain (e.g. `lusha.com`) |
+| `contacts[].companies[].is_current` | boolean | No | Whether this is the contact's current employer (default: `true`) |
 | `signals` | array of strings | Yes | Signal types to retrieve: `allSignals`, `promotion`, `companyChange` |
 | `startDate` | string | No | Earliest date for signals in `YYYY-MM-DD` format (default: 6 months ago) |
 | `maxResultsPerSignal` | integer | No | Maximum signal instances returned per type per contact |
@@ -154,8 +181,35 @@ Each contact in the request must include at least one of the following identifie
 {
   "contacts": {
     "ref-001": {
-      "promotion": [...],
-      "companyChange": [...]
+      "personId": "115889",
+      "companyChange": [
+        {
+          "personId": "115889",
+          "currentCompanyId": 8217,
+          "currentCompanyName": "Callaway Golf",
+          "currentDepartments": "R&D",
+          "currentSeniorityLabel": "c-suite",
+          "currentTitle": "Senior Manager, IT Solutions",
+          "signalDate": "2025-05-01",
+          "previousCompanyName": "Previous Corp",
+          "previousDomain": "nextgen.com",
+          "currentDomain": "vendavo.com"
+        }
+      ],
+      "promotion": [
+        {
+          "personId": "115889",
+          "currentCompanyId": 8217,
+          "currentCompanyName": "Callaway Golf",
+          "currentDepartments": "R&D",
+          "currentSeniorityLabel": "c-suite",
+          "currentTitle": "Senior Manager, IT Solutions",
+          "signalDate": "2025-05-01",
+          "previousCompanyName": "Previous Corp",
+          "previousDomain": "nextgen.com",
+          "currentDomain": "vendavo.com"
+        }
+      ]
     }
   },
   "startDate": "2025-01-01",

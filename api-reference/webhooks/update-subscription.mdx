@@ -23,8 +23,12 @@ All fields are optional.
   Updated array of signal type keys for this subscription. Replaces the existing set.
 </ParamField>
 
-<ParamField body="webhookUrl" type="string">
-  New HTTPS URL for webhook delivery. Must use HTTPS.
+<ParamField body="url" type="string">
+  New HTTPS URL for webhook delivery. Must use HTTPS. Maximum length 2048 characters.
+</ParamField>
+
+<ParamField body="name" type="string">
+  New display name for the subscription. Maximum 100 characters.
 </ParamField>
 
 <ParamField body="isActive" type="boolean">
@@ -43,10 +47,30 @@ curl --request PATCH \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
-    "signalTypes": ["promotion", "jobChange", "commercialActivityNews"],
+    "signalTypes": ["promotion", "companyChange"],
     "isActive": true
   }'
 ```
+
+## Example response
+
+```json 200
+{
+  "id": "507f1f77bcf86cd799439011",
+  "entityType": "contact",
+  "entityId": "123456",
+  "signalTypes": ["promotion", "companyChange"],
+  "url": "https://example.com/webhooks/lusha",
+  "name": "Contact Promotion Tracker",
+  "isActive": true,
+  "createdAt": "2026-01-14T10:00:00.000Z",
+  "updatedAt": "2026-01-14T10:00:00.000Z"
+}
+```
+
+<Note>
+  The `secret` field is only present in the response when `regenerateSecret: true` was included in the request.
+</Note>
 
 ## Reactivating a disabled subscription
 
@@ -80,4 +104,4 @@ Example request to rotate the secret:
 }
 ```
 
-The response includes the new secret in a `webhookSecret` field alongside the updated subscription object.
+The response includes the new secret in a `secret` field alongside the updated subscription object. Like on creation, this value is only ever shown once.

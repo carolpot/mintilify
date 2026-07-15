@@ -146,7 +146,7 @@ curl --request POST \
 ### 200 — Success
 
 <ResponseField name="contacts" type="object">
-  A map of caller-assigned IDs (from `contacts[].id` in the request) to contact signal data. Each value contains both the matched contact profile and their signal results.
+  A map of caller-assigned IDs (from `contacts[].id` in the request) to contact signal data. Each value includes the matched `personId` plus one array per requested signal type (for example `promotion`, `companyChange`).
 </ResponseField>
 
 <ResponseField name="startDate" type="string">
@@ -181,34 +181,27 @@ curl --request POST \
   "creditCharged": 2,
   "contacts": {
     "1": {
-      "contactData": {
-        "contactId": 115889,
-        "fullName": "Ron Nabet",
-        "jobTitle": "VP of Sales",
-        "companyName": "Lusha"
-      },
-      "signals": {
-        "promotion": [
-          {
-            "previousTitle": "Director of Sales",
-            "newTitle": "VP of Sales",
-            "signalDate": "2025-04-10"
-          }
-        ],
-        "companyChange": []
-      }
+      "personId": "115889",
+      "promotion": [
+        {
+          "personId": "115889",
+          "currentCompanyId": 8217,
+          "currentCompanyName": "Callaway Golf",
+          "currentDepartments": "R&D",
+          "currentSeniorityLabel": "c-suite",
+          "currentTitle": "Senior Manager, IT Solutions",
+          "signalDate": "2025-05-01",
+          "previousCompanyName": "Previous Corp",
+          "previousDomain": "nextgen.com",
+          "currentDomain": "vendavo.com"
+        }
+      ],
+      "companyChange": []
     },
     "2": {
-      "contactData": {
-        "contactId": 229301,
-        "fullName": "Jane Smith",
-        "jobTitle": "Head of Marketing",
-        "companyName": "Acme Corp"
-      },
-      "signals": {
-        "promotion": [],
-        "companyChange": []
-      }
+      "personId": "229301",
+      "promotion": [],
+      "companyChange": []
     }
   }
 }

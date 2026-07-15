@@ -3,4 +3,79 @@ title: "Company firmographic fields"
 description: "Name, domain, size, revenue, industry, location, and headcount data."
 ---
 
-<Note>This page is a placeholder — fill in field-by-field documentation from the API response schema.</Note>
+Firmographic fields describe a company's core profile — who it is, how big it is, and where it's based. They're returned by [`GET /v2/company`](/enrichment/single-company) and [`POST /bulk/company/v2`](/enrichment/bulk-companies) (company enrichment), and in a related but distinct shape by [`POST /prospecting/company/enrich`](/prospecting/enrich-companies) — see [Prospecting enrichment shape](#prospecting-enrichment-shape) below.
+
+Technologies, funding, and intent data are documented separately in [Company technology fields](/data-catalog/company-technologies) and [Company funding fields](/data-catalog/company-funding).
+
+## Identity and profile
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | number | Lusha's unique identifier for the company. |
+| `name` | string | The company's name. |
+| `alternativeName` | string | A normalized alternative form of the company name. |
+| `description` | string | A brief description of the company. |
+| `domain` | string | The domain associated with the company's email addresses. |
+| `fqdn` | string | The fully qualified domain name of the company. |
+| `website` | string | The company's website URL. |
+| `logoUrl` | string | URL of the company's logo. |
+| `companyType` | string | The type of company, for example `"Private company"`. |
+| `lushaPopularityTier` | integer | A proprietary ranking Lusha uses to categorize companies by their popularity in the platform. |
+
+## Size and revenue
+
+| Field | Type | Description |
+|---|---|---|
+| `employees` | string | The company's employee size range as a label, for example `"201 - 500"`. |
+| `companySize.min` / `companySize.max` | number | The numeric bounds of the employee size range. |
+| `companySize.employeesInLinkedin` | number | Employee count as reported on LinkedIn. |
+| `revenueRange` | array of numbers | Estimated annual revenue range in USD, for example `[1000000, 10000000]`. |
+| `founded` | string | The date or year the company was founded. |
+
+## Industry and classification
+
+| Field | Type | Description |
+|---|---|---|
+| `mainIndustry` | string | The company's primary industry, for example `"Technology"`. |
+| `subIndustry` | string | The sub-sector within the primary industry, for example `"Software"`. |
+| `categories` | array of strings | LinkedIn industry tags for the company. |
+| `specialities` | array of strings | LinkedIn specialty tags for the company. |
+| `industryPrimaryGroupDetails.sicCodes` | array | SIC (Standard Industrial Classification) codes that apply to the company. Each entry has `code` and `description`. |
+| `industryPrimaryGroupDetails.naicsCodes` | array | NAICS (North American Industry Classification System) codes that apply to the company. Each entry has `code` and `description`. |
+
+## Location
+
+| Field | Type | Description |
+|---|---|---|
+| `location` | object | HQ location only: `city`, `state`, `stateCode`, `country`, `countryIso2`, `fullLocation`, `rawLocation`. |
+| `address` | string | The company's full HQ address as a single string. |
+| `companyLocations` | array | **All** known company site locations, not just HQ. Each entry has `city`, `state`, `country`, `country_iso2`, `continent`, and `location_coordinates`. |
+
+<Note>
+  Use `location` when you only need the headquarters, and `companyLocations` when you need every office the company reports having.
+</Note>
+
+## Web and social
+
+| Field | Type | Description |
+|---|---|---|
+| `social.linkedin` | string | The company's LinkedIn page URL. |
+| `social.crunchbase` | string | The company's Crunchbase page URL, when available. |
+| `linkedinFollowers` | integer | LinkedIn follower count for the company. |
+| `emailDomain` | string | The domain used for the company's email addresses. |
+
+## Prospecting enrichment shape
+
+`POST /prospecting/company/enrich` returns largely the same firmographic data, with a few structural differences from `GET /v2/company`:
+
+- `domains` is an object with `email` and `homepage` sub-fields, rather than separate `domain`/`fqdn`/`website` fields.
+- `industryTags` replaces `categories` for LinkedIn industry tags.
+- Location is flattened onto the top level (`city`, `state`, `country`, `countryIso2`, `continent`, `rawLocation`, `coordinates`) instead of nested under `location`.
+- `companySize.employeesInLinkedin` is spelled `employees_in_linkedin` (snake_case) in this response.
+
+## See also
+
+- [Company technology fields](/data-catalog/company-technologies)
+- [Company funding fields](/data-catalog/company-funding)
+- [Signal types](/data-catalog/signal-types)
+- [Available company filters for prospecting searches](/filters/company-filters)

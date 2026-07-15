@@ -20,19 +20,17 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "naics": [
-    { "code": "511210", "label": "Software Publishers" },
-    { "code": "518210", "label": "Data Processing, Hosting, and Related Services" },
-    { "code": "541511", "label": "Custom Computer Programming Services" },
-    { "code": "523130", "label": "Commodity Contracts Dealing" }
-  ]
-}
+[
+  { "code": "511210", "label": "Software Publishers" },
+  { "code": "518210", "label": "Data Processing, Hosting, and Related Services" },
+  { "code": "541511", "label": "Custom Computer Programming Services" },
+  { "code": "523130", "label": "Commodity Contracts Dealing" }
+]
 ```
 
 ## Usage
 
-Pass one or more NAICS code strings from the `naics` array into the `naicsCodes` filter field of your company search request:
+Pass one or more `code` values from the response into the `naicsCodes` filter field of your company search request:
 
 ```json
 {

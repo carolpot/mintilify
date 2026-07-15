@@ -20,19 +20,17 @@ curl --request GET \
 ## Example response
 
 ```json
-{
-  "sics": [
-    { "code": "7372", "label": "Prepackaged Software" },
-    { "code": "7371", "label": "Computer Programming, Data Processing" },
-    { "code": "5045", "label": "Computers & Peripherals" },
-    { "code": "6282", "label": "Investment Advice" }
-  ]
-}
+[
+  { "code": "7372", "label": "Prepackaged Software" },
+  { "code": "7371", "label": "Computer Programming, Data Processing" },
+  { "code": "5045", "label": "Computers & Peripherals" },
+  { "code": "6282", "label": "Investment Advice" }
+]
 ```
 
 ## Usage
 
-Pass one or more SIC code strings from the `sics` array into the `sicCodes` filter field of your company search request:
+Pass one or more `code` values from the response into the `sicCodes` filter field of your company search request:
 
 ```json
 {

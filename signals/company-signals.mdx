@@ -38,7 +38,7 @@ Send up to 100 company IDs per request. Results default to the last 6 months; pa
 ```json
 {
   "companyIds": [3416, 98201],
-  "signals": ["financialEventsNews", "surgeInHiring"],
+  "signals": ["commercialActivityNews", "surgeInHiring"],
   "startDate": "2025-01-01",
   "maxResultsPerSignal": 10
 }
@@ -50,13 +50,41 @@ Send up to 100 company IDs per request. Results default to the last 6 months; pa
 {
   "companies": {
     "3416": {
-      "financialEventsNews": [...],
-      "surgeInHiring": [...]
+      "companyId": "3416",
+      "companyName": "Lusha",
+      "domain": "lusha.com",
+      "commercialActivityNews": [
+        {
+          "companyId": "3416",
+          "companyName": "Lusha",
+          "domain": "lusha.com",
+          "signalId": "1503910",
+          "eventType": "partnership",
+          "eventSummary": "Lusha announced a strategic partnership with Salesforce.",
+          "articlePublishedDate": "2025-06-15",
+          "articleTitle": "Lusha Partners with Salesforce",
+          "articleHighlight": "The partnership enables Salesforce users to access Lusha data directly within their CRM.",
+          "eventEffectiveDate": "2025-06-10",
+          "articleUrl": "https://example.com/lusha-salesforce-partnership"
+        }
+      ],
+      "surgeInHiring": [
+        {
+          "companyId": "3416",
+          "signalId": "1503905",
+          "signalDate": "2025-06-15",
+          "newJobsPostedLastWeek": 25,
+          "historicalAvg": 10,
+          "changeRatePercent": 150,
+          "companyName": "Lusha",
+          "domain": "lusha.com"
+        }
+      ]
     }
   },
   "startDate": "2025-01-01",
   "endDate": "2025-07-31",
-  "creditCharged": 3
+  "creditCharged": 2
 }
 ```
 

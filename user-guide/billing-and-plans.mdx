@@ -1,8 +1,84 @@
 ---
 title: "Billing & plans"
-description: "Manage your Lusha subscription, upgrade your plan, and track credit usage."
+description: "Understand Lusha's credit system, plan tiers, and how to upgrade your subscription."
 ---
 
+Lusha runs on a unified credit system that spans the web app, the browser extension, the API, and other tools. Credits are your currency for revealing contact data and using certain platform features.
+
+## How credits work
+
+You spend credits when you reveal contact information — for example, an email or phone number. Searching and filtering don't cost credits, and re-viewing a contact you've already revealed is free.
+
+Typical credit costs include:
+
+| Action | Cost |
+|---|---|
+| Reveal an email | 1 credit |
+| Reveal a phone number | 5 credits |
+| Reveal both email and phone | Up to 6 credits |
+| Re-view an already-revealed contact | 0 credits |
+| Search or filter | 0 credits |
+
+<!-- VERIFY: could not confirm current exact credit costs for every action (CSV export, CRM sync, AI Data enrichment, signals) on the live site — check Settings → Payments & Subscription for your account's current rates -->
+
+Credits are grouped into broader categories under Lusha's pricing system: essential prospecting (verified contact and company data), workflow automations, sales intelligence (signals), and client engagement tools.
+
+## Credit renewal and rollover
+
+- **Monthly plans** — unused credits roll over to the next month, up to a cap of 2× your monthly allowance.
+- **Annual plans** — your full year of credits is allocated upfront, with no monthly reset.
+- **Free plans** — unused credits don't roll over.
+
+Credits reset on your billing anniversary date, not necessarily the first of the month. You can confirm your exact renewal date under **Settings → Payments & Subscription**.
+
+## Plan tiers
+
+Lusha's plans differ mainly in seat limits and available features:
+
+| Plan | Seats |
+|---|---|
+| Starter | 1 |
+| Pro | 2 seats included, expandable up to 10 |
+| Premium | 5 seats included, expandable up to 25 |
+| Scale | Unlimited seats |
+
 <Note>
-  This page is a placeholder. Migrate the corresponding article from your help center here.
+  The Manager role, credit limits per user or group, inactivity timeouts, and SSO configuration are available on Scale plans only.
 </Note>
+
+## Managing payments and subscription
+
+Admins and Managers can view invoice history, payment methods, current plan details, credit balance, and renewal dates from **Settings → Payments & Subscription**. Enterprise customers should contact their Account Manager for plan changes instead of upgrading through the pricing page.
+
+## Upgrading your plan
+
+<Steps>
+  <Step title="Open account settings">
+    Click your initials in the left navigation, then go to **Account & settings → Payments & Subscription**.
+  </Step>
+  <Step title="Click Change Plan">
+    This opens Lusha's pricing page.
+  </Step>
+  <Step title="Select a new plan">
+    Choose the plan that fits your team. Lusha calculates a prorated credit for the unused portion of your current plan, shown at checkout as a "Refund for unused plan" line.
+  </Step>
+</Steps>
+
+<Warning>
+  Upgrading starts a new billing cycle. Credits from your previous plan don't carry over.
+</Warning>
+
+## Downgrading, freezing, or canceling
+
+You can also downgrade your plan, move from a legacy plan to a current one, freeze your subscription temporarily, or cancel outright. Each of these affects your credits and data differently, so review the details in account settings before making a change, or contact Lusha support if you're unsure.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Team management" icon="users" href="/user-guide/team-management">
+    See how seats and roles interact with your plan.
+  </Card>
+  <Card title="Privacy & compliance" icon="shield" href="/user-guide/privacy-and-compliance">
+    Learn about security and compliance features available on higher-tier plans.
+  </Card>
+</CardGroup>
