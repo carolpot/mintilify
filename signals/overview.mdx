@@ -4,7 +4,7 @@ sidebarTitle: "Overview"
 description: "Use Lusha Signals to detect job changes, promotions, and company events. Integrate signals into your CRM or automation to engage prospects at the right time."
 ---
 
-Lusha Signals surface timely insights about contacts and companies — from job changes and promotions to funding rounds, hiring surges, and news events. Instead of reaching out blindly, you can act on real triggers: a champion moved to a new company, a prospect just raised a Series B, or a target account doubled its engineering headcount. Signals help you keep CRM records current, prioritize outreach, and fire automations precisely when conditions are right.
+Lusha Signals surface timely insights about contacts and companies — from job changes and promotions to hiring surges, headcount changes, and categorized news events. Instead of reaching out blindly, you can act on real triggers: a champion moved to a new company, or a target account doubled its engineering headcount. Signals help you keep CRM records current, prioritize outreach, and fire automations precisely when conditions are right.
 
 ## What signals are
 
@@ -13,23 +13,24 @@ A signal is a detected change or event associated with a contact or company with
 Lusha provides two categories of signals:
 
 - **Contact signals** — changes tied to an individual, such as a job title promotion or a move to a new employer.
-- **Company signals** — events tied to an organization, such as a funding round, a surge in hiring, or a spike in website traffic.
+- **Company signals** — events tied to an organization, such as a surge in hiring, a headcount change, or a news event.
 
-## How to retrieve signals
+## One call per entity type
 
-You have three options:
+Signals is a consolidated, one-call-per-entity model: give an endpoint a list of IDs and the signal types you want, and it returns everything that matched — in a single request, no separate "search" step.
 
-<AccordionGroup>
-  <Accordion title="Include signals in enrichment calls">
-    Add a `signals` parameter to your existing contact or company enrichment requests. You get contact or company data and signals in a single response.
-  </Accordion>
-  <Accordion title="Use the dedicated Signals API">
-    Call the Signals endpoints directly to retrieve signals for a list of known IDs, or combine search and signal retrieval in one request using the `/search` variants.
-  </Accordion>
-  <Accordion title="Subscribe to webhooks for push delivery">
-    Set up webhook subscriptions to receive signal events in real time as they are detected, without polling the API. See the [Webhooks](/webhooks/overview) section for setup instructions.
-  </Accordion>
-</AccordionGroup>
+<CardGroup cols={2}>
+  <Card title="Contact Signals" icon="user" href="/api-reference/signals/contact-signals">
+    `POST /v3/contacts/signals` — up to 100 contact IDs per request.
+  </Card>
+  <Card title="Company Signals" icon="building" href="/api-reference/signals/company-signals">
+    `POST /v3/companies/signals` — up to 100 company IDs per request.
+  </Card>
+</CardGroup>
+
+<Info>
+  Both endpoints take Lusha IDs. If you don't have IDs yet, resolve contacts or companies first with [Enrich Contacts](/enrichment/enrich-contacts) / [Enrich Companies](/enrichment/enrich-companies) or their [Search & Enrich](/enrichment/search-and-enrich-contacts) equivalents, then pass the returned `id` values into Signals.
+</Info>
 
 ## Available signal types
 
@@ -72,32 +73,39 @@ You have three options:
 
 **News events**
 
-| Signal type | Included events |
+| Signal type | Description |
 |---|---|
-| `commercialActivityNews` | Partnership, New Customer, New Vendor |
-| `corporateStrategyNews` | M&A, Facilities Expansion, New Location, Facility Closure, Asset Sale, Lawsuit Filed |
-| `financialEventsNews` | Funding Round, Asset Investment, Strategic Investment, IPO |
-| `marketIntelligenceNews` | Event Participation, Recognition, Competitor Activity |
-| `peopleNews` | Executive Hire, Executive Departure, Executive Promotion, Headcount Increase, Headcount Decrease |
-| `productActivityNews` | Product Launch, Product Development, Product Integration |
-| `riskNews` | Security Issue, Lawsuit Faced |
+| `riskNews` | Litigation and security news |
+| `commercialActivityNews` | Launches, partnerships, and go-to-market activity |
+| `corporateStrategyNews` | M&A, restructuring, and strategic direction changes |
+| `financialEventsNews` | Funding, IPO, and financial performance events |
+| `peopleNews` | Hiring, layoff, and leadership changes |
+| `marketIntelligenceNews` | Event participation, recognition, and competitor activity |
+| `productActivityNews` | Product launches, development, and integrations |
 
-## Retrieve available signal options
+<Tip>
+  Don't hardcode this list. Call [Get Contact Signal Types](/api-reference/signals/contact-signal-types) or [Get Company Signal Types](/api-reference/signals/company-signal-types) to fetch the current, authoritative list of `signalTypes` values at runtime.
+</Tip>
 
-Before building your request, you can fetch the full list of valid signal types and sub-filter values for each entity type:
+## Discover company signal filters
 
-```bash
-GET https://api.lusha.com/api/signals/filters/{objectType}
-```
+Company Signals results carry news-, department-, and location-specific detail. Two reference endpoints help you explore that taxonomy before you build a UI or automation on top of it:
 
-Replace `{objectType}` with `contact` or `company`. The response includes valid values for `newsEventTypes`, `hiringByDepartments`, and `hiringByLocations` sub-filters.
+<CardGroup cols={2}>
+  <Card title="Get Company Signal Filters" icon="list" href="/api-reference/signals/company-signal-filters">
+    Discovery endpoint — lists the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) and whether each needs a search query.
+  </Card>
+  <Card title="Get Company Signal Filter Values" icon="magnifying-glass" href="/api-reference/signals/company-signal-filter-values">
+    Returns the actual values for one filter type — a fixed list for `newsEventTypes` and `hiringByDepartments`, or a text-matched list for `hiringByLocations`.
+  </Card>
+</CardGroup>
 
 ## Time window and credits
 
-By default, signals cover the **last 6 months**. Pass a `startDate` in `YYYY-MM-DD` format to narrow or extend the window.
+Pass a `startDate` in `YYYY-MM-DD` format to limit results to signals detected on or after that date. Use `maxResultsPerSignal` to cap how many instances of each signal type come back per contact or company.
 
 <Warning>
-  Each signal type you include in a request counts toward your credit usage. Request only the signal types you need to manage consumption efficiently.
+  Signals are charged per matched signal per result — `showSignalsContact` for Contact Signals and `showSignalsCompany` for Company Signals. Request only the signal types you need to manage consumption.
 </Warning>
 
 ## Next steps
@@ -107,6 +115,6 @@ By default, signals cover the **last 6 months**. Pass a `startDate` in `YYYY-MM-
     Retrieve job changes and promotions for specific contacts.
   </Card>
   <Card title="Company signals" icon="building" href="/signals/company-signals">
-    Retrieve funding, hiring, and news events for specific companies.
+    Retrieve hiring, headcount, and news events for specific companies.
   </Card>
 </CardGroup>

@@ -1,66 +1,73 @@
 ---
 title: "Available company filters for prospecting searches"
 sidebarTitle: "Company Filters"
-description: "Retrieve valid filter values for industries, sizes, revenues, locations, SIC codes, NAICS codes, intent topics, and technologies for company search."
+description: "Discover company filter types and retrieve their valid values with two generic endpoints, then use them in a Prospecting Companies search."
 ---
 
-Use these filter endpoints to retrieve the exact values the API accepts before building a company search request. Passing values outside the API's taxonomy causes searches to return no results, so fetching valid options first ensures your queries work as expected.
+Before building a [Prospecting Companies](/api-reference/prospecting/prospecting-companies) request, use the Filters API to retrieve the exact values Lusha accepts. Passing values outside the API's taxonomy causes searches to return no results, so fetching valid options first ensures your queries work as expected.
 
-All filter values returned here are intended for use in `POST /prospecting/company/search`.
+<Info>
+  **V3 change:** company filters are no longer one endpoint per filter type (names, sizes, revenues, SIC codes, and so on). V3 collapses discovery and lookup into two generic endpoints — the same two endpoints work for every filter type; the `filterType` you pass tells the API which dimension you want.
+</Info>
 
-## Available filter endpoints
-
-| Filter | Endpoint | Method |
-|---|---|---|
-| Company names | `/prospecting/filters/companies/names` | POST (text search) |
-| Industries | `/prospecting/filters/companies/industries_labels` | GET |
-| Sizes | `/prospecting/filters/companies/sizes` | GET |
-| Revenues | `/prospecting/filters/companies/revenues` | GET |
-| Locations | `/prospecting/filters/companies/locations` | POST (text search) |
-| SIC codes | `/prospecting/filters/companies/sics` | GET |
-| NAICS codes | `/prospecting/filters/companies/naics` | GET |
-| Intent topics | `/prospecting/filters/companies/intent_topics` | GET |
-| Technologies | `/prospecting/filters/companies/technologies` | POST (text search) |
-
-## How to use these endpoints
+## The two-step pattern
 
 <Steps>
-  <Step title="Fetch valid filter values">
-    Call the filter endpoint for the dimension you want to filter on. For example, to get the list of industries:
+  <Step title="Discover filter types">
+    Call [`GET /v3/companies/prospecting/filters`](/api-reference/filters/company-filter-types). It returns every company filter type and a `requiresQuery` flag telling you whether that type needs a search term.
 
     ```bash
     curl --request GET \
-      --url https://api.lusha.com/prospecting/filters/companies/industries_labels \
+      --url https://api.lusha.com/v3/companies/prospecting/filters \
       --header 'api_key: YOUR_API_KEY'
     ```
 
-    The response is a bare array of industry objects, each with a `main_industry` label, a `main_industry_id`, and a list of `sub_industries`:
-
     ```json
-    [
-      {
-        "main_industry": "Hospitality",
-        "main_industry_id": 1,
-        "sub_industries": [{ "value": "Other", "id": 778 }]
-      }
-    ]
+    {
+      "availableFilters": [
+        { "filterType": "names", "requiresQuery": true },
+        { "filterType": "technologies", "requiresQuery": true },
+        { "filterType": "locations", "requiresQuery": true },
+        { "filterType": "industriesLabels", "requiresQuery": false },
+        { "filterType": "sizes", "requiresQuery": false },
+        { "filterType": "revenues", "requiresQuery": false },
+        { "filterType": "sics", "requiresQuery": false },
+        { "filterType": "naics", "requiresQuery": false },
+        { "filterType": "intentTopics", "requiresQuery": false }
+      ]
+    }
     ```
   </Step>
-  <Step title="Pick the values that match your ICP">
-    Industries are filtered by numeric ID, not by label string. Note the `main_industry_id` (and any `sub_industries[].id`) that apply to your target market.
+  <Step title="Fetch values for the filter type you need">
+    Call [`GET /v3/companies/prospecting/filters/{filterType}`](/api-reference/filters/company-filter-values) with the `filterType` from step 1. If `requiresQuery` was `true`, also pass a `query` string (2–256 characters).
+
+    ```bash
+    curl --request GET \
+      --url https://api.lusha.com/v3/companies/prospecting/filters/sizes \
+      --header 'api_key: YOUR_API_KEY'
+    ```
+
+    ```json
+    {
+      "values": [
+        { "min": 1, "max": 10 },
+        { "min": 11, "max": 50 },
+        { "min": 51, "max": 200 }
+      ]
+    }
+    ```
   </Step>
-  <Step title="Pass them into your company search request">
-    Nest the selected values under `filters.companies.include` in `POST /prospecting/company/search`:
+  <Step title="Pass the values into your search request">
+    Nest the selected values under `filters.companies.include` in [`POST /v3/companies/prospecting`](/api-reference/prospecting/prospecting-companies):
 
     ```json
     {
       "filters": {
         "companies": {
           "include": {
-            "mainIndustriesIds": [1],
-            "subIndustriesIds": [778],
+            "industriesLabels": ["Software", "SaaS"],
             "sizes": [{ "min": 51, "max": 200 }],
-            "revenues": [{ "min": 10000001, "max": 50000000 }]
+            "revenues": [{ "min": 1, "max": 1000000 }]
           }
         }
       }
@@ -69,104 +76,37 @@ All filter values returned here are intended for use in `POST /prospecting/compa
   </Step>
 </Steps>
 
-## Text-search endpoints
+## Which filter types need a query
 
-Three filter endpoints use `POST` with a text query to search for matching values rather than returning a fixed list.
+| Filter type | Query required? | Search request field |
+|---|---|---|
+| `sizes` | No — returns the full list | `filters.companies.include.sizes` |
+| `revenues` | No — returns the full list | `filters.companies.include.revenues` |
+| `sics` | No — returns the full list | `filters.companies.include.sicCodes` |
+| `naics` | No — returns the full list | `filters.companies.include.naicsCodes` |
+| `intentTopics` | No — returns the full list | `filters.companies.include.intentTopics` |
+| `industriesLabels` | No — returns the full list | `filters.companies.include.industriesLabels` |
+| `names` | **Yes** — pass `query` (2–256 chars) | `filters.companies.include.names` |
+| `technologies` | **Yes** — pass `query` (2–256 chars) | `filters.companies.include.technologies` |
+| `locations` | **Yes** — pass `query` (2–256 chars) | `filters.companies.include.locations` |
 
-<CodeGroup>
-
-```bash company names
-curl --request POST \
-  --url https://api.lusha.com/prospecting/filters/companies/names \
-  --header 'api_key: YOUR_API_KEY' \
-  --header 'Content-Type: application/json' \
-  --data '{ "text": "Salesforce" }'
-```
-
-```bash locations
-curl --request POST \
-  --url https://api.lusha.com/prospecting/filters/companies/locations \
-  --header 'api_key: YOUR_API_KEY' \
-  --header 'Content-Type: application/json' \
-  --data '{ "text": "Austin" }'
-```
-
-```bash technologies
-curl --request POST \
-  --url https://api.lusha.com/prospecting/filters/companies/technologies \
-  --header 'api_key: YOUR_API_KEY' \
-  --header 'Content-Type: application/json' \
-  --data '{ "text": "Salesforce" }'
-```
-
-</CodeGroup>
-
-## Endpoint details
-
-### GET /prospecting/filters/companies/industries_labels
-
-Returns the full industry hierarchy, with each main industry's `main_industry_id` and its `sub_industries` IDs, for filtering by numeric ID.
-
-```bash
-curl --request GET \
-  --url https://api.lusha.com/prospecting/filters/companies/industries_labels \
-  --header 'api_key: YOUR_API_KEY'
-```
-
-### GET /prospecting/filters/companies/sizes
-
-Returns available employee headcount ranges as `{min, max}` objects (e.g., `{"min": 1, "max": 10}`, `{"min": 11, "max": 50}`).
-
-```bash
-curl --request GET \
-  --url https://api.lusha.com/prospecting/filters/companies/sizes \
-  --header 'api_key: YOUR_API_KEY'
-```
-
-### GET /prospecting/filters/companies/revenues
-
-Returns available annual revenue ranges as `{min, max}` objects, in raw USD (e.g., `{"min": 1, "max": 1000000}`).
-
-```bash
-curl --request GET \
-  --url https://api.lusha.com/prospecting/filters/companies/revenues \
-  --header 'api_key: YOUR_API_KEY'
-```
-
-### GET /prospecting/filters/companies/sics
-
-Returns available Standard Industrial Classification (SIC) codes for industry-based filtering.
-
-```bash
-curl --request GET \
-  --url https://api.lusha.com/prospecting/filters/companies/sics \
-  --header 'api_key: YOUR_API_KEY'
-```
-
-### GET /prospecting/filters/companies/naics
-
-Returns available North American Industry Classification System (NAICS) codes.
-
-```bash
-curl --request GET \
-  --url https://api.lusha.com/prospecting/filters/companies/naics \
-  --header 'api_key: YOUR_API_KEY'
-```
-
-### GET /prospecting/filters/companies/intent_topics
-
-Returns intent topic labels you can use to target companies actively researching specific subjects.
-
-```bash
-curl --request GET \
-  --url https://api.lusha.com/prospecting/filters/companies/intent_topics \
-  --header 'api_key: YOUR_API_KEY'
-```
-
-<Tip>
-  Cache responses from the GET endpoints — industries, sizes, revenues, SIC codes, NAICS codes, and intent topics change infrequently. Refresh your cache weekly or when a search returns unexpected results.
-</Tip>
+`sizes`, `revenues`, `sics`, `naics`, `intentTopics`, and `industriesLabels` return their entire value set in one call. `names`, `technologies`, and `locations` are too large to enumerate, so you search them with a free-text `query` (for example, `"Salesforce"` or `"Austin"`) and get back matching values.
 
 <Note>
-  SIC and NAICS codes provide more granular industry targeting than industry labels. Use them when you need to narrow your search to a specific sub-sector that does not map cleanly to a label.
+  `sics` and `naics` provide more granular industry targeting than `industriesLabels`. Use them when you need to narrow a search to a specific sub-sector that doesn't map cleanly to a label.
 </Note>
+
+<Tip>
+  `sizes`, `revenues`, `sics`, `naics`, `intentTopics`, and `industriesLabels` rarely change. Cache their values instead of calling the discovery or values endpoints before every search.
+</Tip>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Company Filter Types" icon="list" href="/api-reference/filters/company-filter-types">
+    Full reference for the discovery endpoint.
+  </Card>
+  <Card title="Company Filter Values" icon="magnifying-glass" href="/api-reference/filters/company-filter-values">
+    Full reference for the values endpoint, including response shapes per filter type.
+  </Card>
+</CardGroup>

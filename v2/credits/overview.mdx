@@ -1,0 +1,50 @@
+---
+title: "Credits & Plans"
+description: "How Lusha credits work, what they cost per endpoint, and how to track your usage."
+---
+
+Lusha uses a credit-based system to meter API usage. Credits are charged **per data point revealed** — not a single flat fee per contact — and every request has a minimum charge, even when it returns no data.
+
+<Info>
+  Credits are shared across your entire Lusha account — all users and API keys draw from the same pool.
+</Info>
+
+## How credits are charged
+
+| Data point | Credit cost |
+|---|---|
+| Email address revealed | 1 credit |
+| Phone number revealed | 5 credits |
+| Company record revealed | 1 credit |
+
+A single contact enrichment request that reveals both an email and a phone number costs 7 credits total: 1 for the request/match, 1 for the email, and 5 for the phone. Using `revealEmails` or `revealPhones` to fetch only one data type (see [Unified Credits](/v2/credits/unified-credits)) charges only for that data type plus the base request credit.
+
+| Scenario | Credit charge |
+|---|---|
+| Contact enrichment reveals email + phone | 7 credits (1 + 1 + 5) |
+| Contact enrichment reveals email only (`revealEmails`) | 2 credits (1 + 1) |
+| Contact enrichment reveals phone only (`revealPhones`) | 6 credits (1 + 5) |
+| Company enrichment returns a match | 1 credit |
+| No match found | Minimum 1 credit still applies |
+| Each contact's data point re-queried later | Not charged again — already-revealed data points are free on subsequent calls |
+
+<!-- VERIFY: could not confirm the exact bulk-request formula on live site — sources describe bulk pricing as "1 credit per 1–25 results," which could mean a flat credit per batch of up to 25 results or 1 credit per individual result; the per-request math above is the reliable baseline for a single contact/company -->
+
+<Note>
+  API errors (`4xx`/`5xx`) that fail before returning a result — for example, a validation error — are not charged. See [error codes](/v2/error-codes).
+</Note>
+
+## Checking your balance
+
+Use the [Account Usage](/v2/api-reference/account/usage-stats) endpoint to retrieve your current credit balance, daily usage, and plan limits programmatically.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Credit costs by endpoint" icon="list" href="/v2/credits/costs">
+    See exactly how many credits each endpoint consumes.
+  </Card>
+  <Card title="Unified Credits plan" icon="star" href="/v2/credits/unified-credits">
+    Learn about the Unified Credits pricing model and its exclusive parameters.
+  </Card>
+</CardGroup>

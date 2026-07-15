@@ -1,0 +1,150 @@
+---
+title: "GET /v3/account/usage — Get account usage"
+sidebarTitle: "Account Usage"
+description: "Get a full snapshot of your account: credit balance, rate limits across all time windows, plan details, and per-action credit pricing."
+openapi: "get /v3/account/usage"
+---
+
+Returns a full snapshot of your account status: credits (total, used, and remaining), rate limits (daily, hourly, and minute usage and reset times), your plan's category and renewal dates, and per-action credit pricing.
+
+<Warning>
+  This endpoint has its own rate limit — **5 requests per minute** — lower than most other V3 endpoints. Poll it on a schedule (for example, once at the start of a batch job) rather than before every API call.
+</Warning>
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v3/account/usage
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key.
+</ParamField>
+
+This endpoint takes no query parameters or request body.
+
+## Response
+
+<ResponseField name="credits" type="object">
+  Your account's credit balance for the current period.
+
+  <Expandable title="properties">
+    <ResponseField name="total" type="number">Total credits included in your plan. Example: `10000`</ResponseField>
+    <ResponseField name="used" type="number">Credits consumed so far. Example: `1500`</ResponseField>
+    <ResponseField name="remaining" type="number">Credits still available. Example: `8500`</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="rateLimits" type="object">
+  Your current usage against each rate-limit window. Any of `daily`, `hourly`, or `minute` can be `null` if that window doesn't apply to your plan.
+
+  <Expandable title="properties">
+    <ResponseField name="daily" type="object | null">
+      <Expandable title="properties">
+        <ResponseField name="limit" type="number">Total requests allowed in this window. Example: `5000`</ResponseField>
+        <ResponseField name="used" type="number">Requests made so far in this window. Example: `120`</ResponseField>
+        <ResponseField name="remaining" type="number">Requests remaining in this window. Example: `4880`</ResponseField>
+        <ResponseField name="resetsAt" type="string">ISO 8601 timestamp when this window resets. Example: `2026-03-31T00:00:00.000Z`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="hourly" type="object | null">
+      Same shape as `daily`, scoped to the current hourly window.
+    </ResponseField>
+    <ResponseField name="minute" type="object | null">
+      Same shape as `daily`, scoped to the current minute window.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="plan" type="object">
+  Your account's plan details.
+
+  <Expandable title="properties">
+    <ResponseField name="category" type="string">Plan category. Example: `"professional"`</ResponseField>
+    <ResponseField name="renewalType" type="string">Billing cycle. Example: `"annual"`</ResponseField>
+    <ResponseField name="startDate" type="string">ISO 8601 plan start date. Example: `"2026-01-01T00:00:00.000Z"`</ResponseField>
+    <ResponseField name="endDate" type="string">ISO 8601 plan renewal/end date. Example: `"2027-01-01T00:00:00.000Z"`</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="pricing" type="object">
+  A map of billing action names to their credit cost. Keys correspond to the actions referenced throughout the V3 API — for example `api_search` (prospecting and search), `reveal_company` (company enrich), `lookalikeContact` / `lookalikeCompany` (lookalikes), and `showSignalsContact` / `showSignalsCompany` (signals) — plus per-data-point keys used for contact enrichment.
+
+  <Expandable title="each entry">
+    <ResponseField name="credits" type="number">Credits charged per `perQuantity` units. Example: `1`</ResponseField>
+    <ResponseField name="perQuantity" type="number">The unit size the `credits` charge applies to. Example: `25`</ResponseField>
+  </Expandable>
+
+  <Info>
+    The exact set of keys and their values depend on your plan — call this endpoint to see the current catalog for your account rather than hardcoding action names.
+  </Info>
+</ResponseField>
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `401` | Unauthorized — invalid or missing API key |
+| `403` | Forbidden — account inactive or V3 access not enabled |
+| `429` | Too many requests — rate limit exceeded (max 5 req/min) |
+| `500` | Internal server error — retry with exponential backoff |
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request GET \
+  --url https://api.lusha.com/v3/account/usage \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "credits": {
+    "total": 10000,
+    "used": 1500,
+    "remaining": 8500
+  },
+  "rateLimits": {
+    "daily": {
+      "limit": 5000,
+      "used": 120,
+      "remaining": 4880,
+      "resetsAt": "2026-03-31T00:00:00.000Z"
+    },
+    "hourly": {
+      "limit": 500,
+      "used": 20,
+      "remaining": 480,
+      "resetsAt": "2026-03-30T15:00:00.000Z"
+    },
+    "minute": {
+      "limit": 25,
+      "used": 1,
+      "remaining": 24,
+      "resetsAt": "2026-03-30T14:31:00.000Z"
+    }
+  },
+  "plan": {
+    "category": "professional",
+    "renewalType": "annual",
+    "startDate": "2026-01-01T00:00:00.000Z",
+    "endDate": "2027-01-01T00:00:00.000Z"
+  },
+  "pricing": {
+    "api_search": { "credits": 1, "perQuantity": 1 },
+    "reveal_company": { "credits": 1, "perQuantity": 1 },
+    "email": { "credits": 1, "perQuantity": 25 },
+    "phone": { "credits": 5, "perQuantity": 1 }
+  }
+}
+```
+
+<Tip>
+  Poll this endpoint on a schedule rather than before every request, and set a low-credit alert on `credits.remaining` so batch jobs pause before they run out mid-run.
+</Tip>

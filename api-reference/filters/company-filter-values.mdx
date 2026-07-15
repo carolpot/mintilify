@@ -1,0 +1,117 @@
+---
+title: "GET /v3/companies/prospecting/filters/{filterType} — Get company filter values"
+sidebarTitle: "Company Filter Values"
+description: "Fetch the valid values for a single company filter type, to use in a Prospecting Companies request."
+openapi: "get /v3/companies/prospecting/filters/{filterType}"
+---
+
+Returns the valid values for one company filter type. Call [Company Filter Types](/api-reference/filters/company-filter-types) first if you don't already know which `filterType` values are available.
+
+| Filter type | Query required? | Maps to (in [Prospecting Companies](/api-reference/prospecting/prospecting-companies)) |
+|---|---|---|
+| `sizes` | No | `filters.companies.include.sizes` |
+| `revenues` | No | `filters.companies.include.revenues` |
+| `sics` | No | `filters.companies.include.sicCodes` |
+| `naics` | No | `filters.companies.include.naicsCodes` |
+| `intentTopics` | No | `filters.companies.include.intentTopics` |
+| `industriesLabels` | No | `filters.companies.include.industriesLabels` |
+| `names` | Yes (2–256 chars) | `filters.companies.include.names` |
+| `technologies` | Yes (2–256 chars) | `filters.companies.include.technologies` |
+| `locations` | Yes (2–256 chars) | `filters.companies.include.locations` |
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v3/companies/prospecting/filters/{filterType}
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key.
+</ParamField>
+
+## Path parameters
+
+<ParamField path="filterType" type="string" required>
+  The filter type to fetch values for.
+
+  Allowed values: `names`, `sizes`, `revenues`, `locations`, `sics`, `naics`, `industriesLabels`, `intentTopics`, `technologies`
+</ParamField>
+
+## Query parameters
+
+<ParamField query="query" type="string">
+  Search term to filter the returned values. Required for `names`, `technologies`, and `locations` (2–256 characters); optional and ignored for filter types that don't require a query.
+</ParamField>
+
+## Response
+
+<ResponseField name="values" type="any">
+  The valid values for the requested `filterType`. The shape depends on which filter type you requested:
+
+  - **`industriesLabels`** — an array of industry label strings, for example `["Software", "SaaS"]`
+  - **`intentTopics`** — an array of topic strings, for example `["Cloud Migration"]`
+  - **`sizes`** — an array of `{ min, max }` employee-count range objects, for example `{ "min": 50, "max": 500 }`
+  - **`revenues`** — an array of `{ min, max }` revenue range objects, for example `{ "min": 1, "max": 1000000 }`
+  - **`sics`** — an array of `{ code, description }` SIC code objects, for example `{ "code": 7371, "description": "Custom computer programming services" }`
+  - **`naics`** — an array of `{ code, description }` NAICS code objects, for example `{ "code": 541511, "description": "Custom Computer Programming Services" }`
+  - **`names`** (query required) — an array of matching company name strings
+  - **`technologies`** (query required) — an array of matching technology name strings
+  - **`locations`** (query required) — an array of location objects with `city`, `state`, `country`, `continent`, and `countryGrouping`, matching the shape used in search requests
+
+  <Info>
+    The OpenAPI schema declares `values` as an open-ended field since its shape varies by filter type. Treat the examples above as representative, not a fixed contract.
+  </Info>
+</ResponseField>
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid `filterType`, or missing/too-short `query` for a filter type that requires one |
+| `401` | Unauthorized — invalid or missing API key |
+| `403` | Forbidden — account inactive or V3 access not enabled |
+| `429` | Too many requests — rate limit exceeded |
+
+## Examples
+
+<CodeGroup>
+
+```bash Filter type without a query (sizes)
+curl --request GET \
+  --url https://api.lusha.com/v3/companies/prospecting/filters/sizes \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+```bash Filter type with a query (technologies)
+curl --request GET \
+  --url 'https://api.lusha.com/v3/companies/prospecting/filters/technologies?query=Salesforce' \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+</CodeGroup>
+
+```json Example response — sizes
+{
+  "values": [
+    { "min": 1, "max": 10 },
+    { "min": 11, "max": 50 },
+    { "min": 51, "max": 200 }
+  ]
+}
+```
+
+```json Example response — technologies
+{
+  "values": ["Salesforce", "Salesforce Marketing Cloud", "Salesforce Pardot"]
+}
+```
+
+<Tip>
+  Filter types with `requiresQuery: false` (`sizes`, `revenues`, `sics`, `naics`, `intentTopics`, `industriesLabels`) rarely change — cache their values instead of calling this endpoint before every search.
+</Tip>
+
+<Note>
+  `sics` and `naics` provide more granular industry targeting than `industriesLabels`. Use them when you need to narrow a search to a specific sub-sector that doesn't map cleanly to a label.
+</Note>

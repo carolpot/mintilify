@@ -1,0 +1,368 @@
+---
+title: "POST /v3/companies/prospecting — Prospect companies"
+sidebarTitle: "POST /v3/companies/prospecting"
+description: "Search Lusha's company database with firmographic filters — size, revenue, industry, technologies, intent, and signals. Returns paginated, lightweight previews — enrich the returned IDs for full firmographic data."
+openapi: "post /v3/companies/prospecting"
+---
+
+Prospecting Companies searches Lusha's company database for accounts that match your target market: size, revenue range, industry, sub-industry, technologies, locations, SIC/NAICS codes, buyer intent topics, and signal activity.
+
+The response is a page of lightweight company **previews** — not full firmographic records. Each preview includes an `id`. Pass that `id` to [Enrich Companies](/api-reference/enrich/enrich-companies) to get the full company profile.
+
+<Info>
+  **Prospect, then enrich**
+
+  | Step | Endpoint | Purpose |
+  |------|----------|---------|
+  | 1 | **POST /v3/companies/prospecting** | Find companies matching your target market; get back previews + `id`s |
+  | 2 | [POST /v3/companies/enrich](/api-reference/enrich/enrich-companies) | Pass the `id`s from step 1 to get full firmographic data |
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/companies/prospecting
+```
+
+**Authentication:** API key (`api_key` header)
+
+Results are paginated up to 50,000 total.
+
+---
+
+## Request body
+
+<ParamField body="pagination" type="object" required>
+  Pagination controls.
+
+  <Expandable title="pagination fields">
+    <ParamField body="pagination.page" type="integer" default="0">
+      Page number. Range: `0`–`1000`.
+    </ParamField>
+
+    <ParamField body="pagination.size" type="integer" default="25">
+      Results per page. Range: `10`–`100`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="filters" type="object" required>
+  <ParamField body="filters.companies" type="object" required>
+    <ParamField body="filters.companies.include" type="object" required>
+      Criteria that matching companies must satisfy.
+
+      <Expandable title="include fields">
+        <ParamField body="filters.companies.include.names" type="string[]">
+          Company names to include.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.domains" type="string[]">
+          Company domains to include.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.ids" type="string[]">
+          Lusha company IDs to include.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.searchText" type="string">
+          Free-text search across company fields. Max length: `200`.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.locations" type="object[]">
+          Geographic filters. Example: `[{ "country": "United States" }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.sizes" type="object[]">
+          Employee count ranges as `{ "min": ..., "max": ... }`. Example: `[{ "min": 1, "max": 1000 }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.revenues" type="object[]">
+          Revenue ranges as `{ "min": ..., "max": ... }`. Example: `[{ "min": 10000000 }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.technologies" type="string[]">
+          Technologies the company uses. Example: `["React", "Node.js"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.technologiesCondition" type="string">
+          `"or"` or `"and"` — how the `technologies` list is combined.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.mainIndustriesIds" type="integer[]">
+          Main industry IDs. Example: `[1, 5]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.subIndustriesIds" type="integer[]">
+          Sub-industry IDs.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.intentTopics" type="string[]">
+          Buyer intent topics. Example: `["Cloud Migration"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.intentTopicsCondition" type="string">
+          `"or"` or `"and"` — how the `intentTopics` list is combined.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.topicCountThreshold" type="object[]">
+          Ranges (`{ "min": ..., "max": ... }`) on the number of matched intent topics.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.sicCodes" type="string[]">
+          SIC industry classification codes.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.naicsCodes" type="string[]">
+          NAICS industry classification codes.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.signals" type="object">
+          Filter companies that have a signal of the specified types.
+
+          <Expandable title="signals fields">
+            <ParamField body="filters.companies.include.signals.types" type="string[]">
+              Signal types to match. Example: `["headcountIncrease3m", "surgeInHiring"]`
+            </ParamField>
+
+            <ParamField body="filters.companies.include.signals.startDate" type="string">
+              Earliest signal date, in `YYYY-MM-DD` format.
+            </ParamField>
+
+            <ParamField body="filters.companies.include.signals.filterByLocation" type="object[]">
+              Restrict signal matching to specific locations. Each object has `country`, `state`, and `startDate`.
+            </ParamField>
+
+            <ParamField body="filters.companies.include.signals.filterByDepartment" type="object[]">
+              Restrict signal matching to specific departments. Each object requires `department` (example: `"Engineering & Technical"`) and accepts an optional `startDate`.
+            </ParamField>
+          </Expandable>
+        </ParamField>
+
+        <ParamField body="filters.companies.include.foundedYear" type="object[]">
+          Founding year ranges as `{ "min": ..., "max": ... }`. Example: `[{ "min": 1990, "max": 2020 }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.businessModel" type="string[]">
+          Allowed values: `B2B`, `B2C`, `B2G`.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.companyType" type="string[]">
+          Allowed values: `Government`, `Private Company`, `Public Company`, `Educational`, `Non Profit`, `Self Employed`.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.linkedinUrls" type="string[]">
+          Company LinkedIn URLs. Example: `["https://www.linkedin.com/company/microsoft"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.keywords" type="string[]">
+          Free-text keywords. Example: `["cloud", "artificial intelligence"]`
+        </ParamField>
+      </Expandable>
+    </ParamField>
+
+    <ParamField body="filters.companies.exclude" type="object">
+      Same fields as `include`. Companies matching this criteria are removed from results. Example: `{ "domains": ["competitor.com"] }`
+    </ParamField>
+  </ParamField>
+</ParamField>
+
+<ParamField body="options" type="object">
+  <Expandable title="options fields">
+    <ParamField body="options.includePartialProfiles" type="boolean" default="false">
+      When `true`, includes companies with incomplete data in results.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+Use the [Company filter types](/api-reference/filters/company-filter-types) and [Company filter values](/api-reference/filters/company-filter-values) endpoints to look up valid values (industry IDs, SIC/NAICS codes, intent topics, and more) before building a request.
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/companies/prospecting \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "pagination": { "page": 0, "size": 25 },
+    "filters": {
+      "companies": {
+        "include": {
+          "sizes": [{ "min": 1, "max": 1000 }],
+          "revenues": [{ "min": 10000000 }],
+          "locations": [{ "country": "United States" }],
+          "technologies": ["React", "Node.js"],
+          "technologiesCondition": "or",
+          "mainIndustriesIds": [1, 5],
+          "intentTopics": ["Cloud Migration"]
+        },
+        "exclude": {
+          "domains": ["competitor.com"]
+        }
+      }
+    },
+    "options": { "includePartialProfiles": false }
+  }'
+```
+
+```json Request body
+{
+  "pagination": { "page": 0, "size": 25 },
+  "filters": {
+    "companies": {
+      "include": {
+        "sizes": [{ "min": 1, "max": 1000 }],
+        "revenues": [{ "min": 10000000 }],
+        "locations": [{ "country": "United States" }],
+        "technologies": ["React", "Node.js"],
+        "technologiesCondition": "or",
+        "mainIndustriesIds": [1, 5],
+        "intentTopics": ["Cloud Migration"]
+      },
+      "exclude": {
+        "domains": ["competitor.com"]
+      }
+    }
+  },
+  "options": { "includePartialProfiles": false }
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this search.
+</ResponseField>
+
+<ResponseField name="pagination" type="object">
+  `page`, `size`, and `total` (total matching companies across all pages).
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+  Array of company previews.
+
+  <Expandable title="preview fields">
+    <ResponseField name="results[].id" type="string">
+      Lusha company ID. Pass this to [Enrich Companies](/api-reference/enrich/enrich-companies) to get the full profile.
+    </ResponseField>
+
+    <ResponseField name="results[].clientReferenceId" type="string">
+      Echoes back a client-supplied reference ID, if you passed one.
+    </ResponseField>
+
+    <ResponseField name="results[].name" type="string" />
+    <ResponseField name="results[].domain" type="string" />
+
+    <ResponseField name="results[].employeeCount" type="object">
+      `exact`, and/or `min`/`max` when only a range is known.
+    </ResponseField>
+
+    <ResponseField name="results[].industry" type="string" />
+
+    <ResponseField name="results[].location" type="object">
+      `city`, `state`, `country`, `countryIso2`, and `continent`.
+    </ResponseField>
+
+    <ResponseField name="results[].socialLinks" type="object">
+      `linkedin` company URL.
+    </ResponseField>
+
+    <ResponseField name="results[].has" type="string[]">
+      Fields already populated on this preview. Example: `["alternativeName", "description", "companyType", "employeesByDepartment", "competitors", "emails", "socialLinks"]`
+    </ResponseField>
+
+    <ResponseField name="results[].canReveal" type="object[]">
+      Fields you can reveal via Enrich Companies, each as `{ "field": "emails" | "phones", "credits": <integer> }`. `credits` is `0` when your account has already revealed that field for this company.
+    </ResponseField>
+
+    <ResponseField name="results[].signalTypes" type="string[]">
+      Signal types detected for this company. Present when signal filtering was requested and matched.
+    </ResponseField>
+
+    <ResponseField name="results[].error" type="object">
+      Present only when this item failed. `code` is one of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, `ENRICH_FAILED`; `message` explains why.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  `creditsCharged` and `resultsReturned` for this request.
+</ResponseField>
+
+<Tip>
+  **Billing:** Prospecting is charged per result via the `api_search` action. If you filter by `signals`, an additional charge applies per matched signal per result.
+</Tip>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data. |
+| `401` | Unauthorized — invalid or missing API key. |
+| `402` | Payment required — insufficient credits. |
+| `403` | Forbidden — account inactive, or V3 access not enabled. |
+| `429` | Too many requests — rate limit exceeded. |
+
+<ResponseExample>
+
+```json 200
+{
+  "requestId": "5ad275c8-7dd4-462a-bd45-6bc1970da64e",
+  "pagination": { "page": 0, "size": 25, "total": 874 },
+  "results": [
+    {
+      "id": "16303253",
+      "name": "Lusha",
+      "domain": "www.lusha.com",
+      "employeeCount": { "min": 201, "max": 500 },
+      "industry": "Technology, Information & Media",
+      "location": {
+        "city": "London",
+        "state": "England",
+        "country": "United Kingdom",
+        "countryIso2": "GB",
+        "continent": "Europe"
+      },
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/company/lushadata"
+      },
+      "has": ["alternativeName", "description", "companyType", "emails", "socialLinks"],
+      "canReveal": [
+        { "field": "emails", "credits": 1 }
+      ]
+    }
+  ],
+  "billing": {
+    "creditsCharged": 1,
+    "resultsReturned": 1
+  }
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Invalid request parameters"
+}
+```
+
+```json 403
+{
+  "statusCode": 403,
+  "message": "Your account is not active. Please reach out to support at support@lusha.com"
+}
+```
+
+</ResponseExample>

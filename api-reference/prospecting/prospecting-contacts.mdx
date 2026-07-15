@@ -1,0 +1,443 @@
+---
+title: "POST /v3/contacts/prospecting — Prospect contacts"
+sidebarTitle: "POST /v3/contacts/prospecting"
+description: "Search Lusha's contact database with rich ICP filters across contact and company attributes. Returns paginated, lightweight previews — enrich the returned IDs to reveal emails and phones."
+openapi: "post /v3/contacts/prospecting"
+---
+
+Prospecting Contacts searches Lusha's contact database for people who match your Ideal Customer Profile. Filter on contact attributes (title, seniority, department, location, existing data points, signals) and on attributes of the contact's current company (size, revenue, industry, technologies, intent) in a single request.
+
+The response is a page of lightweight contact **previews** — not full records. Each preview includes an `id`. Pass that `id` to [Enrich Contacts](/api-reference/enrich/enrich-contacts) to reveal emails, phone numbers, and the rest of the contact's data.
+
+<Info>
+  **Prospect, then enrich**
+
+  | Step | Endpoint | Purpose |
+  |------|----------|---------|
+  | 1 | **POST /v3/contacts/prospecting** | Find contacts matching your ICP filters; get back previews + `id`s |
+  | 2 | [POST /v3/contacts/enrich](/api-reference/enrich/enrich-contacts) | Pass the `id`s from step 1 to reveal full contact data |
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/contacts/prospecting
+```
+
+**Authentication:** API key (`api_key` header)
+
+Results are paginated up to 50,000 total (1,000 pages × 50 results per page).
+
+---
+
+## Request body
+
+<ParamField body="pagination" type="object" required>
+  Pagination controls.
+
+  <Expandable title="pagination fields">
+    <ParamField body="pagination.page" type="integer" default="0">
+      Page number. Range: `0`–`1000`.
+    </ParamField>
+
+    <ParamField body="pagination.size" type="integer" default="25">
+      Results per page. Range: `10`–`100`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="filters" type="object" required>
+  The top-level filter container. Provide at least one of `contacts` or `companies`.
+
+  <Expandable title="filters.contacts">
+    <ParamField body="filters.contacts.include" type="object">
+      Criteria that matching contacts must satisfy.
+
+      <Expandable title="include fields">
+        <ParamField body="filters.contacts.include.names" type="string[]">
+          Full names to match.
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.jobTitles" type="string[]">
+          Free-text job titles to match. Example: `["VP Sales", "Director of Sales"]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.jobTitlesExactMatch" type="string[]">
+          Job titles that must match exactly, rather than fuzzy-matching.
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.normalizedJobTitles" type="string[]">
+          Normalized/canonical job title values.
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.searchText" type="string">
+          Free-text search across contact fields. Max length: `200`.
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.countries" type="string[]">
+          Country codes. Example: `["US", "CA"]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.locations" type="object[]">
+          Geographic filters. Each object may include `city`, `state`, `country`, `continent`, and `countryGrouping`. Example: `[{ "country": "United States" }]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.seniorityIds" type="integer[]">
+          Seniority level IDs. Example: `[4, 5]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.departments" type="string[]">
+          Department names. Example: `["Sales", "Engineering"]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.linkedinUrls" type="string[]">
+          Match specific LinkedIn profile URLs.
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.existingDataPoints" type="string[]">
+          Only return contacts that already have specific data available. Example: `["work_email", "work_phone"]`
+        </ParamField>
+
+        <ParamField body="filters.contacts.include.signals" type="object">
+          Filter contacts that have a signal of the specified types.
+
+          <Expandable title="signals fields">
+            <ParamField body="filters.contacts.include.signals.types" type="string[]">
+              Signal types to match. Allowed values: `allSignals`, `promotion`, `companyChange`.
+            </ParamField>
+
+            <ParamField body="filters.contacts.include.signals.startDate" type="string">
+              Earliest signal date, in `YYYY-MM-DD` format.
+            </ParamField>
+          </Expandable>
+        </ParamField>
+      </Expandable>
+    </ParamField>
+
+    <ParamField body="filters.contacts.exclude" type="object">
+      Same fields as `include`. Contacts matching this criteria are removed from results.
+    </ParamField>
+  </Expandable>
+
+  <Expandable title="filters.companies">
+    <ParamField body="filters.companies.include" type="object">
+      Criteria that the contact's current company must satisfy.
+
+      <Expandable title="include fields">
+        <ParamField body="filters.companies.include.names" type="string[]">
+          Company names to include.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.domains" type="string[]">
+          Company domains to include. Example: `["lusha.com"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.ids" type="string[]">
+          Lusha company IDs to include.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.locations" type="object[]">
+          Geographic filters. Example: `[{ "country": "United States" }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.sizes" type="object[]">
+          Employee count ranges as `{ "min": ..., "max": ... }`. Example: `[{ "min": 50, "max": 500 }]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.revenues" type="object[]">
+          Revenue ranges as `{ "min": ..., "max": ... }`.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.technologies" type="string[]">
+          Technologies the company uses. Example: `["Salesforce", "HubSpot"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.technologiesCondition" type="string">
+          `"or"` or `"and"` — how the `technologies` list is combined.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.industriesLabels" type="string[]">
+          Industry labels. Example: `["Software", "SaaS"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.mainIndustriesIds" type="integer[]">
+          Main industry IDs.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.subIndustriesIds" type="integer[]">
+          Sub-industry IDs.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.intentTopics" type="string[]">
+          Buyer intent topics. Example: `["Cloud Migration"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.intentTopicsCondition" type="string">
+          `"or"` or `"and"` — how the `intentTopics` list is combined.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.topicCountThreshold" type="object[]">
+          Ranges (`{ "min": ..., "max": ... }`) on the number of matched intent topics.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.sicCodes" type="string[]">
+          SIC industry classification codes.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.naicsCodes" type="string[]">
+          NAICS industry classification codes.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.funding" type="object">
+          Funding filters.
+
+          <Expandable title="funding fields">
+            <ParamField body="filters.companies.include.funding.isIpo" type="boolean">
+              Filter for companies that have IPO'd.
+            </ParamField>
+
+            <ParamField body="filters.companies.include.funding.ranges" type="object[]">
+              Funding amount ranges as `{ "min": ..., "max": ... }`.
+            </ParamField>
+
+            <ParamField body="filters.companies.include.funding.types" type="string[]">
+              Funding round types. Example: `["Series B", "Series C"]`
+            </ParamField>
+
+            <ParamField body="filters.companies.include.funding.investors" type="string[]">
+              Named investors.
+            </ParamField>
+          </Expandable>
+        </ParamField>
+
+        <ParamField body="filters.companies.include.foundedYear" type="object[]">
+          Founding year ranges as `{ "min": ..., "max": ... }`.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.businessModel" type="string[]">
+          Allowed values: `B2B`, `B2C`, `B2G`.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.companyType" type="string[]">
+          Allowed values: `Government`, `Private Company`, `Public Company`, `Educational`, `Non Profit`, `Self Employed`.
+        </ParamField>
+
+        <ParamField body="filters.companies.include.linkedinUrls" type="string[]">
+          Company LinkedIn URLs. Example: `["https://www.linkedin.com/company/microsoft"]`
+        </ParamField>
+
+        <ParamField body="filters.companies.include.keywords" type="string[]">
+          Free-text keywords. Example: `["cloud", "artificial intelligence"]`
+        </ParamField>
+      </Expandable>
+    </ParamField>
+
+    <ParamField body="filters.companies.exclude" type="object">
+      Same fields as `include`. Companies matching this criteria are removed from results.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="options" type="object">
+  <Expandable title="options fields">
+    <ParamField body="options.includePartialProfiles" type="boolean" default="true">
+      When `true`, includes contacts with incomplete data in results.
+    </ParamField>
+
+    <ParamField body="options.excludeDnc" type="boolean">
+      When `true`, excludes contacts whose phone numbers are all marked Do Not Call.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+Use the [Contact filter types](/api-reference/filters/contact-filter-types) and [Contact filter values](/api-reference/filters/contact-filter-values) endpoints to look up valid values (departments, seniority IDs, existing data points, and more) before building a request.
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/contacts/prospecting \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "pagination": { "page": 0, "size": 50 },
+    "filters": {
+      "contacts": {
+        "include": {
+          "departments": ["Sales"],
+          "locations": [{ "country": "United States" }],
+          "existingDataPoints": ["work_email"]
+        }
+      },
+      "companies": {
+        "include": {
+          "locations": [{ "country": "United States" }],
+          "businessModel": ["B2B"],
+          "companyType": ["Public Company"]
+        }
+      }
+    },
+    "options": {
+      "includePartialProfiles": true,
+      "excludeDnc": false
+    }
+  }'
+```
+
+```json Request body
+{
+  "pagination": { "page": 0, "size": 50 },
+  "filters": {
+    "contacts": {
+      "include": {
+        "departments": ["Sales"],
+        "locations": [{ "country": "United States" }],
+        "existingDataPoints": ["work_email"]
+      }
+    },
+    "companies": {
+      "include": {
+        "locations": [{ "country": "United States" }],
+        "businessModel": ["B2B"],
+        "companyType": ["Public Company"]
+      }
+    }
+  },
+  "options": {
+    "includePartialProfiles": true,
+    "excludeDnc": false
+  }
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this search.
+</ResponseField>
+
+<ResponseField name="pagination" type="object">
+  `page`, `size`, and `total` (total matching contacts across all pages).
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+  Array of contact previews.
+
+  <Expandable title="preview fields">
+    <ResponseField name="results[].id" type="string">
+      Lusha contact ID. Pass this to [Enrich Contacts](/api-reference/enrich/enrich-contacts) to reveal full data.
+    </ResponseField>
+
+    <ResponseField name="results[].clientReferenceId" type="string">
+      Echoes back a client-supplied reference ID, if you passed one.
+    </ResponseField>
+
+    <ResponseField name="results[].firstName" type="string" />
+    <ResponseField name="results[].lastName" type="string" />
+
+    <ResponseField name="results[].jobTitle" type="object">
+      `title`, `departments`, and `seniority`.
+    </ResponseField>
+
+    <ResponseField name="results[].company" type="object">
+      `id`, `name`, and `domain` of the contact's current company.
+    </ResponseField>
+
+    <ResponseField name="results[].location" type="object">
+      `country`, `state`, and `city`.
+    </ResponseField>
+
+    <ResponseField name="results[].socialLinks" type="object">
+      `linkedin` profile URL.
+    </ResponseField>
+
+    <ResponseField name="results[].has" type="string[]">
+      Fields already populated on this preview. Example: `["firstName", "lastName", "jobTitle", "location", "socialLinks", "emails"]`
+    </ResponseField>
+
+    <ResponseField name="results[].canReveal" type="object[]">
+      Fields you can reveal via Enrich Contacts, each as `{ "field": "emails" | "phones", "credits": <integer> }`. `credits` is `0` when your account has already revealed that field for this contact.
+    </ResponseField>
+
+    <ResponseField name="results[].signalTypes" type="string[]">
+      Signal types detected for this contact. Present when signal filtering was requested and matched.
+    </ResponseField>
+
+    <ResponseField name="results[].error" type="object">
+      Present only when this item failed. `code` is one of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, `ENRICH_FAILED`; `message` explains why.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  `creditsCharged` and `resultsReturned` for this request.
+</ResponseField>
+
+<Tip>
+  **Billing:** Prospecting is charged per result via the `api_search` action. If you filter by `signals`, an additional charge applies per matched signal per result.
+</Tip>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data. |
+| `401` | Unauthorized — invalid or missing API key. |
+| `402` | Payment required — insufficient credits. |
+| `403` | Forbidden — account inactive, or V3 access not enabled. |
+| `429` | Too many requests — rate limit exceeded. |
+
+<ResponseExample>
+
+```json 200
+{
+  "requestId": "fa828378-7a8e-4e5d-9f72-0270e7f7ab51",
+  "pagination": { "page": 0, "size": 50, "total": 670550 },
+  "results": [
+    {
+      "id": "670138733",
+      "firstName": "Ting",
+      "lastName": "Tsou"
+    }
+  ],
+  "billing": {
+    "creditsCharged": 2,
+    "resultsReturned": 50
+  }
+}
+```
+
+```json 400
+{
+  "statusCode": 400,
+  "message": "Invalid request parameters"
+}
+```
+
+```json 402
+{
+  "statusCode": 402,
+  "message": "Insufficient credits for this operation"
+}
+```
+
+```json 403
+{
+  "statusCode": 403,
+  "message": "V3 API access is not enabled for your account"
+}
+```
+
+</ResponseExample>

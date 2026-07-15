@@ -1,0 +1,168 @@
+---
+title: "POST /v3/companies/signals — Get company signals"
+sidebarTitle: "POST /v3/companies/signals"
+description: "Retrieve hiring, headcount, web traffic, IT spend, and news signal events for up to 100 companies by Lusha ID in a single call."
+openapi: "post /v3/companies/signals"
+---
+
+Use this endpoint when you already have Lusha company IDs and want their signal activity — hiring surges, headcount changes, web traffic and IT spend shifts, and categorized news — in one call. Pass up to 100 `ids` and the `signalTypes` you want back; there is no separate "search" step in V3 — one call returns all matched signal data for the IDs you send.
+
+<Info>
+  Don't have Lusha company IDs yet? Resolve companies first with [Enrich Companies](/enrichment/enrich-companies) or [Search & Enrich Companies](/enrichment/search-and-enrich-companies), then pass the returned `id` values here.
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/companies/signals
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="ids" type="string[]" required>
+  Lusha company IDs to retrieve signals for. 1–100 items per request.
+
+  Example: `["16303253"]`
+</ParamField>
+
+<ParamField body="signalTypes" type="string[]" required>
+  Signal types to retrieve.
+
+  Allowed values: `allSignals`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `headcountIncrease1m`, `headcountDecrease1m`, `headcountIncrease3m`, `headcountDecrease3m`, `headcountIncrease6m`, `headcountDecrease6m`, `headcountIncrease12m`, `headcountDecrease12m`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`
+
+  Use `allSignals` to retrieve every available company signal type in one call.
+</ParamField>
+
+<ParamField body="startDate" type="string">
+  Limit results to signals detected on or after this date, in `YYYY-MM-DD` format.
+
+  Example: `"2025-01-01"`
+</ParamField>
+
+<ParamField body="maxResultsPerSignal" type="integer">
+  Maximum number of signal instances to return per signal type per company. Range: `1`–`100`.
+
+  Example: `10`
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/companies/signals \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "ids": ["16303253"],
+    "signalTypes": ["allSignals"],
+    "startDate": "2025-01-01",
+    "maxResultsPerSignal": 10
+  }'
+```
+
+```json Request body
+{
+  "ids": ["16303253"],
+  "signalTypes": ["allSignals"],
+  "startDate": "2025-01-01",
+  "maxResultsPerSignal": 10
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="results" type="object[]">
+  One entry per requested company ID.
+
+  <Expandable title="properties">
+    <ResponseField name="id" type="string">
+      The Lusha company ID this entry corresponds to. Example: `"16303253"`
+    </ResponseField>
+    <ResponseField name="companyName" type="string">
+      Company name. Example: `"Lusha"`
+    </ResponseField>
+    <ResponseField name="domain" type="string">
+      Company domain. Example: `"lusha.com"`
+    </ResponseField>
+  </Expandable>
+
+  <Info>
+    Beyond `id`, `companyName`, and `domain`, each result also carries one array per signal type that matched — keyed by the `signalTypes` value you requested (for example `surgeInHiring`, `financialEventsNews`), the same keying pattern the [contact signals](/api-reference/signals/contact-signals) response uses for `promotion` and `companyChange`.
+  </Info>
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  The start date used for this request.
+</ResponseField>
+
+<ResponseField name="endDate" type="string">
+  The end date used for this request (the request date, unless you're querying historical data).
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  Credit usage summary for this request.
+
+  <Expandable title="properties">
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this request. Example: `3`</ResponseField>
+    <ResponseField name="resultsReturned" type="integer">Number of results returned. Example: `1`</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Info>
+  **Billing:** Charged per matched signal per result via the `showSignalsCompany` action.
+</Info>
+
+<ResponseExample>
+
+```json 200
+{
+  "results": [
+    {
+      "id": "16303253",
+      "companyName": "Lusha",
+      "domain": "lusha.com"
+    }
+  ],
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "billing": {
+    "creditsCharged": 3,
+    "resultsReturned": 1
+  }
+}
+```
+
+</ResponseExample>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `402` | Payment required — insufficient credits. |
+| `403` | Forbidden — account inactive or V3 access not enabled. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+
+## Related pages
+
+- [Signals overview](/signals/overview) — the consolidated signals model, credits, and delivery options
+- [Get Company Signal Types](/api-reference/signals/company-signal-types) — the current list of valid `signalTypes` values
+- [Get Company Signal Filters](/api-reference/signals/company-signal-filters) — discover which signal filter types are available
+- [Contact Signals](/api-reference/signals/contact-signals) — the equivalent endpoint for contacts

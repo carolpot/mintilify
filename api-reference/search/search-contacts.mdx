@@ -1,0 +1,339 @@
+---
+title: "POST /v3/contacts/search — Search contacts"
+sidebarTitle: "Search Contacts"
+description: "Look up to 100 contacts per request by ID, LinkedIn URL, email, or name and company. Returns a non-PII preview of each match plus what you can reveal via Enrich Contacts."
+openapi: "post /v3/contacts/search"
+---
+
+Use this endpoint to look up contacts by identifier and get back a non-PII preview of each matching profile — no emails or phone numbers. Each result's `has` field lists the data points already available, and `canReveal` lists what you can unlock (and its credit cost) by calling [Enrich Contacts](/api-reference/enrich/enrich-contacts).
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/contacts/search
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key.
+</ParamField>
+
+## Accepted identifiers
+
+Each contact in the `contacts` array needs **one** of the following:
+
+- Lusha contact `id`
+- `linkedinUrl`
+- `email`
+- `firstName` **and** `lastName` **and** (`companyName` **or** `companyDomain`)
+
+<Tip>
+  Attach a `clientReferenceId` to each contact so you can match results back to your input — the array of `results` isn't guaranteed to preserve input order.
+</Tip>
+
+## Request body
+
+<ParamField body="contacts" type="array" required>
+  Up to 100 contacts to look up.
+
+  <Expandable title="contact fields">
+    <ParamField body="contacts[].clientReferenceId" type="string">
+      Your own reference ID for this contact. Echoed back on the matching result.
+
+      Example: `my-ref-1`
+    </ParamField>
+
+    <ParamField body="contacts[].id" type="string">
+      A Lusha contact ID.
+
+      Example: `12345`
+    </ParamField>
+
+    <ParamField body="contacts[].linkedinUrl" type="string">
+      The contact's LinkedIn profile URL.
+
+      Example: `https://www.linkedin.com/in/shmulikwillinger`
+    </ParamField>
+
+    <ParamField body="contacts[].email" type="string">
+      The contact's email address.
+
+      Example: `gal.ashkelon@lusha.com`
+    </ParamField>
+
+    <ParamField body="contacts[].firstName" type="string">
+      First name. Requires `lastName` and either `companyName` or `companyDomain`.
+
+      Example: `Orit`
+    </ParamField>
+
+    <ParamField body="contacts[].lastName" type="string">
+      Last name. Requires `firstName` and either `companyName` or `companyDomain`.
+
+      Example: `Shilvock`
+    </ParamField>
+
+    <ParamField body="contacts[].companyName" type="string">
+      The contact's current company name.
+
+      Example: `Lusha`
+    </ParamField>
+
+    <ParamField body="contacts[].companyDomain" type="string">
+      The contact's current company domain.
+
+      Example: `lusha.com`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="options" type="object">
+  <Expandable title="options fields">
+    <ParamField body="options.includePartialProfiles" type="boolean">
+      When `true`, includes contacts with incomplete data in the results instead of dropping them.
+
+      Example: `true`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="signals" type="object">
+  Narrow results to contacts with recent activity, such as a promotion or job change.
+
+  <Expandable title="signals fields">
+    <ParamField body="signals.types" type="string[]" required>
+      Signal types to match.
+
+      Allowed values: `allSignals`, `promotion`, `companyChange`
+    </ParamField>
+
+    <ParamField body="signals.startDate" type="string">
+      Earliest signal date, in `YYYY-MM-DD` format.
+
+      Example: `2025-01-01`
+    </ParamField>
+
+    <ParamField body="signals.maxResultsPerSignal" type="integer">
+      Maximum results to return per signal type. Range: `1`–`100`.
+
+      Example: `10`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this request, in UUID format.
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+  One entry per contact you searched for.
+
+  <Expandable title="result fields">
+    <ResponseField name="results[].clientReferenceId" type="string">
+      Echoes the `clientReferenceId` you sent for this contact.
+    </ResponseField>
+
+    <ResponseField name="results[].id" type="string">
+      The Lusha contact ID. Pass this to [Enrich Contacts](/api-reference/enrich/enrich-contacts) to reveal emails and phones.
+    </ResponseField>
+
+    <ResponseField name="results[].firstName" type="string">First name.</ResponseField>
+    <ResponseField name="results[].lastName" type="string">Last name.</ResponseField>
+
+    <ResponseField name="results[].jobTitle" type="object">
+      <Expandable title="properties">
+        <ResponseField name="title" type="string">Current job title. Example: `Vice President of Partnerships`</ResponseField>
+        <ResponseField name="departments" type="string[]">Departments. Example: `["Business Development"]`</ResponseField>
+        <ResponseField name="seniority" type="string">Seniority level. Example: `Vice President`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].company" type="object">
+      <Expandable title="properties">
+        <ResponseField name="id" type="string">Lusha company ID. Example: `16303253`</ResponseField>
+        <ResponseField name="name" type="string">Company name. Example: `Lusha`</ResponseField>
+        <ResponseField name="domain" type="string">Company domain. Example: `www.lusha.com`</ResponseField>
+        <ResponseField name="industry" type="string">Industry. Example: `Technology, Information & Media`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].location" type="object">
+      <Expandable title="properties">
+        <ResponseField name="country" type="string">Example: `Israel`</ResponseField>
+        <ResponseField name="state" type="string">Example: `Tel Aviv District`</ResponseField>
+        <ResponseField name="city" type="string">Example: `Tel Aviv`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].socialLinks" type="object">
+      <Expandable title="properties">
+        <ResponseField name="linkedin" type="string">LinkedIn profile URL.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].has" type="string[]">
+      Data points already available on this profile. Example: `["firstName", "lastName", "jobTitle", "location", "socialLinks", "emails"]`
+    </ResponseField>
+
+    <ResponseField name="results[].canReveal" type="object[]">
+      What you can unlock via Enrich Contacts, and its credit cost.
+
+      <Expandable title="properties">
+        <ResponseField name="field" type="string">`emails` or `phones`.</ResponseField>
+        <ResponseField name="credits" type="integer">Credit cost. `0` if already revealed for your account.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].signalTypes" type="string[]">
+      Signal types detected for this contact, when a `signals` filter was applied. Example: `["promotion", "companyChange"]`
+    </ResponseField>
+
+    <ResponseField name="results[].error" type="object">
+      Present instead of profile data when the lookup fails for this contact.
+
+      <Expandable title="properties">
+        <ResponseField name="code" type="string">One of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, `ENRICH_FAILED`.</ResponseField>
+        <ResponseField name="message" type="string">Human-readable description.</ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  <Expandable title="properties">
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this request.</ResponseField>
+    <ResponseField name="resultsReturned" type="integer">Number of successful results.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Info>
+  **Billing:** Charged per successful result via the `api_search` action.
+</Info>
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data |
+| `401` | Unauthorized — invalid or missing API key |
+| `402` | Payment required — insufficient credits |
+| `403` | Forbidden — account inactive or V3 access not enabled |
+| `429` | Too many requests — rate limit exceeded |
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/contacts/search \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contacts": [
+      {
+        "clientReferenceId": "my-ref-1",
+        "firstName": "Orit",
+        "lastName": "Shilvock",
+        "companyName": "Lusha",
+        "companyDomain": "lusha.com"
+      },
+      {
+        "clientReferenceId": "my-ref-2",
+        "linkedinUrl": "https://www.linkedin.com/in/shmulikwillinger"
+      },
+      {
+        "clientReferenceId": "my-ref-3",
+        "email": "gal.ashkelon@lusha.com"
+      },
+      {
+        "clientReferenceId": "my-ref-4",
+        "id": "12345"
+      }
+    ],
+    "options": {
+      "includePartialProfiles": true
+    }
+  }'
+```
+
+```json Request body
+{
+  "contacts": [
+    {
+      "clientReferenceId": "my-ref-1",
+      "firstName": "Orit",
+      "lastName": "Shilvock",
+      "companyName": "Lusha",
+      "companyDomain": "lusha.com"
+    },
+    {
+      "clientReferenceId": "my-ref-2",
+      "linkedinUrl": "https://www.linkedin.com/in/shmulikwillinger"
+    },
+    {
+      "clientReferenceId": "my-ref-3",
+      "email": "gal.ashkelon@lusha.com"
+    },
+    {
+      "clientReferenceId": "my-ref-4",
+      "id": "12345"
+    }
+  ],
+  "options": {
+    "includePartialProfiles": true
+  }
+}
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "requestId": "6e4b1192-9440-42c4-9a3e-793ddef6d73c",
+  "results": [
+    {
+      "clientReferenceId": "my-ref-1",
+      "id": "4415824633",
+      "firstName": "Orit",
+      "lastName": "Shilvock",
+      "jobTitle": {
+        "title": "Vice President of Partnerships",
+        "departments": ["Business Development"],
+        "seniority": "Vice President"
+      },
+      "company": {
+        "id": "16303253",
+        "name": "Lusha",
+        "domain": "www.lusha.com",
+        "industry": "Technology, Information & Media"
+      },
+      "location": {
+        "country": "Israel",
+        "city": "Tel Aviv"
+      },
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/in/orit-shilvock-6243bb5"
+      },
+      "has": ["firstName", "lastName", "jobTitle", "location", "socialLinks", "emails"],
+      "canReveal": [
+        { "field": "emails", "credits": 1 }
+      ]
+    },
+    {
+      "clientReferenceId": "my-ref-4",
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Contact not found"
+      }
+    }
+  ],
+  "billing": {
+    "creditsCharged": 1,
+    "resultsReturned": 3
+  }
+}
+```

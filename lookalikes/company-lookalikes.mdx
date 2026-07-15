@@ -1,18 +1,18 @@
 ---
-title: "Find similar companies with POST /v3/lookalike/companies"
+title: "Find similar companies with POST /v3/companies/lookalike"
 sidebarTitle: "Company Lookalikes"
 description: "Identify new target accounts that share firmographics with your best customers by submitting seed company domains or LinkedIn URLs to the lookalikes endpoint."
 ---
 
 The company lookalikes endpoint takes a set of seed companies and returns accounts with similar firmographics — including industry, employee count, and geography. Use it to build account lists that mirror your current customer base without manually defining every filter criterion.
 
-**Endpoint:** `POST https://api.lusha.com/v3/lookalike/companies`
+**Endpoint:** `POST https://api.lusha.com/v3/companies/lookalike`
 
 ## Request body
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `seeds` | object | Yes | Seed companies, identified via `domains` and/or `linkedinUrls`. Provide at least one; 5–100 unique identifiers total across both arrays. |
+| `seeds` | object | Yes | Seed companies, identified via `domains` and/or `linkedinUrls`. Provide 5–100 unique identifiers total across both arrays. |
 | `dedupeSessionId` | string | No | Session token from a previous call. Omit on the first request. |
 | `exclude` | object | No | Companies to exclude from results, in the same shape as `seeds`. |
 | `limit` | integer | No | Results per call. Range `1`–`100`, default `25`. |
@@ -28,7 +28,7 @@ The endpoint uses the same `dedupeSessionId` deduplication mechanism as contact 
     ```json
     {
       "seeds": {
-        "domains": ["acmecorp.com"]
+        "domains": ["sap.com", "oracle.com"]
       }
     }
     ```
@@ -38,10 +38,10 @@ The endpoint uses the same `dedupeSessionId` deduplication mechanism as contact 
 
     ```json
     {
+      "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
       "seeds": {
-        "domains": ["acmecorp.com"]
-      },
-      "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613"
+        "domains": ["sap.com"]
+      }
     }
     ```
   </Step>
@@ -55,14 +55,18 @@ The endpoint uses the same `dedupeSessionId` deduplication mechanism as contact 
 
 ```bash
 curl --request POST \
-  --url https://api.lusha.com/v3/lookalike/companies \
+  --url https://api.lusha.com/v3/companies/lookalike \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
     "seeds": {
       "domains": ["sap.com", "oracle.com"],
       "linkedinUrls": ["https://www.linkedin.com/company/google"]
-    }
+    },
+    "exclude": {
+      "domains": ["existingcustomer.com"]
+    },
+    "limit": 100
   }'
 ```
 
@@ -70,14 +74,15 @@ curl --request POST \
 
 ```bash
 curl --request POST \
-  --url https://api.lusha.com/v3/lookalike/companies \
+  --url https://api.lusha.com/v3/companies/lookalike \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
+    "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
     "seeds": {
-      "domains": ["sap.com", "oracle.com"]
+      "domains": ["sap.com"]
     },
-    "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613"
+    "limit": 100
   }'
 ```
 
@@ -88,15 +93,18 @@ curl --request POST \
   "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
   "results": [
     {
-      "domain": "marriott.com",
-      "linkedinUrl": "https://www.linkedin.com/company/marriott-international",
+      "id": "16303253",
       "name": "Marriott International",
-      "employeeCount": 255334,
+      "domain": "marriott.com",
+      "employeeCount": { "exact": 255334 },
       "industry": "Hospitality",
       "location": {
         "country": "United States",
         "state": "Maryland",
         "city": "Bethesda"
+      },
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/company/marriott-international"
       }
     }
   ],
@@ -104,11 +112,16 @@ curl --request POST \
     "returned": 1,
     "hasMore": true
   },
-  "creditsCharged": 3
+  "billing": {
+    "creditsCharged": 1,
+    "resultsReturned": 1
+  }
 }
 ```
 
-Always carry `dedupeSessionId` from the response into your next request, and check `meta.hasMore` to know whether more results are available.
+Carry `dedupeSessionId` from the response into your next request, and check `meta.hasMore` to know whether more results are available.
+
+Results are lightweight previews. Pipe each `id` into [Enrich Companies](/api-reference/enrich/enrich-companies) to retrieve full firmographic data.
 
 ## Identifying seed companies
 
@@ -116,10 +129,8 @@ You can identify each seed company using either of these fields inside `seeds`:
 
 | Field | Example |
 |---|---|
-| `domains` | `["acmecorp.com"]` |
-| `linkedinUrls` | `["https://www.linkedin.com/company/acmecorp"]` |
-
-Providing `domains` is generally the most reliable identifier when you know it.
+| `domains` | `["sap.com", "oracle.com"]` |
+| `linkedinUrls` | `["https://www.linkedin.com/company/sap"]` |
 
 ## Use cases
 
@@ -129,3 +140,5 @@ Providing `domains` is generally the most reliable identifier when you know it.
 <Tip>
   Seed the endpoint with closed-won or high-LTV accounts for the highest-quality results. A focused seed set of 5–20 accounts typically outperforms a broad one.
 </Tip>
+
+See the [full API reference](/api-reference/lookalikes/company-lookalikes) for request/response schemas and error codes.

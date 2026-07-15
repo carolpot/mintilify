@@ -8,10 +8,10 @@ The Lookalikes API uses AI to surface new prospects that closely resemble contac
 
 ## What lookalikes do
 
-- **Contact lookalikes** — Given seed contacts identified by LinkedIn URL, email, Lusha contact ID, or name plus company, the API returns new contacts who share comparable job functions, seniority, and industry characteristics.
-- **Company lookalikes** — Given seed companies identified by domain or LinkedIn company URL, the API returns companies with similar firmographics such as employee count, industry, and geography.
+- **Contact lookalikes** — Given 5–100 seed contacts identified by LinkedIn URL, email, Lusha contact ID, or name plus company, the API returns new contacts who share comparable job functions, seniority, and industry characteristics.
+- **Company lookalikes** — Given 5–100 seed companies identified by domain or LinkedIn company URL, the API returns companies with similar firmographics such as employee count, industry, and geography.
 
-Both endpoints use the same deduplication mechanism, so you can paginate through results across multiple calls without receiving the same record twice.
+Both endpoints return lightweight previews and use the same `dedupeSessionId` deduplication mechanism, so you can paginate through results across multiple calls without receiving the same record twice.
 
 ## How deduplication sessions work
 
@@ -32,13 +32,26 @@ Each lookalike run is tracked with a `dedupeSessionId`. The server uses this ID 
 
 You can also provide an `exclude` parameter on any request to filter out specific contacts or companies regardless of session state. The server combines your exclusions with its own session-level deduplication on every call.
 
+## From lookalike to full record
+
+Lookalike results are lightweight previews — name/domain, company, job title or industry, and location. They don't include emails or phone numbers. Pass the `id` from each result you want into the Enrich API to reveal full data:
+
+<CardGroup cols={2}>
+  <Card title="Enrich contacts" icon="user" href="/api-reference/enrich/enrich-contacts">
+    Reveal emails, phones, and full profile data for contact lookalike `id`s.
+  </Card>
+  <Card title="Enrich companies" icon="building" href="/api-reference/enrich/enrich-companies">
+    Reveal full firmographic data for company lookalike `id`s.
+  </Card>
+</CardGroup>
+
 ## Available endpoints
 
 <CardGroup cols={2}>
   <Card title="Contact lookalikes" icon="user" href="/lookalikes/contact-lookalikes">
-    Find contacts similar to your seed contacts with `POST /v3/lookalike/contacts`.
+    Find contacts similar to your seed contacts with `POST /v3/contacts/lookalike`.
   </Card>
   <Card title="Company lookalikes" icon="building" href="/lookalikes/company-lookalikes">
-    Find companies similar to your seed accounts with `POST /v3/lookalike/companies`.
+    Find companies similar to your seed accounts with `POST /v3/companies/lookalike`.
   </Card>
 </CardGroup>

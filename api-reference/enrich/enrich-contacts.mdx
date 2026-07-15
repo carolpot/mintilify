@@ -1,0 +1,246 @@
+---
+title: "POST /v3/contacts/enrich — Enrich contacts"
+sidebarTitle: "Enrich Contacts"
+description: "Reveal emails and phone numbers for up to 100 contacts you've already found via Search Contacts."
+openapi: "post /v3/contacts/enrich"
+---
+
+Use this endpoint to reveal full contact data for contacts you've already found via [Search Contacts](/api-reference/search/search-contacts). Pass the Lusha `id` from a search result, and choose what to unlock with `reveal`.
+
+<Info>
+  Enrich Contacts only works with `id` values returned by Search Contacts. It doesn't accept `email`, `linkedinUrl`, or name-based identifiers. To search and reveal in one call, use [Search and Enrich Contacts](/api-reference/search-and-enrich/search-and-enrich-contacts) instead.
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/contacts/enrich
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key.
+</ParamField>
+
+## Request body
+
+<ParamField body="ids" type="string[]" required>
+  Up to 100 Lusha contact IDs, from a Search Contacts response.
+
+  Example: `["4389064654", "4389064624"]`
+</ParamField>
+
+<ParamField body="reveal" type="string[]">
+  What to unlock for each contact. Omit this field to get both by default.
+
+  Allowed values: `emails`, `phones`
+</ParamField>
+
+## Response
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this request, in UUID format.
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+  One entry per contact `id` you passed in.
+
+  <Expandable title="result fields">
+    <ResponseField name="results[].id" type="string">The Lusha contact ID.</ResponseField>
+    <ResponseField name="results[].firstName" type="string">First name.</ResponseField>
+    <ResponseField name="results[].lastName" type="string">Last name.</ResponseField>
+    <ResponseField name="results[].fullName" type="string">Full name.</ResponseField>
+
+    <ResponseField name="results[].jobTitle" type="object">
+      <Expandable title="properties">
+        <ResponseField name="title" type="string">Example: `Vice President of Partnerships`</ResponseField>
+        <ResponseField name="departments" type="string[]">Example: `["Business Development"]`</ResponseField>
+        <ResponseField name="seniority" type="string">Example: `Vice President`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].location" type="object">
+      <Expandable title="properties">
+        <ResponseField name="country" type="string">Example: `Israel`</ResponseField>
+        <ResponseField name="countryIso2" type="string">Example: `IL`</ResponseField>
+        <ResponseField name="state" type="string">Example: `Tel Aviv District`</ResponseField>
+        <ResponseField name="city" type="string">Example: `Tel Aviv`</ResponseField>
+        <ResponseField name="continent" type="string">Example: `Asia`</ResponseField>
+        <ResponseField name="coordinates" type="number[]">`[longitude, latitude]`. Example: `[34.78057, 32.08088]`</ResponseField>
+        <ResponseField name="isEuContact" type="boolean">Whether the contact is located in the EU.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].emails" type="object[]">
+      Present when `reveal` includes (or omits) `emails`.
+
+      <Expandable title="properties">
+        <ResponseField name="email" type="string">Example: `orit.shilvock@lusha.com`</ResponseField>
+        <ResponseField name="type" type="string">One of `work`, `private`, `unknown`.</ResponseField>
+        <ResponseField name="confidence" type="string">Confidence score. Example: `A+`</ResponseField>
+        <ResponseField name="updateDate" type="string">Last-updated date, `YYYY-MM-DD`.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].phones" type="object[]">
+      Present when `reveal` includes (or omits) `phones`.
+
+      <Expandable title="properties">
+        <ResponseField name="number" type="string">E.164 format. Example: `+14155551234`</ResponseField>
+        <ResponseField name="type" type="string">One of `mobile`, `direct`, `work`, `unknown`.</ResponseField>
+        <ResponseField name="doNotCall" type="boolean">Whether this number is on the Do Not Call list.</ResponseField>
+        <ResponseField name="updateDate" type="string">Last-updated date, `YYYY-MM-DD`.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].company" type="object">
+      <Expandable title="properties">
+        <ResponseField name="id" type="string">Example: `16303253`</ResponseField>
+        <ResponseField name="name" type="string">Example: `Lusha`</ResponseField>
+        <ResponseField name="domain" type="string">Example: `www.lusha.com`</ResponseField>
+        <ResponseField name="industry" type="string">Example: `Technology, Information & Media`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].socialLinks" type="object">
+      <Expandable title="properties">
+        <ResponseField name="linkedin" type="string">LinkedIn profile URL.</ResponseField>
+        <ResponseField name="xUrl" type="string">X (Twitter) profile URL.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].previousEmployment" type="object[]">
+      Prior roles.
+
+      <Expandable title="properties">
+        <ResponseField name="company" type="object">
+          <Expandable title="properties">
+            <ResponseField name="name" type="string" />
+            <ResponseField name="domain" type="string" />
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="jobTitle" type="object">
+          <Expandable title="properties">
+            <ResponseField name="title" type="string" />
+            <ResponseField name="departments" type="string[]" />
+            <ResponseField name="seniority" type="string" />
+          </Expandable>
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].tags" type="object[]">
+      Tags you've applied to this contact in Lusha.
+
+      <Expandable title="properties">
+        <ResponseField name="id" type="string" />
+        <ResponseField name="name" type="string" />
+        <ResponseField name="color" type="string">Hex code. Example: `#FF5733`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].updateDate" type="string">
+      Date the record was last updated, `YYYY-MM-DD`.
+    </ResponseField>
+
+    <ResponseField name="results[].error" type="object">
+      Present instead of profile data when enrichment fails for this `id`.
+
+      <Expandable title="properties">
+        <ResponseField name="code" type="string">One of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, `ENRICH_FAILED`.</ResponseField>
+        <ResponseField name="message" type="string">Human-readable description.</ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  <Expandable title="properties">
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this request.</ResponseField>
+    <ResponseField name="resultsReturned" type="integer">Number of successful results.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Info>
+  **Billing:** Charged per revealed field (email or phone) via per-datapoint pricing.
+</Info>
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data |
+| `401` | Unauthorized — invalid or missing API key |
+| `402` | Payment required — insufficient credits |
+| `403` | Forbidden — account inactive or V3 access not enabled |
+| `429` | Too many requests — rate limit exceeded |
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/contacts/enrich \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "ids": ["4389064654", "4389064624"],
+    "reveal": ["emails", "phones"]
+  }'
+```
+
+```json Request body
+{
+  "ids": ["4389064654", "4389064624"],
+  "reveal": ["emails", "phones"]
+}
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "requestId": "6e4b1192-9440-42c4-9a3e-793ddef6d73c",
+  "results": [
+    {
+      "id": "4389064654",
+      "firstName": "Orit",
+      "lastName": "Shilvock",
+      "fullName": "Orit Shilvock",
+      "jobTitle": {
+        "title": "Vice President of Partnerships",
+        "departments": ["Business Development"],
+        "seniority": "Vice President"
+      },
+      "location": {
+        "country": "Israel",
+        "countryIso2": "IL",
+        "city": "Tel Aviv",
+        "continent": "Asia"
+      },
+      "emails": [
+        { "email": "orit.shilvock@lusha.com", "type": "work", "confidence": "A+", "updateDate": "2026-04-23" }
+      ],
+      "phones": [
+        { "number": "+14155551234", "type": "mobile", "doNotCall": false, "updateDate": "2026-04-23" }
+      ],
+      "company": {
+        "id": "16303253",
+        "name": "Lusha",
+        "domain": "www.lusha.com",
+        "industry": "Technology, Information & Media"
+      },
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/in/orit-shilvock-6243bb5"
+      },
+      "updateDate": "2026-04-23"
+    }
+  ],
+  "billing": {
+    "creditsCharged": 2,
+    "resultsReturned": 1
+  }
+}
+```

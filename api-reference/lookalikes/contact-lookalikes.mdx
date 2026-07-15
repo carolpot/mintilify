@@ -1,58 +1,64 @@
 ---
-title: "POST /v3/lookalike/contacts — Find similar contacts"
-sidebarTitle: "POST /v3/lookalike/contacts"
-description: "Discover lookalike contacts based on seed contact profiles. Use dedupeSessionId for paginated results without duplicates across multiple calls."
-openapi: "post /v3/lookalike/contacts"
+title: "POST /v3/contacts/lookalike — Find similar contacts"
+sidebarTitle: "POST /v3/contacts/lookalike"
+description: "Find contacts similar to a set of seed contacts using AI-powered recommendations. Paginate across calls without duplicates using dedupeSessionId."
+openapi: "post /v3/contacts/lookalike"
 ---
 
-The `/v3/lookalike/contacts` endpoint returns new contact prospects that match the profile of your seed contacts. Lusha's AI compares role, seniority, industry, and firmographic patterns to surface similar contacts you haven't seen yet.
+Contact Lookalikes finds contacts similar to a set of seed contacts using AI-powered recommendations. Provide 5–100 seed contacts via LinkedIn URLs, emails, Lusha IDs, or name + company, and the API returns contacts who share similar roles, seniority, and company profiles.
 
-<!-- VERIFY: live site page (docs.lusha.com/apis/openapi/lookalikes/getcontactlookalikes) describes this endpoint as POST /v3/contacts/lookalike, but openapi.json defines the path as POST /v3/lookalike/contacts. This page follows openapi.json since it is the source the Mintlify API playground binds to; a human should confirm which path is actually live. -->
+## Endpoint
 
-**Endpoint:** `POST https://api.lusha.com/v3/lookalike/contacts`
+```
+POST https://api.lusha.com/v3/contacts/lookalike
+```
 
-**Authentication:** `api_key` header required
+**Authentication:** API key (`api_key` header)
 
-## How deduplication sessions work
+## Pagination without duplicates
 
-On your first request, omit `dedupeSessionId`. The server generates one and returns it in the response. Pass that value in all subsequent "get more" requests to receive additional results without duplicates. Sessions are retained for 30 days from last activity (sliding window).
+On your first request, omit `dedupeSessionId` — the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.
 
 ## Request body
 
 <ParamField body="seeds" type="object" required>
-  Seed contacts to match against. Provide at least one of `linkedinUrls`, `contacts`, `emails`, or `contactIds`. Across all four arrays combined, provide 5–100 unique identifiers.
+  Seed contacts to match against.
 
   <Expandable title="seeds fields">
     <ParamField body="seeds.linkedinUrls" type="string[]">
-      LinkedIn profile URLs of seed contacts. Maximum 100 items. Example: `"https://www.linkedin.com/in/johndoe"`
+      LinkedIn profile URLs. Max `100` items. Example: `"https://www.linkedin.com/in/orit-shilvock-6243bb5"`
     </ParamField>
 
     <ParamField body="seeds.emails" type="string[]">
-      Email addresses of seed contacts. Maximum 100 items. Example: `"john@acme.com"`
+      Email addresses. Max `100` items. Example: `"gal.ashkelon@lusha.com"`
+    </ParamField>
+
+    <ParamField body="seeds.ids" type="string[]">
+      Lusha contact IDs, as strings. Preferred over `contactIds`. Max `100` items. Example: `["1234", "4567"]`
     </ParamField>
 
     <ParamField body="seeds.contactIds" type="integer[]">
-      Lusha person IDs of seed contacts. Maximum 100 items. Example: `[1234, 4567]`
+      Lusha contact IDs, as numbers. Legacy — prefer `ids`. Max `100` items. Example: `[1234, 4567]`
     </ParamField>
 
     <ParamField body="seeds.contacts" type="object[]">
-      Seed contacts identified by name and company. Maximum 100 items.
+      Seed contacts identified by name and company. Max `100` items.
 
       <Expandable title="contact object fields">
         <ParamField body="seeds.contacts[].firstName" type="string" required>
-          First name. Example: `"John"`
+          Example: `"Miri"`
         </ParamField>
 
         <ParamField body="seeds.contacts[].lastName" type="string" required>
-          Last name. Example: `"Doe"`
+          Example: `"Tamir"`
         </ParamField>
 
         <ParamField body="seeds.contacts[].companyDomain" type="string">
-          Company domain. At least one of `companyDomain` or `companyName` is required. Example: `"acme.com"`
+          At least one of `companyDomain` or `companyName` is required. Example: `"lusha.com"`
         </ParamField>
 
         <ParamField body="seeds.contacts[].companyName" type="string">
-          Company name. Alternative to `companyDomain`. Example: `"Acme Inc"`
+          Example: `"Lusha"`
         </ParamField>
       </Expandable>
     </ParamField>
@@ -60,58 +66,48 @@ On your first request, omit `dedupeSessionId`. The server generates one and retu
 </ParamField>
 
 <ParamField body="dedupeSessionId" type="string">
-  Session ID returned from a previous call. Omit on the first request to start a new run. Include on all subsequent "get more" requests to avoid duplicate results.
+  Session ID returned from a previous call. Omit on the first request; include on every "get more" request.
 </ParamField>
 
 <ParamField body="exclude" type="object">
-  Contacts to exclude from results, in the same shape as `seeds` (`linkedinUrls`, `contacts`, `emails`, `contactIds`; up to 500 identifiers total). Applied on every request and combined with server-side session deduplication.
+  Contacts to exclude from results, in the same shape as `seeds` (`linkedinUrls`, `emails`, `ids`, `contactIds`, `contacts`).
 </ParamField>
 
 <ParamField body="limit" type="integer" default="25">
-  Number of results to return per call. Accepted range: `1`–`100`.
+  Results to return per call. Range: `1`–`100`.
 </ParamField>
 
-## Request examples
+## Example requests
 
 <CodeGroup>
 
 ```bash First request
 curl --request POST \
-  --url https://api.lusha.com/v3/lookalike/contacts \
+  --url https://api.lusha.com/v3/contacts/lookalike \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
     "seeds": {
-      "linkedinUrls": ["https://www.linkedin.com/in/johndoe"],
-      "emails": ["jane@acme.com", "bob@example.com"],
-      "contacts": [
-        { "firstName": "Alice", "lastName": "Smith", "companyDomain": "sap.com" }
-      ],
-      "contactIds": [1234, 4567]
+      "linkedinUrls": ["https://www.linkedin.com/in/orit-shilvock-6243bb5"],
+      "emails": ["gal.ashkelon@lusha.com"],
+      "ids": ["1234"]
     },
     "exclude": {
-      "emails": ["existing@customer.com"],
-      "linkedinUrls": ["https://www.linkedin.com/in/already-contacted/"],
-      "contactIds": [9999]
+      "emails": ["existing@customer.com"]
     },
     "limit": 25
   }'
 ```
 
-```bash Get more (subsequent request)
+```bash Second request
 curl --request POST \
-  --url https://api.lusha.com/v3/lookalike/contacts \
+  --url https://api.lusha.com/v3/contacts/lookalike \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
     "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
     "seeds": {
-      "linkedinUrls": ["https://www.linkedin.com/in/johndoe"],
-      "emails": ["jane@acme.com", "bob@example.com"],
-      "contacts": [
-        { "firstName": "Alice", "lastName": "Smith", "companyDomain": "sap.com" }
-      ],
-      "contactIds": [1234, 4567]
+      "linkedinUrls": ["https://www.linkedin.com/in/shmulikwillinger"]
     },
     "limit": 25
   }'
@@ -124,76 +120,89 @@ curl --request POST \
 ### 200 — Success
 
 <ResponseField name="dedupeSessionId" type="string">
-  Server-generated session ID to use for subsequent "get more" requests. `null` when there are no results on the first request.
+  Session ID to use for subsequent "get more" requests. Can be `null` when there are no results on the first request.
 </ResponseField>
 
 <ResponseField name="results" type="object[]">
   Array of lookalike contacts.
 
-  <Expandable title="properties">
-    <ResponseField name="contactId" type="string">
-      Lusha person ID. Example: `"9659196"`
+  <Expandable title="result fields">
+    <ResponseField name="results[].id" type="string">
+      Lusha contact ID. Example: `"4389064624"`
     </ResponseField>
 
-    <ResponseField name="firstName" type="string">
-      First name.
+    <ResponseField name="results[].firstName" type="string" />
+    <ResponseField name="results[].lastName" type="string" />
+
+    <ResponseField name="results[].socialLinks" type="object">
+      `linkedin` profile URL.
     </ResponseField>
 
-    <ResponseField name="lastName" type="string">
-      Last name.
+    <ResponseField name="results[].company" type="object">
+      `id`, `name`, and `domain` of the contact's current company.
     </ResponseField>
 
-    <ResponseField name="socialLinks.linkedin" type="string">
-      LinkedIn profile URL.
+    <ResponseField name="results[].jobTitle" type="object">
+      `title`, `departments`, and `seniority`.
     </ResponseField>
 
-    <ResponseField name="company" type="object">
-      `companyId`, `name`, and `domain` of the contact's current company.
-    </ResponseField>
-
-    <ResponseField name="jobTitle" type="object">
-      `title`, `departments`, and `seniority` for the contact.
-    </ResponseField>
-
-    <ResponseField name="location" type="object">
-      `country`, `state`, and `city` for the contact.
+    <ResponseField name="results[].location" type="object">
+      `country`, `state`, and `city`.
     </ResponseField>
   </Expandable>
 </ResponseField>
 
-<ResponseField name="meta" type="object">
-  `returned` (number of results in this response) and `hasMore` (whether more results are available for the same seeds and `dedupeSessionId`).
+<ResponseField name="meta" type="object" required>
+  `returned` (results in this response) and `hasMore` (whether more results are available for this `dedupeSessionId`).
 </ResponseField>
 
-<ResponseField name="creditsCharged" type="integer">
-  Number of credits charged for this request.
+<ResponseField name="billing" type="object">
+  `creditsCharged` and `resultsReturned` for this request.
 </ResponseField>
+
+<Tip>
+  **Billing:** Charged per result via the `lookalikeContact` action.
+</Tip>
+
+Results are lightweight previews. Pass each `id` to [Enrich Contacts](/api-reference/enrich/enrich-contacts) to reveal emails and phone numbers.
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data. |
+| `402` | Insufficient credits. |
+| `403` | Forbidden — account inactive, or V3 access not enabled. |
+| `410` | `dedupeSessionId` is invalid or expired — start a new run by omitting it. |
+| `500` | Internal server error. |
+
+<ResponseExample>
 
 ```json 200
 {
   "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
   "results": [
     {
-      "contactId": "9659196",
-      "firstName": "Sarah",
-      "lastName": "Johnson",
+      "id": "4389064624",
+      "firstName": "Yehuda",
+      "lastName": "Rapp",
       "socialLinks": {
-        "linkedin": "https://www.linkedin.com/in/sarahjohnson"
+        "linkedin": "https://www.linkedin.com/in/yehuda-rapp-53909b99"
       },
       "company": {
-        "companyId": "8605368",
-        "name": "Marriott International",
-        "domain": "marriott.com"
+        "id": "16303253",
+        "name": "Lusha",
+        "domain": "www.lusha.com"
       },
       "jobTitle": {
-        "title": "VP of Sales",
-        "departments": ["Sales"],
-        "seniority": "Director"
+        "title": "Senior Solutions Engineer",
+        "departments": ["Engineering & Technical"],
+        "seniority": "Senior"
       },
       "location": {
-        "country": "United States",
-        "state": "Maryland",
-        "city": "Bethesda"
+        "country": "Israel",
+        "state": "Tel Aviv District",
+        "city": "Tel Aviv"
       }
     }
   ],
@@ -201,20 +210,12 @@ curl --request POST \
     "returned": 1,
     "hasMore": true
   },
-  "creditsCharged": 3
+  "billing": {
+    "creditsCharged": 1,
+    "resultsReturned": 1
+  }
 }
 ```
-
-## Error responses
-
-| Status | Meaning |
-|--------|---------|
-| `400` | Invalid request body or missing required fields |
-| `401` | Missing or invalid API key |
-| `402` | Insufficient credits |
-| `403` | Account inactive or feature not available on your plan |
-| `410` | `dedupeSessionId` is invalid or expired — start a new run by omitting it |
-| `500` | Internal server error |
 
 ```json 410
 {
@@ -223,6 +224,4 @@ curl --request POST \
 }
 ```
 
-<Tip>
-  Combine lookalikes with the Enrichment API to get full contact details — including emails and phone numbers — for the returned contacts.
-</Tip>
+</ResponseExample>

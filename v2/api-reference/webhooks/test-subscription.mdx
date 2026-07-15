@@ -1,0 +1,113 @@
+---
+title: "POST /api/subscriptions/{id}/test — Test a subscription"
+sidebarTitle: "POST /api/subscriptions/{id}/test"
+description: "Send a test delivery to your webhook endpoint without consuming credits. Choose from a quick URL check, a handler-only test, or a full end-to-end delivery test."
+openapi: "post /api/subscriptions/{id}/test"
+---
+
+Send a test delivery to your webhook endpoint without consuming credits. Use this endpoint after creating a subscription or updating your endpoint to confirm that your URL is reachable, your signature verification logic is correct, and the full delivery pipeline is functioning as expected.
+
+**Endpoint:** `POST https://api.lusha.com/api/subscriptions/{id}/test`
+
+<Tip>
+  Always run a test delivery before going live with a new subscription. It is the fastest way to confirm your endpoint handles Lusha payloads correctly.
+</Tip>
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the webhook subscription to test.
+</ParamField>
+
+## Query parameters
+
+<ParamField query="mode" type="string" default="full">
+  The test mode to use. Accepted values: `direct`, `kafka`, `full`.
+</ParamField>
+
+## Test modes
+
+Choose a mode based on what you want to validate:
+
+| Mode | What it tests |
+|------|---------------|
+| `direct` | HTTP reachability only — validates that your URL responds correctly to an incoming POST request |
+| `kafka` | Fanout handler only — validates message processing without a full end-to-end delivery flow |
+| `full` | Complete end-to-end delivery pipeline including signature generation and delivery (default) |
+
+## Example request
+
+```bash
+curl --request POST \
+  --url 'https://api.lusha.com/api/subscriptions/507f1f77bcf86cd799439011/test?mode=full' \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="subscriptionId" type="string">
+  The subscription ID that was tested.
+</ResponseField>
+
+<ResponseField name="subscriptionName" type="string">
+  The subscription's display name, if one was set.
+</ResponseField>
+
+<ResponseField name="url" type="string">
+  The webhook URL that was tested.
+</ResponseField>
+
+<ResponseField name="mode" type="string">
+  The test mode that was used.
+</ResponseField>
+
+<ResponseField name="flowCheck" type="object">
+  Results of the test delivery: `success` (boolean), `statusCode` (integer), and `durationMs` (integer).
+</ResponseField>
+
+<ResponseField name="testPayload" type="object">
+  The mock payload that was sent, including `entityType`, `signalType`, and `data`.
+</ResponseField>
+
+<ResponseField name="isSuccess" type="boolean">
+  Overall test outcome.
+</ResponseField>
+
+<ResponseField name="timestamp" type="string">
+  ISO 8601 timestamp of when the test was executed.
+</ResponseField>
+
+```json 200
+{
+  "subscriptionId": "507f1f77bcf86cd799439011",
+  "subscriptionName": "My Test Webhook",
+  "url": "https://example.com/webhook",
+  "mode": "full",
+  "flowCheck": {
+    "success": true,
+    "statusCode": 200,
+    "durationMs": 150
+  },
+  "testPayload": {
+    "entityType": "contact",
+    "signalType": "promotion",
+    "data": {}
+  },
+  "isSuccess": true,
+  "timestamp": "2026-01-14T10:00:00.000Z"
+}
+```
+
+## What gets verified
+
+Depending on the mode selected, a test delivery validates:
+
+- **URL accessibility** — your endpoint is publicly reachable and returns a `2xx` response
+- **Signature generation** — the `X-Lusha-Signature` and `X-Lusha-Timestamp` headers are correctly formed
+- **Delivery pipeline** — the full delivery pipeline processes and delivers the payload end-to-end (`full` mode only)
+
+<Note>
+  Test deliveries use mock data and do not consume credits. They are safe to run at any time without affecting your billing balance.
+</Note>

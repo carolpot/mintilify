@@ -3,7 +3,9 @@ title: "Contact identity fields"
 description: "Name, personId, LinkedIn URL, location, and social links returned on contact records."
 ---
 
-Identity fields identify a person and describe where they're located. They're returned by [`GET /v2/person`](/enrichment/single-contact) and [`POST /v2/person`](/enrichment/bulk-contacts) (contact enrichment), and in a slightly different shape by [`POST /prospecting/contact/enrich`](/prospecting/enrich-contacts) — see [Prospecting enrichment shape](#prospecting-enrichment-shape) below.
+Identity fields identify a person and describe where they're located. They're returned by [Enrich Contacts](/enrichment/enrich-contacts) (`POST /v3/contacts/enrich`) and [Search and Enrich Contacts](/enrichment/search-and-enrich-contacts).
+
+<!-- VERIFY: this page's field tables (personId, contactTags, linkedinFollowersCount, linkedinCertifications, etc.) were derived from the legacy V2 API schema. The current V3 openapi.json's V3EnrichedContact schema is simpler — it uses `id` instead of `personId`, `tags` instead of `contactTags`, and does not include the LinkedIn-profile-scraped fields (linkedinSkills/linkedinCertifications/linkedinCourses/linkedinAwards) or the old location fields (cityId/street/rawLocation/locationCoordinates). This page needs a full re-derivation from V3EnrichedContact before it can be trusted as V3-accurate. -->
 
 ## Core identity
 
@@ -62,19 +64,9 @@ Additional fields sourced from the person's LinkedIn profile.
 | `linkedinCourses` | array | Education history from the LinkedIn profile — despite the field name, entries describe schooling rather than individual courses. Each entry can include `school`, `degree`, `fieldOfStudy`, `grade`, `startDate`/`startDateMonth`/`startDateYear`, `endDate`/`endDateMonth`/`endDateYear`, and `activities`. |
 | `linkedinAwards` | array | Honors and awards listed on LinkedIn. Each entry can include `title`, `companyName` (issuing organization), `dateDay`/`dateMonth`/`dateYear`, and `summary`. |
 
-## Prospecting enrichment shape
-
-`POST /prospecting/contact/enrich` returns the same underlying identity, but structured differently and without a `personId`:
-
-- `jobTitle` is a plain string instead of a nested object (see [Contact employment fields](/data-catalog/contact-employment)).
-- `seniority` is an array of `{ id, value }` objects instead of a single string.
-- `departments` is a top-level array on the contact instead of nested under `jobTitle`.
-- `companyId` and `companyName` are top-level fields, and a nested `company` object carries a subset of firmographic data (`mainIndustry`, `subIndustry`, `revenueRange`, `technologies`, `funding`, `intent`) — see [Company firmographic fields](/data-catalog/company-firmographics).
-- An `isShown` boolean indicates whether the contact is visible in your current plan's results.
-
 ## See also
 
 - [Contact email fields](/data-catalog/contact-emails)
 - [Contact phone fields](/data-catalog/contact-phones)
 - [Contact employment fields](/data-catalog/contact-employment)
-- [Enrich a single contact](/enrichment/single-contact)
+- [Enrich Contacts](/enrichment/enrich-contacts)

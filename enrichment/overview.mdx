@@ -1,58 +1,56 @@
 ---
 title: "Enrich contacts and companies with Lusha"
 sidebarTitle: "Overview"
-description: "Add missing emails, phone numbers, and firmographics to existing contact and company records in real time or in bulk using the Lusha Enrichment API."
+description: "Find contacts and companies by identifier, then reveal their full data — or do both in a single call with Search and Enrich."
 ---
 
-<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide positions v3 (POST /v3/contacts/search-and-enrich, POST /v3/companies/search-and-enrich) as the current enrichment API, with the v2 endpoints documented below sunsetting Nov 18, 2026. openapi.json in this repo only defines the v2 paths, so this page (and its child pages) intentionally still document v2. Revisit once openapi.json is updated with v3 paths. -->
+Lusha's V3 API replaces the old single-record and bulk-record split with one pattern: **search, then enrich** — for up to 100 contacts or companies per call, every time.
 
-Enrichment is the process of adding missing or updated data to existing contact or company records. Use the Lusha Enrichment API to fill gaps in your CRM, sharpen outbound targeting, and keep records current as people change roles and companies evolve.
+## How it works
 
-## What you can do with enrichment
+Every V3 flow starts the same way, whether you're looking up one contact or a hundred:
 
-- **Complete CRM records** — fill in missing emails, phone numbers, job titles, and company firmographics.
-- **Improve outbound accuracy** — reduce bounce rates and wrong-number calls by working with verified, up-to-date contact details.
-- **Keep records current** — re-enrich existing records on a schedule to catch role changes, company moves, and updated contact information.
+1. **Search** — send an array of identifiers (IDs, LinkedIn URLs, emails, or name-and-company combinations for contacts; IDs, names, or domains for companies). Get back a non-PII preview of each match, plus a `canReveal` list showing what you can unlock and its credit cost.
+2. **Enrich** — pass the Lusha `id` values from your search results to reveal full data: emails and phones for contacts, firmographics and employee breakdowns for companies.
 
-## Real-time vs. bulk enrichment
+If you already know you want the full profile, skip the two-step flow and call **Search and Enrich** instead — it runs both steps in one request.
 
-Lusha offers two modes depending on your workflow:
-
-| Mode | When to use |
-|------|-------------|
-| **Real-time (GET)** | Enrich a single contact or company on demand — for example, when a new lead enters your CRM. |
-| **Bulk (POST)** | Enrich up to 100 records in one request — for example, during a nightly CRM refresh job. |
+<Info>
+  There's no more single-vs-bulk distinction. Every Search, Enrich, and Search and Enrich endpoint accepts an array of up to 100 items in one call, whether you're enriching one record or a hundred.
+</Info>
 
 ## Contact enrichment
 
-Look up a person's emails, phone numbers, job title, location, and LinkedIn profile.
-
 <CardGroup cols={2}>
-  <Card title="Single contact" icon="user" href="/enrichment/single-contact">
-    Enrich one contact at a time with `GET /v2/person`.
+  <Card title="Search contacts" icon="magnifying-glass" href="/enrichment/search-contacts">
+    Find contacts by ID, LinkedIn URL, email, or name and company. Returns a preview and reveal costs.
   </Card>
-  <Card title="Bulk contacts" icon="users" href="/enrichment/bulk-contacts">
-    Enrich up to 100 contacts per request with `POST /v2/person`.
+  <Card title="Enrich contacts" icon="address-card" href="/enrichment/enrich-contacts">
+    Reveal emails and phone numbers for contacts you've already found.
+  </Card>
+  <Card title="Search and enrich contacts" icon="layer-group" href="/enrichment/search-and-enrich-contacts">
+    Find contacts and reveal their emails and phones in a single call.
   </Card>
 </CardGroup>
 
 ## Company enrichment
 
-Look up firmographics, headcount, funding history, technologies, and company signals.
-
 <CardGroup cols={2}>
-  <Card title="Single company" icon="building" href="/enrichment/single-company">
-    Enrich one company at a time with `GET /v2/company`.
+  <Card title="Search companies" icon="magnifying-glass" href="/enrichment/search-companies">
+    Find companies by ID, name, or domain. Returns a preview and reveal costs.
   </Card>
-  <Card title="Bulk companies" icon="buildings" href="/enrichment/bulk-companies">
-    Enrich up to 100 companies per request with `POST /bulk/company/v2`.
+  <Card title="Enrich companies" icon="buildings" href="/enrichment/enrich-companies">
+    Reveal firmographics, employee breakdowns, competitors, and intent for companies you've already found.
+  </Card>
+  <Card title="Search and enrich companies" icon="layer-group" href="/enrichment/search-and-enrich-companies">
+    Find companies and reveal their full firmographic data in a single call.
   </Card>
 </CardGroup>
 
-<Warning>
-  **Unified Credits plan required for `revealEmails` and `revealPhones`**
+## Choosing search-then-enrich vs. search and enrich
 
-  The `revealEmails` and `revealPhones` parameters are only available on the Unified Credits pricing plan. Using them on any other plan returns a `403 Unauthorized` error.
+<Tip>
+  Use the two-step flow when you want to inspect `canReveal` and its credit cost before spending credits — for example, when a human reviews matches before you enrich them. Use Search and Enrich when you already trust the match criteria and want the full record in one round trip, such as a CRM sync job.
+</Tip>
 
-  When you omit both parameters, the API returns all available emails and phone numbers for the contact by default.
-</Warning>
+Both paths bill the same way: search is charged per successful result via the `api_search` action, and revealing contact data is charged per revealed field (email or phone). Company enrichment is charged per successful result via the `reveal_company` action. Search and Enrich simply combines both charges into one request.

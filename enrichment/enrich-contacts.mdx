@@ -1,0 +1,41 @@
+---
+title: "Enrich contacts"
+sidebarTitle: "Enrich Contacts"
+description: "Reveal emails and phone numbers for up to 100 contacts you've already found via Search Contacts."
+---
+
+Enrich Contacts reveals emails and phone numbers for contacts you've already found with [Search Contacts](/enrichment/search-contacts). It only accepts Lusha contact `id` values — not emails, LinkedIn URLs, or names — so you always search first, inspect what's available, and enrich only the contacts you actually want to spend credits on.
+
+<Info>
+  This is a single endpoint for one contact or a hundred. Send an array of 1 to 100 `id` values in one call.
+</Info>
+
+## What you can reveal
+
+Use the `reveal` field to control what gets unlocked for each contact:
+
+- `emails` — work and personal email addresses
+- `phones` — mobile and direct phone numbers
+
+Omit `reveal` entirely to get both by default.
+
+<Tip>
+  Check each contact's `canReveal` array from your Search Contacts response before enriching — it tells you exactly which fields are available and how many credits each one costs, so you don't spend credits enriching a contact with no phone number on file.
+</Tip>
+
+## What you get back
+
+Each enriched contact includes full name, job title, seniority, department, location (with EU flag and coordinates), company reference, social links, previous employment history, and any tags you've applied in Lusha — in addition to the revealed emails and phones.
+
+If enrichment fails for a contact `id`, the result contains an `error` with a code of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, or `ENRICH_FAILED` instead of profile data.
+
+## Billing
+
+Enrich Contacts is charged per revealed field (email or phone) via per-datapoint pricing — not per contact. A contact with two revealed emails and one revealed phone is billed for three data points.
+
+## Related
+
+- [Search Contacts](/enrichment/search-contacts) — find the `id` values to pass here.
+- [Search and Enrich Contacts](/enrichment/search-and-enrich-contacts) — find and reveal in a single call.
+
+For full request and response field details, see the [Enrich Contacts API reference](/api-reference/enrich/enrich-contacts).

@@ -1,0 +1,41 @@
+---
+title: "Search and enrich companies"
+sidebarTitle: "Search and Enrich Companies"
+description: "Find up to 100 companies by identifier and reveal their full firmographic data in a single call."
+---
+
+Search and Enrich Companies combines [Search Companies](/enrichment/search-companies) and [Enrich Companies](/enrichment/enrich-companies) into one request. Send the same identifiers you'd use for Search Companies, and get back fully enriched firmographic profiles — no intermediate step to inspect matches and pass `id` values around.
+
+<Info>
+  This is a single endpoint for one company or a hundred. Send an array of 1 to 100 companies in one call.
+</Info>
+
+## When to use this instead of the two-step flow
+
+Use Search and Enrich Companies when you already trust your match criteria and want the full firmographic record in one round trip — for example, enriching every account in a target-account list you've already vetted by domain.
+
+Use the two-step [Search](/enrichment/search-companies) → [Enrich](/enrichment/enrich-companies) flow instead when you want to inspect `canReveal` and its credit cost before spending credits, or when you need to add specific breakdowns like `competitors` or `intent` that this combined endpoint doesn't expose as a `reveal` option.
+
+## Identifiers you can search by
+
+Provide **at least one** of the following for each company:
+
+- Lusha company `id`
+- `name`
+- `domain`
+
+## What you get back
+
+Every matched company returns full firmographics automatically — description, company type, year founded, employee count, industry and sub-industry, locations, social links, revenue range, funding history, technologies, and business model. Unlike Enrich Companies, this endpoint doesn't take a `reveal` field for employee breakdowns, competitors, or intent — use the two-step flow if you need those.
+
+If a company can't be found or enriched, its result contains an `error` with a code of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, or `ENRICH_FAILED` instead of profile data.
+
+## Billing
+
+Billed the same as Enrich Companies — charged per successful result via the `reveal_company` action.
+
+## Related
+
+- [Search Companies](/enrichment/search-companies) and [Enrich Companies](/enrichment/enrich-companies) — the two-step equivalent, needed if you want `employeesByDepartment`, `employeesByLocation`, `employeesBySeniority`, `competitors`, or `intent`.
+
+For full request and response field details, see the [Search and Enrich Companies API reference](/api-reference/search-and-enrich/search-and-enrich-companies).

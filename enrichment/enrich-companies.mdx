@@ -1,0 +1,42 @@
+---
+title: "Enrich companies"
+sidebarTitle: "Enrich Companies"
+description: "Reveal firmographics, employee breakdowns, competitors, and buyer intent for up to 100 companies you've already found via Search Companies."
+---
+
+Enrich Companies reveals full firmographic data for companies you've already found with [Search Companies](/enrichment/search-companies). It only accepts Lusha company `id` values, so you always search first and enrich only the companies you actually want to spend credits on.
+
+<Info>
+  This is a single endpoint for one company or a hundred. Send an array of 1 to 100 `id` values in one call.
+</Info>
+
+## What you get by default
+
+Every enriched company includes firmographics — description, company type, year founded, employee count, industry and sub-industry, SIC and NAICS codes, HQ and additional locations, social links, revenue range, funding history, technologies, and business model.
+
+## What you can add with `reveal`
+
+Pass any of these to add deeper breakdowns to the response:
+
+- `employeesByDepartment` — headcount by department
+- `employeesByLocation` — headcount by country and state
+- `employeesBySeniority` — headcount by seniority level
+- `competitors` — companies Lusha identifies as competitors
+- `intent` — buyer intent topics
+
+<Tip>
+  Check each company's `canReveal` array from your Search Companies response before enriching to confirm the credit cost.
+</Tip>
+
+If enrichment fails for a company `id`, the result contains an `error` with a code of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, or `ENRICH_FAILED` instead of profile data.
+
+## Billing
+
+Enrich Companies is charged per successful result via the `reveal_company` action — one charge per company, regardless of how many `reveal` fields you request for it.
+
+## Related
+
+- [Search Companies](/enrichment/search-companies) — find the `id` values to pass here.
+- [Search and Enrich Companies](/enrichment/search-and-enrich-companies) — find and reveal in a single call.
+
+For full request and response field details, see the [Enrich Companies API reference](/api-reference/enrich/enrich-companies).

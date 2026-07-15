@@ -1,0 +1,298 @@
+---
+title: "POST /v3/companies/website-visits — Get website visits"
+sidebarTitle: "POST /v3/companies/website-visits"
+description: "Returns companies ranked by website-visit signals for your tracked domains and date range, with score, sessions, and unique visitor metrics."
+openapi: "post /v3/companies/website-visits"
+---
+
+<Warning>
+  **Beta.** This endpoint's request and response shape may change before general availability.
+</Warning>
+
+Returns companies ranked by website-visit behavior for the tracked domains and date range you supply. Each result combines a V3 company firmographic preview — the same shape [Search Companies](/enrichment/search-companies) returns — with behavioral visit metrics: engagement score, sessions, unique visitors, and more.
+
+<Warning>
+  Domains must already be configured for tracking in the [Lusha dashboard](https://dashboard.lusha.com) — they're resolved to site IDs server-side. If any requested domain isn't configured for tracking, the entire request fails with `400`.
+</Warning>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/companies/website-visits
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="domains" type="string[]" required>
+  Tracked domains to pull visit data for. At least 1 item.
+
+  Example: `["lusha.com", "google.com"]`
+</ParamField>
+
+<ParamField body="startDate" type="string" required>
+  Start of the date range, in `YYYY-MM-DD` format.
+
+  Example: `"2026-01-01"`
+</ParamField>
+
+<ParamField body="endDate" type="string" required>
+  End of the date range, in `YYYY-MM-DD` format.
+
+  Example: `"2026-03-18"`
+</ParamField>
+
+<Warning>
+  The `startDate`–`endDate` range must be 3 months or less.
+</Warning>
+
+<ParamField body="pagination" type="object" required>
+  <Expandable title="pagination fields">
+    <ParamField body="pagination.page" type="integer" required>
+      Zero-indexed page number.
+
+      Example: `0`
+    </ParamField>
+    <ParamField body="pagination.size" type="integer" required>
+      Results per page. Range: `1`–`150`.
+
+      Example: `25`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="sort" type="object">
+  <Expandable title="sort fields">
+    <ParamField body="sort.by" type="string">
+      Field to sort results by.
+
+      Example: `"score"`
+    </ParamField>
+    <ParamField body="sort.order" type="string">
+      Sort direction.
+
+      Allowed values: `asc`, `desc`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="filters" type="object">
+  Optional filters to narrow results.
+
+  <Expandable title="filters fields">
+    <ParamField body="filters.scoreBands" type="string[]">
+      Restrict results to companies in these engagement bands.
+
+      Allowed values: `cold`, `warm`, `hot`
+    </ParamField>
+    <ParamField body="filters.visitorCountries" type="object">
+      <Expandable title="properties">
+        <ParamField body="filters.visitorCountries.include" type="string[]">ISO country codes to include. Example: `["US", "GB"]`</ParamField>
+        <ParamField body="filters.visitorCountries.exclude" type="string[]">ISO country codes to exclude. Example: `["CN"]`</ParamField>
+      </Expandable>
+    </ParamField>
+    <ParamField body="filters.score" type="object">
+      Integer range filter, `{ "min": 0, "max": 100 }`. Both bounds optional.
+    </ParamField>
+    <ParamField body="filters.totalSessions" type="object">
+      Integer range filter on total sessions.
+    </ParamField>
+    <ParamField body="filters.uniqueVisitors" type="object">
+      Integer range filter on unique visitor count.
+    </ParamField>
+    <ParamField body="filters.daysVisited" type="object">
+      Integer range filter on distinct days visited.
+    </ParamField>
+    <ParamField body="filters.highIntentPageviews" type="object">
+      Integer range filter on high-intent pageviews.
+    </ParamField>
+    <ParamField body="filters.daysSinceLastVisit" type="object">
+      Integer range filter on days since the last visit.
+    </ParamField>
+    <ParamField body="filters.avgSessionMinutes" type="object">
+      Float range filter (`{ "min": ..., "max": ... }`) on average session duration in minutes.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/companies/website-visits \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "domains": ["lusha.com", "google.com"],
+    "startDate": "2026-01-01",
+    "endDate": "2026-03-18",
+    "pagination": { "size": 25, "page": 0 },
+    "sort": { "by": "score", "order": "desc" },
+    "filters": {
+      "scoreBands": ["hot", "warm"],
+      "score": { "min": 50 }
+    }
+  }'
+```
+
+```json Request body
+{
+  "domains": ["lusha.com", "google.com"],
+  "startDate": "2026-01-01",
+  "endDate": "2026-03-18",
+  "pagination": { "size": 25, "page": 0 },
+  "sort": { "by": "score", "order": "desc" },
+  "filters": {
+    "scoreBands": ["hot", "warm"],
+    "score": { "min": 50 }
+  }
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="requestId" type="string">
+  UUID identifying this request.
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+  Companies ranked by visit behavior. Each result is a company firmographic preview plus visit metrics.
+
+  <Expandable title="properties">
+    <ResponseField name="id" type="string">Lusha company ID. Example: `"16303253"`</ResponseField>
+    <ResponseField name="name" type="string">Example: `"Lusha"`</ResponseField>
+    <ResponseField name="domain" type="string">Example: `"www.lusha.com"`</ResponseField>
+    <ResponseField name="employeeCount" type="object">
+      <Expandable title="properties">
+        <ResponseField name="exact" type="integer">Example: `364`</ResponseField>
+        <ResponseField name="min" type="integer">Example: `201`</ResponseField>
+        <ResponseField name="max" type="integer">Example: `500`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="industry" type="string">Example: `"Technology, Information & Media"`</ResponseField>
+    <ResponseField name="location" type="object">
+      <Expandable title="properties">
+        <ResponseField name="city" type="string">Example: `"London"`</ResponseField>
+        <ResponseField name="state" type="string">Example: `"England"`</ResponseField>
+        <ResponseField name="country" type="string">Example: `"United Kingdom"`</ResponseField>
+        <ResponseField name="countryIso2" type="string">Example: `"GB"`</ResponseField>
+        <ResponseField name="continent" type="string">Example: `"Europe"`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="socialLinks" type="object">
+      <Expandable title="properties">
+        <ResponseField name="linkedin" type="string">Example: `"https://www.linkedin.com/company/lushadata"`</ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="has" type="string[]">
+      Fields already available on this preview. Example: `["alternativeName", "description", "companyType", "employeesByDepartment", "competitors", "emails", "socialLinks"]`
+    </ResponseField>
+    <ResponseField name="canReveal" type="object[]">
+      Fields you can reveal, and their credit cost. Same shape as `canReveal` on contact previews (`field`, `credits`).
+    </ResponseField>
+    <ResponseField name="signalTypes" type="string[]">
+      Signal types currently associated with this company, if any.
+    </ResponseField>
+    <ResponseField name="error" type="object">
+      Present when this company couldn't be resolved. Has `code` (`NOT_FOUND`, `COMPLIANCE_RESTRICTED`, or `ENRICH_FAILED`) and `message`.
+    </ResponseField>
+    <ResponseField name="score" type="number">Engagement score. Example: `87`</ResponseField>
+    <ResponseField name="scoreBand" type="string">One of `cold`, `warm`, `hot`. Example: `"hot"`</ResponseField>
+    <ResponseField name="totalSessions" type="number">Example: `12`</ResponseField>
+    <ResponseField name="uniqueVisitors" type="number">Example: `5`</ResponseField>
+    <ResponseField name="avgSessionMinutes" type="number">Example: `4.2`</ResponseField>
+    <ResponseField name="daysVisited" type="number">Example: `8`</ResponseField>
+    <ResponseField name="highIntentPageviews" type="number">Example: `10`</ResponseField>
+    <ResponseField name="daysSinceLastVisit" type="number">Example: `6`</ResponseField>
+    <ResponseField name="lastVisit" type="string">Date of the most recent visit. Example: `"2026-03-20"`</ResponseField>
+    <ResponseField name="visitorCountry" type="string">Example: `"US"`</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="pagination" type="object">
+  <Expandable title="properties">
+    <ResponseField name="page" type="integer">Example: `0`</ResponseField>
+    <ResponseField name="size" type="integer">Example: `25`</ResponseField>
+    <ResponseField name="total" type="integer">Total matching results across all pages. Example: `142`</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  <Expandable title="properties">
+    <ResponseField name="creditsCharged" type="integer">Example: `3`</ResponseField>
+    <ResponseField name="resultsReturned" type="integer">Example: `1`</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseExample>
+
+```json 200
+{
+  "requestId": "1c2d3e4f-5a6b-7c8d-9e0f-1a2b3c4d5e6f",
+  "results": [
+    {
+      "id": "16303253",
+      "name": "Lusha",
+      "domain": "www.lusha.com",
+      "industry": "Technology, Information & Media",
+      "location": {
+        "city": "London",
+        "state": "England",
+        "country": "United Kingdom",
+        "countryIso2": "GB",
+        "continent": "Europe"
+      },
+      "score": 87,
+      "scoreBand": "hot",
+      "totalSessions": 12,
+      "uniqueVisitors": 5,
+      "avgSessionMinutes": 4.2,
+      "daysVisited": 8,
+      "highIntentPageviews": 10,
+      "daysSinceLastVisit": 6,
+      "lastVisit": "2026-03-20",
+      "visitorCountry": "US"
+    }
+  ],
+  "pagination": {
+    "page": 0,
+    "size": 25,
+    "total": 142
+  },
+  "billing": {
+    "creditsCharged": 3,
+    "resultsReturned": 1
+  }
+}
+```
+
+</ResponseExample>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input, a domain isn't configured for tracking, or the date range exceeds 3 months. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `402` | Payment required — insufficient credits. |
+| `403` | Forbidden — account inactive or V3 access not enabled. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+
+## Related pages
+
+- [Website Visits overview](/website-visits/overview) — domain-tracking setup and the 3-month range limit

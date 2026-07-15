@@ -1,33 +1,32 @@
 ---
 title: "Search prospecting companies by firmographic filters"
 sidebarTitle: "Search Companies"
-description: "Query Lusha's company database using firmographic filters — industry, size, revenue, location, technologies, and more — to get matching company IDs."
+description: "Query Lusha's company database using firmographic filters — industry, size, revenue, location, technologies, and more — to get a paginated list of company previews."
 ---
 
-`POST https://api.lusha.com/prospecting/company/search` is step 2 of the 3-step company prospecting flow. You pass firmographic filters that describe your target account profile and receive back a paginated list of matching companies, each with an `id`. No credits are consumed at this step — credits are charged when you enrich the results in [step 3](/prospecting/enrich-companies).
+`POST https://api.lusha.com/v3/companies/prospecting` takes firmographic filters describing your target account profile and returns a paginated list of matching **company previews**, each with an `id`. It does not return full firmographic records. To get those, pass the `id` values you want to [Enrich Companies](/api-reference/enrich/enrich-companies).
 
-Before building your request, use the [Company Filters](/filters/company-filters) endpoints to look up valid values for each field.
+Before building your request, use the [company filter types](/api-reference/filters/company-filter-types) and [company filter values](/api-reference/filters/company-filter-values) endpoints to look up valid values for each field.
 
 ## Request body
 
-Send a JSON body with a `filters.companies` object. All filter fields are optional — include only the ones relevant to your target accounts.
+Send a JSON body with `pagination` and `filters.companies.include` (required). All filter fields are optional — include only the ones relevant to your target accounts.
 
 ```json
 {
+  "pagination": { "page": 0, "size": 25 },
   "filters": {
     "companies": {
       "include": {
         "mainIndustriesIds": [4, 5],
         "sizes": [{ "min": 51, "max": 500 }],
         "revenues": [{ "min": 10000000, "max": 50000000 }],
-        "locations": [
-          { "country": "United States", "state": "New York" }
-        ],
-        "technologies": [{ "name": "Salesforce" }, { "name": "HubSpot" }]
+        "locations": [{ "country": "United States", "state": "New York" }],
+        "technologies": ["Salesforce", "HubSpot"],
+        "technologiesCondition": "or"
       }
     }
-  },
-  "pages": { "page": 0, "size": 25 }
+  }
 }
 ```
 
@@ -35,27 +34,28 @@ Send a JSON body with a `filters.companies` object. All filter fields are option
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `filters.companies.include.names` | string[] | Company names to include — use [POST /prospecting/filters/companies/names](/filters/company-filters) |
-| `filters.companies.include.mainIndustriesIds` / `subIndustriesIds` | number[] | Industry IDs — use [GET /prospecting/filters/companies/industries_labels](/filters/company-filters) |
-| `filters.companies.include.sizes` | object[] | Employee count ranges as `{ "min": ..., "max": ... }` — use [GET /prospecting/filters/companies/sizes](/filters/company-filters) |
-| `filters.companies.include.revenues` | object[] | Revenue ranges as `{ "min": ..., "max": ... }` — use [GET /prospecting/filters/companies/revenues](/filters/company-filters) |
-| `filters.companies.include.locations` | object[] | HQ location filters — use [POST /prospecting/filters/companies/locations](/filters/company-filters) |
-| `filters.companies.include.companyLocations` | object[] | Office location filters based on all known company locations, not just HQ |
-| `filters.companies.include.sicCodes` | string[] | SIC industry classification codes — use [GET /prospecting/filters/companies/sics](/filters/company-filters) |
-| `filters.companies.include.naicsCodes` | string[] | NAICS industry classification codes — use [GET /prospecting/filters/companies/naics](/filters/company-filters) |
-| `filters.companies.include.technologies` | object[] | Technologies the company uses, each as `{ "name": "..." }` — use [POST /prospecting/filters/companies/technologies](/filters/company-filters) |
-| `filters.companies.include.intentTopics` | string[] | Buyer intent topics — use [GET /prospecting/filters/companies/intent_topics](/filters/company-filters) |
-| `pages.page` / `pages.size` | number | Pagination — `page` ranges `0–1000`, `size` ranges `10–50` |
+| `filters.companies.include.mainIndustriesIds` / `subIndustriesIds` | integer[] | Industry IDs |
+| `filters.companies.include.sizes` | object[] | Employee count ranges as `{ "min": ..., "max": ... }` |
+| `filters.companies.include.revenues` | object[] | Revenue ranges as `{ "min": ..., "max": ... }` |
+| `filters.companies.include.locations` | object[] | Geographic filters |
+| `filters.companies.include.sicCodes` | string[] | SIC industry classification codes |
+| `filters.companies.include.naicsCodes` | string[] | NAICS industry classification codes |
+| `filters.companies.include.technologies` | string[] | Technologies the company uses, combined via `technologiesCondition` (`or`/`and`) |
+| `filters.companies.include.intentTopics` | string[] | Buyer intent topics, combined via `intentTopicsCondition` (`or`/`and`) |
+| `filters.companies.exclude.domains` | string[] | Domains to remove from results |
+| `pagination.page` / `pagination.size` | integer | Pagination — `page` ranges `0–1000`, `size` ranges `10–100` |
 
-## Signal filtering (premium feature)
+See the [full field reference](/api-reference/prospecting/prospecting-companies) for every available filter, including founded year, funding, business model, and company type.
 
-You can narrow results to companies that have recently undergone a specific business event by filtering on signal types.
+## Signal filtering
+
+Narrow results to companies that have recently undergone a specific business event.
 
 <Note>
-  Signal filtering is a premium feature. Credits are charged for each signal type that returns results.
+  Credits are charged for each matched signal type per result, on top of the standard per-result charge.
 </Note>
 
-Add a `signal` object under `filters.companies.include` to match companies with recent activity:
+Add a `signals` object under `filters.companies.include`:
 
 ```json
 {
@@ -64,18 +64,18 @@ Add a `signal` object under `filters.companies.include` to match companies with 
       "include": {
         "mainIndustriesIds": [4, 5],
         "sizes": [{ "min": 500, "max": 5000 }],
-        "signal": {
-          "names": ["surgeInHiring", "financialEventsNews"],
+        "signals": {
+          "types": ["headcountIncrease3m", "surgeInHiring"],
           "startDate": "2025-01-01"
         }
       }
     }
   },
-  "pages": { "page": 0, "size": 25 }
+  "pagination": { "page": 0, "size": 25 }
 }
 ```
 
-Company signal names use the same values as the [Signals API](/signals/overview) — for example `surgeInHiring`, `headcountIncrease6m`, `websiteTrafficIncrease`, and `financialEventsNews`. See [GET /api/signals/filters/company](/api-reference/signals/get-signal-options) for the complete list.
+Company signal filters also accept `filterByLocation` and `filterByDepartment` to scope matching to a specific geography or department. See [Signals](/signals/overview) for background on available signal types.
 
 ## Example request
 
@@ -83,37 +83,37 @@ Company signal names use the same values as the [Signals API](/signals/overview)
 
 ```bash cURL
 curl --request POST \
-  --url https://api.lusha.com/prospecting/company/search \
+  --url https://api.lusha.com/v3/companies/prospecting \
   --header 'api_key: YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
+    "pagination": { "page": 0, "size": 25 },
     "filters": {
       "companies": {
         "include": {
-          "mainIndustriesIds": [4, 5],
-          "sizes": [{ "min": 201, "max": 1000 }],
+          "sizes": [{ "min": 1, "max": 1000 }],
           "locations": [{ "country": "United States" }],
-          "technologies": [{ "name": "Salesforce" }]
+          "technologies": ["React", "Node.js"],
+          "mainIndustriesIds": [1, 5]
         }
       }
-    },
-    "pages": { "page": 0, "size": 25 }
+    }
   }'
 ```
 
 ```json Request body
 {
+  "pagination": { "page": 0, "size": 25 },
   "filters": {
     "companies": {
       "include": {
-        "mainIndustriesIds": [4, 5],
-        "sizes": [{ "min": 201, "max": 1000 }],
+        "sizes": [{ "min": 1, "max": 1000 }],
         "locations": [{ "country": "United States" }],
-        "technologies": [{ "name": "Salesforce" }]
+        "technologies": ["React", "Node.js"],
+        "mainIndustriesIds": [1, 5]
       }
     }
-  },
-  "pages": { "page": 0, "size": 25 }
+  }
 }
 ```
 
@@ -124,27 +124,25 @@ curl --request POST \
 ```json
 {
   "requestId": "5ad275c8-7dd4-462a-bd45-6bc1970da64e",
-  "currentPage": 0,
-  "pageLength": 2,
-  "totalResults": 874,
-  "companies": [
+  "pagination": { "page": 0, "size": 25, "total": 874 },
+  "results": [
     {
-      "id": "33222678",
+      "id": "16303253",
       "name": "Lusha",
-      "fqdn": "lusha.com",
-      "description": "Lusha is the sales intelligence platform designed to help businesses get their next customers.",
-      "logoUrl": "https://logo.lusha.co/logo.jpg",
-      "hasCompanyEmployeesCount": true,
-      "hasCompanyRevenue": true,
-      "hasCompanyMainIndustry": true,
-      "hasCompanyTechnologies": true
+      "domain": "www.lusha.com",
+      "employeeCount": { "min": 201, "max": 500 },
+      "industry": "Technology, Information & Media"
     }
-  ]
+  ],
+  "billing": {
+    "creditsCharged": 1,
+    "resultsReturned": 1
+  }
 }
 ```
 
-The `requestId` and each company's `id` are what you pass to the [Enrich Companies](/prospecting/enrich-companies) endpoint to retrieve full records. See the [full API reference](/api-reference/prospecting/search-companies) for the complete response schema, including all `has*` availability flags.
+Each result's `id` is what you pass to [Enrich Companies](/api-reference/enrich/enrich-companies) to reveal full firmographic records. Previews may also include `has` (fields already populated) and `canReveal` (fields you can reveal, and at what credit cost) — see the [full API reference](/api-reference/prospecting/prospecting-companies) for the complete response schema.
 
 <Tip>
-  Use the [Company Filters](/filters/company-filters) endpoints to fetch valid values for `mainIndustriesIds`, `sizes`, `revenues`, `sicCodes`, `naicsCodes`, `intentTopics`, and `technologies` before building your search request.
+  Use the [company filter types](/api-reference/filters/company-filter-types) and [company filter values](/api-reference/filters/company-filter-values) endpoints to fetch valid values for `mainIndustriesIds`, `sizes`, `revenues`, `sicCodes`, `naicsCodes`, `intentTopics`, and `technologies` before building your search request.
 </Tip>

@@ -1,0 +1,120 @@
+---
+title: "GET /v3/companies/signals/filters/{filterType} — Get company signal filter values"
+sidebarTitle: "GET /v3/companies/signals/filters/{filterType}"
+description: "Returns valid values for a single company signal filter type: newsEventTypes, hiringByDepartments, or hiringByLocations."
+openapi: "get /v3/companies/signals/filters/{filterType}"
+---
+
+Returns the valid values for one company signal filter type. Call [Get Company Signal Filters](/api-reference/signals/company-signal-filters) first if you need to discover which `filterType` values exist and whether each requires a `query`.
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v3/companies/signals/filters/{filterType}
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Path parameters
+
+<ParamField path="filterType" type="string" required>
+  The filter type to retrieve values for.
+
+  Allowed values: `newsEventTypes`, `hiringByDepartments`, `hiringByLocations`
+</ParamField>
+
+## Query parameters
+
+<ParamField query="query" type="string">
+  Text to match values against. 2–256 characters.
+
+  | Filter type | Query required? |
+  |---|---|
+  | `newsEventTypes` | No |
+  | `hiringByDepartments` | No |
+  | `hiringByLocations` | Yes (2–256 chars) |
+</ParamField>
+
+<Warning>
+  `hiringByLocations` requires `query` — omitting it returns a `400`. `newsEventTypes` and `hiringByDepartments` return their full value list whether or not you pass a `query`.
+</Warning>
+
+---
+
+## Example requests
+
+<CodeGroup>
+
+```bash newsEventTypes
+curl --request GET \
+  --url https://api.lusha.com/v3/companies/signals/filters/newsEventTypes \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+```bash hiringByDepartments
+curl --request GET \
+  --url https://api.lusha.com/v3/companies/signals/filters/hiringByDepartments \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+```bash hiringByLocations
+curl --request GET \
+  --url 'https://api.lusha.com/v3/companies/signals/filters/hiringByLocations?query=California' \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="values" type="any">
+  The matching values for the requested `filterType`. Nullable — returns `null` when nothing matches.
+</ResponseField>
+
+<Info>
+  The API's `FilterValuesResponse` schema leaves `values` open-ended so it can represent different filter shapes. Treat the response as authoritative and read it directly rather than hardcoding a shape — the example below is illustrative.
+</Info>
+
+<ResponseExample>
+
+```json 200 (newsEventTypes)
+{
+  "values": [
+    "Funding Round",
+    "IPO",
+    "Executive Hire",
+    "Product Launch"
+  ]
+}
+```
+
+```json 200 (hiringByLocations?query=California)
+{
+  "values": [
+    "United States > California"
+  ]
+}
+```
+
+</ResponseExample>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — `filterType` is invalid, or `query` is missing/too short/too long for `hiringByLocations`. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — account inactive or V3 access not enabled. |
+
+## Related pages
+
+- [Get Company Signal Filters](/api-reference/signals/company-signal-filters) — discover which filter types are available
+- [Company Signals](/api-reference/signals/company-signals) — retrieve signal events for specific companies

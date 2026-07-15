@@ -1,0 +1,66 @@
+---
+title: "GET /v3/contacts/signals/types — Get contact signal types"
+sidebarTitle: "GET /v3/contacts/signals/types"
+description: "Returns the full list of supported signal types for contacts."
+openapi: "get /v3/contacts/signals/types"
+---
+
+Call this endpoint to get the current, authoritative list of `signalTypes` values accepted by [Contact Signals](/api-reference/signals/contact-signals). Use it instead of hardcoding signal type strings, so your integration picks up new types automatically as Lusha adds them.
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v3/contacts/signals/types
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+This endpoint has no parameters.
+
+---
+
+## Example request
+
+```bash cURL
+curl --request GET \
+  --url https://api.lusha.com/v3/contacts/signals/types \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="signalTypes" type="string[]">
+  All valid `signalTypes` values for [Contact Signals](/api-reference/signals/contact-signals).
+</ResponseField>
+
+<ResponseExample>
+
+```json 200
+{
+  "signalTypes": [
+    "allSignals",
+    "promotion",
+    "companyChange"
+  ]
+}
+```
+
+</ResponseExample>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — account inactive or V3 access not enabled. |
+
+## Related pages
+
+- [Contact Signals](/api-reference/signals/contact-signals) — retrieve signal data for specific contacts
+- [Signals overview](/signals/overview) — the consolidated signals model

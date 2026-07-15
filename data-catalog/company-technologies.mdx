@@ -3,7 +3,7 @@ title: "Company technology fields"
 description: "Tech stack data — the tools, platforms, and software a company uses."
 ---
 
-Technology data identifies the software, platforms, and tools a company runs. It's returned as part of the company record by [`GET /v2/company`](/enrichment/single-company), [`POST /bulk/company/v2`](/enrichment/bulk-companies), and [`POST /prospecting/company/enrich`](/prospecting/enrich-companies).
+Technology data identifies the software, platforms, and tools a company runs. It's returned as part of the company record by [Enrich Companies](/enrichment/enrich-companies) and [Search and Enrich Companies](/enrichment/search-and-enrich-companies).
 
 ## `technologies`
 
@@ -31,8 +31,8 @@ Technology data identifies the software, platforms, and tools a company runs. It
 
 To find companies that use a specific technology, or to validate technology names before filtering:
 
-- Use [`POST /prospecting/filters/companies/technologies`](/api-reference/filters/company-technologies) to search for valid technology name values by free text.
-- Pass matching values into the `technologies` filter field of [`POST /prospecting/company/search`](/prospecting/search-companies).
+- Use [Get Company Filter Values](/api-reference/filters/company-filter-values) with `filterType=technologies` to search for valid technology name values by free text.
+- Pass matching values into the `technologies` filter field of [Prospecting Companies](/prospecting/search-companies).
 
 ## See also
 

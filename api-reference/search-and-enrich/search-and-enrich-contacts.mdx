@@ -1,0 +1,221 @@
+---
+title: "POST /v3/contacts/search-and-enrich — Search and enrich contacts"
+sidebarTitle: "Search and Enrich Contacts"
+description: "Find up to 100 contacts by identifier and reveal their emails and phone numbers in a single call."
+openapi: "post /v3/contacts/search-and-enrich"
+---
+
+Use this endpoint to find contacts and reveal their full data in one request — it combines [Search Contacts](/api-reference/search/search-contacts) and [Enrich Contacts](/api-reference/enrich/enrich-contacts) into a single call. Provide identifiers the same way you would for Search Contacts, then use `reveal` to control what gets unlocked.
+
+<Tip>
+  If you need to inspect what's revealable and its credit cost before committing to a reveal, call [Search Contacts](/api-reference/search/search-contacts) first, then [Enrich Contacts](/api-reference/enrich/enrich-contacts) separately. Use this combined endpoint when you already know you want the full profile.
+</Tip>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/contacts/search-and-enrich
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key.
+</ParamField>
+
+## Accepted identifiers
+
+Each contact in the `contacts` array needs **one** of the following:
+
+- Lusha contact `id`
+- `linkedinUrl`
+- `email`
+- `firstName` **and** `lastName` **and** (`companyName` **or** `companyDomain`)
+
+## Request body
+
+<ParamField body="contacts" type="array" required>
+  Up to 100 contacts to find and enrich.
+
+  <Expandable title="contact fields">
+    <ParamField body="contacts[].clientReferenceId" type="string">
+      Your own reference ID for this contact. Echoed back on the matching result.
+
+      Example: `my-ref-1`
+    </ParamField>
+
+    <ParamField body="contacts[].id" type="string">A Lusha contact ID.</ParamField>
+    <ParamField body="contacts[].linkedinUrl" type="string">The contact's LinkedIn profile URL.</ParamField>
+    <ParamField body="contacts[].email" type="string">The contact's email address.</ParamField>
+    <ParamField body="contacts[].firstName" type="string">First name. Requires `lastName` and either `companyName` or `companyDomain`.</ParamField>
+    <ParamField body="contacts[].lastName" type="string">Last name. Requires `firstName` and either `companyName` or `companyDomain`.</ParamField>
+    <ParamField body="contacts[].companyName" type="string">The contact's current company name.</ParamField>
+    <ParamField body="contacts[].companyDomain" type="string">The contact's current company domain.</ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="reveal" type="string[]">
+  What to unlock for each matched contact. Omit this field to get both by default.
+
+  Allowed values: `emails`, `phones`
+</ParamField>
+
+<ParamField body="options" type="object">
+  <Expandable title="options fields">
+    <ParamField body="options.includePartialProfiles" type="boolean">
+      When `true`, includes contacts with incomplete data in the results instead of dropping them.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this request, in UUID format.
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+  One entry per contact you searched for. Each result has the same shape as an [Enrich Contacts](/api-reference/enrich/enrich-contacts) result, plus `clientReferenceId`.
+
+  <Expandable title="result fields">
+    <ResponseField name="results[].clientReferenceId" type="string">Echoes the `clientReferenceId` you sent for this contact.</ResponseField>
+    <ResponseField name="results[].id" type="string">The Lusha contact ID.</ResponseField>
+    <ResponseField name="results[].firstName" type="string" />
+    <ResponseField name="results[].lastName" type="string" />
+    <ResponseField name="results[].fullName" type="string" />
+    <ResponseField name="results[].jobTitle" type="object">Title, departments, and seniority.</ResponseField>
+    <ResponseField name="results[].location" type="object">Country, state, city, continent, coordinates, and EU flag.</ResponseField>
+
+    <ResponseField name="results[].emails" type="object[]">
+      Present when `reveal` includes (or omits) `emails`. Each entry has `email`, `type`, `confidence`, and `updateDate`.
+    </ResponseField>
+
+    <ResponseField name="results[].phones" type="object[]">
+      Present when `reveal` includes (or omits) `phones`. Each entry has `number`, `type`, `doNotCall`, and `updateDate`.
+    </ResponseField>
+
+    <ResponseField name="results[].company" type="object">Company `id`, `name`, `domain`, and `industry`.</ResponseField>
+    <ResponseField name="results[].socialLinks" type="object">LinkedIn and X profile URLs.</ResponseField>
+    <ResponseField name="results[].previousEmployment" type="object[]">Prior roles.</ResponseField>
+    <ResponseField name="results[].tags" type="object[]">Tags applied to this contact in Lusha.</ResponseField>
+    <ResponseField name="results[].updateDate" type="string">Date the record was last updated, `YYYY-MM-DD`.</ResponseField>
+
+    <ResponseField name="results[].error" type="object">
+      Present instead of profile data when the lookup or reveal fails for this contact.
+
+      <Expandable title="properties">
+        <ResponseField name="code" type="string">One of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, `ENRICH_FAILED`.</ResponseField>
+        <ResponseField name="message" type="string">Human-readable description.</ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  <Expandable title="properties">
+    <ResponseField name="creditsCharged" type="integer">Total credits charged for this request.</ResponseField>
+    <ResponseField name="resultsReturned" type="integer">Number of successful results.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Info>
+  **Billing:** Two charges apply — one for the search (`api_search`) and one per revealed field.
+</Info>
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data |
+| `401` | Unauthorized — invalid or missing API key |
+| `402` | Payment required — insufficient credits |
+| `403` | Forbidden — account inactive or V3 access not enabled |
+| `429` | Too many requests — rate limit exceeded |
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/contacts/search-and-enrich \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contacts": [
+      {
+        "clientReferenceId": "my-ref-1",
+        "firstName": "Orit",
+        "lastName": "Shilvock",
+        "companyName": "Lusha",
+        "companyDomain": "lusha.com"
+      }
+    ],
+    "reveal": ["emails", "phones"],
+    "options": {
+      "includePartialProfiles": true
+    }
+  }'
+```
+
+```json Request body
+{
+  "contacts": [
+    {
+      "clientReferenceId": "my-ref-1",
+      "firstName": "Orit",
+      "lastName": "Shilvock",
+      "companyName": "Lusha",
+      "companyDomain": "lusha.com"
+    }
+  ],
+  "reveal": ["emails", "phones"],
+  "options": {
+    "includePartialProfiles": true
+  }
+}
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "requestId": "6e4b1192-9440-42c4-9a3e-793ddef6d73c",
+  "results": [
+    {
+      "clientReferenceId": "my-ref-1",
+      "id": "4389064654",
+      "firstName": "Orit",
+      "lastName": "Shilvock",
+      "fullName": "Orit Shilvock",
+      "jobTitle": {
+        "title": "Vice President of Partnerships",
+        "departments": ["Business Development"],
+        "seniority": "Vice President"
+      },
+      "location": {
+        "country": "Israel",
+        "countryIso2": "IL",
+        "city": "Tel Aviv",
+        "continent": "Asia"
+      },
+      "emails": [
+        { "email": "orit.shilvock@lusha.com", "type": "work", "confidence": "A+", "updateDate": "2026-04-23" }
+      ],
+      "phones": [
+        { "number": "+14155551234", "type": "mobile", "doNotCall": false, "updateDate": "2026-04-23" }
+      ],
+      "company": {
+        "id": "16303253",
+        "name": "Lusha",
+        "domain": "www.lusha.com",
+        "industry": "Technology, Information & Media"
+      }
+    }
+  ],
+  "billing": {
+    "creditsCharged": 3,
+    "resultsReturned": 1
+  }
+}
+```

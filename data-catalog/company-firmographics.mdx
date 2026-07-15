@@ -3,7 +3,9 @@ title: "Company firmographic fields"
 description: "Name, domain, size, revenue, industry, location, and headcount data."
 ---
 
-Firmographic fields describe a company's core profile — who it is, how big it is, and where it's based. They're returned by [`GET /v2/company`](/enrichment/single-company) and [`POST /bulk/company/v2`](/enrichment/bulk-companies) (company enrichment), and in a related but distinct shape by [`POST /prospecting/company/enrich`](/prospecting/enrich-companies) — see [Prospecting enrichment shape](#prospecting-enrichment-shape) below.
+Firmographic fields describe a company's core profile — who it is, how big it is, and where it's based. They're returned by [Enrich Companies](/enrichment/enrich-companies) (`POST /v3/companies/enrich`) and [Search and Enrich Companies](/enrichment/search-and-enrich-companies).
+
+<!-- VERIFY: this page's field tables were derived from the legacy V2 API schema. The current V3 openapi.json's V3EnrichedCompany schema differs — for example `id` (not renamed), `alternativeName`, `location` (single object, not `companyLocations` array + `location`), `sicCodes`/`naicsCodes` as top-level arrays (not nested under `industryPrimaryGroupDetails`), and no `lushaPopularityTier` (it's `popularityTier`). This page needs a full re-derivation from V3EnrichedCompany before it can be trusted as V3-accurate. -->
 
 Technologies, funding, and intent data are documented separately in [Company technology fields](/data-catalog/company-technologies) and [Company funding fields](/data-catalog/company-funding).
 
@@ -63,15 +65,6 @@ Technologies, funding, and intent data are documented separately in [Company tec
 | `social.crunchbase` | string | The company's Crunchbase page URL, when available. |
 | `linkedinFollowers` | integer | LinkedIn follower count for the company. |
 | `emailDomain` | string | The domain used for the company's email addresses. |
-
-## Prospecting enrichment shape
-
-`POST /prospecting/company/enrich` returns largely the same firmographic data, with a few structural differences from `GET /v2/company`:
-
-- `domains` is an object with `email` and `homepage` sub-fields, rather than separate `domain`/`fqdn`/`website` fields.
-- `industryTags` replaces `categories` for LinkedIn industry tags.
-- Location is flattened onto the top level (`city`, `state`, `country`, `countryIso2`, `continent`, `rawLocation`, `coordinates`) instead of nested under `location`.
-- `companySize.employeesInLinkedin` is spelled `employees_in_linkedin` (snake_case) in this response.
 
 ## See also
 

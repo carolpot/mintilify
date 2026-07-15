@@ -1,0 +1,161 @@
+---
+title: "POST /v3/contacts/signals — Get contact signals"
+sidebarTitle: "POST /v3/contacts/signals"
+description: "Retrieve job-change and promotion signal events for up to 100 contacts by Lusha ID in a single call."
+openapi: "post /v3/contacts/signals"
+---
+
+Use this endpoint when you already have Lusha contact IDs and want their signal activity — promotions and company changes — in one call. Pass up to 100 `ids` and the `signalTypes` you want back; there is no separate "search" step in V3 — one call returns all matched signal data for the IDs you send.
+
+<Info>
+  Don't have Lusha contact IDs yet? Resolve contacts first with [Enrich Contacts](/enrichment/enrich-contacts) or [Search & Enrich Contacts](/enrichment/search-and-enrich-contacts), then pass the returned `id` values here.
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/contacts/signals
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+---
+
+## Request body
+
+<ParamField body="ids" type="string[]" required>
+  Lusha contact IDs to retrieve signals for. 1–100 items per request.
+
+  Example: `["4389064624", "4389064654"]`
+</ParamField>
+
+<ParamField body="signalTypes" type="string[]" required>
+  Signal types to retrieve.
+
+  Allowed values: `allSignals`, `promotion`, `companyChange`
+
+  Use `allSignals` to retrieve every available contact signal type in one call.
+</ParamField>
+
+<ParamField body="startDate" type="string">
+  Limit results to signals detected on or after this date, in `YYYY-MM-DD` format.
+
+  Example: `"2025-01-01"`
+</ParamField>
+
+<ParamField body="maxResultsPerSignal" type="integer">
+  Maximum number of signal instances to return per signal type per contact. Range: `1`–`100`.
+
+  Example: `10`
+</ParamField>
+
+---
+
+## Example request
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/contacts/signals \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "ids": ["4389064624", "4389064654"],
+    "signalTypes": ["allSignals"],
+    "startDate": "2025-01-01"
+  }'
+```
+
+```json Request body
+{
+  "ids": ["4389064624", "4389064654"],
+  "signalTypes": ["allSignals"],
+  "startDate": "2025-01-01"
+}
+```
+
+</CodeGroup>
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="results" type="object[]">
+  One entry per requested contact ID.
+
+  <Expandable title="properties">
+    <ResponseField name="id" type="string">
+      The Lusha contact ID this entry corresponds to. Example: `"4389064624"`
+    </ResponseField>
+    <ResponseField name="companyChange" type="object[]">
+      Matched `companyChange` signal events for this contact, newest first. Only present when `companyChange` (or `allSignals`) was requested and at least one event matched.
+    </ResponseField>
+    <ResponseField name="promotion" type="object[]">
+      Matched `promotion` signal events for this contact, newest first. Only present when `promotion` (or `allSignals`) was requested and at least one event matched.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  The start date used for this request.
+</ResponseField>
+
+<ResponseField name="endDate" type="string">
+  The end date used for this request (the request date, unless you're querying historical data).
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  Credit usage summary for this request.
+
+  <Expandable title="properties">
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this request. Example: `2`</ResponseField>
+    <ResponseField name="resultsReturned" type="integer">Number of results returned. Example: `1`</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Info>
+  **Billing:** Charged per matched signal per result via the `showSignalsContact` action.
+</Info>
+
+<ResponseExample>
+
+```json 200
+{
+  "results": [
+    {
+      "id": "4389064624",
+      "companyChange": [],
+      "promotion": []
+    }
+  ],
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "billing": {
+    "creditsCharged": 2,
+    "resultsReturned": 1
+  }
+}
+```
+
+</ResponseExample>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data. |
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `402` | Payment required — insufficient credits. |
+| `403` | Forbidden — account inactive or V3 access not enabled. |
+| `429` | Too many requests — you have exceeded the rate limit. |
+
+## Related pages
+
+- [Signals overview](/signals/overview) — the consolidated signals model, credits, and delivery options
+- [Get Contact Signal Types](/api-reference/signals/contact-signal-types) — the current list of valid `signalTypes` values
+- [Company Signals](/api-reference/signals/company-signals) — the equivalent endpoint for companies

@@ -3,7 +3,9 @@ title: "Contact employment fields"
 description: "Job title, seniority, departments, current company, and previous employment history."
 ---
 
-Employment fields describe what a contact does, at which company, and — where available — where they worked before. They're returned by [`GET /v2/person`](/enrichment/single-contact) and [`POST /v2/person`](/enrichment/bulk-contacts) (contact enrichment), and in a different shape by [`POST /prospecting/contact/enrich`](/prospecting/enrich-contacts) — see [Prospecting enrichment shape](#prospecting-enrichment-shape) below.
+Employment fields describe what a contact does, at which company, and — where available — where they worked before. They're returned by [Enrich Contacts](/enrichment/enrich-contacts) (`POST /v3/contacts/enrich`) and [Search and Enrich Contacts](/enrichment/search-and-enrich-contacts).
+
+<!-- VERIFY: this page's field tables were derived from the legacy V2 API schema. The current V3 openapi.json's V3EnrichedContact schema nests employment under `jobTitle` (title/departments/seniority) and `previousEmployment[]` (company.name, company.domain, jobTitle) — field names and shapes below (companyId, jobStartDate, previousJob.company.fqdn, etc.) need re-verification against that schema. -->
 
 ## Current job title
 
@@ -32,7 +34,7 @@ Returned in the `jobTitle` object.
 | `companyId` | number | Lusha's unique identifier for the person's current company. |
 | `jobStartDate` | string | The date the person started their current position, in `YYYY-MM-DD` format. |
 
-For the full set of firmographic fields for a contact's company, look up `companyId` with [`GET /v2/company`](/enrichment/single-company) or see [Company firmographic fields](/data-catalog/company-firmographics).
+For the full set of firmographic fields for a contact's company, look up the company by ID with [Enrich Companies](/enrichment/enrich-companies) or see [Company firmographic fields](/data-catalog/company-firmographics).
 
 ## Previous employment
 
@@ -42,19 +44,6 @@ When available, `previousJob` returns the person's most recent prior role as an 
 |---|---|---|
 | `previousJob.jobTitle` | object | The job title at the previous company, in the same shape as `jobTitle` above (`title`, `seniority`, `departments`). |
 | `previousJob.company` | object | The previous company. Includes `name`, `domain`, `fqdn`, `jobTitle` (string, the title held there), `isCurrent` (always `false` here), and `companySocialId`. |
-
-## Prospecting enrichment shape
-
-`POST /prospecting/contact/enrich` flattens employment data differently:
-
-- `jobTitle` is a plain string, not an object.
-- `departments` is a top-level array on the contact.
-- `seniority` is an array of `{ id, value }` objects, for example `[{ "id": 4, "value": "senior" }]`, rather than a single string.
-- `companyId` and `companyName` are top-level fields; there's no `previousJob` in this response.
-
-<Note>
-  Because the seniority scale differs in shape between endpoints (a string on enrichment endpoints, an ID/value pair on prospecting enrichment), don't assume the two are interchangeable when merging data from both.
-</Note>
 
 ## See also
 

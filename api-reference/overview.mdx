@@ -1,69 +1,127 @@
 ---
-title: "API Overview"
-description: "Lusha's REST API gives you programmatic access to a comprehensive dataset of business profiles and company information."
+title: "API overview"
+description: "Lusha's V3 REST API gives you programmatic access to a comprehensive dataset of business profiles and company information."
 ---
 
-Lusha is a RESTful API that lets you query verified contact and company data for prospecting, enrichment, automation, and analytics workflows. All requests are made over HTTPS and return JSON.
+Lusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. It's built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.
+
+Use the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.
+
+<Info>
+  All API requests must be made over **HTTPS**. All responses are returned in **JSON** format.
+</Info>
 
 **Base URL**
 
 ```
-https://api.lusha.com
+https://api.lusha.com/v3/
 ```
+
+<Tip>
+  This is the Lusha API V3 documentation. V3 introduces a new search-then-enrich pattern, bulk operations in every call, AI-powered lookalikes, and richer filter capabilities. See the [migration guide](/tutorials/v3-migration-guide) if you're moving from V2.
+</Tip>
 
 ## Authentication
 
-All API requests require your API key passed as a request header.
+All API requests require an **API key** linked to your Lusha account and plan. Pass your key in the `api_key` request header on every call.
 
 ```bash
-curl https://api.lusha.com/v2/person \
-  -H "api_key: YOUR_API_KEY"
+curl https://api.lusha.com/v3/contacts/search \
+  --header "api_key: YOUR_API_KEY" \
+  --header "Content-Type: application/json"
 ```
 
-Get your API key from the [Lusha dashboard](https://www.lusha.com/). Keep it secret — never expose it in client-side code or public repositories.
+Generate and manage your API key in the [Lusha dashboard](https://dashboard.lusha.com/enrich/api). Store it securely and use it only in **server-side environments**.
 
-## Rate Limiting
+## Rate limiting
 
-The API enforces **25 requests per second** by default. Each response includes headers to help you track your quota:
+Lusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan. Rate limits for the Credit Usage API differ from standard endpoint limits.
 
 | Header | Description |
-|---|---|
-| `X-RateLimit-Limit-day` | Daily request allowance |
-| `X-RateLimit-Remaining-day` | Requests remaining today |
-| `X-RateLimit-Limit-minute` | Per-minute request allowance |
-| `X-RateLimit-Remaining-minute` | Requests remaining this minute |
+|--------|-------------|
+| `x-rate-limit-daily` | Total requests allowed per day |
+| `x-daily-requests-left` | Requests remaining in your daily quota |
+| `x-daily-usage` | Requests made in the current daily period |
+| `x-rate-limit-hourly` | Total requests allowed per hour |
+| `x-hourly-requests-left` | Requests remaining in your hourly quota |
+| `x-hourly-usage` | Requests made in the current hourly period |
+| `x-rate-limit-minute` | Total requests allowed per minute |
+| `x-minute-requests-left` | Requests remaining in the current minute window |
+| `x-minute-usage` | Requests made in the current minute window |
 
-When you exceed the limit, the API returns `429 Too Many Requests`. Back off and retry after the reset window.
+<Tip>
+  To check your plan's limits, visit the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.
+</Tip>
 
-## Error Codes
+## Error codes
 
-| Status | Meaning |
-|---|---|
-| `200` | Success |
-| `400` | Bad request — check your parameters |
-| `401` | Unauthorized — invalid or missing API key |
-| `429` | Rate limit exceeded |
-| `5XX` | Server error — retry with exponential backoff |
+Lusha uses standard HTTP status codes to indicate the result of each request.
 
-## API Modules
+| Code | Name | Description |
+|------|------|-------------|
+| `200` | OK | Request was successful |
+| `400` | Bad Request | Request is malformed or missing required fields |
+| `401` | Unauthorized | API key is missing or invalid |
+| `402` | Payment Required | Insufficient credits or payment needed |
+| `403` | Forbidden | Account is inactive. Contact support@lusha.com |
+| `404` | Not Found | Endpoint or resource does not exist |
+| `429` | Too Many Requests | Rate limit or daily quota exceeded |
+| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |
+| `499` | Client Closed Request | Request timed out before completing |
+| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |
+
+Every error response shares the same shape:
+
+```json
+{
+  "statusCode": 400,
+  "message": "Invalid request parameters"
+}
+```
+
+- Verify your API key is correct and active.
+- Read the `message` field for specific troubleshooting details.
+- For `429` errors, wait before retrying.
+- For `5XX` errors, use exponential backoff before retrying.
+
+## API modules
 
 <CardGroup cols={2}>
-  <Card title="Enrichment" icon="address-book" href="/api-reference/enrichment/search-single-contact">
-    Add emails, phones, and firmographics to existing contact and company records.
+  <Card title="Search" icon="magnifying-glass" href="/api-reference/search/search-contacts">
+    Find contacts or companies using known identifiers.
   </Card>
-  <Card title="Prospecting" icon="magnifying-glass" href="/api-reference/prospecting/search-contacts">
-    Search Lusha's database by title, seniority, location, industry, and more.
+  <Card title="Enrich" icon="address-card" href="/api-reference/enrich/enrich-contacts">
+    Retrieve full profile data for contacts or companies by ID.
   </Card>
-  <Card title="Signals" icon="bolt" href="/api-reference/signals/get-contact-signals">
-    Detect job changes, promotions, and company events in real time.
+  <Card title="Search & Enrich" icon="layer-group" href="/api-reference/search-and-enrich/search-and-enrich-contacts">
+    Find and retrieve full contact or company data in a single call.
   </Card>
-  <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks/create-subscription">
-    Receive push notifications when contacts or companies trigger signal events.
+  <Card title="Prospecting" icon="crosshairs" href="/api-reference/prospecting/prospecting-contacts">
+    Filter-based search across contacts and companies.
   </Card>
   <Card title="Lookalikes" icon="users" href="/api-reference/lookalikes/contact-lookalikes">
-    Find contacts and companies that match your best existing customers.
+    AI-powered recommendations for similar contacts and companies.
   </Card>
-  <Card title="Filters" icon="sliders" href="/api-reference/filters/contact-departments">
-    Retrieve valid filter values for prospecting searches.
+  <Card title="Signals" icon="bolt" href="/api-reference/signals/contact-signals">
+    Real-world activity data for contacts and companies.
+  </Card>
+  <Card title="Decision Makers" icon="user-tie" href="/api-reference/decision-makers/get-decision-makers">
+    Find the most relevant decision makers across your target accounts.
+  </Card>
+  <Card title="Website Visits" icon="globe" href="/api-reference/website-visits/get-website-visits">
+    Companies ranked by website-visit signals for your tracked domains.
+  </Card>
+  <Card title="Filters" icon="sliders" href="/api-reference/filters/contact-filter-types">
+    Discover valid filter values for prospecting.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks/create-subscription">
+    Real-time signal notifications via HTTP callbacks.
+  </Card>
+  <Card title="Account" icon="gauge" href="/api-reference/account/usage">
+    Usage, credits, rate limits, and pricing.
   </Card>
 </CardGroup>
+
+## Data source and privacy
+
+**Lusha is a search platform.** The data provided is not created or directly managed by Lusha. It's sourced from publicly available information and trusted business partners. For more details on how Lusha collects and handles data, see the [Privacy Policy](https://lusha.com/legal/privacy-notice/).

@@ -1,0 +1,261 @@
+---
+title: "POST /v3/companies/search — Search companies"
+sidebarTitle: "Search Companies"
+description: "Look up to 100 companies per request by ID, name, or domain. Returns a preview of each match plus what you can reveal via Enrich Companies."
+openapi: "post /v3/companies/search"
+---
+
+Use this endpoint to look up companies by identifier and get back a preview of each matching profile. Each result's `has` field lists the data available via [Enrich Companies](/api-reference/enrich/enrich-companies).
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/companies/search
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key.
+</ParamField>
+
+## Accepted identifiers
+
+Each company in the `companies` array needs **at least one** of the following:
+
+- Lusha company `id`
+- `name`
+- `domain`
+
+<Tip>
+  Attach a `clientReferenceId` to each company so you can match results back to your input — the array of `results` isn't guaranteed to preserve input order.
+</Tip>
+
+## Request body
+
+<ParamField body="companies" type="array" required>
+  Up to 100 companies to look up.
+
+  <Expandable title="company fields">
+    <ParamField body="companies[].clientReferenceId" type="string">
+      Your own reference ID for this company. Echoed back on the matching result.
+
+      Example: `comp-ref-1`
+    </ParamField>
+
+    <ParamField body="companies[].id" type="string">
+      A Lusha company ID.
+
+      Example: `16303253`
+    </ParamField>
+
+    <ParamField body="companies[].name" type="string">
+      The company name.
+
+      Example: `Lusha`
+    </ParamField>
+
+    <ParamField body="companies[].domain" type="string">
+      The company domain.
+
+      Example: `salesforce.com`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="options" type="object">
+  <Expandable title="options fields">
+    <ParamField body="options.includePartialProfiles" type="boolean">
+      When `true`, includes companies with incomplete data in the results instead of dropping them.
+
+      Example: `true`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="signals" type="object">
+  Narrow results to companies with recent activity, such as headcount growth or hiring surges.
+
+  <Expandable title="signals fields">
+    <ParamField body="signals.types" type="string[]" required>
+      Signal types to match.
+
+      Allowed values: `allSignals`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `surgeInHiring`, `headcountIncrease1m`, `headcountIncrease3m`, `headcountIncrease6m`, `headcountIncrease12m`, `headcountDecrease1m`, `headcountDecrease3m`, `headcountDecrease6m`, `headcountDecrease12m`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`
+    </ParamField>
+
+    <ParamField body="signals.startDate" type="string">
+      Earliest signal date, in `YYYY-MM-DD` format.
+
+      Example: `2025-01-01`
+    </ParamField>
+
+    <ParamField body="signals.maxResultsPerSignal" type="integer">
+      Maximum results to return per signal type. Range: `1`–`100`.
+
+      Example: `10`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this request, in UUID format.
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+  One entry per company you searched for.
+
+  <Expandable title="result fields">
+    <ResponseField name="results[].clientReferenceId" type="string">
+      Echoes the `clientReferenceId` you sent for this company.
+    </ResponseField>
+
+    <ResponseField name="results[].id" type="string">
+      The Lusha company ID. Pass this to [Enrich Companies](/api-reference/enrich/enrich-companies) to reveal firmographics and more.
+    </ResponseField>
+
+    <ResponseField name="results[].name" type="string">Company name.</ResponseField>
+    <ResponseField name="results[].domain" type="string">Company domain.</ResponseField>
+
+    <ResponseField name="results[].employeeCount" type="object">
+      <Expandable title="properties">
+        <ResponseField name="exact" type="integer">Exact known headcount. Example: `364`</ResponseField>
+        <ResponseField name="min" type="integer">Range minimum. Example: `201`</ResponseField>
+        <ResponseField name="max" type="integer">Range maximum. Example: `500`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].industry" type="string">Industry. Example: `Technology, Information & Media`</ResponseField>
+
+    <ResponseField name="results[].location" type="object">
+      <Expandable title="properties">
+        <ResponseField name="city" type="string">Example: `London`</ResponseField>
+        <ResponseField name="state" type="string">Example: `England`</ResponseField>
+        <ResponseField name="country" type="string">Example: `United Kingdom`</ResponseField>
+        <ResponseField name="countryIso2" type="string">Example: `GB`</ResponseField>
+        <ResponseField name="continent" type="string">Example: `Europe`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].socialLinks" type="object">
+      <Expandable title="properties">
+        <ResponseField name="linkedin" type="string">LinkedIn company URL.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].has" type="string[]">
+      Data available for this profile. Example: `["alternativeName", "description", "companyType", "employeesByDepartment", "competitors", "emails", "socialLinks"]`
+    </ResponseField>
+
+    <ResponseField name="results[].canReveal" type="object[]">
+      What you can unlock via Enrich Companies, and its credit cost.
+
+      <Expandable title="properties">
+        <ResponseField name="field" type="string">`emails` or `phones`.</ResponseField>
+        <ResponseField name="credits" type="integer">Credit cost. `0` if already revealed for your account.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].signalTypes" type="string[]">
+      Signal types detected for this company, when a `signals` filter was applied. Example: `["headcountIncrease3m"]`
+    </ResponseField>
+
+    <ResponseField name="results[].error" type="object">
+      Present instead of profile data when the lookup fails for this company.
+
+      <Expandable title="properties">
+        <ResponseField name="code" type="string">One of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, `ENRICH_FAILED`.</ResponseField>
+        <ResponseField name="message" type="string">Human-readable description.</ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  <Expandable title="properties">
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this request.</ResponseField>
+    <ResponseField name="resultsReturned" type="integer">Number of successful results.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Info>
+  **Billing:** Charged per successful result via the `api_search` action.
+</Info>
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data |
+| `401` | Unauthorized — invalid or missing API key |
+| `402` | Payment required — insufficient credits |
+| `403` | Forbidden — account inactive or V3 access not enabled |
+| `429` | Too many requests — rate limit exceeded |
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/companies/search \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "companies": [
+      { "clientReferenceId": "comp-ref-1", "name": "Lusha" },
+      { "clientReferenceId": "comp-ref-2", "domain": "salesforce.com" }
+    ],
+    "options": {
+      "includePartialProfiles": true
+    }
+  }'
+```
+
+```json Request body
+{
+  "companies": [
+    { "clientReferenceId": "comp-ref-1", "name": "Lusha" },
+    { "clientReferenceId": "comp-ref-2", "domain": "salesforce.com" }
+  ],
+  "options": {
+    "includePartialProfiles": true
+  }
+}
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "requestId": "6e4b1192-9440-42c4-9a3e-793ddef6d73c",
+  "results": [
+    {
+      "clientReferenceId": "comp-ref-1",
+      "id": "16303253",
+      "name": "Lusha",
+      "domain": "www.lusha.com",
+      "employeeCount": { "exact": 364, "min": 201, "max": 500 },
+      "industry": "Technology, Information & Media",
+      "location": {
+        "city": "Tel Aviv",
+        "country": "Israel",
+        "countryIso2": "IL",
+        "continent": "Asia"
+      },
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/company/lushadata"
+      },
+      "has": ["alternativeName", "description", "companyType", "employeesByDepartment", "competitors", "emails", "socialLinks"],
+      "canReveal": [
+        { "field": "emails", "credits": 1 }
+      ]
+    }
+  ],
+  "billing": {
+    "creditsCharged": 1,
+    "resultsReturned": 1
+  }
+}
+```

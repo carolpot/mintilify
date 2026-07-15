@@ -1,0 +1,80 @@
+---
+title: "GET /v3/companies/signals/filters — Get company signal filters (discovery)"
+sidebarTitle: "GET /v3/companies/signals/filters"
+description: "Returns all available filter types for company signals and whether each requires a search query."
+openapi: "get /v3/companies/signals/filters"
+---
+
+This is the discovery endpoint for company signal filters. Call it first to learn which filter types exist and whether each one needs a `query` string — then call [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) with a specific `filterType` to retrieve the actual values.
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v3/companies/signals/filters
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+This endpoint has no parameters.
+
+---
+
+## Example request
+
+```bash cURL
+curl --request GET \
+  --url https://api.lusha.com/v3/companies/signals/filters \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="availableFilters" type="object[]">
+  One entry per available filter type.
+
+  <Expandable title="properties">
+    <ResponseField name="filterType" type="string">
+      The filter type identifier. Pass this value as the `filterType` path parameter on [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values).
+    </ResponseField>
+    <ResponseField name="requiresQuery" type="boolean">
+      Whether you must supply a `query` parameter when fetching values for this filter type.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseExample>
+
+```json 200
+{
+  "availableFilters": [
+    { "filterType": "newsEventTypes", "requiresQuery": false },
+    { "filterType": "hiringByDepartments", "requiresQuery": false },
+    { "filterType": "hiringByLocations", "requiresQuery": true }
+  ]
+}
+```
+
+</ResponseExample>
+
+<Info>
+  `hiringByLocations` requires a `query` of 2–256 characters — it's a text-search filter rather than a fixed list. `newsEventTypes` and `hiringByDepartments` return their full value list without a query.
+</Info>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — account inactive or V3 access not enabled. |
+
+## Related pages
+
+- [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) — retrieve the value list for a specific filter type
+- [Get Company Signal Types](/api-reference/signals/company-signal-types) — the full list of `signalTypes` these filter categories relate to
+- [Company Signals](/api-reference/signals/company-signals) — retrieve signal events for specific companies

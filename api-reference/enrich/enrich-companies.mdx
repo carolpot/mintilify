@@ -1,0 +1,226 @@
+---
+title: "POST /v3/companies/enrich — Enrich companies"
+sidebarTitle: "Enrich Companies"
+description: "Reveal firmographics, employee breakdowns, competitors, and buyer intent for up to 100 companies you've already found via Search Companies."
+openapi: "post /v3/companies/enrich"
+---
+
+Use this endpoint to reveal full company data for companies you've already found via [Search Companies](/api-reference/search/search-companies). Pass the Lusha `id` from a search result. Every enriched result includes firmographics, industry codes, and locations by default; use `reveal` to add employee breakdowns, competitors, and intent.
+
+<Info>
+  Enrich Companies only works with `id` values returned by Search Companies. To search and reveal in one call, use [Search and Enrich Companies](/api-reference/search-and-enrich/search-and-enrich-companies) instead.
+</Info>
+
+## Endpoint
+
+```
+POST https://api.lusha.com/v3/companies/enrich
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key.
+</ParamField>
+
+## Request body
+
+<ParamField body="ids" type="string[]" required>
+  Up to 100 Lusha company IDs, from a Search Companies response.
+
+  Example: `["16303253", "12790225"]`
+</ParamField>
+
+<ParamField body="reveal" type="string[]">
+  Additional data to include for each company.
+
+  Allowed values: `employeesByDepartment`, `employeesByLocation`, `employeesBySeniority`, `competitors`, `intent`
+</ParamField>
+
+## Response
+
+<ResponseField name="requestId" type="string">
+  Unique ID for this request, in UUID format.
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+  One entry per company `id` you passed in.
+
+  <Expandable title="result fields">
+    <ResponseField name="results[].id" type="string">Example: `16303253`</ResponseField>
+    <ResponseField name="results[].name" type="string">Example: `Lusha`</ResponseField>
+    <ResponseField name="results[].alternativeName" type="string">Example: `lusha`</ResponseField>
+    <ResponseField name="results[].domain" type="string">Example: `www.lusha.com`</ResponseField>
+    <ResponseField name="results[].alternativeDomains" type="string[]">Example: `["lusha.com"]`</ResponseField>
+    <ResponseField name="results[].description" type="string">Example: `Lusha is the leader in Sales Streaming.`</ResponseField>
+    <ResponseField name="results[].companyType" type="string">Example: `Private Company`</ResponseField>
+    <ResponseField name="results[].yearFounded" type="number">Example: `2016`</ResponseField>
+
+    <ResponseField name="results[].employeeCount" type="object">
+      <Expandable title="properties">
+        <ResponseField name="exact" type="integer">Example: `364`</ResponseField>
+        <ResponseField name="min" type="integer">Example: `201`</ResponseField>
+        <ResponseField name="max" type="integer">Example: `500`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].industry" type="string">Example: `Technology, Information & Media`</ResponseField>
+    <ResponseField name="results[].subIndustry" type="string">Example: `Software Development`</ResponseField>
+    <ResponseField name="results[].specialities" type="string[]">Example: `["data enrichment", "sales intelligence"]`</ResponseField>
+    <ResponseField name="results[].industryTags" type="string[]">Example: `["saas", "b2b"]`</ResponseField>
+
+    <ResponseField name="results[].sicCodes" type="object[]">SIC classification codes.</ResponseField>
+    <ResponseField name="results[].naicsCodes" type="object[]">NAICS classification codes.</ResponseField>
+
+    <ResponseField name="results[].location" type="object">HQ location — same shape as `additionalLocations` entries.</ResponseField>
+    <ResponseField name="results[].additionalLocations" type="object[]">All other known company site locations.</ResponseField>
+
+    <ResponseField name="results[].socialLinks" type="object">
+      <Expandable title="properties">
+        <ResponseField name="linkedin" type="string" />
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].linkedinFollowers" type="number">Example: `64339`</ResponseField>
+
+    <ResponseField name="results[].revenueRange" type="object">
+      <Expandable title="properties">
+        <ResponseField name="min" type="number">Example: `10000000`</ResponseField>
+        <ResponseField name="max" type="number">Example: `50000000`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].funding" type="object">Funding history, when available.</ResponseField>
+    <ResponseField name="results[].intent" type="object">Buyer intent topics. Present when `reveal` includes `intent`.</ResponseField>
+
+    <ResponseField name="results[].technologies" type="string[]">Example: `["react", "node.js", "aws"]`</ResponseField>
+    <ResponseField name="results[].popularityTier" type="number">Lusha's proprietary popularity ranking. Example: `1`</ResponseField>
+    <ResponseField name="results[].logoUrl" type="string" />
+    <ResponseField name="results[].businessModel" type="string[]">Example: `["B2B"]`</ResponseField>
+    <ResponseField name="results[].phone" type="string" />
+    <ResponseField name="results[].email" type="string" />
+    <ResponseField name="results[].keywords" type="string[]">Example: `["construction", "hvac", "plumbing"]`</ResponseField>
+
+    <ResponseField name="results[].employeesByDepartment" type="object[]">
+      Present when `reveal` includes `employeesByDepartment`.
+
+      <Expandable title="properties">
+        <ResponseField name="department" type="string">Example: `Engineering & Technical`</ResponseField>
+        <ResponseField name="count" type="integer">Example: `14`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].employeesByLocation" type="object[]">
+      Present when `reveal` includes `employeesByLocation`.
+
+      <Expandable title="properties">
+        <ResponseField name="country" type="string">Example: `United States`</ResponseField>
+        <ResponseField name="state" type="string">Example: `Colorado`</ResponseField>
+        <ResponseField name="count" type="integer">Example: `54`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].employeesBySeniority" type="object[]">
+      Present when `reveal` includes `employeesBySeniority`.
+
+      <Expandable title="properties">
+        <ResponseField name="seniority" type="string">Example: `Manager`</ResponseField>
+        <ResponseField name="count" type="integer">Example: `39`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].competitors" type="object[]">
+      Present when `reveal` includes `competitors`.
+
+      <Expandable title="properties">
+        <ResponseField name="id" type="string">Example: `2497917`</ResponseField>
+        <ResponseField name="name" type="string">Example: `Clearbit`</ResponseField>
+        <ResponseField name="domain" type="string">Example: `clearbit.com`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].error" type="object">
+      Present instead of profile data when enrichment fails for this `id`.
+
+      <Expandable title="properties">
+        <ResponseField name="code" type="string">One of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, `ENRICH_FAILED`.</ResponseField>
+        <ResponseField name="message" type="string">Human-readable description.</ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  <Expandable title="properties">
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this request.</ResponseField>
+    <ResponseField name="resultsReturned" type="integer">Number of successful results.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Info>
+  **Billing:** Charged per successful result via the `reveal_company` action.
+</Info>
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Bad request — invalid input data |
+| `401` | Unauthorized — invalid or missing API key |
+| `402` | Payment required — insufficient credits |
+| `403` | Forbidden — account inactive or V3 access not enabled |
+| `429` | Too many requests — rate limit exceeded |
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request POST \
+  --url https://api.lusha.com/v3/companies/enrich \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "ids": ["16303253", "12790225"],
+    "reveal": ["employeesByLocation", "employeesByDepartment", "employeesBySeniority", "competitors", "intent"]
+  }'
+```
+
+```json Request body
+{
+  "ids": ["16303253", "12790225"],
+  "reveal": ["employeesByLocation", "employeesByDepartment", "employeesBySeniority", "competitors", "intent"]
+}
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "requestId": "6e4b1192-9440-42c4-9a3e-793ddef6d73c",
+  "results": [
+    {
+      "id": "16303253",
+      "name": "Lusha",
+      "domain": "www.lusha.com",
+      "description": "Lusha is the leader in Sales Streaming.",
+      "companyType": "Private Company",
+      "yearFounded": 2016,
+      "employeeCount": { "exact": 364, "min": 201, "max": 500 },
+      "industry": "Technology, Information & Media",
+      "subIndustry": "Software Development",
+      "linkedinFollowers": 64339,
+      "employeesByDepartment": [
+        { "department": "Engineering & Technical", "count": 14 }
+      ],
+      "competitors": [
+        { "id": "2497917", "name": "Clearbit", "domain": "clearbit.com" }
+      ]
+    }
+  ],
+  "billing": {
+    "creditsCharged": 2,
+    "resultsReturned": 2
+  }
+}
+```

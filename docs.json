@@ -25,222 +25,463 @@
     }
   },
   "navigation": {
-    "tabs": [
+    "versions": [
       {
-        "tab": "Get Started",
-        "groups": [
+        "version": "V3",
+        "tabs": [
           {
-            "group": "Overview",
-            "pages": [
-              "introduction",
-              "authentication",
-              "rate-limiting",
-              "error-codes"
+            "tab": "Get Started",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "introduction",
+                  "authentication",
+                  "rate-limiting",
+                  "error-codes"
+                ]
+              },
+              {
+                "group": "Credits & Plans",
+                "pages": [
+                  "credits/overview",
+                  "credits/costs",
+                  "credits/unified-credits"
+                ]
+              },
+              {
+                "group": "Search & Enrich",
+                "pages": [
+                  "enrichment/overview",
+                  "enrichment/search-contacts",
+                  "enrichment/enrich-contacts",
+                  "enrichment/search-and-enrich-contacts",
+                  "enrichment/search-companies",
+                  "enrichment/enrich-companies",
+                  "enrichment/search-and-enrich-companies"
+                ]
+              },
+              {
+                "group": "Prospecting",
+                "pages": [
+                  "prospecting/overview",
+                  "prospecting/search-contacts",
+                  "prospecting/search-companies"
+                ]
+              },
+              {
+                "group": "Signals",
+                "pages": [
+                  "signals/overview",
+                  "signals/contact-signals",
+                  "signals/company-signals"
+                ]
+              },
+              {
+                "group": "Decision Makers",
+                "pages": [
+                  "decision-makers/overview"
+                ]
+              },
+              {
+                "group": "Website Visits",
+                "pages": [
+                  "website-visits/overview"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "webhooks/overview",
+                  "webhooks/manage-subscriptions",
+                  "webhooks/security",
+                  "webhooks/audit-logs"
+                ]
+              },
+              {
+                "group": "Lookalikes",
+                "pages": [
+                  "lookalikes/overview",
+                  "lookalikes/contact-lookalikes",
+                  "lookalikes/company-lookalikes"
+                ]
+              },
+              {
+                "group": "Filters Reference",
+                "pages": [
+                  "filters/contact-filters",
+                  "filters/company-filters"
+                ]
+              },
+              {
+                "group": "Account",
+                "pages": [
+                  "account/usage"
+                ]
+              }
             ]
           },
           {
-            "group": "Credits & Plans",
-            "pages": [
-              "credits/overview",
-              "credits/costs",
-              "credits/unified-credits"
+            "tab": "User Guide",
+            "groups": [
+              {
+                "group": "The Platform",
+                "pages": [
+                  "user-guide/overview",
+                  "user-guide/dashboard",
+                  "user-guide/search-and-lists"
+                ]
+              },
+              {
+                "group": "Browser Extensions",
+                "pages": [
+                  "user-guide/chrome-extension",
+                  "user-guide/linkedin-extension"
+                ]
+              },
+              {
+                "group": "CRM Integrations",
+                "pages": [
+                  "user-guide/salesforce",
+                  "user-guide/hubspot",
+                  "user-guide/other-integrations"
+                ]
+              },
+              {
+                "group": "Account & Team",
+                "pages": [
+                  "user-guide/team-management",
+                  "user-guide/billing-and-plans",
+                  "user-guide/privacy-and-compliance"
+                ]
+              }
             ]
           },
           {
-            "group": "Enrichment",
-            "pages": [
-              "enrichment/overview",
-              "enrichment/single-contact",
-              "enrichment/bulk-contacts",
-              "enrichment/single-company",
-              "enrichment/bulk-companies"
+            "tab": "API Reference",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": ["api-reference/overview"]
+              }
+            ],
+            "openapi": "openapi.json"
+          },
+          {
+            "tab": "Data Catalog",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "data-catalog/overview"
+                ]
+              },
+              {
+                "group": "Contact Data",
+                "pages": [
+                  "data-catalog/contact-identity",
+                  "data-catalog/contact-emails",
+                  "data-catalog/contact-phones",
+                  "data-catalog/contact-employment"
+                ]
+              },
+              {
+                "group": "Company Data",
+                "pages": [
+                  "data-catalog/company-firmographics",
+                  "data-catalog/company-technologies",
+                  "data-catalog/company-funding"
+                ]
+              },
+              {
+                "group": "Signals",
+                "pages": [
+                  "data-catalog/signal-types"
+                ]
+              }
             ]
           },
           {
-            "group": "Prospecting",
-            "pages": [
-              "prospecting/overview",
-              "prospecting/search-contacts",
-              "prospecting/enrich-contacts",
-              "prospecting/search-companies",
-              "prospecting/enrich-companies"
+            "tab": "MCP",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "mcp/overview",
+                  "mcp/setup"
+                ]
+              },
+              {
+                "group": "Reference",
+                "pages": [
+                  "mcp/tools",
+                  "mcp/examples"
+                ]
+              }
             ]
           },
           {
-            "group": "Signals",
-            "pages": [
-              "signals/overview",
-              "signals/contact-signals",
-              "signals/company-signals"
+            "tab": "Changelog",
+            "groups": [
+              {
+                "group": "2026",
+                "pages": [
+                  "changelog/may-2026"
+                ]
+              }
             ]
           },
           {
-            "group": "Webhooks",
-            "pages": [
-              "webhooks/overview",
-              "webhooks/manage-subscriptions",
-              "webhooks/security",
-              "webhooks/audit-logs"
-            ]
-          },
-          {
-            "group": "Lookalikes",
-            "pages": [
-              "lookalikes/overview",
-              "lookalikes/contact-lookalikes",
-              "lookalikes/company-lookalikes"
-            ]
-          },
-          {
-            "group": "Filters Reference",
-            "pages": [
-              "filters/contact-filters",
-              "filters/company-filters"
-            ]
-          },
-          {
-            "group": "Account",
-            "pages": [
-              "account/usage"
+            "tab": "FAQ",
+            "groups": [
+              {
+                "group": "API & Integration",
+                "pages": [
+                  "faq/api"
+                ]
+              },
+              {
+                "group": "Data & Coverage",
+                "pages": [
+                  "faq/data"
+                ]
+              },
+              {
+                "group": "Credits & Billing",
+                "pages": [
+                  "faq/billing"
+                ]
+              },
+              {
+                "group": "MCP",
+                "pages": [
+                  "faq/mcp"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "User Guide",
-        "groups": [
+        "version": "V2 (Legacy)",
+        "tabs": [
           {
-            "group": "The Platform",
-            "pages": [
-              "user-guide/overview",
-              "user-guide/dashboard",
-              "user-guide/search-and-lists"
+            "tab": "Get Started",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "v2/introduction",
+                  "v2/authentication",
+                  "v2/rate-limiting",
+                  "v2/error-codes"
+                ]
+              },
+              {
+                "group": "Credits & Plans",
+                "pages": [
+                  "v2/credits/overview",
+                  "v2/credits/costs",
+                  "v2/credits/unified-credits"
+                ]
+              },
+              {
+                "group": "Enrichment",
+                "pages": [
+                  "v2/enrichment/overview",
+                  "v2/enrichment/single-contact",
+                  "v2/enrichment/bulk-contacts",
+                  "v2/enrichment/single-company",
+                  "v2/enrichment/bulk-companies"
+                ]
+              },
+              {
+                "group": "Prospecting",
+                "pages": [
+                  "v2/prospecting/overview",
+                  "v2/prospecting/search-contacts",
+                  "v2/prospecting/enrich-contacts",
+                  "v2/prospecting/search-companies",
+                  "v2/prospecting/enrich-companies"
+                ]
+              },
+              {
+                "group": "Signals",
+                "pages": [
+                  "v2/signals/overview",
+                  "v2/signals/contact-signals",
+                  "v2/signals/company-signals"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "v2/webhooks/overview",
+                  "v2/webhooks/manage-subscriptions",
+                  "v2/webhooks/security",
+                  "v2/webhooks/audit-logs"
+                ]
+              },
+              {
+                "group": "Lookalikes",
+                "pages": [
+                  "v2/lookalikes/overview",
+                  "v2/lookalikes/contact-lookalikes",
+                  "v2/lookalikes/company-lookalikes"
+                ]
+              },
+              {
+                "group": "Filters Reference",
+                "pages": [
+                  "v2/filters/contact-filters",
+                  "v2/filters/company-filters"
+                ]
+              },
+              {
+                "group": "Account",
+                "pages": [
+                  "v2/account/usage"
+                ]
+              }
             ]
           },
           {
-            "group": "Browser Extensions",
-            "pages": [
-              "user-guide/chrome-extension",
-              "user-guide/linkedin-extension"
+            "tab": "User Guide",
+            "groups": [
+              {
+                "group": "The Platform",
+                "pages": [
+                  "user-guide/overview",
+                  "user-guide/dashboard",
+                  "user-guide/search-and-lists"
+                ]
+              },
+              {
+                "group": "Browser Extensions",
+                "pages": [
+                  "user-guide/chrome-extension",
+                  "user-guide/linkedin-extension"
+                ]
+              },
+              {
+                "group": "CRM Integrations",
+                "pages": [
+                  "user-guide/salesforce",
+                  "user-guide/hubspot",
+                  "user-guide/other-integrations"
+                ]
+              },
+              {
+                "group": "Account & Team",
+                "pages": [
+                  "user-guide/team-management",
+                  "user-guide/billing-and-plans",
+                  "user-guide/privacy-and-compliance"
+                ]
+              }
             ]
           },
           {
-            "group": "CRM Integrations",
-            "pages": [
-              "user-guide/salesforce",
-              "user-guide/hubspot",
-              "user-guide/other-integrations"
+            "tab": "API Reference",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": ["v2/api-reference/overview"]
+              }
+            ],
+            "openapi": "v2/openapi.json"
+          },
+          {
+            "tab": "Data Catalog",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "data-catalog/overview"
+                ]
+              },
+              {
+                "group": "Contact Data",
+                "pages": [
+                  "data-catalog/contact-identity",
+                  "data-catalog/contact-emails",
+                  "data-catalog/contact-phones",
+                  "data-catalog/contact-employment"
+                ]
+              },
+              {
+                "group": "Company Data",
+                "pages": [
+                  "data-catalog/company-firmographics",
+                  "data-catalog/company-technologies",
+                  "data-catalog/company-funding"
+                ]
+              },
+              {
+                "group": "Signals",
+                "pages": [
+                  "data-catalog/signal-types"
+                ]
+              }
             ]
           },
           {
-            "group": "Account & Team",
-            "pages": [
-              "user-guide/team-management",
-              "user-guide/billing-and-plans",
-              "user-guide/privacy-and-compliance"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": ["api-reference/overview"]
-          }
-        ],
-        "openapi": "openapi.json"
-      },
-      {
-        "tab": "Data Catalog",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "data-catalog/overview"
+            "tab": "MCP",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "mcp/overview",
+                  "mcp/setup"
+                ]
+              },
+              {
+                "group": "Reference",
+                "pages": [
+                  "mcp/tools",
+                  "mcp/examples"
+                ]
+              }
             ]
           },
           {
-            "group": "Contact Data",
-            "pages": [
-              "data-catalog/contact-identity",
-              "data-catalog/contact-emails",
-              "data-catalog/contact-phones",
-              "data-catalog/contact-employment"
+            "tab": "Changelog",
+            "groups": [
+              {
+                "group": "2026",
+                "pages": [
+                  "changelog/may-2026"
+                ]
+              }
             ]
           },
           {
-            "group": "Company Data",
-            "pages": [
-              "data-catalog/company-firmographics",
-              "data-catalog/company-technologies",
-              "data-catalog/company-funding"
-            ]
-          },
-          {
-            "group": "Signals",
-            "pages": [
-              "data-catalog/signal-types"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "MCP",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "mcp/overview",
-              "mcp/setup"
-            ]
-          },
-          {
-            "group": "Reference",
-            "pages": [
-              "mcp/tools",
-              "mcp/examples"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Changelog",
-        "groups": [
-          {
-            "group": "2026",
-            "pages": [
-              "changelog/may-2026"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "FAQ",
-        "groups": [
-          {
-            "group": "API & Integration",
-            "pages": [
-              "faq/api"
-            ]
-          },
-          {
-            "group": "Data & Coverage",
-            "pages": [
-              "faq/data"
-            ]
-          },
-          {
-            "group": "Credits & Billing",
-            "pages": [
-              "faq/billing"
-            ]
-          },
-          {
-            "group": "MCP",
-            "pages": [
-              "faq/mcp"
+            "tab": "FAQ",
+            "groups": [
+              {
+                "group": "API & Integration",
+                "pages": [
+                  "faq/api"
+                ]
+              },
+              {
+                "group": "Data & Coverage",
+                "pages": [
+                  "faq/data"
+                ]
+              },
+              {
+                "group": "Credits & Billing",
+                "pages": [
+                  "faq/billing"
+                ]
+              },
+              {
+                "group": "MCP",
+                "pages": [
+                  "faq/mcp"
+                ]
+              }
             ]
           }
         ]

@@ -1,28 +1,27 @@
 ---
 title: "Prospect and build ICP lists with Lusha"
 sidebarTitle: "Overview"
-description: "Search Lusha's B2B database by ICP filters, then enrich matching results to generate net-new contact and company records for your CRM."
+description: "Search Lusha's B2B database by ICP filters, then enrich the matching previews to generate net-new contact and company records for your CRM."
 ---
 
-<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide positions v3 (POST /v3/contacts/prospecting, POST /v3/contacts/enrich, POST /v3/companies/prospecting, POST /v3/companies/enrich) as the current prospecting API, with the legacy /prospecting/* endpoints documented below sunsetting Nov 18, 2026. openapi.json in this repo only defines the legacy paths, so this page (and its child pages) intentionally still document them. Revisit once openapi.json is updated with v3 paths. -->
-
-The Prospecting API lets you query Lusha's extensive B2B database using filters that match your Ideal Customer Profile — job title, seniority, location, industry, company size, and more. Unlike the Enrichment API, which fills in data on records you already know, Prospecting generates entirely new records you can load directly into your CRM.
+The Prospecting API lets you query Lusha's B2B database using filters that match your Ideal Customer Profile — job title, seniority, location, industry, company size, technologies, intent, and signals. Unlike the Enrich API, which fills in data on records you already know, Prospecting generates entirely new records you can load directly into your CRM.
 
 ## How prospecting works
 
-The process runs in three ordered steps: choose your filters, run a search to get matching IDs, then enrich those IDs to retrieve full contact or company data.
+Prospecting is a **filter, then enrich** flow. A prospecting search never returns full contact or company records — it returns a page of lightweight previews. You look up full data separately, only for the previews you actually want.
 
 <Steps>
-  <Step title="Choose your filters">
-    Use the [Contact Filters](/filters/contact-filters) or [Company Filters](/filters/company-filters) endpoints to retrieve the valid values for each filter field — departments, seniority levels, industry labels, company sizes, locations, and more. Always look up filter values before building a search request; passing an unrecognized value will return no results.
+  <Step title="Search with filters">
+    POST rich filter criteria to [`/v3/contacts/prospecting`](/api-reference/prospecting/prospecting-contacts) or [`/v3/companies/prospecting`](/api-reference/prospecting/prospecting-companies). The response returns a paginated list of matching previews — name, current company, job title/industry, location, and an `id` — plus a `canReveal` list showing what you could reveal and at what credit cost.
   </Step>
-  <Step title="Search">
-    POST your filter criteria to `/prospecting/contact/search` or `/prospecting/company/search`. The response returns a list of matching record IDs and basic metadata. No credits are consumed at this step.
-  </Step>
-  <Step title="Enrich">
-    POST the IDs from your search results to `/prospecting/contact/enrich` or `/prospecting/company/enrich` to retrieve full records — verified emails, phone numbers, job details, firmographics, and more. Credits are charged at the enrich step.
+  <Step title="Enrich the previews you want">
+    POST the `id` values you care about to [`/v3/contacts/enrich`](/api-reference/enrich/enrich-contacts) or [`/v3/companies/enrich`](/api-reference/enrich/enrich-companies) to reveal full data — verified emails, phone numbers, firmographics, and more.
   </Step>
 </Steps>
+
+<Info>
+  There's no separate "enrich" endpoint scoped to prospecting results — Prospecting and Enrich are decoupled. Any `id` returned by a prospecting search can be enriched with the same Enrich endpoints you'd use for any other contact or company `id`.
+</Info>
 
 ## Prospecting flows
 
@@ -30,31 +29,31 @@ The process runs in three ordered steps: choose your filters, run a search to ge
   <Tab title="Contacts">
     | Step | Endpoint | Purpose |
     |------|----------|---------|
-    | 1 | `/prospecting/filters/contacts/*` (mostly `GET`, `locations` is `POST`) | Look up valid filter values |
-    | 2 | `POST /prospecting/contact/search` | Search for matching contacts |
-    | 3 | `POST /prospecting/contact/enrich` | Retrieve full contact data |
+    | 1 (optional) | `GET /v3/contacts/prospecting/filters` and `/filters/{filterType}` | Look up valid filter values |
+    | 2 | `POST /v3/contacts/prospecting` | Search for matching contacts; get back previews + `id`s |
+    | 3 | `POST /v3/contacts/enrich` | Reveal full contact data for the `id`s you want |
 
-    See [Search Contacts](/prospecting/search-contacts) and [Enrich Contacts](/prospecting/enrich-contacts) for full details.
+    See [Search contacts](/prospecting/search-contacts) and the [API reference](/api-reference/prospecting/prospecting-contacts) for full details.
   </Tab>
   <Tab title="Companies">
     | Step | Endpoint | Purpose |
     |------|----------|---------|
-    | 1 | `/prospecting/filters/companies/*` (mostly `GET`; `names`, `locations`, and `technologies` are `POST`) | Look up valid filter values |
-    | 2 | `POST /prospecting/company/search` | Search for matching companies |
-    | 3 | `POST /prospecting/company/enrich` | Retrieve full company data |
+    | 1 (optional) | `GET /v3/companies/prospecting/filters` and `/filters/{filterType}` | Look up valid filter values |
+    | 2 | `POST /v3/companies/prospecting` | Search for matching companies; get back previews + `id`s |
+    | 3 | `POST /v3/companies/enrich` | Reveal full firmographic data for the `id`s you want |
 
-    See [Search Companies](/prospecting/search-companies) and [Enrich Companies](/prospecting/enrich-companies) for full details.
+    See [Search companies](/prospecting/search-companies) and the [API reference](/api-reference/prospecting/prospecting-companies) for full details.
   </Tab>
 </Tabs>
 
-## Premium and plan-specific features
+## Premium filters
 
 <Note>
-  **Signal filtering** is a premium feature available on select plans. When you filter by signal type (such as `promotion` or `companyChange`), credits are charged for each signal type that returns results. See [Search Contacts](/prospecting/search-contacts) and [Search Companies](/prospecting/search-companies) for signal filter syntax.
+  **Signal filtering** narrows results to contacts or companies with recent activity — a promotion, a company change, a hiring surge, and more. Filter by signal type under `filters.contacts.include.signals` or `filters.companies.include.signals`. Credits are charged for each matched signal type per result, on top of the standard per-result charge. See [Search contacts](/prospecting/search-contacts) and [Search companies](/prospecting/search-companies) for signal filter syntax.
 </Note>
 
 <Note>
-  **DNC filtering** is a Scale plan feature. Pass `"excludeDnc": true` at the top level of any contact search request to exclude contacts whose phone numbers are all marked Do Not Call. Contacts with at least one callable number remain in results, and only callable phones are returned. Calling this parameter on an unsupported plan returns a `403` error.
+  **DNC filtering** — pass `"options": { "excludeDnc": true }` on a contacts prospecting request to exclude contacts whose phone numbers are all marked Do Not Call. Contacts with at least one callable number remain in results.
 </Note>
 
 ## Filter reference
@@ -62,10 +61,10 @@ The process runs in three ordered steps: choose your filters, run a search to ge
 Both filter categories expose dedicated endpoints for discovering valid values before you search.
 
 <CardGroup cols={2}>
-  <Card title="Contact Filters" icon="person" href="/filters/contact-filters">
-    Look up departments, seniority levels, data points, countries, and locations for contact searches.
+  <Card title="Contact filters" icon="person" href="/api-reference/filters/contact-filter-types">
+    Look up available filter types and their valid values for contact prospecting searches.
   </Card>
-  <Card title="Company Filters" icon="building" href="/filters/company-filters">
-    Look up industries, sizes, revenues, locations, SIC/NAICS codes, intent topics, and technologies for company searches.
+  <Card title="Company filters" icon="building" href="/api-reference/filters/company-filter-types">
+    Look up available filter types and their valid values for company prospecting searches.
   </Card>
 </CardGroup>

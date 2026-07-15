@@ -1,0 +1,86 @@
+---
+title: "GET /v3/companies/prospecting/filters — Discover company filter types"
+sidebarTitle: "Company Filter Types"
+description: "List every filter type available for company prospecting searches and whether each one requires a search query."
+openapi: "get /v3/companies/prospecting/filters"
+---
+
+This is the discovery step of the company filters flow. It returns every filter type you can use when building a [Prospecting Companies](/api-reference/prospecting/prospecting-companies) request, along with a `requiresQuery` flag telling you whether that filter type needs a search term or returns its full value list directly.
+
+<Info>
+  **Two-step filter pattern**
+
+  | Step | Endpoint | Purpose |
+  |------|----------|---------|
+  | 1 | **GET /v3/companies/prospecting/filters** | Discover available filter types |
+  | 2 | [`GET /v3/companies/prospecting/filters/{filterType}`](/api-reference/filters/company-filter-values) | Fetch valid values for one filter type |
+</Info>
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v3/companies/prospecting/filters
+```
+
+## Authentication
+
+<ParamField header="api_key" type="string" required>
+  Your Lusha API key.
+</ParamField>
+
+This endpoint takes no query parameters or request body — it always returns the same set of filter types.
+
+## Response
+
+<ResponseField name="availableFilters" type="object[]">
+  One entry per company filter type.
+
+  <Expandable title="properties">
+    <ResponseField name="filterType" type="string">
+      The filter type name. Pass this value as the `filterType` path parameter on [Company Filter Values](/api-reference/filters/company-filter-values). One of `names`, `sizes`, `revenues`, `locations`, `sics`, `naics`, `industriesLabels`, `intentTopics`, `technologies`.
+    </ResponseField>
+
+    <ResponseField name="requiresQuery" type="boolean">
+      Whether this filter type requires a search `query` when fetching its values. `false` means the values endpoint returns the full list directly.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `401` | Unauthorized — invalid or missing API key |
+| `403` | Forbidden — account inactive or V3 access not enabled |
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl --request GET \
+  --url https://api.lusha.com/v3/companies/prospecting/filters \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+</CodeGroup>
+
+```json Example response
+{
+  "availableFilters": [
+    { "filterType": "names", "requiresQuery": true },
+    { "filterType": "technologies", "requiresQuery": true },
+    { "filterType": "locations", "requiresQuery": true },
+    { "filterType": "industriesLabels", "requiresQuery": false },
+    { "filterType": "sizes", "requiresQuery": false },
+    { "filterType": "revenues", "requiresQuery": false },
+    { "filterType": "sics", "requiresQuery": false },
+    { "filterType": "naics", "requiresQuery": false },
+    { "filterType": "intentTopics", "requiresQuery": false }
+  ]
+}
+```
+
+<Tip>
+  This list is stable — cache it rather than calling it before every search. Move straight to [Company Filter Values](/api-reference/filters/company-filter-values) once you know which filter type you need.
+</Tip>

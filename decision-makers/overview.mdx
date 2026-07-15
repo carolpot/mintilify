@@ -1,0 +1,68 @@
+---
+title: "Find decision makers at target companies"
+sidebarTitle: "Overview"
+description: "Resolve companies by domain or ID and get back ranked decision-maker contact previews, free to preview and revealed separately via Enrich Contacts."
+---
+
+<Warning>
+  **Beta.** Decision Makers is a new endpoint. Its request and response shape may change before general availability.
+</Warning>
+
+Decision Makers answers a common prospecting question directly: "who should I talk to at this company?" Give it a list of companies — by domain or Lusha company ID — and it returns the most relevant contacts at each one, ranked by Lusha's buying-committee-ranker model.
+
+## What it does
+
+For each company you supply, Decision Makers:
+
+1. Resolves the company to a Lusha company record (by `domain` or `id`).
+2. Ranks the most relevant decision makers at that company.
+3. Returns them grouped per company, in ranked order.
+
+Results are **free previews** — name, title, company, location, LinkedIn, seniority, and department — with `has` and `canReveal` fields telling you what's already visible and what you can unlock. Decision Makers does not reveal emails or phone numbers itself.
+
+<CardGroup cols={2}>
+  <Card title="API reference" icon="code" href="/api-reference/decision-makers/get-decision-makers">
+    `POST /v3/contacts/decision-makers` — full request/response schema.
+  </Card>
+  <Card title="Enrich Contacts" icon="id-card" href="/enrichment/enrich-contacts">
+    Reveal emails and phone numbers for the contacts Decision Makers returns.
+  </Card>
+</CardGroup>
+
+## How to identify companies
+
+Each entry in `companies` needs exactly one identifier:
+
+| Identifier | Description |
+|---|---|
+| `domain` | Resolved to a Lusha company ID server-side. Example: `"google.com"` |
+| `id` | Lusha company ID — encrypted format (`v1.…`) or legacy numeric ID, accepted during the migration window. |
+
+You can also attach your own `clientReferenceId` to each company so you can match results back to your records without depending on Lusha's resolved ID.
+
+## Pairing with Enrich Contacts
+
+Decision Makers and Enrich Contacts are designed to be used together:
+
+<Steps>
+  <Step title="Find the decision makers">
+    Call `POST /v3/contacts/decision-makers` with your target companies. You get back ranked contact previews with `has` (fields already visible) and `canReveal` (fields you can unlock, and their credit cost).
+  </Step>
+  <Step title="Reveal contact details">
+    For the contacts you want to reach out to, call [Enrich Contacts](/enrichment/enrich-contacts) with the returned contact `id` to reveal emails and phone numbers. Only the reveal itself is charged — previewing decision makers doesn't spend your email/phone credits.
+  </Step>
+</Steps>
+
+<Tip>
+  Because previews are free, it's cheap to run Decision Makers across a large target account list and only pay to reveal contact details for the companies and people that matter most.
+</Tip>
+
+## Pagination
+
+Use `pagination.page` and `pagination.size` to page through decision makers per company (`size` accepts 1–100, default 10).
+
+## Related pages
+
+- [API reference: Get Decision Makers](/api-reference/decision-makers/get-decision-makers) — request/response fields, error codes, and examples
+- [Enrich Contacts](/enrichment/enrich-contacts) — reveal emails and phone numbers
+- [Website Visits](/website-visits/overview) — another beta signal for prioritizing which accounts to work first

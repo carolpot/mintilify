@@ -1,0 +1,87 @@
+---
+title: "GET /v3/companies/signals/types — Get company signal types"
+sidebarTitle: "GET /v3/companies/signals/types"
+description: "Returns the full list of supported signal types for companies."
+openapi: "get /v3/companies/signals/types"
+---
+
+Call this endpoint to get the current, authoritative list of `signalTypes` values accepted by [Company Signals](/api-reference/signals/company-signals). Use it instead of hardcoding signal type strings, so your integration picks up new types automatically as Lusha adds them.
+
+## Endpoint
+
+```
+GET https://api.lusha.com/v3/companies/signals/types
+```
+
+**Authentication:** API key (`ApiKeyAuth`)
+
+This endpoint has no parameters.
+
+---
+
+## Example request
+
+```bash cURL
+curl --request GET \
+  --url https://api.lusha.com/v3/companies/signals/types \
+  --header 'api_key: YOUR_API_KEY'
+```
+
+---
+
+## Response
+
+### 200 — Success
+
+<ResponseField name="signalTypes" type="string[]">
+  All valid `signalTypes` values for [Company Signals](/api-reference/signals/company-signals).
+</ResponseField>
+
+<ResponseExample>
+
+```json 200
+{
+  "signalTypes": [
+    "allSignals",
+    "websiteTrafficIncrease",
+    "websiteTrafficDecrease",
+    "itSpendIncrease",
+    "itSpendDecrease",
+    "surgeInHiring",
+    "surgeInHiringByDepartment",
+    "surgeInHiringByLocation",
+    "headcountIncrease1m",
+    "headcountDecrease1m",
+    "headcountIncrease3m",
+    "headcountDecrease3m",
+    "headcountIncrease6m",
+    "headcountDecrease6m",
+    "headcountIncrease12m",
+    "headcountDecrease12m",
+    "riskNews",
+    "commercialActivityNews",
+    "corporateStrategyNews",
+    "financialEventsNews",
+    "peopleNews",
+    "marketIntelligenceNews",
+    "productActivityNews"
+  ]
+}
+```
+
+</ResponseExample>
+
+---
+
+## Error codes
+
+| Status | Meaning |
+|--------|---------|
+| `401` | Unauthorized — your API key is missing or invalid. |
+| `403` | Forbidden — account inactive or V3 access not enabled. |
+
+## Related pages
+
+- [Company Signals](/api-reference/signals/company-signals) — retrieve signal data for specific companies
+- [Get Company Signal Filters](/api-reference/signals/company-signal-filters) — discover which signal filter types are available
+- [Signals overview](/signals/overview) — the consolidated signals model
