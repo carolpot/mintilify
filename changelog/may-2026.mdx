@@ -5,6 +5,28 @@ description: "Recent updates to the Lusha API, data, and MCP server."
 
 <!-- VERIFY: This file was originally scoped to "May 2026" but the live changelog at docs.lusha.com/changelog has no entries dated April or May 2026 — the real timeline jumps from March 10, 2026 straight to June 2, 2026. Entries below are pulled from the live changelog (Sept 2025 through June 2026, newest first). The two original May 2026 entries are kept further down but flagged — they aren't corroborated by the live changelog. -->
 
+## July 15, 2026
+
+### New: V3 is now the default API
+
+The V3 API is now the canonical version of the Lusha API and is documented as the default in these docs. V2 remains fully supported as **Legacy** — pick a version at the top of the sidebar to browse either surface. See the [V3 introduction](/introduction) or the [V3 migration guide](https://docs.lusha.com/tutorials/v3-migration-guide) to plan your move.
+
+### New: Unified search-then-enrich flow
+
+Every V3 [enrichment endpoint](/enrichment/overview) now follows the same **search, then enrich** pattern, and each endpoint accepts up to **100 contacts or companies in a single call** — no more separate single-record vs. bulk endpoints. Preview a match (and its credit cost) with Search, then reveal full data with Enrich, or run both in one request with **Search and Enrich**.
+
+### New: Unified filter discovery endpoints
+
+Filter discovery is now handled by two generic endpoints per resource instead of one endpoint per filter type. Use `GET /v3/companies/prospecting/filters` and `GET /v3/companies/prospecting/filters/{filterType}/values` (and the equivalent contact endpoints) to discover every filter type and fetch its valid values. See [company filters](/filters/company-filters) and [contact filters](/filters/contact-filters).
+
+### Updated: Lusha MCP server is now generally available
+
+The [Lusha MCP server](/mcp/overview) at `https://mcp.lusha.com` has moved out of beta and is generally available. Connect it to Claude, ChatGPT, Codex, Cursor, VS Code, Gemini CLI, n8n, and other MCP-compatible clients via OAuth or API key to run enrichment, prospecting, signals, decision-maker, and website-visit workflows from natural language.
+
+### Beta: Decision Makers and Website Visits
+
+The [Decision Makers](/decision-makers/overview) (`POST /v3/contacts/decision-makers`) and [Website Visits](/website-visits/overview) (`POST /v3/companies/website-visits`) endpoints are available in **beta**. Request and response shapes may change before general availability.
+
 ## June 8, 2026
 
 ### New: Decision Makers API
