@@ -3,6 +3,10 @@ title: "API overview"
 description: "Lusha's V3 REST API gives you programmatic access to a comprehensive dataset of business profiles and company information."
 ---
 
+<Info>
+  You're viewing the **V3** documentation. Use the version switcher at the top of the sidebar on this tab to jump to V2 (Legacy) — the toggle is scoped to API docs only and won't appear on other tabs.
+</Info>
+
 Lusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. It's built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.
 
 Use the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.
@@ -13,7 +17,7 @@ Use the Lusha API to **search for new prospects**, **enrich existing records**, 
 
 **Base URL**
 
-```
+```text
 https://api.lusha.com/v3/
 ```
 
@@ -38,7 +42,7 @@ Generate and manage your API key in the [Lusha dashboard](https://dashboard.lush
 Lusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan. Rate limits for the Credit Usage API differ from standard endpoint limits.
 
 | Header | Description |
-|--------|-------------|
+| --- | --- |
 | `x-rate-limit-daily` | Total requests allowed per day |
 | `x-daily-requests-left` | Requests remaining in your daily quota |
 | `x-daily-usage` | Requests made in the current daily period |
@@ -58,12 +62,12 @@ Lusha enforces rate limits on a per-plan basis to ensure fair usage and platform
 Lusha uses standard HTTP status codes to indicate the result of each request.
 
 | Code | Name | Description |
-|------|------|-------------|
+| --- | --- | --- |
 | `200` | OK | Request was successful |
 | `400` | Bad Request | Request is malformed or missing required fields |
 | `401` | Unauthorized | API key is missing or invalid |
 | `402` | Payment Required | Insufficient credits or payment needed |
-| `403` | Forbidden | Account is inactive. Contact support@lusha.com |
+| `403` | Forbidden | Account is inactive. Contact [support@lusha.com](mailto:support@lusha.com) |
 | `404` | Not Found | Endpoint or resource does not exist |
 | `429` | Too Many Requests | Rate limit or daily quota exceeded |
 | `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |
@@ -90,33 +94,43 @@ Every error response shares the same shape:
   <Card title="Search" icon="magnifying-glass" href="/api-reference/search/search-contacts">
     Find contacts or companies using known identifiers.
   </Card>
+
   <Card title="Enrich" icon="address-card" href="/api-reference/enrich/enrich-contacts">
     Retrieve full profile data for contacts or companies by ID.
   </Card>
+
   <Card title="Search & Enrich" icon="layer-group" href="/api-reference/search-and-enrich/search-and-enrich-contacts">
     Find and retrieve full contact or company data in a single call.
   </Card>
+
   <Card title="Prospecting" icon="crosshairs" href="/api-reference/prospecting/prospecting-contacts">
     Filter-based search across contacts and companies.
   </Card>
+
   <Card title="Lookalikes" icon="users" href="/api-reference/lookalikes/contact-lookalikes">
     AI-powered recommendations for similar contacts and companies.
   </Card>
+
   <Card title="Signals" icon="bolt" href="/api-reference/signals/contact-signals">
     Real-world activity data for contacts and companies.
   </Card>
+
   <Card title="Decision Makers" icon="user-tie" href="/api-reference/decision-makers/get-decision-makers">
     Find the most relevant decision makers across your target accounts.
   </Card>
+
   <Card title="Website Visits" icon="globe" href="/api-reference/website-visits/get-website-visits">
     Companies ranked by website-visit signals for your tracked domains.
   </Card>
+
   <Card title="Filters" icon="sliders" href="/api-reference/filters/contact-filter-types">
     Discover valid filter values for prospecting.
   </Card>
+
   <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks/create-subscription">
     Real-time signal notifications via HTTP callbacks.
   </Card>
+
   <Card title="Account" icon="gauge" href="/api-reference/account/usage">
     Usage, credits, rate limits, and pricing.
   </Card>

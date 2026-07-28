@@ -21,7 +21,8 @@
   },
   "api": {
     "playground": {
-      "mode": "show"
+      "mode": "show",
+      "display": "auth"
     }
   },
   "navigation": {
