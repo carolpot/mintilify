@@ -144,18 +144,98 @@
             "version": "V3",
             "tag": "Latest",
             "default": true,
+            "openapi": "openapi.json",
             "groups": [
-              { "group": "Overview", "pages": ["api-reference/overview"] }
-            ],
-            "openapi": "openapi.json"
+              { "group": "Overview", "pages": ["api-reference/overview"] },
+              {
+                "group": "Search",
+                "pages": [
+                  "POST /v3/contacts/search",
+                  "POST /v3/companies/search"
+                ]
+              },
+              {
+                "group": "Enrich",
+                "pages": [
+                  "POST /v3/contacts/enrich",
+                  "POST /v3/companies/enrich"
+                ]
+              },
+              {
+                "group": "Search & Enrich",
+                "pages": [
+                  "POST /v3/contacts/search-and-enrich",
+                  "POST /v3/companies/search-and-enrich"
+                ]
+              },
+              {
+                "group": "Prospecting",
+                "pages": [
+                  "POST /v3/contacts/prospecting",
+                  "POST /v3/companies/prospecting"
+                ]
+              },
+              {
+                "group": "Filters",
+                "pages": [
+                  "GET /v3/contacts/prospecting/filters",
+                  "GET /v3/contacts/prospecting/filters/{filterType}",
+                  "GET /v3/companies/prospecting/filters",
+                  "GET /v3/companies/prospecting/filters/{filterType}"
+                ]
+              },
+              {
+                "group": "Lookalikes",
+                "pages": [
+                  "POST /v3/contacts/lookalike",
+                  "POST /v3/companies/lookalike"
+                ]
+              },
+              {
+                "group": "Signals",
+                "pages": [
+                  "POST /v3/contacts/signals",
+                  "GET /v3/contacts/signals/types",
+                  "POST /v3/companies/signals",
+                  "GET /v3/companies/signals/filters",
+                  "GET /v3/companies/signals/filters/{filterType}",
+                  "GET /v3/companies/signals/types"
+                ]
+              },
+              {
+                "group": "Decision Makers",
+                "pages": ["POST /v3/contacts/decision-makers"]
+              },
+              {
+                "group": "Website Visits",
+                "pages": ["POST /v3/companies/website-visits"]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "POST /api/subscriptions",
+                  "GET /api/subscriptions",
+                  "GET /api/subscriptions/{id}",
+                  "PATCH /api/subscriptions/{id}",
+                  "POST /api/subscriptions/delete",
+                  "POST /api/subscriptions/{id}/test",
+                  "POST /api/subscriptions/opt-out",
+                  "GET /api/audit-logs",
+                  "GET /api/audit-logs/stats",
+                  "GET /api/account/secret",
+                  "POST /api/account/secret/regenerate"
+                ]
+              },
+              { "group": "Account", "pages": ["GET /v3/account/usage"] }
+            ]
           },
           {
             "version": "V2 (Legacy)",
             "tag": "Deprecated",
+            "openapi": "v2/openapi.json",
             "groups": [
               { "group": "Overview", "pages": ["v2/api-reference/overview"] }
-            ],
-            "openapi": "v2/openapi.json"
+            ]
           }
         ]
       },
