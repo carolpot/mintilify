@@ -1,0 +1,44 @@
+---
+title: "Bullhorn identifier (Indicator)"
+description: "How to enable the Bullhorn identifier to see which contacts and companies already exist in your CRM before revealing them in Lusha."
+---
+
+After setting up your [Bullhorn integration](/user-guide/bullhorn/bullhorn-integration), the Bullhorn Identifier feature helps you see which contacts, leads, or companies already exist in your CRM before revealing them — saving you credits and preventing duplicate records.
+
+Using the Bullhorn indicator uses your company's Bullhorn API quota, not Lusha's credits.
+
+<Note>
+  Lusha currently detects duplicates within its own objects (leads, candidates, contacts, or companies). External tools can be used alongside Lusha to detect and merge duplicates within other objects. Lusha will introduce this capability natively in a future release.
+</Note>
+
+## How it works
+
+Toggle on **Existing Bullhorn indicator** in the Bullhorn management [Settings tab](https://dashboard.lusha.com/lusha-integrations/advancedSettings/Bullhorn/settings).
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/24780897/1a9c03b6d30b08b2b84e96b09572/image+%2893%29.png?expires=1780056000&signature=f86a5130ec219b5bfc9080496b06fc89cb446ea5aaad1c16528ff340a911e55b&req=0tFozVjypTBk2hj99dpg6piumeNzhylB7xYZpkEVj4t%2BCUlp3OxOUwQx0%2BiZ%0A5KfXb2%2BTnY0jTUjdtA3fD%2Fuc%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+The **Bullhorn icon for an existing contact** will appear in **Contact Search** results when the contact already exists in Bullhorn.
+
+The **Bullhorn icon for an existing company** will appear in **Company Search** results when the company already exists in Bullhorn. It will **not** appear in Contact Search results.
+
+<Note>
+  You can also toggle on **Excluding Bullhorn objects**. When this toggle is on, any contacts that already exist in Bullhorn will be skipped during bulk reveal actions — no credits are charged for those contacts. For example, if you bulk reveal 5,000 contacts, existing Bullhorn contacts will automatically be excluded.
+</Note>
+
+Go to the [Bullhorn identifier tab](https://dashboard.lusha.com/lusha-integrations/advancedSettings/bullhorn/crmIdentifiers) in the field mapping environment and map the fields.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/24781048/6b38dd918595feecef47f65ebc2e/Screenshot+2024-11-06+at+17_06_26.png?expires=1780056000&signature=e20c432cd54b5b117a499d17af839b5e0889ca24949b70ea9954bf4072214bac&req=0tFozVn6qD9k2hj99dpg6ilbA2CqLNuGvnIHkd0wcuo8P5VDBXg533qog43V%0ARDCa2uTzgIPpwZJwXmg%2Fb3N2%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+Identifier logic for **leads, candidates, and contacts** matches on one of these combinations:
+
+1. Full name + company name or website
+2. Email
+
+Identifier logic for **companies** matches on one of these combinations:
+
+1. Company name
+2. Website (domain URL)
+
+Once set up, a Bullhorn icon will appear next to contacts in the **prospecting platform** who already exist in your CRM.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/48012690/74193fc29c59dbba970b5d6d2edb/Screenshot+2025-05-05+at+10_45_38.png?expires=1780056000&signature=749c234f114ec815712ca6ec7377b9e397c3bcbc2d3be9036537b999a38bf482&req=1N1vxFr8pTdk2hj99dpg6ihcqb5ElYuR3pfFohpRi5d9U%2BMywi%2FOT4akSaeI%0ATsMW1mEu7nwEzZWwqEGFBBVo%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />

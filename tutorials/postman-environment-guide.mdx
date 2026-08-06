@@ -1,0 +1,95 @@
+---
+title: "Postman Environment Guide"
+description: "How to set up Lusha's Postman workspace, configure environment variables, and use the API collection to test Person, Company, and Prospecting endpoints."
+---
+
+## Overview
+
+Lusha provides a RESTful API that allows you to query a comprehensive dataset of business profiles and company information. The API offers three main endpoints:
+
+- **Person API** – retrieve contact data for a business profile
+- **Company API** – retrieve company data based on domain or company name
+- **Prospecting API** – query Lusha's extensive database based on specific criteria (job title, seniority, industry, and more) to retrieve detailed contact and company information
+
+All API requests must be made over HTTPS (SSL), and responses are delivered in JSON format.
+
+---
+
+## Setting Up the Test Environment
+
+### Accessing Lusha's Postman Collection
+
+You can explore [Lusha's Postman Workspace](https://www.postman.com/lushateam/workspace/lusha-s-api/collection/28683568-fc849873-9ae1-47dd-8159-0d4deda04750) to:
+
+- Import the complete Lusha API collection
+- Test out pre-configured request examples
+- Or find the collection by searching for **"Lusha"** directly in Postman
+
+This setup allows you to quickly configure, customize, and start working with Lusha's API endpoints in a sandboxed environment.
+
+### Configuring Environment Variables
+1. Go to **Environments** in Postman and create a new environment.
+2. Add a variable named `API_KEY` and set its value to your Lusha API key.
+3. Ensure this environment is selected before making any requests.
+
+<Note>
+Access to Lusha's API key is limited to Scale users or those on an active Scale trial.
+</Note>
+
+---
+
+## Collection Structure
+
+![Collection Structure Diagram](https://downloads.intercomcdn.eu/i/o/yu27vhse/44223132/998b940afef8241763f6154f719b/573b74f9-57ba-4642-9fe2-b00fe44f7afd.png?expires=1749828600&signature=3a36427d77e60e006fabf2a7cff0426b83f9d39952223bd0de4765ab6f7166d8&req=1NFtx1v7rzVk2hL085ZhoREufyY4gRPq6JLmQjN3RRykHMhiUcQjRZ9ajlwo%0AMyfy5TPqPcn2FD0f%0A "Collection Structure")
+
+- **Contact Enrichment**
+  - `GET Person V2` – Single direct contact enrichment
+  - `POST Person V2 Bulk` – Bulk direct contact enrichment
+- **Company Enrichment**
+  - `GET Company` – Single direct company enrichment
+  - `POST Company Bulk` – Bulk direct company enrichment
+- **Filters for Prospecting**
+  - **Company** – Name/Domain, Industries, Sizes, Revenue, Locations, NAICS, SICs, Intent, Technology
+  - **Contact** – Departments, Seniority, Existing data points, Locations, All countries
+- **Prospecting**
+  - `Contact Prospecting` – Search & Enrich (POST)
+  - `Company Prospecting` – Search & Enrich (POST)
+- **Credit Usage**
+  - `GET Credit Usage` – Check your account's credit consumption
+
+---
+
+## Accessing Saved Examples
+
+Each endpoint in the Lusha API collection includes pre-saved examples that showcase the request structure, body, parameters, and expected responses. Users can explore these examples to better understand how to format their API requests and interpret responses efficiently.
+
+To access these examples:
+
+1. Select any request in the Lusha API collection.
+2. Click on the folder dropdown next to the request name in Postman.
+
+   ![Folder Dropdown](https://downloads.intercomcdn.eu/i/o/yu27vhse/44223134/e961ee92e416556bcf2ab081e701/c04d168d-7861-4e15-b228-a30f2285dbdd.png?expires=1749828600&signature=fecb08fe69967e75f141b0cccd2d45cb1d895456ce3d099d7babdd0a523dc3ae&req=1NFtx1v7rzNk2hL085Zhoe1vLuKAHohhuyzrNPwUBQ%2BXrbJB2kKqVwEVHBoR%0ATFHF0URIvIzsVrge%0A "Folder dropdown in Postman")
+
+3. Choose an example to view the saved request format and response structure.
+
+   ![Saved Example View](https://downloads.intercomcdn.eu/i/o/yu27vhse/44223147/a62d673a9a211e6166d9f3d54b50/2c843407-e52f-49eb-8a49-09b6b3c51cd7.png?expires=1749828600&signature=6c34024ead47ef99649b51f03d1c76e66594b69086d162f00ac42600dbf8e96b&req=1NFtx1v7qDBk2hL085ZhoeNHyaCuFPblLqX7cVsGpc0rHrx70KixeytrcTLP%0AH3VHUA9tbriIO0hZ%0A "Viewing a saved example")
+
+4. Modify the parameters as needed and run the request to see live data.
+
+---
+
+## Best Practices
+
+- Store your API key securely using Postman's environment variables.
+- Use the **Save Responses** feature to track changes in API output.
+- Check the **Body** tab for response data (JSON with fields like `emails`, `phones`, `company_info`).
+- Use the **Pretty** view for better readability.
+
+---
+
+## Support
+
+If you encounter any issues, refer to Lusha's API documentation or reach out to our support team via:
+
+- Live chat on the Lusha website or your Dashboard
+- Email: support@lusha.com

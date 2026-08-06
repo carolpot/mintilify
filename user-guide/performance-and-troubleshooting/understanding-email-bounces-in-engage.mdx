@@ -1,0 +1,40 @@
+---
+title: "Understanding Email Bounces in Engage"
+description: "What email bounces mean in Lusha Engage, how they affect your sender reputation, and steps to reduce your bounce rate."
+---
+
+Engage uses your business email address to send all outbound sequences. This means email bounces can directly affect your domain's sender reputation. Engage tracks bounce rates and puts daily safeguards in place to help keep your domain within safe thresholds.
+
+## Types of email bounces
+
+- **Soft bounce** — the email address is valid, but the message is rejected temporarily. Common causes: spam filters, domain or content issues, or the recipient's server blocking new senders.
+- **Hard bounce** — the email address is invalid or no longer exists. These messages are permanently undeliverable.
+
+Bounce rates are one part of your domain's email health. Your sender reputation also depends on overall send volume, engagement (opens, replies), and consistency. If your domain is flagged too often, Engage will temporarily restrict sending to protect it.
+
+## How bounces work in Engage
+
+- When a contact's status changes to **Bounced** or **Replied**, they are automatically removed from the sequence.
+- Engage does not differentiate between manual replies and auto-replies — any reply stops the sequence for that contact.
+- If a sequence hits a high bounce rate, it will automatically pause to protect your domain. Other sequences may also pause if their bounce rates increase.
+
+## How to reduce your bounce rate
+
+### Extend your sending schedule
+
+Send fewer emails per hour by spacing them out throughout the day. This reduces the risk of being flagged by email providers.
+
+### Reduce the daily volume
+
+Limit the number of contacts in each sequence to around 10 emails per day while your bounce rate is elevated. To remove contacts from the current batch:
+
+1. Go to the **Sequences** page.
+2. Click the relevant sequence.
+3. Open the **Contacts** tab.
+4. Use the **trash bin icon** to remove contacts from the current batch.
+
+You can re-add them later once your bounce rate stabilizes.
+
+<img src="https://lusha.intercom-attachments.eu/i/o/18506655/dce7cca2fb3c351f9807d401/Screenshot%2B2024-04-01%2Bat%2B15_53_20.png?expires=1780056000&signature=be9dce78157d136243667cb4a307f5d9bf65e0ff859366f5d8332559ba5396dc&req=0d1qxV78qTJk2hj99dpg6lpCBokDAYAtY%2FHMoF0%2B%2Fu8YUzbVTmm0YMYOeKCX%0A7tsrWditSB2IiU4efMu9%2BrjP%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+Once you've made your changes, activate the sequence by toggling the switch next to its name on the Sequences page or from the [Engage dashboard](https://dashboard.lusha.com/engage).

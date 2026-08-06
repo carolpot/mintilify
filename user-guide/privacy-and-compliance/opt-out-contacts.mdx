@@ -1,0 +1,26 @@
+---
+title: "Opt-Out Contacts"
+description: "Understand how Lusha handles contact opt-outs, how opt-out reports are delivered to admins, and how to maintain a complete suppression list."
+---
+
+When an individual chooses to remove their details from Lusha's database, they become an opted-out contact. Once opted out, their data is suppressed and will no longer appear in search results, enrichment, or any Lusha output — even if Lusha previously held it.
+
+## How opt-out reports work
+
+Opt-out reports are sent automatically — typically on a monthly basis — to a designated Admin on your account. Each report is delivered as a CSV and contains only the contacts who have opted out **since the last report was sent**. It is not a comprehensive list from the beginning of time.
+
+To build a full historical suppression list, you would need to aggregate all previous opt-out reports you have received.
+
+## Staying compliant
+
+The opt-out process is designed to support your privacy compliance obligations. When you receive an opt-out report, you should:
+
+1. Remove or suppress the listed contacts from your CRM and any active outreach sequences.
+2. Ensure these contacts are not re-imported or re-revealed in future exports.
+3. Archive the report so you can build a cumulative suppression list over time.
+
+## Get real-time opt-out notifications
+
+Rather than waiting for the monthly report, you can receive an instant notification every time a contact opts out by setting up an **Opt Out webhook**. This lets you update your CRM or suppression lists automatically the moment an opt-out occurs.
+
+See [How to Set Up Webhooks in Lusha](/user-guide/webhooks/how-to-set-up-webhooks-in-lusha) for setup instructions.

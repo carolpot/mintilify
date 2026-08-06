@@ -1,0 +1,121 @@
+---
+title: "Lusha Zapier Connector Guide"
+description: "The Lusha Zapier connector enables seamless integration of Lusha's enriched contact and company data into your workflows, helping you automate prospecting, lead enrichment, and customer insights."
+---
+
+## Overview
+The Lusha Zapier connector enables seamless integration of Lusha's enriched contact and company data into your workflows, helping you automate prospecting, lead enrichment, and customer insights. Follow this guide to set up and make the most of the connector for your business needs.
+
+## Use Case
+With Lusha Connect on Zapier, you can streamline data enrichment and power your workflows with up-to-date contact and company insights.
+
+## Setting Up the Lusha Zapier Connector
+
+To get started, you'll need a Lusha API key and an active Zapier account.
+
+### Easy Step-by-Step Setup:
+
+1. **Log into Zapier**: Go to Zapier and log in or create an account if you don't have one.
+
+2. **Create a New Zap**: In Zapier, click "Create Zap" to start a new workflow.
+
+3. **Select a Trigger**: Choose the event that will start the Zap (e.g., a new lead added in your CRM).
+
+4. **Add Lusha Connect as an Action**: In the action step, search for "Lusha Connect" and select it.
+
+5. **Authenticate with API Key**: When prompted, enter your Lusha API key. This enables secure access to your Lusha account to pull enriched data.
+
+6. **Set Up Relevant Fields**: Depending on the selected action (either "Enrich Contacts" or "Enrich Companies"), map the fields to ensure the correct data is pulled from Lusha.
+
+## Connector Actions: How They Work
+
+Lusha Connect on Zapier offers two key actions:
+
+- **Enrich Contacts**: Pull detailed contact information from Lusha, allowing you to add job titles, company info, and other attributes directly into your workflow.
+
+- **Enrich Companies**: Retrieve company-specific information such as industry, location, and funding details, to help with account-level insights and profiling.
+
+## Required Fields for Enrichment
+
+Each enrichment action requires specific fields to return results. Here's what you need for each action:
+
+### Enrich Contacts
+You'll need at least one of the following to retrieve contact information:
+- First Name and Last Name with Company Name or Domain
+- Email Address
+- LinkedIn Profile URL
+
+### Enrich Companies
+You'll need one of the following to retrieve company information:
+- Company Name
+- Company Domain
+- Company ID (Lusha's unique identifier if known)
+
+## Setting Up Your First Zap with Lusha
+
+Follow these steps to create your first automated workflow (Zap) with Lusha in Zapier:
+
+1. **Create a New Zap**: In Zapier, start by clicking "Create Zap."
+
+2. **Select a Trigger**: Choose an event to initiate the Zap, such as adding a new lead in your CRM.
+
+3. **Add Lusha as an Action**: Decide on the Lusha action type — select either Enrich Contacts or Enrich Companies, depending on your data needs.
+
+![Lusha Connect Action Selection](https://downloads.intercomcdn.eu/i/o/yu27vhse/25577920/7e306d80818585e918d50a0815f7/1+%281%29.png?expires=1750085100&signature=9495201500af16a81286112e03651118306d9494681ff333170c42ca67eb9562&req=0tBqwl%2Fzrjdk2hL085ZhoXCl8GdWWnHziCeieqwoeTWpwnWQr6h73lpIKQXB%0A%2F%2BWzUtPa8VphnmoW%0A)
+
+4. **Map Fields**: During setup, map fields from your trigger event (e.g., contact name or email in your CRM) to the corresponding fields in the Lusha action. This ensures Lusha pulls the correct data.
+
+![Field Mapping Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/25577994/ecdaa77aeb07edc9495f26c39635/2+%281%29.png?expires=1750085100&signature=67e2396fdcc67283e77f17f132c3604d5fea8bc4deb49f3be43943e4b6e79ef3&req=0tBqwl%2FzpTNk2hL085ZhoW2wCghjcz9Puc46cUsuYGNEDAM7X%2BSwltPr6eJ9%0AdNZKskGvceImGHSS%0A)
+
+5. **Test and Turn on Your Zap**: Run a test to verify that everything is working as expected.
+
+![Testing Lusha Connect Integration](https://downloads.intercomcdn.eu/i/o/yu27vhse/25578398/643a7d5a719fddd7eaaed4093a45/3.png?expires=1750085100&signature=2dd35c911f05aac9aef0a431541d3730b146f1221795f1c81edf44fcc9273965&req=0tBqwlD5pT9k2hL085ZhoYQfMfrYC45eW80Ui%2B9euEtfLjU62uiDvZRv9WgT%0AqmAmFvgvchb0UQwc%0A)
+
+6. **Map Data to the Final Destination**: Map the enriched data from Lusha to the desired location within your workflow, ensuring it appears where it's needed.
+
+![Final Data Mapping](https://downloads.intercomcdn.eu/i/o/yu27vhse/25578479/7f3fba886a31609f7d362cec1e97/5.png?expires=1750085100&signature=369d3008eed100f0939d2df2722896b32ad80908fdeb5c2ba3d4e5723386beb1&req=0tBqwlD%2Bqz5k2hL085ZhoXn85Qfg2X3rf4%2FMRr3%2FdavldYc3Dzw%2FgnhDsGJL%0AR%2FrbvwpOk23lY68g%0A)
+
+## Examples of Using the Lusha Connector in Zapier
+
+### 1. Lead Enrichment
+- **Trigger**: New lead added in CRM (e.g., Salesforce).
+- **Action**: Enrich Contacts with Lusha.
+- **Outcome**: The new lead's information is automatically enriched with details like email addresses, phone numbers, job title, company, and social profiles.
+
+### 2. Account Profiling
+- **Trigger**: Company added in a database.
+- **Action**: Enrich Companies with Lusha.
+- **Outcome**: Retrieve in-depth information about the company, including revenue range, employee count, and more, to inform your sales or account management team.
+
+## Best Practices for Using Lusha with Zapier
+
+- **Use Dynamic Fields**: Whenever possible, use Zapier's dynamic fields to pass information like email addresses or company names directly into the Lusha connector, ensuring accuracy and efficiency.
+- **Manage API Usage**: Keep an eye on your API usage within Lusha, as enrichment calls can consume API credits.
+- **Testing**: Test your Zaps regularly to confirm that data flows smoothly and as expected.
+
+## ⚒️ FAQs
+
+**Q: What fields are required for Enrich Contacts and Enrich Companies' actions?**
+
+A: For Enrich Contacts, you'll need at least one of the following: First Name and Last Name with Company Name or Domain, Email Address, or LinkedIn Profile URL.
+
+For Enrich Companies, you'll need Company Name, Domain, or Company ID.
+
+**Q: Can I use the Lusha connector to enrich historical data?**
+
+A: Yes! You can create Zaps that enrich existing data in your CRM or marketing platform by setting triggers on updates to those records.
+
+**Q: What fields are returned by the Enrich Contacts and Enrich Companies actions?**
+
+A: The connector provides contact and company details, including job title, industry, location, and funding information, depending on the available data in Lusha.
+
+**Q: How can I troubleshoot connection errors?**
+
+A: Double-check your API key, ensure it has the right permissions, and verify that the fields being passed into Lusha are correctly formatted.
+
+## Additional Resources
+
+For further assistance, consult the following:
+
+- **Zapier's Help Center**: For general guidance on building workflows in Zapier.
+- **Lusha Support**: If you need specific help with your API key or access permissions, contact the support team via live chat from the Lusha website, your Lusha Dashboard, or via email: support@lusha.com

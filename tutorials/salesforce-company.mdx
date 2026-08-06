@@ -1,0 +1,120 @@
+---
+title: "Salesforce Company Enrichment"
+description: "The integration between Salesforce and Lusha's Company API is a powerful feature designed to enrich account data with accurate, up-to-date company information directly within Salesforce."
+---
+
+## Overview
+The integration between Salesforce and Lusha's Company API is a powerful feature designed to enrich account data with accurate, up-to-date company information directly within Salesforce.
+
+## Use Case
+This feature streamlines the process of retrieving key details such as company descriptions, industries, and domains, ensuring sales and marketing teams have access to high-quality data without manual effort. By automating data enrichment through workflows and API calls, users can save time, reduce errors, and improve targeting for outreach efforts.
+
+This integration is particularly valuable for businesses aiming to enhance their CRM data accuracy, drive personalized engagement, and make informed decisions based on reliable and enriched account information.
+
+## Requirements
+This workflow requires an active Salesforce subscription with the necessary Flow function enabled, along with the inclusion of Lusha resources (such as an API token for the account and available bulk credits).
+
+- A credit will be consumed only when a match is successfully found
+- Lusha's API key can be found [here](https://dashboard.lusha.com/enrich/api) (visible only by Lusha admins or managers)
+
+## How it Works?
+
+### Step 1: Create a Named Credential
+
+1. **Navigate to Named Credentials**: From the Salesforce Setup, go to the Named Credentials section.
+
+
+2. **Create an External Credential**: Set up an external credential with no authentication needed.
+
+3. **Use Lusha's API**: Input the Company API URL from Lusha's [documentation](https://www.lusha.com/docs/#company-api) ([https://api.lusha.com/company](https://api.lusha.com/company)) while creating the named credential.
+
+4. **Add Headers**:
+   - Add a header named `api_key` with the value as your Lusha API key
+   - Add a second header named `Accept` with the value set as `*/*`
+
+![API Headers Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26973652/eba1fda64ad3e272b75637ccd1e4/c1aba4a1-8ce2-4707-a4db-91d2973d3589.png?expires=1750090500&signature=bd8c09f11cd37f95b8497e93914f3f3ae6d42f935cea42fc181f34bfd66791a2&req=0tNmwlv8qTVk2hL085Zhodjr4oDrEq9CKxamH4PSIJzREOL5CUiVivPs%2Fv1v%0AsF6jy5hklUyH2yvk%0A)
+
+### Step 2: Create a Workflow on Salesforce (Screen Flow)
+
+1. **Start a New Workflow**: In Salesforce, create a new screen flow with a Free Form layout.
+
+2. Under the Toolbox Manager, create a new Variable and name it `recordId`. Choose the Data Type to be Text, and then go to the Get Accounts Records, and choose the Get Record ID. This way we will have a variable that will automatically get the Account ID to enrich.
+
+3. Choose the **Get Records** element and drag it to your layout. In the Get Records element, choose the Account object.
+
+4. Under the **Filter Account Records**, make sure you choose the All Conditions Are Met requirement, then choose the ID field on your Account object > Equals operator > recordId variable that we created.
+
+![Get Records Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26974093/0727558fb45be41cae89ff4db283/540e9af4-ae22-415b-8730-10ae1bd39240.png?expires=1750090500&signature=590c6c80cb37a8857f80335bae53ad2907e94826b30fcbbab686b2366dc764c8&req=0tNmwlz6pTRk2hL085ZhoSvWNNpnecYacO2Lwcih6s046YojAXV0s0iEog5m%0AJx9aRYSTKPaQJtsM%0A)
+
+5. Next, drag an **Action** element onto the layout. Give the Action a name you will remember (LushaCompanyAPI for example), and connect the Named Credential we created in Step 1, with the Company API URL.
+
+6. Under the **Query Parameter Values**, choose Account from get_related_account and then choose the field that stores the company domain (you can add another value for the company name as well, but for this example, we chose the domain since it is more accurate and usually yields a higher probability of a matching result).
+
+![Action Element Setup](https://downloads.intercomcdn.eu/i/o/yu27vhse/26974346/b47310d392f1ddbbd1549375b0ca/33e4e615-1210-49aa-8c85-aab5e96f94ee.png?expires=1750090500&signature=b35084cf29a9859acd043c55d4d15a00749760fa4daf682a16aa40cddc383d1b&req=0tNmwlz5qDFk2hL085ZhoXdF6pEmMsa%2BnQBJLkLCWjBaJ9FjloaO9f94%2Btrj%0AaupbfJCY6JqMeHB%2B%0A)
+
+#### Create a Formula for Each Data Point
+
+For each API field you wish to pull (e.g., Description, Industry), create a formula using the response data:
+
+1. Navigate to **Toolbox > New Resource > Formula**, then select the corresponding data from the API response (e.g. [whatever you named your Action]>2xx>Data>Description).
+
+2. Set the correct data type (e.g., Text for Description). Continue to create Formulas this way for each data point that you will want to use in your Update Records stage.
+
+![Formula Creation](https://downloads.intercomcdn.eu/i/o/yu27vhse/26974971/4c0e70a5699726ef7054b4ee2a62/4fb2ba7e-f273-403c-b951-e16e2d698d3d.png?expires=1750090500&signature=829d245f540e9759895e5308d0a6b44e84084ed8f8a0b17d3a030bc27f0a3235&req=0tNmwlzzqzZk2hL085ZhoTrvNEbd%2BiTE3zU3%2FpW%2BEWgmTSD%2FYeVNaQR2XDw1%0AApWYVlbp%2FBHZFqlS%0A)
+
+#### Update Account Records
+
+1. Use the **Update Records** element to specify which Account fields to update.
+
+2. Under **How to Find Records to Update** choose the Specify conditions option, and then choose the Account object.
+
+3. Choose the **All Conditions Are Met (AND)** option, then choose your Account ID field > Operator Equals > under the value select the recordId variable we created in part 2.
+
+4. For each field, map the formula created for that data point to the corresponding field (e.g., map the Description formula to the Account Description field).
+
+![Update Records Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26975336/fc2314b7fb6c1b09987fd3373317/3e24f7d3-f86b-43aa-8012-43dece62cd40.png?expires=1750090500&signature=56cb2f1ab8c891e8f9cf893e81e428c95d156b6d4fae9530a0729f5bd3666cf8&req=0tNmwl35rzFk2hL085ZhoXjBzbHXhKXkN4pXEPnLN51Vx4xQAoG%2FXBG6sK95%0A5HmEcwvEL%2F%2F%2BUO0Q%0A)
+
+### Step 3: Create a Screen Interaction
+
+Every time a user chooses to enrich the Account with the Company API action, this will give a screen pop-up, that will show which data points were enriched through the workflow.
+Drag the **Screen** element to the layout, and name label "Done".
+
+1. In the **Display Text** you can write down each datapoint followed by a dash (-), and then Insert a resource and choose the respective formula.
+
+2. Continue with each field that you wish to enrich with the process. This will ensure that for every field that gets enriched, the user will see it in the pop-up screen first.
+
+![Screen Element Setup](https://downloads.intercomcdn.eu/i/o/yu27vhse/26975901/807e979b3ccc0b4f6e4f13ff2587/5d39e560-6340-4c7c-8f7a-0eda65696518.png?expires=1750090500&signature=fd927804155ef974462a5ff568ec50767d3bd1decb9b540ca6a6d82537af12a6&req=0tNmwl3zrDZk2hL085ZhodTX4mRrmJunpxGAA1dqFHbz%2FTC2ImlGIW%2BV0nhp%0A8Fkiyi0KCfvot%2Fre%0A)
+
+3. **Save and Debug**: After designing the screen, save your flow and run a debug using an Account ID to test the API call and see the response.
+
+**The end result should look something like this:**
+
+![Complete Flow Layout](https://downloads.intercomcdn.eu/i/o/yu27vhse/26976372/8fb39133abefb2abd0e9df77d9c0/e92babb3-371a-436d-8c61-debeb325db0e.png?expires=1750090500&signature=ac95269103e992eadd8936000f846eeeb5353133bb3bd40096f71dcfc2a0d3d1&req=0tNmwl75qzVk2hL085ZhoSSpsAYtPSc8rkUDfMGru36OY1aVQ0Fw0ItX3b3O%0AI%2Bg5JGsZI0WPS03L%0A)
+
+### Step 4: Add a Button to Trigger the Flow
+
+1. Go to **Setup > Object Manager > Account > Buttons, Links, and Actions**.
+
+2. Create a new action that triggers the flow created earlier.
+
+3. Under the **Account Page Layout**, you can choose where to position the button on the Account page so that the users can have access to enrich the Account with the company data from Lusha.
+
+![Button Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26976939/4536c8cb563e6e41a93f4770b2bb/2c386577-1794-4f71-9933-b15230b86593.png?expires=1750090500&signature=faf5f4c8fe8839a744f0e45e42582dfb977f5468c0495dda05116cb3a3f8e036&req=0tNmwl7zrz5k2hL085ZhobvNsalIrMBHNLKa2iGhKmyKSV6xQetaDSu66vIC%0AD6dUH0Slbwy7fkbG%0A)
+
+### Step 5: Monitor Workflow Activity (Adjust and Optimize as Needed)
+
+1. After deploying the workflow, monitor its performance through workflow history and error logs.
+
+2. Make adjustments as needed to optimize performance and fix any issues.
+
+#### The flow is now finished 🔥
+
+> ## Additional Resources
+>
+> If you have any questions on the above feel free to reach out the support team:
+>
+> • Via live chat from the [Lusha website](http://www.lusha.com/)
+>
+> • Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
+>
+> • Via email: [support@lusha.com](mailto:support@lusha.com)

@@ -1,0 +1,312 @@
+---
+title: "Automate Company Search and Enrich"
+description: "This guide will walk you through automating your prospecting process by searching and enriching company data directly in Google Sheets using the Lusha's Prospecting API."
+---
+
+## Overview
+This guide will walk you through automating your prospecting process by searching and enriching company data directly in Google Sheets using the Lusha's Prospecting API. With this setup, you'll be able to populate a list of companies based on specific filters, retrieve detailed company data, and track enrichment progress efficiently.
+
+## How it Works?
+
+### Step 1: Create a Google Sheets Template
+1. Start by making a new sheet on Google Sheets
+2. Name the sheet as "Sheet1" or update the variable `sheetName` in the script with your sheet name
+
+### Step 2: Add the Script to Google Sheets
+1. Open your copied Google Sheets file
+2. Navigate to **Extensions > Apps Script**
+3. Delete any existing code in the script editor
+4. Replace it with the provided script:
+
+```javascript
+const SHEET_NAME = "Sheet1"; // Update this with your actual sheet name
+const API_KEY = 'API key here'; // Replace with your actual API key
+const BASE_URL = 'https://api.lusha.com/prospecting';
+
+function onOpen() {
+const ui = SpreadsheetApp.getUi();
+ui.createMenu('Lusha Actions')
+.addItem('Search Companies', 'populateCompanies')
+.addItem('Enrich Companies', 'enrichCompanies')
+.addToUi();
+}
+
+function getHeaders() {
+return { 
+  'api_key': API_KEY,
+  'x-partner-name': 'prtnr-google_sheets_connector-prod'
+};
+}
+
+function getSheet() {
+const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+if (!sheet) {
+throw new Error(`Sheet with name '${SHEET_NAME}' not found.`);
+}
+return sheet;
+}
+
+function setupHeaders(sheet) {
+const headers = ['Account Name', 'Website', 'Company ID', 'Description', 'Employee Size', 'Main Industry', 'Sub Industry', 'Linkedin URL', 'Revenue', 'Founded (year)', 'Country', 'Country ISO2', 'City', 'State', 'Full Address', 'Continent', 'Specialities', 'SICS Code', 'SICS Description', 'NAICS Code', 'NAICS Description', 'Industry Tags'];
+const headerRange = sheet.getRange("A4:V4");
+if (!headerRange.getValues().flat().some(h => h)) {
+headerRange.setValues([headers]);
+}
+
+// Add "Prospecting Page" label to A1 and set it to italic
+const labelCell = sheet.getRange("A1");
+labelCell.setValue("Prospecting Page");
+labelCell.setFontStyle("italic");
+
+// Set font weight to bold for the header row
+headerRange.setFontWeight("bold");
+
+// Apply full borders to the Account Name column (Column A)
+const accountNameRange = sheet.getRange(5, 1, sheet.getLastRow() - 3, 1); // From row 5, column 1, covering all rows below
+accountNameRange.setBorder(true, true, true, true, true, true); // Apply full borders
+}
+
+function populateCompanies() {
+const apiUrl = `${BASE_URL}/company/search/`;
+const sheet = getSheet();
+const userProperties = PropertiesService.getUserProperties();
+setupHeaders(sheet);
+
+// Pagination handling
+const pageCell = sheet.getRange("A2");
+let currentPage = Number(pageCell.getValue()) || 0;
+
+const payload = {
+pages: { page: currentPage, size: 40 },
+filters: {
+companies: {
+include: {
+locations: [{ country: "Mexico" }],
+mainIndustriesIds: [18, 19, 20, 12, 13, 3, 16, 8],
+sizes: [{ min: 51 }]
+}
+}
+}
+};
+
+const options = {
+method: 'POST',
+contentType: 'application/json',
+headers: getHeaders(),
+payload: JSON.stringify(payload),
+muteHttpExceptions: true
+};
+
+try {
+const response = UrlFetchApp.fetch(apiUrl, options);
+const result = JSON.parse(response.getContentText());
+
+if (result.requestId) {
+userProperties.setProperty('requestId', result.requestId);
+}
+
+if (result.data && Array.isArray(result.data)) {
+const companyIds = result.data.map(company => String(company.id));
+userProperties.setProperty('companyIdsList', JSON.stringify(companyIds));
+appendToSheet(sheet, result.data);
+pageCell.setValue(currentPage + 1);
+} else {
+Logger.log("No data found in response.");
+}
+} catch (error) {
+Logger.log('Request failed: ' + error.message);
+}
+}
+
+function appendToSheet(sheet, companies) {
+const data = companies.map(company => [
+company.name || '', // Account Name
+company.fqdn || '', // Website (fqdn from API)
+company.mainIndustry || '', // Industry
+company.companySize?.employees_in_linkedin || company.employees || '', // Employee Size
+company.revenueRange?.[0] || '', // Revenue
+company.foundedYear || '', // Founded
+company.country || '' // Country
+]);
+
+const lastRow = sheet.getLastRow();
+const startRow = lastRow < 4 ? 5 : lastRow + 1;
+sheet.getRange(startRow, 1, data.length, data[0].length).setValues(data);
+
+// Apply full borders to the Account Name column (Column A)
+const accountNameRange = sheet.getRange(5, 1, sheet.getLastRow() - 3, 1); // From row 4 to the last row in column A
+accountNameRange.setBorder(true, true, true, true, true, true); // Apply full borders
+
+Logger.log("Companies appended to the sheet.");
+}
+
+function enrichCompanies() {
+const apiUrl = `${BASE_URL}/company/enrich`;
+const sheet = getSheet();
+const userProperties = PropertiesService.getUserProperties();
+
+const requestId = userProperties.getProperty('requestId');
+const companyIdsList = JSON.parse(userProperties.getProperty('companyIdsList') || '[]');
+
+if (!requestId || companyIdsList.length === 0) {
+Logger.log("No requestId or company IDs available for enrichment.");
+return;
+}
+
+const lastDataRow = sheet.getLastRow();
+const startRow = lastDataRow - companyIdsList.length + 1;
+
+companyIdsList.forEach((companyId, i) => {
+const row = startRow + i;
+const payload = {
+requestId: requestId,
+companiesIds: [companyId]
+};
+
+const options = {
+method: 'POST',
+contentType: 'application/json',
+headers: getHeaders(),
+payload: JSON.stringify(payload),
+muteHttpExceptions: true
+};
+
+try {
+const response = UrlFetchApp.fetch(apiUrl, options);
+const result = JSON.parse(response.getContentText());
+
+if (result.companies && result.companies.length > 0) {
+const companyData = result.companies[0];
+const enrichedRow = [
+companyData.fqdn || '', // Website
+companyData.id || '', // Company ID
+companyData.description || '', // Description
+companyData.employees || '', // Employees
+companyData.mainIndustry || '', // Main Industry
+companyData.subIndustry || '', // Sub Industry
+companyData.social?.linkedin || '', // LinkedIn URL
+companyData.revenueRange?.[0] || '', // Revenue Range
+companyData.founded || '', // Founded Year
+companyData.country || '', // Country
+companyData.countryIso2 || '', // Country ISO 2
+companyData.city || '', // City
+companyData.state || '', // State
+companyData.rawLocation || '', // Raw Location
+companyData.continent || '', // Continent
+companyData.specialities || '', // Specialties
+// Extract NAICS and SICS
+companyData.industryPrimaryGroupDetails?.sics?.[0]?.sic || '', // SICS Code
+companyData.industryPrimaryGroupDetails?.sics?.[0]?.sic_description || '', // SICS Description
+companyData.industryPrimaryGroupDetails?.naics?.[0]?.naics || '', // NAICS Code
+companyData.industryPrimaryGroupDetails?.naics?.[0]?.naics_label || '', // NAICS Description
+companyData.industryTags || '', // Tags
+];
+
+sheet.getRange(row, 2, 1, enrichedRow.length).setValues([enrichedRow]);
+}
+} catch (error) {
+Logger.log(`Enrichment failed for companyId ${companyId}: ${error.message}`);
+}
+});
+
+Logger.log("Enrichment completed.");
+}
+```
+
+### Step 3: Customize and Run
+
+Make sure to provide your API Key to enable communication with Lusha's API. [You can access your API key here](https://dashboard.lusha.com/enrich/api) (only admins and managers have access to this page).
+
+Once you have your API key, locate the lines below in your script:
+
+```javascript
+const apiKey = 'YOUR API KEY HERE';
+```
+
+Before running the script, you must configure it to match your prospecting needs. Here's how to customize the filters and set up your API key. This script template includes pre-configured filters for:
+
+**Country:** Currently set to **"Mexico"**
+
+**Industries:** Set by their IDs (e.g., `[18, 19, 20, 12, 13, 3, 16, 8]`)
+
+**Company Size:** Minimum size set to **51 employees**
+
+You can modify these filters to match your prospecting needs:
+
+1. In the script, locate the `payload` object in the `populateCompanies()` function
+2. Adjust the following fields:
+   - **locations**: Change the country to target other regions
+   - **mainIndustriesIds**: Update the industry IDs based on your focus. Refer to the [Lusha API documentation](https://api.lusha.com/docs) for available industry IDs
+   - **sizes**: Modify the `min` field to set the minimum company size
+
+Make sure to save the script after applying your changes. These customizations allow the script to tailor the company prospecting process to your requirements while ensuring your API key is securely embedded.
+
+### Step 4: Review and Analyze Results
+
+1. Go back to your Google Sheet
+2. Open the **"Lusha Actions"** menu added by the script
+3. Select **"Search Companies"** to populate the sheet with companies matching your filters
+4. Use **"Enrich Companies"** to retrieve detailed data for the listed companies
+
+## Data Fields Returned
+
+The script populates your sheet with comprehensive company information including:
+
+**Basic Company Information:**
+- Account Name, Website, Company ID
+- Description, Employee Size
+- Founded year, Revenue information
+
+**Industry Classification:**
+- Main Industry, Sub Industry
+- SICS Code & Description
+- NAICS Code & Description
+- Industry Tags
+
+**Location Data:**
+- Country, Country ISO2, City, State
+- Full Address, Continent
+- Geographic coordinates
+
+**Business Intelligence:**
+- LinkedIn URL, Specialties
+- Revenue Range, Funding information
+- Employee count and company size
+
+**Search & Tracking:**
+- Request ID for batch operations
+- Page tracking for search results
+- Enrichment status indicators
+
+## Workflow Process
+
+### 1. Search Phase
+- Configure filters for your target market (location, industry, size)
+- Execute **"Search Companies"** to populate initial company list
+- Results are displayed with basic company information
+
+### 2. Enrichment Phase
+- Use **"Enrich Companies"** to get detailed data for all found companies
+- Each company is enriched individually with comprehensive business data
+- Progress tracking through automated logging
+
+### 3. Analysis Phase
+- Review enriched data across 22+ data fields
+- Analyze company patterns and opportunities
+- Export or further process the enriched dataset
+
+## Troubleshooting
+
+If issues arise during the process:
+
+- **Error Messages**: Check the Status Code and Message columns for details on failures (e.g., invalid Company name, missing API key)
+- **Invalid JSON Response**: Verify that your API key is correct and that the sheet data matches the expected input structure
+- **Rate Limits**: If the API returns rate-limit errors, consider spacing out requests or upgrading your API plan
+
+## Additional Resources
+
+If you have any questions on the above feel free to reach out the support team:
+
+- Via live chat from the [Lusha website](http://www.lusha.com/)
+- Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
+- Via email: [support@lusha.com](mailto:support@lusha.com)

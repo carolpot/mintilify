@@ -1,0 +1,108 @@
+---
+title: "Using Workspace Filters: Contact and Company Filter Panel"
+description: "How to use the Workspace filter panel to build contact and company tables by criteria, and how to combine filters with the AI chat."
+---
+
+In addition to the AI chat, Workspace offers a traditional filter panel for building tables using structured criteria. You can use filters on their own or combine them with the AI chat to layer precision on top of your conversational search.
+
+## How to open the filter panel
+
+From the Workspace home screen (accessible via **Create new** in the left nav), you'll see three options below the chat input:
+
+- **Filter contacts** — Opens a filter panel focused on individual people
+- **Filter companies** — Opens a filter panel focused on organizations
+- **Import from CRM** — Bring existing records from your Salesforce/HubSpot account directly into a Workspace table. Read more [here](https://docs.lusha.com/user-guide/building-your-workspace-tables/account-based-prospecting-beta/not-in-my-crm-filter).
+
+Click either **Filter contacts** or **Filter companies** to open the filter panel on the left side of the screen. Results appear instantly in the table on the right.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/133912883/81429647d94f79741b2987faedcc/image%2B-281-29.png?expires=1780056000&signature=90006809bfc5a04b9494fbae5adfdd4b183b94649654bbfe69bc571385e3df27&req=0dZszFn4pD8rlxv2%2Btxgpqn2Dg1mQpuRxJzhZ99xfuoegJGvjTDJ1VMTp84p%0AAYB0%2Bh1FsdYsJ3eZ0BU%2BHNT6rA%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Available filter categories
+
+**For Contacts:**
+
+| Category | Examples |
+| --- | --- |
+| Job title | Exact title, keyword match |
+| Seniority | C-Level, VP, Director, Manager, Individual Contributor |
+| Department | Sales, Marketing, Engineering, Finance, HR |
+| Industry | Technology, Healthcare, Finance, Manufacturing, and more |
+| Sub-industry | Software Development, Financial Services, etc. |
+| Location | Country, state/region, city |
+| Company size | Headcount ranges (e.g., 51–200, 1K–5K) |
+| Company revenue | Revenue ranges |
+| Technology | Tech stack filters (technographics) |
+| Funding stage | Seed, Series A–E, IPO, etc. |
+| Funding recency | Funded in the last X months |
+| Skills | LinkedIn skills (e.g., "Project Management", "Sales") |
+| Education | School, degree, field of study, start and graduation dates |
+| Languages | Language spoken (e.g., "Spanish", "French") |
+| Professional bio | Certifications and awards (e.g., "PMP", "AWS Certified") |
+| Not in my CRM | Hide contacts already in your connected CRM |
+
+<Note>
+  The Skills, Education, Languages, and Professional bio filters are based on enriched LinkedIn profile data. Not all contacts will have complete profile data — if results are fewer than expected, try broadening your criteria.
+</Note>
+
+**For Companies:**
+
+| Category | Examples |
+| --- | --- |
+| Industry / Sub-industry | As above |
+| Company type | Business type: B2B, B2C, B2G |
+| Company size (headcount) | Ranges |
+| Revenue | Ranges |
+| Location | Country, region, city |
+| Technology | Tools and platforms in use |
+| Funding | Stage and recency |
+| Founded year | Specific year or range |
+| Hiring surge <sup>Premium</sup> | Companies with a significant recent spike in job postings |
+| Not in my CRM | Hide companies already in your connected CRM |
+
+<Note>
+  The **Company type** filter is found inside the **Company Type** filter panel. Select one or more business types — **B2B**, **B2C**, or **B2G** — to narrow results to companies that match your target market model.
+</Note>
+
+<Note>
+  **Hiring surge (Premium):** Found in the **Companies** section of the filter panel, tagged **Premium**. Unlike the other filters above, filtering itself is free, but Lusha's first monetized Premium Filter — enrichment is charged on save: 1 credit per company result, unlocking Signal date, New jobs posted last week, Historical avg, and Change rate. See [Workspace Signals](/user-guide/enriching-with-data-and-signals/workspace-signals-tracking-buying-intent-and-contact-changes) for how Hiring surge relates to the "Surge in hiring" signal on saved tables.
+</Note>
+
+## The "Not in my CRM" toggle
+
+The **Not in my CRM** toggle is available in both the Contact and Company filter panels. When enabled, Lusha hides any record that already exists in your connected Salesforce account from the results. This prevents you from wasting credits revealing contacts you already have.
+
+The filter operates independently on each tab — toggling it on for Contacts does not automatically apply it to Companies, and vice versa.
+
+<Note>
+  Currently supported for Salesforce only. For more details on how this filter works and how Lusha detects duplicates, see the [Not in my CRM](/user-guide/building-your-workspace-tables/Account-Based%20Prospecting%20\(Beta\)/not-in-my-crm-filter) filter article.
+</Note>
+
+## Combining filters with the AI chat
+
+The filter panel and the AI chat are complementary. You can:
+
+1. **Start with chat, refine with filters** — Type a broad description ("Sales leaders in the US") and then open the filter panel to add more specific criteria (e.g., restrict to companies with 200–1,000 employees)
+2. **Start with filters, refine with chat** — Apply a standard filter set, then type a follow-up message in the chat to adjust ("Show only companies with recent funding")
+
+Both approaches produce results in the same table, and you can switch between them freely.
+
+## Viewing your search as an API request
+
+The search control bar includes a **Get API request** button that turns your current search — filters and all — into a ready-to-run API request in cURL, Python, or TypeScript. Copy it and drop it straight into your code, no separate docs lookup needed.
+
+Next to it, a **Table / JSON** view toggle lets you flip your results between the familiar table view and the raw JSON API response, so you can see exactly what the API returns for the same search.
+
+## Saving filtered results
+
+When your filtered table looks right, click **"Save first X contacts"** (50, 150, 500, or 1,000) to convert the preview into a permanent Workspace table. The table is saved with the name automatically generated from your query, and you can rename it at any time.
+
+## Filters within a saved table
+
+The filter panel is also available **inside a saved table** (not just at the search stage). You can use it in two ways:
+
+- **Narrow your existing table** — Click the **Filter** button in the saved table toolbar to filter rows already in your table by any column value. This operates on contacts or companies already saved, not the full Lusha database.
+
+  <img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/133913807/9189ea74012a5e4732e2f04939be/352013aa-46b8-448c-836a-4a6d44a84d72?expires=1780056000&signature=d54b29e5893ed02c724bea0139c44b5b2c06a23764beb242f6e11bfb78840d9d&req=0dZszFn5pDcvlxv2%2Btxgps9sQlR2adtkeH5twfJTHRWDLmXHKwbciJCtIZY3%0AW%2FdhIOrWTCQY%2FI6gnrO8tWh7Mw%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+- **Add rows using filters** — Click **Add rows** in the toolbar and select **Use filters** to apply filter criteria and pull in new matching contacts or companies from Lusha's database. This expands your saved table based on structured filter criteria, alongside the AI Chat and "add similar" options.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/136390604/f37010190d871c9e09024340335f/image+%2812%29.png?expires=1780056000&signature=c1ed5c30c793888a3faba827ba696263b4ec0366a431d26b6285811f39edf39b&req=0dZpxlH6qjcslxv2%2Btxgpko%2FXE4naxYylOYb4%2FN12kRG46U6Z0L2joPNIlfA%0A3WSm3Tz2ZoLdMlPiIC3t1W%2FbvA%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />

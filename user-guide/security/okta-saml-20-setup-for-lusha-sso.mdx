@@ -1,0 +1,78 @@
+---
+title: "Okta SAML 2.0 setup for Lusha SSO"
+description: "Step-by-step guide to connecting Okta to Lusha using a custom SAML 2.0 app, including how to generate and copy the XML metadata file Lusha requires."
+---
+
+This guide is for organisations that have created a **custom SAML 2.0 app from scratch** in Okta — not the pre-built Lusha app from the Okta Integration Network. If you added Lusha directly from the Okta app gallery, use [How to set up SSO (single sign-on)](/user-guide/security/how-to-set-up-sso-single-sign-on) instead.
+
+At the end of these steps you'll have a working SSO connection. Step 3 covers exactly where to find the XML metadata file Lusha needs — the part most people get stuck on.
+
+Only Lusha **Admins** or **Managers on a Scale plan** can enable SSO. You'll also need admin access to your Okta organisation.
+
+## Before you start
+
+Have these values ready — you'll enter both into Okta during setup:
+
+- **Single sign-on URL (ACS URL):** <https://dashboard-services.lusha.com/v2/sso-okta>
+- **Audience URI (SP Entity ID):** <https://dashboard-services.lusha.com/v2/sso-okta>
+
+## Step 1: Create a SAML 2.0 app in Okta
+
+1. Sign in to your **Okta Admin Console**.
+2. Go to **Applications** → **Applications**, then click **Create App Integration**.
+3. Select **SAML 2.0** as the sign-in method and click **Next**.
+4. Enter an app name (for example: "Lusha") and click **Next**.
+
+## Step 2: Configure SAML settings
+
+1. Under **Configure SAML**, fill in the following fields:
+
+   - **Single sign-on URL (ACS URL):** <https://dashboard-services.lusha.com/v2/sso-okta>
+   - **Audience URI (SP Entity ID):** <https://dashboard-services.lusha.com/v2/sso-okta>
+   - **Name ID format:** EmailAddress
+   - **Application username:** Email
+2. Scroll to **Attribute Statements** and add these three rows:
+
+   - Name: **email** | Format: Unspecified | Value: **user.email**
+   - Name: **firstName** | Format: Unspecified | Value: **user.firstName**
+   - Name: **lastName** | Format: Unspecified | Value: **user.lastName**
+
+   The attribute names must be lowercase and exactly as shown — Lusha's SAML parser is case-sensitive.
+3. Click **Next**. Select **I'm an Okta customer adding an internal app**, then click **Finish**.
+
+## Step 3: Get your XML metadata from Okta
+
+This is where most users get stuck. Here is exactly where to find the XML file:
+
+1. On the app page, click the **Sign On** tab.
+2. Scroll to **SAML Signing Certificates**.
+3. Click **Actions** next to the active certificate → select **View IdP metadata**. The raw XML opens in a new browser tab.
+4. Select all (Ctrl+A on Windows, Cmd+A on Mac) and copy the content.
+
+If you don't see an active certificate, click **Generate new certificate** in that section, set it to active, then repeat the steps above.
+
+## Step 4: Connect to Lusha
+
+1. Go to your **Lusha dashboard** → **Account and Settings**.
+2. Enable the **Okta** toggle.
+3. Paste the XML you copied from Okta into the SAML field.
+4. Click **Test SSO**. Lusha runs a real sign-in against the metadata and only shows **SSO test passed** once it actually works — nothing is enforced on your team until you connect.
+5. Once the test passes, click **Connect**. You'll see a confirmation that the connection is active.
+
+## Step 5: Assign users in Okta
+
+1. In Okta, go back to the Lusha app and click the **Assignments** tab.
+2. Click **Assign** and choose **Assign to People** or **Assign to Groups**.
+3. Save your assignments.
+
+Done! Your team can now sign in to Lusha using their Okta credentials.
+
+<Warning>
+If you rotate or regenerate your signing certificate in Okta, repeat Steps 3 and 4 — SSO will stop working until the updated XML is pasted into Lusha and passes **Test SSO** again.
+</Warning>
+
+## Related articles
+
+- [How to set up SSO (single sign-on)](/user-guide/security/how-to-set-up-sso-single-sign-on) — for the pre-built Okta Integration Network app
+- [Custom SAML single sign-on](/user-guide/security/custom-saml-single-sign-on) — for other identity providers
+- [User roles and permissions](/user-guide/team-management/user-roles-and-permissions)

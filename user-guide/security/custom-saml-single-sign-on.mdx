@@ -1,0 +1,148 @@
+---
+title: "Custom SAML single sign-on"
+description: "How to set up a custom SAML 2.0 connection in Lusha for identity providers without a pre-built integration, including Google and Okta SAML configuration."
+---
+
+If your preferred identity provider doesn't have a pre-built integration with Lusha, you can use a custom SAML (Security Assertion Markup Language) connection to establish the link between the two systems. SAML is a standard for exchanging authentication and authorization data.
+
+<Note>
+Only users with Admin or Manager roles can set up a custom SAML connection.
+</Note>
+
+---
+
+## Configure your identity provider
+
+## Step 1: Gather data
+
+1. SSO post-backup URL: <https://dashboard-services.lusha.com/v2/sso-saml> (also known as the Assertion Consumer Service URL)
+
+2. Entity ID: <https://dashboard-services.lusha.com/v2/sso-saml>
+
+3. Your identity provider must ensure that a user is both authenticated and authorized before sending an assertion. If a user is not authorized, assertions should not be sent, and it is recommended that your identity provider redirects them to an HTTP 403 page.
+
+## Step 2: Configure attributes in IDP response
+
+The following attributes should be included in the IDP response:
+
+- NameID (Required)
+- Email Attribute (Required)
+- First Name Attribute (Required)
+- Last Name Attribute (Required)
+
+NameID (Required)
+
+```
+<saml:Subject> <saml2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"><email_address></saml2:NameID> </saml:Subject>
+```
+
+Email Attribute (Required)
+
+```
+<saml:Attribute Name="email" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"> <saml:AttributeValue xsi:type="xs:anyType">testuser@youremail.com </saml:AttributeValue> </saml:Attribute>
+```
+
+First Name Attribute (Required)
+
+```
+<saml:Attribute Name="firstName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"> <saml:AttributeValue xsi:type="xs:anyType">FirstName </saml:AttributeValue> </saml:Attribute>
+```
+
+Last Name Attribute (Required)
+
+```
+<saml:Attribute Name="lastName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"> <saml:AttributeValue xsi:type="xs:anyType">LastName </saml:AttributeValue> </saml:Attribute>
+```
+
+## Step 3: Certificates
+
+Public Certificate: Lusha requires that the SAML response be signed, and you will need to paste a valid X.509 .pem Certificate to verify your identity. This certificate is different from your SSL certificate.
+
+## Enable SAML SSO in Lusha
+
+Once you have configured your identity provider, you can enable SAML in Lusha.
+
+Copy the XML file, go to Account Settings, paste the file under the "Custom SAML 2.0" section, and click **Test SSO**. Lusha runs a real sign-in against the metadata you provided and only shows **SSO test passed** once it actually works — nothing is enforced until you connect. Once the test passes, click Connect.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259653/e562978db5a82a01db0f4125/Screen%2BShot%2B2023-01-26%2Bat%2B15_55_11.png?expires=1780056000&signature=9a6aad1d0ea0877ca4e66c81acce2b616ae235d11d77a2b1c5fca6734bbab324&req=0dZtwFH8qTRk2hj99dpg6pl9dFESiNRlskq6qu%2Flj3H%2B%2BD7NAZUQP9CFsXP6%0ApOJUFaKVZA%2BHzGAicNgaysJc%0A" alt="" style="max-width:100%;height:auto;" />
+
+<Note>
+If you want to connect Azure or Okta to Lusha, refer to the [Set up SSO (single sign-on)](/user-guide/security/how-to-set-up-sso-single-sign-on) article.
+</Note>
+
+---
+
+## Google SAML configuration
+
+1. Go to the **Google Admin console**.
+2. On the left sidebar, go to **Apps** → **Web and mobile apps**.
+3. Click the **Add app** dropdown → **Add custom SAML app**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45819381/431057fab40277a1477d221f55fb/AD_4nXegUNEVh_2_5bI1mWBe3y0tI5hLyNnxUfGw8cl3QT8-xzDcvjtS99_rVCdm4AhmRbEYY9W9uXLfeQCmSxHzc0vGTHVtFafrQqpAyKpT5ut-XwolZ_SgM122FNGHVpHfYkQLs1uLOQ?expires=1780056000&signature=edf06d02efc003b01297f161dbeba72ba3355657b8e2bd62a1ecf7c989dee0a5&req=1NBnxFH5pDZk2hj99dpg6puKahBXmkG7cy6AOWrpnaxhJ5afZcSgJr6RIoSl%0AESyQSjRyuwXKEuC6vCaYQnrK%0A" alt="" style="max-width:100%;height:auto;" />
+
+4. Under App details, name the app (for example: "Lusha saml"). The description is optional.
+
+5. Click Continue.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45819376/76623ecacb8096aac7037b621aaf/AD_4nXeun_q0y0M1mP_8RHgaoZrAPr2gytBPQ6-S2YKcp5zJMCM9cuREDXiudvqv7ADA0R5heWR0RBgInoFg6wigX3fSp8_J5e-FG9CeNaeQUajaPtVlObpdxC-xHQjcpHSsQxxhpIZz?expires=1780056000&signature=3cf56795244adff3ff7d796ab010fbc73ca12143ea7e7998b947d4791532692a&req=1NBnxFH5qzFk2hj99dpg6hNpNe0juvMp7%2FcIzLlR6eYGKTJbZ%2FeXldX%2Fsp5t%0A53LYC90evjWswfFxYT8aHi9a%0A" alt="" style="max-width:100%;height:auto;" />
+
+6. Google identity provider details (IDP) — download the IDP metadata; you'll need it later.
+
+7. Click Continue.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45819377/15f147c7f7b4809249747eaedfdc/AD_4nXfDgDL3kHpAynxvZcDM0E1fRrPXDUHWNm6kuo-n7hO4ZMpAnEAxjmDAsQ6tiHo3Lh2xzEFEPvQT6dDkqXJ85haPIlGweLyCnY6PpxUKajOrAMmyiwFH82LwvyGxlPAagXDBqss51g?expires=1780056000&signature=f88724ad56f37fa79b745aa23e374e5f45c2631e2487b0f2d0d5f9b89c91915b&req=1NBnxFH5qzBk2hj99dpg6iN%2Ff7EOYmU1L%2B1rSTTg16BvjR0mc6Q8Qqhob4Rj%0AXfaGh7E9YLFs5e0ANitMr6uB%0A" alt="" style="max-width:100%;height:auto;" />
+
+8. Enter Service provider details — ACS URL and Entity ID: <https://dashboard-services.lusha.com/v2/sso-saml>
+
+9. Change Name ID format to: EMAIL
+
+10. Click Continue.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45819379/f6c0e0de26154ab64786979ddcc3/AD_4nXelLjiX0zDXAF1wimc8gxw8TeNJIUc0QDVTx-DoPaGVSEKVbcUCe5B1-sHPkJHKKIbWOWKUe59IFcuM2KoBFN0I8agrQz28uDo44KVPWr2h-119Wolk37wSFa6TbvOGrZOMjzW0rA?expires=1780056000&signature=3dda32611b2825bc91eeca97d2f00ca58a5e79838235eebed5dd0a444af745cc&req=1NBnxFH5qz5k2hj99dpg6jOJHXP4CUotfQd0EaCIiMAHmkyTeMTLmY5GqpUg%0AfDjEXDv3Ix08weCU7%2Bo4QAhP%0A" alt="" style="max-width:100%;height:auto;" />
+
+11. Attribute mapping:
+
+- Click **Add mapping** to add value for SAML response (click 3 times)
+- Use the following attributes and values:
+
+| Google directory attribute | App attribute |
+| --- | --- |
+| Primary email | email |
+| First name | firstName |
+| Last name | lastName |
+
+12. Click Finish.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45819375/775ae51294bf0156ec510700d27d/AD_4nXeizobEpts6prYAFcno37AdYDfJ0FnVS_t6JZ4dA61TxRjPqsu1TFjTEjiXqTHyudPGU7CFa2_P_qDfNnDY1ffM0CZOxrFr6X3yeWhVJF44WpJfW_Y-1xX0rSF1VZZazQN2vq3oMg?expires=1780056000&signature=08ce55818700387fdec8f78605a488929c3e36e0257621ffc58b50c351f4f74a&req=1NBnxFH5qzJk2hj99dpg6tSxaFWoWtd7F4Sp6vKNNrjcjgrwU0Ccdk4WQxYz%0AE6aSrOJBJEdLK5YaPn95vh6V%0A" alt="" style="max-width:100%;height:auto;" />
+
+13. You should then be able to see the app on the Web and mobile apps page.
+
+14. Click the Lusha app.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45820177/0ba12547086e4226854f442bc8b5/Screenshot+2025-04-10+at+14_16_11.png?expires=1780056000&signature=99f080b9a2136c7ce2c8f3da29001d5f760e67765663741604a4e2adbfe5c09e&req=1NBnx1j7qzBk2hj99dpg6kLgpQG%2B4%2BfBm8HGqhn6LcCib7XOUFjdccYCRyHi%0ASXKqEtO87qJRCJkYhxZ3JP9X%0A" alt="" style="max-width:100%;height:auto;" />
+
+15. Click the User Access box (click the box itself — not "View details" or "Learn more"):
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45819383/700dd8006a24fa285428efe436fa/AD_4nXf-6pPW-jBXCXy_vKXZfxptAkI2aMgsIZPjH-7BeDqvPH75SXK5GqHGHmlwJJnEhD6AKhIavvQu7eUq76-hW5SCOZvf3DS8SwhAxNdfIwUl83haj-2v5rbSYeYmjlKCJMZQgOvYig?expires=1780056000&signature=e953cdb705e3e85b9bcb1c89234f5dc5c0b36b4e33de827f011b164704ce3f5b&req=1NBnxFH5pDRk2hj99dpg6pYaN9%2FtVRZ5JjH1hro7HMepu2aMfM0%2Bu%2FAZt5zg%0AhNtqYQrJ%2Fke%2FlBHSbVKHE5Vh%0A" alt="" style="max-width:100%;height:auto;" />
+
+16. Change service status to ON.
+
+17. Click Save.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45819385/fc5ecda73dfd60797ba5171c8846/AD_4nXfRBtusQQXXkSusc5FVrV4ei4yYGdWOU3I8OhRytBAgHCUWxrjXeiLBegTmmgRVJVcoljQ9w3CZYB3yyQUz_mcbsrl_8HQhj6YQeKbrBCIfToz3uDozV11NlRpsE6fAohfVPsEjIw?expires=1780056000&signature=959d503166051a0e3e129fce90efc80d9d08169363472f81beaea607882e117a&req=1NBnxFH5pDJk2hj99dpg6o2pzOBFQQk8m2Sl3Pe8lQZ%2B2CTEZGCEZFgupny4%0AQcWZOsb0aNR4cJjAgA2U25nz%0A" alt="" style="max-width:100%;height:auto;" />
+
+18. Go to Account Settings on your Lusha account and enable SAML by clicking Custom SAML 2.0.
+
+19. Copy the entire content of the IDP file you downloaded earlier.
+
+20. Paste it into the custom SAML box.
+
+21. Click Connect.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/45819386/57bced5a281086a0f9bd03e18f5b/AD_4nXfw5Ls9yc1WHPwbVjMxirj3GjbG8PlggQmoTbrn3YzWmM4kyWMMsnds4Ld8eG-SamA-fCAvTVbrIdnWfwtaATttb-HMiAk5CdwgQFPCZMvH2wVDcbWbhGuxxl-vexqpmOPbTpVIFw?expires=1780056000&signature=c81a3981868dd74f4f54865428bd770a6069f21102fdfb7b281e76c31f881a5d&req=1NBnxFH5pDFk2hj99dpg6j2JpPLyM28Cp0xEtX1t0YtEkn3b1xoGpNmhlCVr%0Axw%2FUpI1qm1IhKCvNkAVEqOTy%0A" alt="" style="max-width:100%;height:auto;" />
+
+22. Go back to the Google Admin console → Apps → Web and mobile apps → Lusha → User Access - View Details.
+
+23. Grant access to all users in your Lusha account.
+
+24. Done! All users should be able to connect via SSO.

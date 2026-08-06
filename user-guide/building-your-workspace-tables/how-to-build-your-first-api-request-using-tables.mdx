@@ -1,0 +1,83 @@
+---
+title: "How to Build Your First API Request Using Tables"
+description: "Learn how to generate a ready-to-use API request directly from a search you build in Tables."
+---
+
+Instead of writing your first API request from scratch, you can build and validate your search in Tables, then copy the matching API request in your preferred language. This lets you confirm that your search returns the right results before you write a single line of code.
+
+This makes it easier to:
+
+- Build complex searches using filters and signals.
+- Verify that your search returns the expected results before writing code.
+- Skip manually constructing API request payloads.
+- Start from a working request in cURL, Python, or TypeScript.
+
+In this article, you'll learn how to build a search in Tables, generate the matching API request in cURL, Python, or TypeScript, and copy it into your workflow.
+
+## Before you begin
+
+Make sure you have the following:
+
+- An active Lusha account with API access.
+- An API key — copy it from your [API Dashboard](http://dashboard.lusha.com/api).
+
+<Note>
+  API access is required to use the **Get API Request** feature. If you don't see this option, check with your account Admin.
+</Note>
+
+## Plan Availability
+
+Available on all plans.
+
+## Step 1: Build your search in Workspace
+
+1. Open Workspace from the left navigation by pressing **+ New table**.
+2. Use AI search or the **Filter** panel on the left to build your search. You can filter by location, industry, job title, signals, and more.
+3. Review the results in the table. Adjust your filters until the contacts or companies shown match what you're looking for.
+
+<Note>
+  The table view lets you validate your search results visually — exactly what the API will return — before you run any code.
+</Note>
+
+## Step 2: Generate the API request
+
+1. Once your search is ready, click **Get API Request** at the top of the page.
+2. Choose your preferred language from the options:
+
+   - cURL
+   - Python
+   - TypeScript
+
+3. The generated request updates automatically to match your current search.
+
+<Note>
+  The **Get API Request** panel stays in sync with your filters. If you change your search, the request updates to reflect it — no need to regenerate manually.
+</Note>
+
+## Step 3: Copy and use the request
+
+1. Click **Copy** to copy the generated request to your clipboard.
+2. Paste it into your preferred development environment, script, or API client.
+3. If your account has an API key, **Copy** automatically pastes the request with your real, unmasked key already in place — it's ready to run as-is. If your account has no API key, the request keeps the `LUSHA_API_KEY` placeholder; replace it with your own key before running.
+
+<Note>
+  The on-screen preview always shows your key masked (prefix + bullets), even though **Copy** pastes the full key. If the key is still loading, **Copy** stays available and pastes the placeholder until the secret is ready.
+</Note>
+
+<Warning>
+  Keep your API key private. Since **Copy** now includes your real key, avoid pasting the copied request into public repositories, shared docs, screenshots, or client-side code.
+</Warning>
+
+## What happens next
+
+Once you run the request, you'll receive the same results you validated in Tables — formatted as a JSON response. Use this as the starting point for your integration instead of building the request body manually.
+
+You're all set! Now you can build and validate API searches in Tables before writing a single line of code.
+
+---
+
+**Related articles:**
+
+- [Workspace: AI-Powered Table Building](/user-guide/introduction-and-getting-started/workspace-ai-powered-table-building)
+- [Using Workspace Filters](/user-guide/building-your-workspace-tables/using-workspace-filters-contact-and-company-filter-panel)
+- [Exporting from a Workspace Table](/user-guide/managing-and-exporting-data/exporting-from-a-workspace-table)

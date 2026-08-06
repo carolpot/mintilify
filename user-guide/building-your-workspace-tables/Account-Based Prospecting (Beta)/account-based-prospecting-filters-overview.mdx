@@ -1,0 +1,58 @@
+---
+title: "Account-Based Prospecting Filters Overview"
+description: "Learn how to leverage live CRM filters inside Lusha Search to cleanly target net-new accounts or prioritize existing customers and prospects."
+---
+
+Account-Based Prospecting (Beta) seamlessly links your active CRM data directly with the Lusha Search engine. Instead of jumping between tabs or manually referencing export sheets, you can filter your prospecting queues based on whether a person or company already exists in your sales pipeline.
+
+This ensures you avoid wasting credits on existing records, keep your database clean, and build hyper-targeted outbound tables.
+
+---
+
+## **Before You Start**
+
+To utilize Account-Based Prospecting filters, your workspace must meet a few basic connection requirements:
+
+*   **Active CRM Integration:** Your organization must have a connected CRM account. Supported platforms natively include **Salesforce** (with HubSpot support coming soon).
+*   **Admin Setup:** A Lusha Admin must authenticate the integration at the account level to enable cross-database matching.
+*   **Field Mapping:** Ensure duplicate matching criteria (such as email domains or company names) are properly mapped within your Lusha integration settings.
+
+---
+
+## **Core Prospecting Filters**
+
+The Account-Based Prospecting toolkit features two primary filters designed to shape your searches around existing pipeline data:
+
+### **1. "Not in my CRM" Filter**
+This filter automatically cross-references your current search results with your CRM database and hides any record that is already saved.
+
+*   **Best Used For:** Clean net-new outbound prospecting campaigns.
+*   **Credit Savings:** Completely prevents your sales team from accidentally spending Lusha credits to reveal details for contacts or accounts that you already own.
+*   **How it Works:** It analyzes Lead, Contact, and Account objects simultaneously, eliminating overlaps in a single click.
+
+### **2. "In my CRM" / "Search in my CRM" Filter**
+This filter performs the exact opposite action by narrowing your Lusha search results down *only* to records that already exist inside your sales ecosystem.
+
+*   **Best Used For:** Account expansion, data enrichment, and tracking buying signals.
+*   **Cross-Tier Targeting:** Easily locate new stakeholders within an existing customer account (e.g., finding the new Director of IT at an account your team closed last year).
+*   **Data Health:** Use it to quickly surface and enrich missing phone numbers or work emails for accounts currently sitting stale in your pipeline.
+
+---
+
+## **How to Apply the Filters**
+
+Applying these filters takes just a couple of steps from your primary search dashboard:
+
+1.  Navigate to **Search (Prospecting)** or open a **Workspace** view from the left-side navigation panel.
+2.  Locate the filter bar at the top of your search query results.
+3.  Click the **CRM Filter** dropdown (or look for the platform-specific toggle icon, such as the Salesforce cloud).
+4.  Select your desired rule:
+    *   Choose **Not in my CRM** to isolate net-new targets.
+    *   Choose **In my CRM** to restrict the search to existing accounts.
+5.  Your results will instantly refresh to display only matching records.
+
+<Tip>
+  **Visual Indicators:** When browsing prospects with active filters, matching records will often display a dedicated CRM icon directly next to the contact or company name, signaling an active match inside your source system.
+</Tip>
+
+By maintaining strict control over how your live pipeline intersects with Lusha's database, your outbound teams can operate with maximum context and zero wasted effort.

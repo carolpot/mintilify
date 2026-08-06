@@ -1,0 +1,96 @@
+---
+title: "HubSpot common errors"
+description: "How to diagnose and fix the most common HubSpot integration errors in Lusha, including field mapping issues, permissions, token errors, and duplicate contacts."
+---
+
+When exporting contacts from Lusha to HubSpot, you may encounter errors related to field mapping, permissions, or token expiry. This article covers the most common errors and how to fix each one.
+
+<Note>
+Most of these issues can only be resolved by a HubSpot Super Admin and a Lusha Admin. In many cases, this is the same person.
+</Note>
+
+## "X was not one of the allowed options"
+
+This error occurs when a predefined value in your Lusha field mapping doesn't match the exact internal value configured in HubSpot's picktable — often due to case sensitivity.
+
+To fix this, check the field's internal value in HubSpot — the label and the value may differ. For example, the label may show "In Progress" while the actual value is "IN\_PROGRESS". Update your Lusha field mapping to use the exact internal value.
+
+## Unable to connect Lusha and HubSpot
+
+The error "Couldn't complete the connection, you don't have permissions to connect this app" means your HubSpot user doesn't have sufficient integration permissions.
+
+To fix this, refer to HubSpot's documentation on [resolving integration permissions errors](https://knowledge.hubspot.com/integrations/resolve-a-request-for-integration-permissions-error) and the [HubSpot user permissions guide](https://knowledge.hubspot.com/settings/hubspot-user-permissions-guide). If needed, temporarily grant the user Super Admin permissions, reconnect the integration, then revert their permissions.
+
+## Missing or invalid refresh token
+
+API tokens expire periodically. To fix this:
+
+1. Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in Lusha and disconnect HubSpot.
+2. In a new tab, log out of HubSpot.
+3. Refresh Lusha and reconnect the HubSpot integration.
+
+## Duplicate property value
+
+This error occurs when a field (like Contact Owner) has been added to your Lusha field mapping even though HubSpot populates it automatically during export — resulting in a duplicate value.
+
+To fix this, remove the duplicate field from your Lusha field mapping.
+
+## "Reaching HubSpot API has failed" (read-only property)
+
+Some HubSpot properties are read-only and can't be written to, even though they appear in the field mapping dropdown. Trying to populate them will cause this error.
+
+To fix this, remove the read-only property from your Lusha field mapping.
+
+## "Property values were not valid / do not exist"
+
+This error usually means the field mapping is pointing to a different HubSpot account than the one you're connected to.
+
+To fix this, check which HubSpot account you're logged into (click your avatar in the top-right of HubSpot). Switch to the correct account, then ask your Lusha Admin to disconnect and reconnect the HubSpot integration, selecting the correct account when prompted.
+
+## "Names for properties should be lowercase and have less than 100 characters"
+
+A value Lusha is trying to export is too long for the HubSpot field's 100-character limit. This is most often the Company Website URL or Industry field.
+
+To fix this, either ask your HubSpot Admin to increase the character limit for that field, or remove the field from your Lusha field mapping.
+
+## Only the first last name was exported
+
+Lusha currently supports exporting one last name only. As a workaround, add a **Full Name** field to your [Lusha field mapping](https://dashboard.lusha.com/lusha-integrations/advancedSettings/hubspot/fieldMapping) and create a matching property in HubSpot first.
+
+## Lusha sidebar not appearing in HubSpot
+
+1. Open the Lusha extension and click **More**.
+2. Make sure **Enable Lusha Everywhere** is toggled on. If it's already on, toggle it off and back on, then restart your browser.
+3. If the issue persists, open your browser's developer tools, right-click the refresh button, and select **Empty Cache and Hard Reload**.
+
+## "Failed to save contact" (INVALID\_PHONE\_NUMBER)
+
+The phone number format exported from Lusha doesn't match the format required by your HubSpot phone property. Review your field mapping and ensure the Lusha phone format is compatible with the HubSpot field type.
+
+<Note>
+The phone number format exported by Lusha reflects our database structure and cannot be changed on our end.
+</Note>
+
+## Contacts are being saved as duplicates in HubSpot
+
+When Lusha pushes a contact to HubSpot, HubSpot uses the **email address** as its primary deduplication key. If a contact with that email already exists in HubSpot, it updates the existing record rather than creating a new one — but only if the email field is included in your Lusha field mapping.
+
+If contacts are appearing as duplicates, work through these checks in order:
+
+## 1. Confirm the email field is mapped
+
+Go to **Settings → Integrations → HubSpot → [Field mapping](https://dashboard.lusha.com/lusha-integrations/advancedSettings/hubspot/fieldMapping)** and verify that the Lusha **Email** field is mapped to the HubSpot **Email** property. Without this mapping, HubSpot can't match the incoming contact to an existing record and will create a new one instead.
+
+## 2. Check for email mismatches
+
+If the contact has more than one email address in Lusha (for example, a work and a personal email), and the primary email being pushed doesn't match what's already stored in HubSpot, HubSpot treats the contact as new. Make sure the email you're exporting matches the contact's existing HubSpot record.
+
+## 3. Merge duplicates that already exist
+
+For duplicates already in HubSpot, use HubSpot's built-in [contact merge tool](https://knowledge.hubspot.com/contacts/merge-contacts) to consolidate them. Going forward, ensuring the email field is mapped will prevent new exports from creating additional duplicates.
+
+<Note>
+HubSpot deduplicates contacts by email address. Company deduplication uses the company domain instead. If you're seeing duplicate companies, check that the domain field is mapped correctly.
+</Note>
+
+If none of the above resolves your issue, contact Lusha Support using the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com).

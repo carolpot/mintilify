@@ -1,0 +1,103 @@
+---
+title: "Lusha Connector on n8n: Data Enrichment"
+description: "Connect Lusha to n8n to automate contact and company enrichment in self-hosted or cloud workflows."
+---
+
+[n8n](https://n8n.io) is an open-source workflow automation platform that lets you build powerful, flexible automations - with the option to self-host for complete data control. The Lusha connector for n8n brings verified contact and company data into your n8n workflows without writing a single API call from scratch.
+
+<Note>
+The Lusha n8n connector is available to all users with an active API key.
+</Note>
+
+**What you can do with Lusha on n8n**
+
+- Enrich a single contact using email, phone, or LinkedIn URL
+- Enrich multiple contacts in bulk (up to 100 records per run)
+- Search for contacts or companies using prospecting filters
+- Trigger enrichment from any n8n-supported event (webhooks, CRM updates, form submissions, schedule/cron)
+- Self-host your entire workflow for full data residency control
+
+---
+
+## Available Actions
+
+| Action | What it does |
+|---|---|
+| Enrich Contact (Single) | Returns verified data for one contact using email, LinkedIn URL, or phone |
+| Enrich Contacts (Bulk) | Enriches up to 100 contacts in a single node run |
+| Search Contacts | Find contacts using job title, seniority, location, industry, and other filters |
+| Search Companies | Find companies using firmographic filters |
+| Enrich from Search | Combines search + enrichment in one step |
+
+---
+
+## Available Triggers
+
+n8n supports any trigger to kick off a Lusha enrichment workflow, including:
+
+- New webhook received
+- Schedule (cron) - e.g. enrich new CRM records daily at 8am
+- App event - e.g. new lead added in HubSpot, new row in Google Sheets
+- Manual trigger - run enrichment on demand
+
+---
+
+## How to Connect Lusha to n8n
+
+### Step 1: Get your Lusha API key
+
+1. In your Lusha dashboard, go to **Account Settings** (top-right icon) → **API**.
+2. Copy your API key. Only Admins and Managers can view and manage API keys.
+
+### Step 2: Add Lusha to n8n
+
+1. In n8n, open or create a workflow.
+2. Click **Add node** and search for **Lusha**.
+3. Select the Lusha node and click **Create new credential**.
+4. Paste your API key into the **API Key** field and save.
+
+### Step 3: Configure your Lusha node
+
+1. Choose your **Action** (e.g. Enrich Contact).
+2. Map the input fields from your previous node - for example, map an email column from a Google Sheets row to the Lusha "Email" input.
+3. Click **Execute node** to test.
+4. Review the output data, then connect it to your next node (e.g. update a CRM record, send a Slack alert).
+
+---
+
+## Top Plays with n8n + Lusha
+
+- **[Auto-qualify 3-field inbound forms](https://n8n.io/workflows/13343-enrich-form-leads-with-lusha-waterfall-enrichment-hubspot-and-slack/)** - capture name, company, and email from any form, enrich in n8n, and route qualified leads to your CRM in seconds
+- **[Auto-enrich new CRM leads](https://n8n.io/workflows/13344-enrich-new-hubspot-contacts-with-lusha-and-alert-reps-in-slack/)** - trigger enrichment whenever a new contact is added to HubSpot or Salesforce
+- **[Always-on inbound to outbound](https://n8n.io/workflows/13348-score-and-enrich-inbound-leads-with-lusha-slack-and-hubspot/)** - continuously enrich and qualify inbound leads on a schedule
+- **[Auto-enrich companies mentioned in Slack](https://n8n.io/integrations/lusha/and/slack/)** - detect company names in Slack messages and enrich with firmographic data automatically
+
+[View all Lusha Plays →](https://www.lusha.com/campus/plays/)
+
+---
+
+## Why Use n8n Over Other Connectors?
+
+n8n's self-hosting option means your data never leaves your own infrastructure - ideal for teams with strict data residency or compliance requirements. It also has no per-task pricing, making it cost-effective for high-volume enrichment workflows.
+
+See how n8n compares to other Lusha connectors → [Lusha Connectors: Centralized Automation Hub](https://info.lusha.com/en/articles/571279-lusha-connectors-centralized-automation-hub)
+
+---
+
+## FAQs
+
+**Do I need to self-host n8n to use Lusha?**
+
+No. n8n offers a cloud-hosted version at [n8n.io](https://n8n.io). Self-hosting is optional and gives you additional control over data residency.
+
+**How many records can I enrich per node run?**
+
+The bulk enrichment action supports up to 100 records per run. For larger lists, use multiple runs or a loop node.
+
+**Does each enriched contact cost a credit?**
+
+Yes. Each successfully enriched contact or company costs 1 credit. Records where Lusha finds no match do not use credits.
+
+**Where do I find my API key?**
+
+Go to your Lusha dashboard → Account Settings (top-right icon) → API → Manage API Keys. Admin or Manager role required.

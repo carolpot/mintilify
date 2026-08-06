@@ -1,0 +1,170 @@
+---
+title: "Account-Based Prospecting (Beta)"
+description: "Learn what CRM Filters are, how to apply them in Workspace, and how to get the most out of your Salesforce data when prospecting."
+---
+
+CRM Filters let you use your Salesforce data directly inside Lusha's Workspace. Instead of searching Lusha and then manually cross-checking your CRM, you apply CRM-based criteria right from the filter panel — and get results that reflect both Lusha's database and your live pipeline in a single query.
+
+This article covers the **Search in My CRM** filter, which enables your prospecting results to contacts and companies that match specific criteria from your Salesforce, such as opportunity stage, account type, or record ownership.
+
+Learn more about the "Not in my CRM" filter (see the Account-Based Prospecting section under Building Your Workspace Tables).
+
+**💡 Note:** CRM Filters are currently supported for Salesforce only. HubSpot support is coming soon.
+
+## Before You Start
+
+To use CRM Filters, you'll need:
+
+- **A connected Salesforce account.** Your admin must connect Salesforce at the account level for the "Not in my CRM" feature.
+- **Your individual Salesforce login.** Even if your admin has already connected to Salesforce, you need to authenticate with your own credentials so Lusha can show your personal Book of Business.
+- **Up to 24 hours after first connection.** When you connect Salesforce for the first time, Lusha syncs and matches your CRM data. CRM Filters are unavailable until this is complete.
+
+<Warning>
+The first sync can take up to 24 hours.
+</Warning>
+
+## How to Apply CRM Filters
+
+1. Go to **Workspace** and open the **Contact filters** or **Company filters** panel.
+2. Scroll down to the **CRM** section and expand **Search in My CRM**.
+3. Choose your filter type (e.g., **Opportunity Stage**, **Account Owner**, **Account Type**).
+4. Select the operator: **Include** (show only these) or **Exclude** (hide these).
+5. Choose a value from the dropdown. Values are pulled from your Salesforce in real time, including any custom picktable values.
+6. Optionally, add more CRM filters or combine with standard Lusha filters (job title, location, industry, and more).
+7. Your results update to reflect all applied filters.
+
+**💡 Note:** Each filter type takes approximately 4 seconds to load because Lusha fetches your exact Salesforce values in real time. If you select three filters in sequence, expect around 12 seconds of total loading time.
+
+<Note>
+When filters are applied, the result count updates to show how many contacts or companies matched your criteria. You'll also see a note like: *"Salesforce returned 10,000 records, 5,500 matched in Lusha."*
+</Note>
+
+## Available CRM Filters
+
+The table below shows which filters are available when searching Contacts versus Companies.
+
+| **Filter** | **Searching Contacts** | **Searching Companies** |
+| --- | --- | --- |
+| Account Owner | Contacts at accounts owned by you or your team | Accounts owned by you or your team |
+| Account Type | Contacts at accounts of this type (e.g. Customer, Partner, Prospect) | Accounts of this type |
+| Contact Owner | Contacts owned by you or your team | Companies where you or your team own at least one contact |
+| Opportunity Owner | Contacts at accounts with opportunities owned by you or your team | Companies with opportunities owned by you or your team |
+| Opportunity Stage | Contacts at accounts with opportunities in this stage | Companies with opportunities in this stage |
+| Opportunity Close Date | Contacts at accounts with deals closing in this timeframe | Companies with deals closing in this timeframe |
+| Opportunity Lead Source | Contacts at accounts with opportunities from this source | Companies with opportunities from this source |
+| Opportunity Type | Contacts at accounts with this opportunity type | Companies with this opportunity type |
+| — Lead Owner | **Contacts only.** Leads owned by you or your team | Not available when searching Companies |
+| — Lead Status | **Contacts only.** Leads with this status | Not available when searching Companies |
+
+**💡 Note:** Lead Owner and Lead Status only apply to Contact searches. Leads are individual people, not companies. When searching Companies, these filters are automatically hidden.
+
+**💡 Note:** Lead filters cannot be combined with Opportunity, Account, or Contact filters. If you select a Lead filter, the others are disabled — and vice versa. Clear your current filters to switch.
+
+## Include vs. Exclude: How Operators Work
+
+**Include** — Shows only records that match your criteria.
+
+- Example: **Include Opportunity Stage = "Negotiation"** → Shows contacts at accounts with deals in the Negotiation stage.
+
+**Exclude** — Hides records that match your criteria and shows everything else.
+
+- Example: **Exclude Account Type = "Customer"** → Hides your existing customers and shows prospects and partners only.
+
+**Combining operators:** You can mix Include and Exclude across different filters. Multiple values within the same filter use OR logic. Filters across different types use AND logic.
+
+Example: **Include Account Owner = "My accounts"** AND **Exclude Account Type = "Customer"** → Shows your prospect and partner accounts only.
+
+## Data Freshness and Sync Timing
+
+Not all CRM data appears in Lusha at the same speed. Here's what to expect:
+
+| **Change type** | **When it appears in Lusha** |
+| --- | --- |
+| Updates to existing records (e.g. Opportunity Stage, Account Type, Contact Owner) | Immediately |
+| New records created in Salesforce (new Leads, Contacts, Accounts, Opportunities) | Within 8 hours (batch sync) |
+| First-time CRM connection | Up to 24 hours |
+
+If your data is more than 24 hours old, you'll see a warning. If the connection has expired, you'll be prompted to reconnect.
+
+## Understanding Your Results
+
+### Why do I see fewer results than expected?
+
+Two things can reduce your result count:
+
+- **Match rate (~55%).** Lusha matches your Salesforce records to contacts in its database using email, name, and company. About 55% of Salesforce records match successfully. If your filters return 10,000 Salesforce records, expect roughly 5,500 results in Lusha. We're working to improve this match rate in a future release.
+- **Result cap.** CRM Filters return up to 50,000 results per query. If your criteria match more records, Lusha shows the 50,000 most recently updated and prompts you to narrow your filters.
+
+### What does "Contact Owner" show when I search Companies?
+
+When you filter Companies by **Contact Owner = My contacts**, you see companies where you own **at least one** contact — not necessarily all contacts. For example, if Acme Corp has 10 contacts and you own 2 of them, Acme Corp still appears in your results.
+
+### How do Opportunity filters work when searching Contacts?
+
+Opportunity filters identify accounts that have matching opportunities, then return contacts **at those accounts**. For example, **Opportunity Stage = Negotiation** returns all contacts at accounts with a deal currently in the Negotiation stage. This is useful for finding additional stakeholders at your active deals.
+
+## CRM Filters vs. "Not in My CRM"
+
+These two features serve opposite purposes and cannot be used at the same time:
+
+| **Feature** | **Purpose** | **When to use** |
+| --- | --- | --- |
+| "Search in My CRM" (CRM Filters) | Work within your pipeline. Shows only records matching your CRM criteria. | Expanding existing accounts, multi-threading deals, enriching pipeline contacts. |
+| "Not in My CRM" | Avoid duplicates. Excludes all records already in your Salesforce. | Finding net-new prospects that aren't in your CRM yet. |
+
+**⚠️ Important:** You can only have one of these active at a time. Turn off one before enabling the other.
+
+## Troubleshooting
+
+### CRM Filters aren't showing up
+
+1. Go to **Settings → Integrations** and confirm Salesforce is connected.
+2. Confirm you've logged in individually with your Salesforce credentials (not just the admin account-level connection).
+3. Check the sync status. If the initial 24-hour sync isn't complete, filters will be unavailable.
+4. Refresh your browser and try again.
+
+### My Salesforce connection expired
+
+Click **Reconnect to Salesforce** in the CRM section. Connection tokens typically expire every 90 days for security reasons.
+
+### Salesforce API limit reached
+
+You'll see the message: *"Salesforce API limit reached. CRM filters are temporarily unavailable until midnight PST."* This means your organization has hit Salesforce's daily API call limit.
+
+- Wait for the daily quota to reset at midnight PST.
+- Contact your Salesforce admin — they can monitor usage or request a limit increase.
+- Regular Lusha prospecting (without CRM Filters) is still available.
+
+### Zero results returned
+
+If your search returns no results, check the following:
+
+- Your CRM filter criteria returned 0 matching records from Salesforce. Try broadening your filter values.
+- Salesforce returned records, but none matched in Lusha's database. This can happen when contacts have recently changed jobs. Try different filters.
+- You may have incompatible filters selected (e.g., Lead filters combined with Opportunity filters). Clear conflicting filters and try again.
+
+**If none of the above helped, and the issue persists,** contact Lusha Support.
+
+## FAQs
+
+**Will using CRM Filters consume credits?**
+
+No. Applying a CRM Filter does not consume credits. Credits are only used when you reveal contact details or enrich records.
+
+**Can I filter by a specific team member (e.g., "owned by Sarah Johnson")?**
+
+Not yet. Currently you can filter by **My records** (records you own) or **Team records** (records owned by anyone in your org). Filtering by a specific user is coming in a future release.
+
+**Can I save a search that includes CRM Filters?**
+
+Save search with CRM Filters is not available yet. This is planned for a future release.
+
+**Do CRM Filters work in real time?**
+
+Changes to existing records (like updating an Opportunity Stage) appear immediately. New records created in Salesforce take up to 8 hours to appear, because they go through a batch sync process.
+
+**Which CRMs are supported?**
+
+Salesforce only, for now. HubSpot support is planned for a future release.
+
+You're all set! With CRM Filters, your Lusha searches are grounded in your actual pipeline — so you can find the right contacts at the right accounts, every time

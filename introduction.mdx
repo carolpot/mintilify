@@ -26,7 +26,20 @@ The Lusha API gives you programmatic access to one of the world's largest B2B co
   <Card title="Account" icon="chart-bar" href="/account/usage">
     Check your credit balance and usage at any time with the account usage endpoint.
   </Card>
+  <Card title="Decision Makers" icon="user-tie" href="/decision-makers/overview">
+    Resolve a list of companies straight to the contacts most worth reaching at each one.
+  </Card>
+  <Card title="Website Visits" icon="globe" href="/website-visits/overview">
+    Turn anonymous website traffic into a ranked list of companies to prospect.
+  </Card>
 </Columns>
+
+## How the API is organized
+
+The API is built around a small set of core data types — **contacts**, **companies**, **signals**, and **lookalikes** — accessed through a consistent set of patterns: search, enrich, search-and-enrich, and filter-based prospecting. Two additional building blocks sit alongside these:
+
+- **Tables** — persistent, configurable lists of contacts or companies. Save results into a table directly from Enrich, Prospecting, Signals, or Lookalikes calls by passing a `tableId`, or manage tables and their rows/columns through dedicated endpoints. Tables are shared with the Workspace UI. See the [Tables API guide](/user-guide/lushas-api/tables-api).
+- **Waterfall Reveal** — an opt-in enhancement to contact enrichment. When Lusha's own data has no match for a field, pass `waterfallReveal` alongside `reveal` to fall through to your enabled third-party providers instead of returning an empty field. Requires Data Waterfall enabled under **Account > Waterfall** in the dashboard.
 
 ## Base URL
 
@@ -50,24 +63,40 @@ The `contact.isCreditCharged` field in enrichment responses tells you whether a 
 
 ## Your first API call
 
-The example below fetches enriched contact data for a person by first name, last name, and company domain. Replace `YOUR_API_KEY` with your actual key.
+The example below finds and enriches a contact by first name, last name, and company domain in a single call. Replace `YOUR_API_KEY` with your actual key.
 
 ```bash
-curl --request GET \
-  --url 'https://api.lusha.com/v2/person?firstName=Dustin&lastName=Moskovitz&companyDomain=lusha.com' \
-  --header 'api_key: YOUR_API_KEY'
+curl --request POST \
+  --url https://api.lusha.com/v3/contacts/search-and-enrich \
+  --header 'api_key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contacts": [
+      {
+        "clientReferenceId": "my-ref-1",
+        "firstName": "Dustin",
+        "lastName": "Moskovitz",
+        "companyDomain": "lusha.com"
+      }
+    ],
+    "reveal": ["emails", "phones"]
+  }'
 ```
 
-A successful response returns a `contact` object containing email addresses, phone numbers, job title, location, and social links.
+A successful response returns a `contacts` array with each matched profile's email addresses, phone numbers, job title, location, and social links.
 
 <Tip>
-  You can also search by `email`, `linkedinUrl`, or `personId` instead of name and company. Providing more identifiers generally improves match accuracy.
+  You can also identify a contact by `linkedinUrl`, `email`, or Lusha `id` instead of name and company. Providing more identifiers generally improves match accuracy. See [Search and Enrich Contacts](/enrichment/search-and-enrich-contacts) for the full field reference.
 </Tip>
 
 <Info>
-  Lusha is rolling out a V3 API (endpoints under `/v3/`) alongside the current endpoints shown in this guide. V2 and V3 run in parallel, and V2 endpoints keep working — see the [V3 migration guide](https://docs.lusha.com/tutorials/v3-migration-guide) if you want to plan ahead.
+  **You're reading the V3 docs — the current, default version of the Lusha API.** V3 introduced this search-and-enrich pattern, Tables, and Waterfall Reveal. The previous V2 API (endpoints under no version prefix, like `/v2/person`) is still fully supported but is now **legacy** — pick "V2 (Legacy)" from the version switcher at the top of the [API docs](/api-reference/overview) to browse it, or see the [V3 migration guide](/tutorials/v3-migration-guide) to move existing V2 integrations over.
 </Info>
 
 ## Next steps
 
 Before making API calls in your application, read the [authentication guide](/authentication) to understand how to pass your API key securely and what to expect when credentials are missing or invalid.
+
+<Tip>
+  Want to try endpoints before you write any code? Explore Lusha's [Postman Workspace](https://www.postman.com/lushateam/workspace/lusha-s-api/collection/28683568-fc849873-9ae1-47dd-8159-0d4deda04750) to test live requests and see response shapes firsthand.
+</Tip>

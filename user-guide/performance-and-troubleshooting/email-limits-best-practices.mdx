@@ -1,0 +1,64 @@
+---
+title: "Email Limits Best Practices"
+description: "How sending limits work in Lusha Engage, what ESP limits apply, and how to configure and troubleshoot your daily and hourly sending limits."
+---
+
+Lusha Engage sends emails through the mailbox you connect — not through Lusha's own servers. This means your email service provider's sending limits apply to everything in your inbox, including your Engage sequences. Staying within those limits protects your sender reputation and helps your emails land in the inbox.
+
+## What are sending limits?
+
+Sending limits are the maximum number of emails your email service provider (ESP) allows you to send per day or per hour. ESPs enforce these limits to prevent spam and protect their infrastructure. Exceeding them can lead to email deferrals, temporary account restrictions, or a drop in deliverability.
+
+The limits that apply to you depend on a few factors: your mailbox's age and reputation, your recent sending history, and your provider. Newer domains and mailboxes should start with lower volumes and increase gradually over time.
+
+- [Gmail sending limits](https://support.google.com/a/answer/166852?hl=en)
+- [Outlook sending limits](https://learn.microsoft.com/en-us/office365/servicedescriptions/exchange-online-service-description/exchange-online-limits)
+
+## Lusha Engage sending limits
+
+Lusha Engage lets you configure your own daily and hourly sending limits as an additional safeguard. This keeps your volume within safe ranges regardless of your provider's hard cap.
+
+**Recommended starting limits:** max 50 emails per day and 6 emails per hour. Emails are distributed evenly throughout the hour to maintain a natural sending pattern.
+
+<Note>
+For new or recently established domains, start even lower — around 20–30 emails per day — and increase gradually as your domain builds reputation.
+</Note>
+
+Lusha supports up to 1,000 emails per day and 60 per hour at the system level, but staying well below these maximums typically results in better deliverability.
+
+## How to edit your sending limits in Lusha
+
+1. Go to **[Engage](https://dashboard.lusha.com/engage)** and click **[Settings](https://dashboard.lusha.com/engage/settings)**.
+2. Review the daily and hourly limits shown.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/51628922/e6c8644171c2a84591db37a73310/Screenshot+2025-05-28+at+16_49_14.png?expires=1780056000&signature=3654a108df0d0057981e0ce85e3bde4acb1923804db24285c724b7cf57251ad6&req=1dRpx1DzrjVk2hj99dpg6qGASaBIYbuhkPQoq9iJ8bsnZva4FI1QThmBWywH%0AlFn60e1S4OXRb9kFLsKt5vtr%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. Edit the fields and click **Save**.
+
+<Note>
+Your email provider's limits apply to all mail from your mailbox — not just Engage sequences. If you use your inbox heavily outside Lusha, lower your Engage limits accordingly to avoid disruptions.
+</Note>
+
+## What happens when you hit your limits?
+
+If you reach your **daily** limit in Lusha, you'll receive an email notification and remaining emails will be automatically rescheduled to the next day, following your sequence schedule.
+
+If you reach your **hourly** limit, remaining emails are rescheduled to the next available hour.
+
+## What if your email provider suspends or rate-limits your account?
+
+This happens when you've sent too many emails or too much underperforming content. If it occurs:
+
+1. Lower your sending limits in Lusha Engage immediately.
+2. Review sequence performance — identify emails with high bounce or spam rates.
+3. Revise problematic content to improve engagement.
+4. Contact your system administrator to resolve the account restriction.
+5. Follow any additional steps required by your email provider to restore your account.
+
+<Note>
+Manual emails you send from your mailbox are not blocked by Engage's limits, but they do count toward your hourly and daily counters — which can delay scheduled sequence emails.
+</Note>
+
+<Note>
+For help, contact the support team via live chat from the [Lusha website](http://www.lusha.com/), your [Lusha Dashboard](http://dashboard.lusha.com/dashboard), or at [support@lusha.com](mailto:support@lusha.com).
+</Note>

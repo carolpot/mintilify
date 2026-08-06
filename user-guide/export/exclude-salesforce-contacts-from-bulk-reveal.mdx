@@ -1,0 +1,23 @@
+---
+title: "Exclude Salesforce contacts from bulk reveal"
+description: "How to exclude contacts that already exist in Salesforce from bulk reveal actions in Lusha to avoid duplicate credits."
+---
+
+The **Exclude Salesforce contacts** feature prevents contacts and companies that already exist in your Salesforce account from being revealed during bulk show actions. This saves credits and keeps your tables clean.
+
+<Note>
+This feature requires the Salesforce integration to be set up. See [Salesforce integration](/user-guide/salesforce/salesforce-integration) if you haven't connected it yet.
+</Note>
+
+## How to enable exclusion
+
+1. Go to **[Integrations](https://dashboard.lusha.com/lusha-integrations)** and click **Manage** next to the Salesforce integration.
+2. Toggle on **Excluding Salesforce objects**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/39706801/c25a0354c1ffaf6e2cfe7d3f1d78/Screenshot+2025-02-27+at+14_42_30.png?expires=1780056000&signature=a80c602f0213df825949c584b7ae6f0744036f8a68e3f676404038c2f31af5b8&req=09xoxV7yrDZk2hj99dpg6s%2BmWkKHkuD6xKe9MpCKz4ojNxQG54iSnB20R8WI%0AsCHlgwVbN%2B3ZX9uKmGQwGzVe%0A" alt="" style={{maxWidth: '100%', height: 'auto'}} />
+
+When this toggle is on, any contact that already exists in Salesforce will be excluded from bulk reveal actions across your account. No credits are charged for excluded contacts.
+
+<Note>
+There is a daily Salesforce API quota for each account. Once the quota is reached, both the Salesforce indicator and the exclusion feature will be disabled until the next day when the quota resets. To set your API limit, go to **Integrations → Salesforce → Manage → API request limits**.
+</Note>

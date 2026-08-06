@@ -1,0 +1,106 @@
+---
+title: "Not in my CRM filter"
+description: "How to use the Not in my CRM filter in Lusha Search to exclude contacts and companies that already exist in your Salesforce or HubSpot account."
+---
+
+The Not in My CRM filter hides any contact or company that already exists in your connected CRM from your Lusha Search results. This helps you avoid duplicates and spend your credits only on fresh leads.
+
+<Note>
+  Supported CRMs: This filter is currently supported for **Salesforce** and **HubSpot**.
+</Note>
+
+## **How to use**
+
+1. Go to **Home** and start a conversation in the chat, or click **Contact filters** or **Company filters** to go directly to the filter panel.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/121522626/f5f877be210047511b756759ac08/c1a160e3-bf32-44e0-b95a-de946e93adf3?expires=1780056000&signature=d095b3e0e3b58bf0c81448bcae7cf2f76ba757918d92e2a2c25c88853160ba48&req=0dduwFr4qjUulxv2%2BtxgpovITW4aq0Cgx3zbSCkXeYXkyHrzKSZBN5tdyX1j%0ApFTvtPATJjJN0XndV33oqMOZXQ%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Apply your filters to define your search.
+2. In the filter panel, toggle on **Not in My CRM**.
+3. Your results will update instantly to show only contacts/companies not in your CRM.
+
+## **Filter states**
+
+## **Not selected (default)**
+
+When the filter is off, all matching contacts are shown - including those already in your CRM.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/121522627/4de9300e031de1284b1dc9655111/1395ab6f-302e-4ea6-8c48-dd7ee52239c7?expires=1780056000&signature=2d12dc2ff05dbdb8e6757f54a35090de963f752c3198cc5407c3f1553752e1a2&req=0dduwFr4qjUvlxv2%2Btxgph57S5fZS0D1%2BKIewjT6%2BW99V24X3lSTU1JAFf5M%0A1h9BhbKI7Tp3FZ0juvW79ya1BQ%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## **Contacts - Not in My CRM**
+
+Hides contacts that already exist in your connected CRM. The objects checked depend on your CRM:
+
+- **Salesforce:** Contact, Lead, or Opportunity
+- **HubSpot:** Contact
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/121522630/07b1ba2c68353efb8d0888bb59f0/cece9f40-1890-4848-b47e-1c7712b5b8ea?expires=1780056000&signature=48d3ef2e2a222bc303ad62d82b5b8fc9d8cb74bc924f3e01f89cde9044bbd6d9&req=0dduwFr4qjQolxv2%2BtxgpsKDIpPbVLFzkJ1Iv98OXlnR5YqosAds5k%2BqAzMP%0ANCUYYsEiPOpFF%2BdFGUaeIkNxtQ%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## **Companies - Not in My CRM**
+
+Hides companies that already exist in your connected CRM. The objects checked depend on your CRM:
+
+- **Salesforce:** Account or Opportunity
+- **HubSpot:** Company
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/121522625/133dccada891d4bf0d3134b34839/575e9e9c-836e-4898-8cd0-5ee9ee75fde8?expires=1780056000&signature=14cabd229a8a66458cb104976529a419685f73093297cea5e606255f6050ecbb&req=0dduwFr4qjUtlxv2%2BtxgpusyPnfrDd1OFP4TB9VrHVxKwwoohXOjbKTATgLD%0At4bToklP2pn%2FLAjZ2%2BBeu3Bi6A%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## **Use cases**
+
+## **Switching between Contacts and Companies**
+
+The filter is applied per tab. When you switch between Contacts and Companies, each tab retains its own filter state.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/121522629/fb56b20264e15ac93792b799c295/3f08e3a8-8f97-4099-82ce-8c80fef3cbd9?expires=1780056000&signature=a5e900d649f644a6588268791108d4717328e6ae04316ab9c0597c3700138c8f&req=0dduwFr4qjUhlxv2%2Btxgpt0ghOuihVu1PCBbSq6p5hbW8uxI%2BaRKlR5hZ3Wu%0AeRDw75jbSbFLFvmY9B4eiBMWeA%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## **No filter selected**
+
+When no CRM filter is active, all results are shown regardless of CRM status.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/121522628/10a6a1a76b6765075053871a006c/3fc573a9-8ffb-4f72-b446-6766284594c3?expires=1780056000&signature=62a77e58dac04753e76177096835d828cd5a0bc84fdcda7adcc35267034118e6&req=0dduwFr4qjUglxv2%2BtxgphrVjFpa%2FZsEYX2wto5nMDnMWeh4gypYmCHPePME%0ArdRy18n1pNCNqFm8xkCsMIe1yA%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## **No CRM connection**
+
+If the filter appears to be failing entirely, follow these steps:
+
+1. Navigate to **Integrations** and ensure your CRM (Salesforce, HubSpot, Pipedrive, or Bullhorn) is successfully connected.
+2. Check that your **Integration Settings** allow Lusha to read your CRM records.
+3. Refresh your browser and re-apply the **Not in my CRM** filter from the **Lusha Search** filters menu.
+
+<Warning>
+  If you have recently changed field mapping in your CRM, you may need to disconnect and reconnect the integration to refresh the data sync.
+</Warning>
+
+If the issue persists, contact Lusha Support for further assistance.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/121522633/cbb16e5d54afadb3b1e3e7582125/594c3538-d95a-4e24-a131-0e5ced4fc802?expires=1780056000&signature=e366bb8e1e0c609a2cb38b88d858e47e0888211765f71fe241427104bd39a6ab&req=0dduwFr4qjQrlxv2%2Btxgpty8zIEttESaRrPf3rf6YIYdF7QhjsOpJDwbcDpk%0A%2FuYKti38j3HkwIXifO9L%2BrR8xQ%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## **10K result limit**
+
+If the search returns more than 10,000 results, the filter will automatically cut the results down to under 10K once applied. Removing the filter will restore the original result count.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/121522632/f5841bad050d1e8dec91d460d0bc/c845b6f2-faf4-48d2-91d2-8c5e3f3d47c5?expires=1780056000&signature=a625d0d3e1e9921baa1d7ae37134b90157dc27dcc873342fce22fc1b99927821&req=0dduwFr4qjQqlxv2%2BtxgpqGas%2FXvzDOQHEQTZHeCSgz45zMV7DV00Bv5nZqW%0AuiOvlmed92f%2FXKrEgHKYobyL6w%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Why am I seeing contacts already in my CRM?
+
+Understand why some contacts might still appear in your search results even when the "Not in my CRM" filter is active.
+
+### How Lusha identifies duplicates
+
+Lusha uses specific data points to match records between our platform and your CRM:
+
+- **Email address:** The primary unique identifier.
+- **Name + Company:** A combination match used when an email isn't present.
+
+### Why duplicates may still appear
+
+If you see a contact in Lusha that you know is already in your CRM, it is usually due to a data mismatch. Common reasons include:
+
+- **Job changes:** The contact has moved to a new company and has a different professional email address than the one stored in your CRM.
+- **Name formatting:** Variations in how names are recorded (e.g., "John Smith" in Lusha vs. "J. Smith" or "Jonathan Smith" in your CRM).
+- **Company name discrepancies:** Differences in legal names vs. trade names (e.g., "Lusha" vs. "Lusha Systems Inc.").
+- **Sync latency:** If a record was added to your CRM seconds ago, it may take a moment for the filter to reflect the update.
+
+<Note>
+  To avoid duplicates during large tasks, we recommend a quick manual review of your results before performing bulk enrichments or exports.
+</Note>

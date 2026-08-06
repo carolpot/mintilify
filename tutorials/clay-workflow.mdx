@@ -1,0 +1,41 @@
+---
+title: "Clay: suggested workflow combinations"
+description: "How to layer Lusha enrichments and signals in Clay to build account scoring models and identify the best timing for outreach."
+---
+
+Individual Lusha enrichments in Clay provide the most value when layered together. Combining firmographic data with growth signals lets you build account scoring models, identify warm accounts, and time your outreach precisely.
+
+---
+
+## Recommended workflow combinations
+
+1. **Build an account scoring model** - Combine *Enrich company* with three growth signals: *Find company headcount growth*, *Find company jobs growth*, and *Find company website traffic*. This lets you [rank accounts by firmographic fit and business momentum](https://www.lusha.com/campus/plays/score-new-hubspot-contacts-with-lusha-and-flag-high-quality-leads/).
+
+2. **Identify "warm" accounts** - Use *Find company news signal* to surface trigger events like new funding or leadership changes. [Layer this with *Find company headcount growth*](https://www.lusha.com/campus/plays/enrich-hubspot-monthly-with-company-signals-and-enroll-qualified-leads/) to confirm the company is in an active growth phase.
+
+3. **Enrich lookalike lists** - After [generating a list with *Find people lookalikes*](https://www.lusha.com/campus/plays/find-similar-contacts-from-lusha-enriched-records/), use [*Enrich person*](https://www.lusha.com/campus/plays/sheets-first-enrichment-pipeline/) to add verified emails and phone numbers. Add [*Find person signals*](https://www.lusha.com/campus/plays/job-change-reactivation/) to highlight recent job changers.
+
+4. **Target by department expansion** - Use *Find company jobs growth by department* to identify which teams are growing. Then [use *Enrich person* to find decision-makers within those departments](https://www.lusha.com/campus/plays/always-on-inbound-to-outbound/).
+
+---
+
+## Use case quick reference
+
+| Use case | Recommended workflow |
+|---|---|
+| New market entry | [Use *Find company jobs growth by location*](https://www.lusha.com/campus/plays/expand-your-pipeline-with-lookalikes/) to see where companies are expanding geographically |
+| SaaS / tech sales | Use *Find company IT spend* to prioritise accounts with high technology investment |
+| Account-based sales | [Use *Find company news*](https://www.lusha.com/campus/plays/auto-enrich-companies-from-rss-feeds/) to find recent headlines to use as personalised conversation triggers |
+| Pipeline cleaning | [Use Exclusion identifiers during a lookalike search](https://www.lusha.com/campus/plays/find-lookalike-accounts-on-wins/) to filter out existing customers or competitors |
+
+---
+
+## Tips for best results
+
+- **Seed quality** - use your best closed-won deals as seed examples. Providing 10-20 seed domains improves accuracy over the minimum of 5.
+- **Credit efficiency** - use the *Only run if* condition in Clay to avoid spending credits on rows missing required identifiers like a domain or email.
+- **Validate early** - always test on 10-20 rows before processing your full table.
+
+<Note>
+Lusha signal enrichments in Clay use Lusha credits. Monitor your usage in the Lusha dashboard under **Usage & Credits**.
+</Note>

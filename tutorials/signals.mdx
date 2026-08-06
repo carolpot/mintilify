@@ -1,0 +1,203 @@
+---
+title: "Signals API"
+description: "Use the Signals API to turn static CRM data into real-time, actionable insights that plug straight into your GTM workflows."
+---
+
+Use the Signals API to turn static CRM data into real-time, actionable insights that plug straight into your GTM workflows.
+
+---
+
+## Overview
+
+Signals deliver **real-time market intelligence and intent events**, helping you time outreach and prioritize accounts with accuracy. You can use them to:
+
+### Re-engage past buyers who changed companies
+Track **job change** events for previous buyers and trigger warm outreach when they land in a new organization.
+
+### Time outreach around career milestones
+Monitor **promotions** so your team can reach out during ramp periods, when decision-makers are exploring new tools and solutions.
+
+### Identify companies in expansion mode
+Use **headcount growth** signals to spot accounts that are hiring and scaling — strong indicators of increased budgets or new initiatives.
+
+### Trigger outreach when key initiatives launch
+Watch for **new job listings** tied to roles aligned to your product, then position your solution as part of the hiring initiative.
+
+### Build dynamic lead scoring
+Feed promotions, job changes, and headcount activity into your scoring model so high-intent opportunities automatically surface to the top.
+
+### Build early-warning systems for churn
+Alert CSMs when **key contacts at customer accounts change roles or companies**, giving them time to proactively mitigate renewal risk.
+
+---
+
+## Key Benefits
+
+- Enrich contacts and accounts with **real-time GTM triggers**
+- Automate **scoring, routing, workflows, and ABM motions**
+- Surface **high-intent outreach opportunities** at the right moment
+- Eliminate manual enrichment work
+- Scale automations without depending heavily on engineering
+
+---
+
+## Who Is It For?
+
+- **RevOps** — Improve CRM hygiene, forecasting, attribution, and automated routing
+- **BDRs / AEs** — Prioritize high-intent leads and personalize outreach with contextual triggers
+
+---
+
+## Available Signals
+
+| Signal Type        | Level    | Typical Use Case                                                     |
+| ------------------ | -------- | -------------------------------------------------------------------- |
+| Job Change         | Contact  | Re-engage a previous buyer who joins a new company                   |
+| Promotion          | Contact  | Reach out during role changes to deepen relationships                |
+| New Job Listing    | Company  | Identify companies hiring for roles aligned to your solution         |
+| Headcount Growth   | Company  | Detect expansion or budget movement and route to sales accordingly   |
+| News Signals       | Company  |  Company-related events and news  |
+
+---
+
+## API Endpoints
+
+| Endpoint                         | Description                                                         |
+| -------------------------------- | ------------------------------------------------------------------- |
+| `/signals/contacts`              | Enrich a list of contacts with signals via contact IDs              |
+| `/signals/companies`             | Enrich a list of companies with signals via company IDs             |
+| `/signals/contacts/search`       | Search/enrich contacts using identifiers (email, LI profile, etc.) |
+| `/signals/companies/search`      | Search/enrich companies using identifiers (name, domain)            |
+| `/signals/filters/:objectType`   | Retrieve available filters for contact or company signals           |
+
+---
+
+## Search Call Structure – POST /signals/contacts/search
+
+### Request Body Example
+
+```json
+{
+  "contacts": [
+    {
+      "id": "123321",
+      "social_link": "https://www.linkedin.com/in/ron-nabet"
+    }
+  ],
+  "signals": [
+    "promotion",
+    "companyChange"
+  ],
+  "startDate": "2025-01-01"
+}
+```
+
+## Parameters
+
+- **contacts[].id** – your internal customer identifier
+- **contacts[].social_link** – LinkedIn URL used to pinpoint the contact
+- **signals** – list of signal types to include
+- **startDate** – earliest date to consider when retrieving signals
+
+---
+
+## Response Body Example
+
+```json
+{
+  "contacts": {
+    "123321": {
+      "personId": "115889",
+      "companyChange": [
+        {
+          "personId": "115889",
+          "currentCompanyId": 8217,
+          "currentCompanyName": "Callaway Golf",
+          "currentDepartments": "R&D",
+          "currentSeniorityLabel": "c-suite",
+          "currentTitle": "Senior Manager, IT Solutions",
+          "signalDate": "2025-05-01",
+          "previousCompanyName": "Previous Corp",
+          "previousDomain": "nextgen.com",
+          "currentDomain": "vendavo.com"
+        }
+      ],
+      "promotion": [
+        {
+          "personId": "115889",
+          "currentCompanyId": 8217,
+          "currentCompanyName": "Callaway Golf",
+          "currentDepartments": "R&D",
+          "currentSeniorityLabel": "c-suite",
+          "currentTitle": "Senior Manager, IT Solutions",
+          "signalDate": "2025-05-01",
+          "previousCompanyName": "Previous Corp",
+          "previousDomain": "nextgen.com",
+          "currentDomain": "vendavo.com"
+        }
+      ]
+    }
+  },
+  "startDate": "2025-01-01",
+  "endDate": "2025-07-31",
+  "creditCharged": 2
+}
+```
+
+## Key Response Concepts
+
+- **contacts** – keyed by the `id` you provided in the request
+- **Signal arrays per contact** – each contact may include arrays for each signal type (e.g., `companyChange`, `promotion`)
+- **Signal objects** – contain both current and previous company/title information when applicable
+- **startDate / endDate** – defines the timeframe applied to the returned signals
+- **creditCharged** – total number of credits consumed for the request
+
+---
+
+## Key Features
+
+- **Multiple input types:** ID, email, LinkedIn URL, domain, and more
+- **Signal filters:** fetch available filters through `/signals/filters/:objectType`
+- **Timeframe control:** specify `startDate` and `endDate` (default range is 6 months)
+- **Stable identifiers:** every response includes `personId` or `companyId`
+- **Authentication:** via `api_key`
+- **Rate limits:** fully aligned with Lusha Public API standards
+
+---
+
+## Billing
+
+- **1 credit per enrichment**
+- **1 credit per 25 search results**
+
+---
+
+## FAQs
+
+### **Q: How are signals different from regular enrichment or intent data?**
+**A:** Traditional enrichment is static, and intent data is inferred.
+Signals surface **real, verified business changes** — such as promotions, job transitions, and new job postings — providing precise, actionable moments for outreach and pipeline acceleration.
+
+---
+
+### **Q: How difficult is it to integrate the Signals API?**
+**A:** Integration is straightforward.
+You can connect directly via API calls or build automated workflows using no-code tools like **Make**, **Zapier**, or **n8n**, requiring minimal engineering support.
+
+---
+
+### **Q: How accurate is the data?**
+**A:** Signals rely on Lusha's continuously refreshed and validated datasets, ensuring accuracy, consistency, and dependable real-time insights.
+
+---
+
+### **Q: What if I'm already using another enrichment tool?**
+**A:** The Signals API goes beyond static enrichment.
+It delivers **real-time, time-bound buying signals** that add actionable context to your CRM — helping you catch timely opportunities and risks that other tools typically miss.
+
+---
+
+### **Q: Is the Signals API GDPR compliant?**
+**A:** Yes.
+The API is designed with GDPR compliance in mind, using **scoped, secure data access**.
+All contact-level signals are derived from **publicly available professional career updates**, ensuring responsible and compliant data handling.

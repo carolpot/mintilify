@@ -1,0 +1,148 @@
+---
+title: "Lusha API V3: Transition and Migration Guide"
+description: "Lusha API V3 is the most flexible and modular version of the API to date. Built on a composable \"building block\" architecture, V3 gives you better credit control, stable entity IDs, and cleaner endpoint structure - while keeping the same credit model you already know."
+---
+
+Lusha API V3 is the most flexible and modular version of the API to date. Built on a composable "building block" architecture, V3 gives you better credit control, stable entity IDs, and cleaner endpoint structure - while keeping the same credit model you already know.
+
+---
+
+## What is V3?
+
+V3 restructures the Lusha API into four clear, composable building blocks. Each block performs one action, has predictable pricing, and shares a stable entity ID so you can chain them together without re-searching the same records.
+
+| Block | What it does | When to use it |
+|---|---|---|
+| **Search** | Discover contacts/companies by any identifier. Returns a stable entity ID - no PII yet. | ICP definition, list building, de-duplication before enrichment |
+| **Enrich** | Pull full data (emails, phones, firmographics) for known entity IDs. | Filling CRM records, enriching inbound leads, outbound personalization |
+| **Signals** | Job changes, promotions, company events - real-time GTM intelligence. | Trigger-based outreach, CRM freshness, pipeline monitoring |
+| **Lookalike** | Find similar contacts or companies based on your best-fit known entities. | Market expansion, ICP prospecting, account recommendations |
+
+**The key efficiency gain:** In V2, enriching a contact always meant running the full search-and-data flow. In V3, you can search 500 contacts cheaply, filter to your ICP, then enrich only the 80 that matter - spending credits only where they count.
+
+---
+
+## Key Concepts
+
+- **Building Blocks** - The modular structure of V3, categorized into Search, Enrich, Signals, and Lookalike.
+- **Stable IDs** - V3 introduces permanent `contactId` and `companyId` values that remain consistent across your account, preventing duplicate enrichment. Find once, reuse forever.
+- **Resource-First URL** - A restructured path (e.g., `/v3/contacts/`) that makes the API more intuitive for developers.
+- **Sunset Period** - The 6-month window where V2 and V3 run in parallel before V2 is retired.
+
+---
+
+## Do You Need to Migrate?
+
+| What you're using | Endpoint | Action needed |
+|---|---|---|
+| Person enrichment | `GET /v2/person` | Migrate |
+| Company enrichment | `GET /v2/company` | Migrate |
+| Prospecting (contacts) | `POST /prospecting/contact/*` | Migrate |
+| Prospecting (companies) | `POST /prospecting/company/*` | Migrate |
+| Signals | `/api/signals/*` | No change |
+| Lookalikes | `/v3/lookalike/*` | No change |
+| Account / usage | `/account/usage` | No change |
+
+If you're only using Signals or Lookalikes, there's nothing for you to do.
+
+---
+
+## What's Changing
+
+The primary shift in V3 is the move from a flat structure to a resource-based structure.
+
+- **Request method changes** - Several `GET` requests in V2 (like Person Enrichment) have moved to `POST` in V3 to support more complex query parameters.
+- **Consolidated endpoints** - V3 offers a `search-and-enrich` endpoint, letting you find a contact and get their details in a single call.
+- **Sunset response headers** - Starting May 18, 2026, all V2 responses will include a `Sunset` header as a technical signal that the endpoint is approaching retirement.
+
+---
+
+## Migration Paths
+
+### Person and Company Enrichment (`GET /v2/*`)
+
+Easiest migration. A single combined endpoint replaces both V2 calls. The main change is HTTP method (`GET` → `POST`) and moving parameters into a request body.
+
+| V2 endpoint | V3 endpoint |
+|---|---|
+| `GET /v2/person` | `POST /v3/contacts/search-and-enrich` |
+| `GET /v2/company` | `POST /v3/companies/search-and-enrich` |
+
+<Tip>
+Want more credit control? Use the 2-step flow instead: `POST /v3/contacts/search` to discover, then `POST /v3/contacts/enrich` only for the records you actually need.
+</Tip>
+
+### Bulk Enrichment (`POST /v2/* bulk`)
+
+| V2 endpoint | V3 endpoint |
+|---|---|
+| `POST /v2/person (bulk)` | `POST /v3/contacts/search-and-enrich` |
+| `POST /bulk/company/v2` | `POST /v3/companies/search-and-enrich` |
+
+<Tip>
+For high-volume use, the 2-step flow (search → filter → enrich) is recommended. Search is cheap - use it to qualify your list before spending enrichment credits.
+</Tip>
+
+### Prospecting
+
+URL structure changes. The enrich step is now shared with the main enrichment flow - fewer endpoints to keep track of.
+
+| V2 endpoint | V3 endpoint |
+|---|---|
+| `POST /prospecting/contact/search` | `POST /v3/contacts/prospecting` |
+| `POST /prospecting/contact/enrich` | `POST /v3/contacts/enrich` |
+| `POST /prospecting/company/search` | `POST /v3/companies/prospecting` |
+| `POST /prospecting/company/enrich` | `POST /v3/companies/enrich` |
+
+### Filter Endpoints
+
+All individual filter endpoints consolidate into one consistent parameterized pattern. Same filter options - just one URL pattern instead of separate endpoints for each filter.
+
+| V2 | V3 |
+|---|---|
+| Various individual filter endpoints | `GET /v3/contacts/prospecting/filters/{filterType}` |
+| | `GET /v3/companies/prospecting/filters/{filterType}` |
+
+---
+
+## How to Start Your Migration
+
+1. **Audit your current usage** - Identify which V2 endpoints your team currently calls.
+2. **Review the mapping table** - Match your V2 endpoints to their V3 equivalents using the tables above.
+3. **Test in the Playground** - Use the API Playground at `dashboard.lusha.com` to run test queries in V3 against real data before touching your integration.
+4. **Update your base URL** - Shift your integration to point toward the `/v3/` paths.
+
+---
+
+## What's New in V3
+
+These capabilities are not available in V2. Migrating early gives you access to all of them.
+
+| Capability | What it means for you |
+|---|---|
+| **Stable entity IDs** | Contact and company IDs are permanent per account. Find once, reuse forever - no re-searching the same records. |
+| **Search before you spend** | Discovery is cheap. Qualify your full list, then enrich only the records that match your ICP. |
+| **`search-and-enrich` endpoint** | Near drop-in replacement for `GET /v2/person` and `GET /v2/company`. Minimal code change to migrate. |
+| **Consolidated filter discovery** | One endpoint returns all available filter options - no more maintaining hardcoded filter lists. |
+| **Composable workflows** | Chain Search → Enrich → Signals → Lookalike with stable IDs. Reliable, cost-predictable multi-step automation pipelines. |
+
+---
+
+## Common Questions
+
+**Will my integration break?**
+Not immediately. V2 stays fully live until November 18, 2026. You have six months to migrate. Sunset headers will be added to V2 responses from May 18 so you can track the timeline in your tooling.
+
+**How much work is the migration?**
+For most use cases, very little. The `search-and-enrich` endpoint is close to a drop-in replacement for `GET /v2/person` and `GET /v2/company` - the main change is switching from `GET` to `POST` and moving parameters into a request body. Prospecting migrations are mainly URL changes with a small request body update.
+
+**Do Signals and Lookalikes change?**
+No. Those endpoints are unchanged in V3. If you're only using Signals or Lookalikes, there is nothing for you to do.
+
+**What happens if I don't migrate by November 18?**
+V2 endpoints will stop responding. Any workflow calling a V2 URL directly will break. You'll receive warning communications at the 60-day and 30-day marks before sunset.
+
+**Can I test V3 before switching?**
+Yes. The API Playground at `dashboard.lusha.com` is available to try V3 calls against real data before touching your integration.
+
+---

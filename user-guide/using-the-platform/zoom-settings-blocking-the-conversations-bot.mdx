@@ -1,0 +1,32 @@
+---
+title: "Troubleshooting: Zoom Settings Blocking the Conversations Bot"
+description: "How to identify and fix Zoom account or meeting settings that reject the Lusha Conversations recording bot as an unauthenticated guest."
+---
+
+If the Lusha Conversations bot fails to join a Zoom meeting, the most common cause is a Zoom setting that rejects unauthenticated guests — not a bug in the bot's join code. The bot joins as an anonymous SDK participant and cannot sign in through a Zoom account, so any setting that blocks unsigned-in users will prevent it from entering.
+
+The three settings below are the most frequent culprits. Check each one in your Zoom account and turn it off for the meetings your bot targets.
+
+## 1. "Only authenticated users can join meetings"
+
+**Why it blocks the bot:** This setting requires every participant to be signed in to a Zoom account before joining. Because the SDK bot joins as an anonymous guest and cannot authenticate through Zoom, it is rejected outright.
+
+**Where to find it:** Zoom Web Portal → **Settings** → **Meeting** → **Security** → **Require authentication to join**.
+
+**Fix:** Turn this setting **OFF** for any meeting you want the bot to record. If you need to keep it on for some meetings, ensure the bot-targeted meetings have it disabled at the individual meeting or meeting template level.
+
+## 2. Join Before Host / Host not present
+
+**Why it blocks the bot:** If **Join Before Host** is disabled and the host has not yet started the meeting, Zoom turns away any participant — including the bot — until the host joins. The bot may appear to time out or fail silently in this scenario.
+
+**Where to find it:** Zoom Web Portal → **Settings** → **Meeting** → **Schedule Meeting** → **Join before host**.
+
+**Fix:** Enable **Join Before Host**, or ensure the meeting host is already in the meeting before the bot's scheduled join time.
+
+## 3. CAPTCHA for guest users
+
+**Why it blocks the bot:** Zoom introduced an anti-bot setting that presents a CAPTCHA challenge to any participant who is not signed in. An SDK bot cannot solve a CAPTCHA, so it is blocked immediately on join.
+
+**Where to find it:** Zoom Web Portal → **Account Management** → **Account Settings** → **Meeting** → **Require solving a CAPTCHA for guest users (users who are not signed in)**.
+
+**Fix:** Turn this setting **OFF**. This is an account-level setting, so an account admin must disable it.

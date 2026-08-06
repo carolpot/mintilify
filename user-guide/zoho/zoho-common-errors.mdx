@@ -1,0 +1,94 @@
+---
+title: "Zoho CRM common errors"
+description: "How to diagnose and fix the most common Zoho CRM integration errors in Lusha, including export failures, field mapping issues, permissions, and name parsing."
+---
+
+When exporting contacts from Lusha to Zoho CRM, you may encounter errors related to authorisation, field mapping, or how contact data is structured. This article covers the most common errors and how to fix each one.
+
+<Note>
+Most integration issues can only be resolved by a Zoho CRM Administrator and a Lusha Admin. In many cases, this is the same person.
+</Note>
+
+## Export fails or integration stops working
+
+If contacts that previously exported successfully are now failing, or the export button produces no result, the most common cause is an expired or dropped connection between Lusha and Zoho CRM.
+
+To fix this:
+
+1. Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in your Lusha dashboard.
+2. Disconnect the Zoho CRM integration.
+3. Reconnect and complete the OAuth authorisation flow again.
+4. Retry the export.
+
+If the issue started suddenly with no changes on your side, it may be a temporary service disruption. Wait a few minutes, reconnect, and try again.
+
+## Unable to connect Lusha and Zoho CRM (insufficient permissions)
+
+If you see an error during the connection flow, or users report they cannot export contacts even though the integration appears connected, the most likely cause is that the user completing the OAuth did not have Zoho CRM Administrator privileges at the time of connection.
+
+To fix this:
+
+1. Have a Zoho CRM Administrator disconnect the integration in Lusha.
+2. Log into Zoho CRM as that Administrator.
+3. Reconnect the integration from Lusha's [Integrations page](https://dashboard.lusha.com/lusha-integrations).
+4. Complete the OAuth flow while logged in as the Administrator.
+
+If individual users on your team are getting permission errors while trying to export, check that their Zoho CRM role includes write access to Leads or Contacts (whichever record type you are exporting to). Refer to [Lusha's CRM permissions guide](/user-guide/integrations-basics/crm-permissions-required-for-lusha-integration) for the minimum required permissions.
+
+## Contact is exported to the wrong record type (Contact vs Lead)
+
+By default, Lusha exports contacts to Zoho CRM as **Leads**. If contacts are appearing as **Contacts** (or vice versa), this is likely a field mapping configuration issue.
+
+To change the target record type:
+
+1. Go to **Settings → Integrations → Zoho CRM → Field Mapping** in Lusha.
+2. Confirm that the object type (Lead or Contact) matches your intended Zoho module.
+3. Save and retry the export.
+
+If you need contacts exported to a specific pipeline or view within Zoho, configure this in your Zoho CRM lead assignment rules after import — Lusha does not control post-import routing.
+
+## Account name is missing after export
+
+When a contact is pushed to Zoho CRM, the associated company (account) name may not appear on the record, even if it was visible in Lusha.
+
+This usually means the **Company** field is not mapped in your Lusha field mapping configuration.
+
+To fix this:
+
+1. Go to **Settings → Integrations → Zoho CRM → Field Mapping** in Lusha.
+2. Map the Lusha **Company** field to the Zoho **Account Name** (for Contacts) or **Company** (for Leads) field.
+3. Save the mapping and retry the export.
+
+Note: Zoho CRM does not automatically create an Account record from the Company name field on a Lead. If you need full account linkage, you will need to convert the Lead to a Contact in Zoho and associate it with an Account record manually.
+
+## Compound or middle names are not exported correctly
+
+If a contact has a compound first name or a middle name (for example, "Juan Bautista Bajo"), Lusha parses names into two structured fields:
+
+- **First Name** → the first given name only ("Juan")
+- **Last Name** → the final surname only ("Bajo")
+
+The middle part of a compound name ("Bautista" in this example) is treated as a middle name and is not pushed to Zoho's First Name or Last Name fields, because Zoho CRM does not have a standard Middle Name field on Lead or Contact records.
+
+**Workaround:** Map the Lusha **Full Name** field to a custom Zoho CRM text field that you create for this purpose. This preserves the complete name as a single string. Note that Lusha does not support field concatenation — you cannot combine First Name + Middle Name into a single target field.
+
+## Lusha sidebar not appearing in Zoho CRM
+
+If the Lusha panel is not visible when viewing a Lead or Contact record in Zoho CRM:
+
+1. Open the Lusha browser extension and click **More**.
+2. Make sure **Enable Lusha Everywhere** is toggled on. If it is already on, toggle it off, then back on, and restart your browser.
+3. If the issue persists, open your browser's developer tools, right-click the refresh button, and select **Empty Cache and Hard Reload**.
+4. Confirm you are using a supported browser (Chrome or Edge) and that the Lusha extension is up to date.
+
+## Export succeeds but CRM indicator is not showing existing contacts
+
+The "already in CRM" indicator in Lusha identifies contacts that are already in your connected Zoho CRM. If this indicator is not appearing for contacts you know are in Zoho:
+
+- Confirm the integration is connected under [Integrations](https://dashboard.lusha.com/lusha-integrations).
+- The indicator relies on email address matching between Lusha's data and your Zoho records. If a contact's email in Zoho differs from the one Lusha has, no match will be found.
+- Allow a few minutes after reconnecting for the sync to update.
+
+---
+
+If none of the above resolves your issue, contact Lusha Support using the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com).

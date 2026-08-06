@@ -1,0 +1,75 @@
+---
+title: "Two-Factor Authentication (2FA)"
+description: "To strengthen account security and reduce the risk of unauthorized access, Lusha has introduced mandatory two-factor authentication (2FA) for all paid users (Self-Serve and Enterprise) who sign in with email and password."
+---
+
+## **Overview**
+
+To strengthen account security and reduce the risk of unauthorized access, Lusha has introduced **mandatory two-factor authentication (2FA)** for all **paid users** (Self-Serve and Enterprise) who sign in with **email and password**.
+
+Each time you log in, you’ll be asked to enter a **one-time 6-digit code** sent to your email.
+
+This update helps prevent credential-based attacks, misuse of credits, and unauthorized upgrades—while ensuring a smooth experience for legitimate users.
+
+<Note>
+This update does **not** apply to users logging in via SSO (Google, Microsoft, Okta, Azure, or Custom SAML).
+</Note>
+
+## **Use Cases**
+
+This feature is especially important for:
+
+- **Protecting against credential leaks**: If your password is compromised, a second factor is now required to access your account.
+- **Preventing credit abuse**: Attackers can no longer consume credits or upgrade plans without your knowledge.
+- **Alerting users to suspicious logins**: If someone tries to log in, you’ll receive the one-time code and know instantly.
+- **Reducing security-related support issues**: Helps avoid unnecessary frustration or time spent recovering accounts.
+
+## **How It Works**
+
+1. **Login:** Enter your email and password as usual.​
+2. **Get a Code:​** A **6-digit code** is sent to your registered email. The code is valid for **10 minutes**.
+3. **Enter the Code: ​** Input the code to complete your login.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/59907475/37d06b797761f8aa7e695c906232/AD_4nXeawWzMHZjbEX-rJc_5WiBdNPxtH6KyaBD5Mdg7Qk_Y7VyBf3qX312UTieD0Pu7e9B6NbMrjl2FAZtCsnhrc7cX3caYn7spec6riK-iN5nwh6vQ6ez7Z-U8LPMiiR3GNwCH1ieDBA?expires=1780056000&signature=8b00339eb086274c8015b91f5123e763c0860a8f3a2c7547746d36c8e103d50f&req=1dxmxV%2F%2BqzJk2hj99dpg6saj4qXirRMlNr9JRWxqoTdHpEVTLdVmbJ6SNcgN%0Ay5LWtt16IgMusiZKiNKLz0VN%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Troubleshooting Login Issues
+
+If you encounter issues during the login process, consider the following solutions:
+
+- **Email Access Issues**: If you no longer have access to the email linked to your account, you will not be able to receive the 6-digit code. In such cases, contact your account administrator or consider creating a new account with an updated email address. If this is not possible, contact our support team for further assistance.
+- **Verification Code Problems**: If you request multiple codes in a short period, you may face a temporary limit. Wait for the limit to reset or use an alternative login method if available. Ensure your email delivery system is functioning correctly to avoid delays.
+
+## Session Duration
+
+Verification is required once every 30 days and is tied to the specific browser and device you use. If you switch browsers or devices, you will need to verify again. Once verified, the session will remain active for 30 days on that browser or device.
+
+To stay logged in for 30 days, adjust your Inactivity Timeout settings:
+
+1. On your Lusha Dashboard, click the **Settings** icon in the left navigation.
+2. Go to the **Account Settings** tab.
+3. Set the **Inactivity Timeout** to **30 days**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/59908157/d9017acbcb94ee9368d81f998abd/Screenshot%2B2025-08-05%2Bat%2B10_52_13.png?expires=1780056000&signature=7ab7e285e2b09c6a9d17e70a7585f9da6419173d2cb72a27d58d398e95b0ad56&req=1dxmxVD7qTBk2hj99dpg6h70p0lv6C4vixXf6xHRr8F%2Fervw3P7Ig97urag2%0AqNX96R%2FAUkEqdWrlqo7gwGdT%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+You’ll stay logged in for up to **30 days**, unless:
+
+- You log out manually
+- You switch browsers or devices
+- You use incognito mode
+
+<Note>
+Setting up the Inactivity Timeout is only available for Scale accounts and can only be done by the account Admin.
+</Note>
+
+## Best Practices for Account Security
+
+- Always ensure that your email address linked to the account is active and accessible.
+- Avoid requesting multiple verification codes in quick succession to prevent temporary limits.
+- Regularly review and update your account security settings to ensure they meet your needs.
+- Re-enable 2FA after resolving any temporary issues to maintain a high level of account security.
+
+## If an Unauthorized Attempt Occurs
+
+- The attacker will **not receive the code**, and therefore cannot log in.
+- **You will receive the code**, which acts as a warning that someone tried to access your account.
+- We recommend updating your password immediately in this case.

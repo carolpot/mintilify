@@ -1,0 +1,62 @@
+---
+title: "How to Set Up Webhooks in Lusha"
+description: "Create and manage webhook subscriptions directly from the Lusha UI - no API configuration required."
+---
+
+Webhooks are automatic notifications that fire the moment something changes in your Lusha account. Instead of manually checking for updates, your external tools receive a notification as soon as an event occurs — keeping everything in sync without any manual work.
+
+You can now create and manage webhook subscriptions directly from the **API Hub** in Lusha. No API configuration required.
+
+## What you'll need
+
+- Admin access to your Lusha account
+- An API key (Grab your key from the **API Hub → Manage API Keys**)
+- A target URL — the endpoint where Lusha will send webhook payloads
+
+## Available event types
+
+Right now, one event type is available:
+
+- **Opt Out** — fires when a contact you've previously revealed opts out of Lusha's database. Use this to automatically update your CRM or suppression tables and stay compliant with consent requirements.
+
+<Note>
+**Coming soon:** Signals webhooks are on the way. You'll be able to subscribe to buying signal events and act the moment they fire — no manual checking needed.
+</Note>
+
+## How to create a webhook
+
+1. Go to **API Hub → Webhooks**.
+2. Click **+ Create Webhook**.
+3. Select an event type. Currently available: **Opt Out** — fires when a revealed contact opts out.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/138206470/21904062f615798efb47b282f2a0/Screenshot%2B2026-05-03%2Bat%2B21_42_52.png?expires=1780056000&signature=13b79e9673e8ebd1b8fd08b156b706495a62650ae5379093d0e2e95f735aace1&req=0dZnx1j8qDAolxv2%2BtxgpkslY8x13p5iDn%2FWPRWyUcCK2IvtnGiJIzvP5QX1%0AdkV%2FgvP7XXnixOAUm7nc6RnkjQ%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+4. Enter a **Webhook name**.
+
+5. Select your **API key** from the dropdown.
+
+6. Enter your **Target URL** — the endpoint that will receive the event payload.
+
+7. Click **Save Webhook**.
+
+Your new webhook will appear in the **Webhook Subscriptions** table with a status toggle. It's active as soon as it's saved.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/138206543/c1381e93caa9245cc29c25688006/Screenshot%2B2026-05-03%2Bat%2B21_42_43.png?expires=1780056000&signature=cefeb150260543b6979c28e9caa7fbf060f9d81179015894dec20ec6d385d6c3&req=0dZnx1j8qTMrlxv2%2BtxgppbWryf9Lu1Agja6ICyBdOHAAD%2FP3M8qAaXHJuXv%0AugNFfvA56%2Fo50Am%2F675naPEmAg%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Note>
+**Note:** You can enable or disable any webhook at any time using the status toggle in the subscriptions table. Disabled webhooks will not send notifications.
+</Note>
+
+## Managing your webhooks
+
+From **API Hub → Webhooks**, you can:
+
+- Toggle a webhook on or off using the status switch
+- Use the **⋮** menu to edit or delete a subscription
+- Click **Regenerate secret** to rotate your webhook signing secret
+
+<Warning>
+Regenerating your webhook secret will invalidate your current secret immediately. Any systems using the old secret to verify webhook payloads will need to be updated.
+</Warning>
+
+You're all set! Your webhook will now notify your systems automatically whenever the subscribed event occurs.

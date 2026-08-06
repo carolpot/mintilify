@@ -67,10 +67,15 @@ Signal lookback defaults to 6 months and 10 results per signal type unless you s
 
 | Tool | What it does |
 |---|---|
-| `recommendations_contacts` | AI-ranked contact recommendations by lead, signal, and ICP-fit score. |
+| `recommendations_contacts` | AI-ranked, paginated contact recommendations with signals, scoring, and Target Profile attribution. |
 | `recommendations_contacts_filters` | List the target ICPs and signal types accepted by `recommendations_contacts`. |
-| `recommendations_companies` | AI-ranked company recommendations by lead, signal, and ICP-fit score. |
+| `recommendations_companies` | AI-ranked, paginated company recommendations with signals, scoring, and Target Profile attribution. |
 | `recommendations_companies_filters` | List the target ICPs and signal types accepted by `recommendations_companies`. |
+| `recommendations_status` | Check whether a user's recommendations are `none`, `computing`, or `done`. |
+
+<Note>
+  Results are drawn from the authenticated user's own Target Profiles (plus any shared account-level profiles) — user and account IDs are inferred from the session, never passed as inputs. If you haven't set up a Target Profile in ICP Hub yet, you'll be nudged to do so with each recommendations request. Recommendations refresh daily and recalculate within minutes of a Target Profile change.
+</Note>
 
 ## Account
 

@@ -1,0 +1,190 @@
+---
+title: "Recommendations API"
+description: "Send the API a set of existing contacts or companies and get back recommended contacts/companies that match their profile by role, seniority, company type, and more."
+---
+
+## Overview
+
+Instead of manually building "similar accounts" or "similar buyers" lists, you send the API a set of existing contacts or companies, and it returns recommended contacts/companies that match their profile by role, seniority, company type, and more.
+
+Lusha's Recommendations API helps you:
+
+- Discover similar contacts based on people you already know convert well (ICP champions, power users, decision makers).
+- Discover similar companies based on your best customers or target accounts.
+- Feed those recommendations directly into your CRM, MAP, or any workflow that already uses Lusha enrichment.
+- You can call the API in batch and paginate using a `requestId` to fetch additional recommendation pages from a previous query.
+
+---
+
+## Example Use Cases
+
+### 1. Build "lookalike" target lists from won deals
+
+- Take a list of Closed Won opportunities.
+- Send the primary buyer/contact IDs to the Contact Recommendations endpoint.
+- Push recommended contacts back into your CRM as new leads in similar roles at similar companies.
+
+### 2. Expand within key accounts (land & expand)
+
+- For high-priority customers, send one or more champion contacts.
+- Get recommendations for colleagues with similar roles in the same or adjacent departments.
+- Route them to the account team for expansion plays.
+
+### 3. ABM list generation and refinement
+
+- Send your top 100 customer companies into the Company Recommendations endpoint.
+- Use the recommended companies as a lookalike account list for ABM campaigns.
+- Layer additional filters in your CRM or MAP (industry, ARR band, region).
+
+---
+
+## API Endpoints
+
+The Recommendations API is part of Lusha's public REST API set, available via:
+
+**https://api.lusha.com**
+
+| Endpoint                          | Method | Description                              |
+|----------------------------------|--------|------------------------------------------|
+| `/api/recommendations/contacts`  | POST   | Get recommendations for similar contacts |
+| `/api/recommendations/companies` | POST   | Get recommendations for similar companies |
+
+All endpoints:
+
+- Are HTTPS-only
+- Use JSON request and response bodies
+- Require the `api_key` header for authentication
+
+Example:
+
+```json
+POST https://api.lusha.com/api/recommendations/contacts
+
+api_key: YOUR_API_KEY
+Content-Type: application/json
+```
+---
+
+## Error handling
+
+- Standard HTTP status codes (200, 400, 401, 403, 404, 429, 5xx).
+
+- Error body format:
+
+```json
+{
+  "error": {
+    "code": 400,
+    "message": "Invalid request parameters"
+  }
+}
+```
+
+---
+
+## Contact Recommendations
+
+Use Contact Recommendations to get similar contacts.
+
+### Endpoint
+
+- POST /api/recommendations/contacts
+
+A typical request might look like this:
+
+```json
+{
+    "contacts": [
+        {
+            "personId": "675851474",
+            "companyId": "6504"
+        },
+        {
+            "personId": "834616115",
+            "companyId": "9703"
+        },
+        {
+            "personId": "229252235",
+            "companyId": "81527214"
+        },
+        {
+            "personId": "274423511",
+            "companyId": "69646851"
+        },
+        {
+            "personId": "97571231",
+            "companyId": "1090"
+        }
+    ],
+    "exclude": [],
+    "limit": 5
+}
+```
+---
+
+## Company Recommendations
+
+Use Company Recommendations to get a list of similar companies.
+
+### Endpoint
+
+- POST /api/recommendations/companies
+
+A typical request might look like this:
+
+```json
+{
+    "companies": [
+        {
+            "companyId": "6504"
+        },
+        {
+            "companyId": "9703"
+        },
+        {
+            "companyId": "81527214"
+        },
+        {
+            "companyId": "1090"
+        },
+        {
+            "companyId": "11068735"
+        },
+        {
+            "companyId": "20093040"
+        },
+        {
+            "companyId": "3617422"
+        }
+    ],
+    "exclude": [],
+    "limit": 5
+}
+```
+---
+
+## FAQs
+
+### **Q: What identifiers should I send for contacts/companies?**
+**A:**
+
+- For contacts: Lusha person ID
+
+- For companies: Company ID
+
+Check the Recommendations section in the API docs for the precise request schema.
+
+---
+
+### **Q: How do I get more results after the initial call?**
+**A:** Use the requestId returned in the response as part of your next request. This tells the API to continue from the previous recommendation set instead of starting a new one.
+
+---
+
+### **Q: How is billing handled for Recommendations?**
+**A:** Recommendations uses Lusha's standard public API credit and rate limit framework. Exact pricing/credit consumption depends on your plan, so refer to your commercial agreement or contact your Lusha CSM for details.
+
+---
+
+### **Q: Is the Recommendations API available on all plans?**
+**A:** Availability may depend on your Lusha subscription and API package. If you're unsure, reach out to your Lusha account team or support (support@lusha.com).

@@ -1,0 +1,146 @@
+---
+title: "All there is to know about Lusha's API"
+description: "An overview of Lusha's API endpoints, authentication, rate limits, credit consumption, and how to manage API key credit limits."
+---
+
+Lusha's API gives you programmatic access to contact and company data for enrichment, prospecting, and sales intelligence. All requests are made over HTTPS and responses are returned in JSON format.
+
+<Note>
+  API access requires an API key, which is available to Admins and Managers on all plans. For full endpoint documentation, visit [docs.lusha.com](https://docs.lusha.com).
+</Note>
+
+## Authentication
+
+Find your API key in **API Hub** (left sidebar). Click **Copy API key** in the top right, or open the **Manage API Keys** tab to view and manage all your keys. Pass the key in the request header to authenticate. The key is shared at the account level and you can create several keys by pressing **+Create new Key**.
+
+## Rate limits
+
+Limits vary by plan:
+
+| Plan | Per Minute | Per Hour | Per Day |
+| --- | --- | --- | --- |
+| Free | 40 | - | 100 |
+| Starter | 40 | - | 100 |
+| Pro | 50 | 150 | 1,500 |
+| Premium | 300 | 1,800 | 18,000 |
+| Scale | 300 | 5,000 | 50,000 |
+
+Free and Starter plans do not have an hourly limit — only per-minute and per-day caps apply.
+
+Rate limits are enforced per API key. Exceeding a limit will result in a `429 Too Many Requests` response. To avoid a 429 error, implement retry logic with exponential backoff when hitting rate limits.
+
+Legacay users will keep the same limits they always had; 300/minute, 600/hour, 6000/day.
+
+## Available endpoints
+
+The **APIs** tab in **API Hub** gives you a categorized view of every Lusha API: Prospecting, Enrichment, Signals, and Lookalikes. Each endpoint has a one-click **Try** button that opens the API playground with that action preloaded, so you can run live requests without any setup.
+
+## Person API
+
+Retrieves contact data using identifiers like email, LinkedIn URL, name, company name, or domain. Returns location, email, phone, LinkedIn URL, and more. The **Bulk Person API** processes up to 100 contacts per request.
+
+## Company API
+
+Retrieves firmographic data for a company based on its domain or name — industry, employee count, location, revenue, and more. The **Bulk Company API** handles multiple domains or names in a single request.
+
+## Prospecting API
+
+Queries Lusha's database using filters like job title, seniority, location, and industry to generate contact or company tables aligned with your ICP. The process has three stages: select filters, run the search, then enrich the results. See the [Prospecting API documentation](https://docs.lusha.com/apis/openapi/prospecting) for all available filters.
+
+## Lookalike API
+
+Uses machine learning to find contacts and companies that mirror your best-performing customers. Contact Lookalikes match by role, seniority, and career trajectory; Company Lookalikes match by industry, headcount, revenue, and firmographic profile. See the [Lookalike API documentation](https://docs.lusha.com/apis/openapi/lookalikes).
+
+## Signals API
+
+Enriches contacts and companies with timely sales intelligence like job moves, promotions, and company growth signals. Useful for triggering outreach at moments of change. See the [Signals API documentation](https://docs.lusha.com/apis/openapi/signals).
+
+## Credit Usage API
+
+Returns current credit consumption by type. Rate limit: 5 requests per minute.
+
+## Waterfall Reveal
+
+Waterfall Reveal is an enhancement to the Enrich Contacts endpoint. When Lusha's own data has no match for a requested field, the request automatically falls through to your enabled third-party providers to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
+
+Admins turn Data Waterfall on and manage individual vendors under **Account Settings > Waterfall**. Once enabled, the waterfall runs automatically on every `POST /v3/contacts/enrich` call for the fields (`emails`, `phones`) you requested via `reveal` — you don't need to pass anything to trigger it. To opt a specific call out, pass `waterfallEnabled: false` alongside `reveal`.
+
+<Note>
+  Waterfall Reveal requires Data Waterfall to be enabled on your account, with at least one provider turned on, under **Account Settings > Waterfall** in the Lusha dashboard. Lusha determines the provider query order — it isn't caller-configurable. Pricing is flat and the same across every vendor: 2 credits per work email, 8 credits per phone, charged only on a match. Use of Data Waterfall is subject to Lusha's Supplementary Terms.
+</Note>
+
+<Note>
+  Rollout is staged — live now for self-serve paid accounts on the API, with Scale accounts on the API following shortly after, and MCP, Workspace, and Plugin support coming soon. Vendor coverage starts with 2 providers covering the US, with global vendors being added over time.
+</Note>
+
+For full parameter reference, see the [Enrich Contacts API documentation](https://docs.lusha.com/apis/openapi/enrich).
+
+## MCP
+
+**API Hub** includes a dedicated **MCP** tab. Grab your personal MCP URL there and follow the ready-made setup guides for ChatGPT, Claude, Cursor, and n8n to connect Lusha to any AI tool. See the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) article for full setup instructions.
+
+## Credit consumption
+
+Credits are charged based on two factors: the data points revealed and the number of API results returned.
+
+**Data points (per reveal):**
+
+| Data point type | Credit cost |
+| --- | --- |
+| Email | 1 credit |
+| Phone number | 5 credits |
+| Company info | 1 credit |
+
+**Request type:**
+
+| Request type | Results returned | Credit cost |
+| --- | --- | --- |
+| Single request | 1 contact/company | 1 credit per result |
+| Bulk request | Up to 25 results | 1 credit per 1–25 results |
+
+Example: revealing an email and phone for one contact costs 7 credits total (5 for phone + 1 for email + 1 for the request).
+
+**Signals credits:**
+
+- Growth Surge in Hiring: 1 credit per company
+- Growth in Headcount: 1 credit per company
+- Job Change: 1 credit per contact
+
+**Key rules:** A minimum of 1 credit applies per request even if no data is returned. Maximum 100 contacts or companies per request. Each contact's data point is only charged once — re-querying the same contact won't incur additional charges for already-revealed data.
+
+## Managing API key credit limits
+
+You can set monthly credit limits per API key to control consumption per workflow (e.g. Zapier, Make, or internal tools).
+
+1. In **API Hub**, click the **Manage API Keys** tab.
+2. Click the **edit (pencil) icon** or **Set limit** in the Credit usage column.
+3. In the Edit Key panel, toggle on the limit and enter the maximum credits allowed per month.
+4. Click **Continue**.
+
+<Note>
+  Only Admins can set or edit credit limits. The sum of all individual API key limits cannot exceed your total account credit allowance. Limits reset automatically at the start of each billing cycle.
+</Note>
+
+## Troubleshooting: API shows "credit limit reached" but I still have credits
+
+If your API calls are being rejected with a "credit limit reached" error but your Lusha dashboard shows credits remaining, the issue is almost always a **per-API-key credit limit** — not your account balance.
+
+Each API key can have its own monthly credit cap set independently of your total account balance. When a key's cap is reached, all requests using that key are blocked — even if the account still has plenty of credits available.
+
+**To check and fix the limit on your API key:**
+
+1. Go to **API Hub → Manage API Keys**.
+2. Find the key you're using and check the **Credit usage** column. If a limit is set and you've reached it, you'll see the cap amount here.
+3. Click the **edit (pencil) icon** next to the key.
+4. In the Edit Key panel, either increase the monthly credit limit or toggle the limit **off** to remove it entirely.
+5. Click **Continue** to save your changes.
+
+<Note>
+  Only **Admins** can view and edit API key credit limits. If you don't have Admin access, ask your Lusha Admin to check the key's limit for you.
+</Note>
+
+If the key has no credit limit set and you're still seeing the error, contact [Lusha Support](https://www.lusha.com/contact/) with the API key name and the error message you received.
+
+## Error handling
+
+Lusha's API uses standard HTTP response codes. See the full table in the [API documentation](https://docs.lusha.com) or the [API Error Code Reference](/user-guide/lushas-api/lusha-api-error-codes-reference).

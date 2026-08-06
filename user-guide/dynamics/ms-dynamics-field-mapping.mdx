@@ -1,0 +1,95 @@
+---
+title: "MS Dynamics field mapping"
+description: "How to map Lusha data fields to MS Dynamics record types, including default mappings and conditional field mapping setup."
+---
+
+The Lusha integration with MS Dynamics lets you map Lusha data fields directly to your Dynamics records, so enriched contact and company data lands in the right place automatically. This removes the need to manually copy data between platforms.
+
+<Note>
+  Only Admins and Managers can edit integration settings. You must be an admin in both Lusha and MS Dynamics to set up the integration.
+</Note>
+
+## How to connect and configure field mapping
+
+1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/) and go to the **[Integrations tab](https://dashboard.lusha.com/lusha-integrations)**.
+2. Select **MS Dynamics** from the table and click **Connect**.
+3. Enter your Dynamics organisation URL when prompted. Copy this from the URL of your Microsoft CRM.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259733/458335cdb872b037cceebb32/Screen%2BShot%2B2022-11-24%2Bat%2B11_24_52.png?expires=1780056000&signature=9d4deb11062db422cdfb77b8b02db192bb960bfed569c7cf4e47818aabac636f&req=0dZtwFH9rzRk2hj99dpg6obdI4xWJ9A49e7UVdbHZ2Ww1mkB1AKemHNfYyCv%0ATHoP2TCBAXZcAmK8bQj2QhCQ%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259768/903dd38048b42af376689dc9/Screen%2BShot%2B2022-11-24%2Bat%2B11_29_19.png?expires=1780056000&signature=303216bbf0f7355c1a2607db691dfe23e28cfc6c7986e789b8f9e1de66436916&req=0dZtwFH9qj9k2hj99dpg6nTIcV9QYXnxEGSjL%2BaM%2FNVuqIfXzlSWQzsEQTDy%0Aq%2B9%2FiFV1LyXqZyI%2BSwsT%2Fglc%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Sign in to your CRM when prompted (skipped automatically if you're already logged in).
+2. Click **Continue to field mapping**.
+3. Under Field mapping, you'll see three record types: **Account**, **Contact**, and **Lead**. Map Lusha fields to the corresponding Dynamics fields for each record type.
+
+To allow Lusha to overwrite data in existing Dynamics records, enable **Allow Override**.
+
+<Note>
+  When adding a new field, the field type in Dynamics **must** match the Lusha field type. Each field can be remapped to a different Dynamics field to control exactly where enriched data lands.
+</Note>
+
+## How to add predefined value fields
+
+1. Select a record type (Account, Contact, or Lead).
+2. Click **+ Add field** and choose **Predefined Value**.
+3. Select an MS Dynamics field from the available options.
+4. Enter your predefined value.
+5. Click **Save changes** before switching tabs.
+
+## Conditional field mapping
+
+Conditional field mapping lets you set secondary field values that are updated automatically when an email or phone field is enriched — useful for routing leads or flagging record status after enrichment.
+
+1. In your Lusha account, go to **Field mapping**.
+2. Click **Advanced** next to the **Email 1** or **Phone 1** field.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259813/dd1f995898ff53d6789ca7b0/Screen%2BShot%2B2022-11-21%2Bat%2B15_03_27.png?expires=1780056000&signature=26d4e1af1f3e4e613bb5e6b9129199e803b8483efde5941bd2fa89d423a6c236&req=0dZtwFHyrTRk2hj99dpg6i6oxyc3pNRZhvdgqqkB2Lgv4Vg6veT6dxtbClRY%0AAPZZLEOz%2BZdc%2F4QYZL55zwmL%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. In the **Map** dropdown, enter text to describe the value — this creates a predefined field that will update after the parent field is enriched.
+
+4. Click **Apply** to save the conditional rule.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259851/cc3332c80dc28b6f882716d7/Screen%2BShot%2B2022-11-24%2Bat%2B12_04_25.png?expires=1780056000&signature=c2ff3e4e754ffdcb80a8c49a629455f5f1e38e6d5e6024ff73ce5c9c432ab91c&req=0dZtwFHyqTZk2hj99dpg6oO39fHHyM9%2Bpce3KXUzyWy6IyuZfhmReIhUh68M%0Au%2BG%2BLgmlU%2FFIgoCCpqDz%2BiXC%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+5. Click **Save Changes** at the bottom of the page.
+
+## Default field mapping
+
+If you modify your mapping and need to revert to the original settings, use the tables below.
+
+## Lead
+
+| **Lusha field** | **Dynamics field** |
+| --- | --- |
+| JobTitle | Jobtitle |
+| LastName | Lastname |
+| FirstName | Firstname |
+| Phone1 | Telephone1 |
+| CompanyName | Companyname |
+| Email1 | Emailaddress1 |
+
+## Contact
+
+| **Lusha field** | **Dynamics field** |
+| --- | --- |
+| JobTitle | Jobtitle |
+| LastName | Lastname |
+| FirstName | Firstname |
+| Departments | Department |
+| Phone1 | Telephone1 |
+| Email1 | Emailaddress1 |
+
+## Account
+
+| **Lusha field** | **Dynamics field** |
+| --- | --- |
+| CompanyName | Name |
+| CompanyRevenueNumber | Revenue |
+| CompanyPhone | Telephone1 |
+| Website | Websiteurl |
+| CompanyCity | Address1\_city |
+| CompanyStreet | Address1\_line1 |
+| CompanyCountry | Address1\_country |
+| Employees | Numberofemployees |
+| CompanyState | Address1\_stateorprovince |

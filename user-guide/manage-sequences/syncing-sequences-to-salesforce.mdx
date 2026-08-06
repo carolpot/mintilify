@@ -1,0 +1,30 @@
+---
+title: "Syncing Sequences to Salesforce"
+description: "How Lusha Engage email sequences and one-off emails sync automatically to Salesforce as Activity Tasks."
+---
+
+When you run email sequences or **send one-off emails** using Lusha Engage, all activity is automatically synced to your Salesforce CRM. This gives your sales team full visibility into outreach efforts and ensures your Salesforce records are always up to date — no manual logging needed.
+
+## How it works
+
+**Each one-off or sequence email sent through Lusha Engage** automatically creates an Activity Task in Salesforce. These tasks include essential details about the outreach and are synced in real-time — eliminating manual data entry and ensuring your CRM reflects the latest interactions.
+
+## Default field mappings
+
+Here's how Lusha Engage fields are mapped to Salesforce by default:
+
+| **Lusha Field** | **Salesforce Field** | **Details** |
+| --- | --- | --- |
+| Subject | Subject | Email subject line |
+| Description | Description | Email body plus metadata (sequence name, email index, email status) |
+| Contact email | EventWhoIds | Links the activity to the contact record |
+| Company domain (Account) | Company domain | Associates the activity with the account |
+| Sender email (Lusha user) | Sender email | Identifies which team member sent the email |
+| Email date | Email date | Timestamp of when the email was sent |
+
+## Important notes
+
+- Field mappings follow a default setup and are not currently customizable.
+- Both one-off and sequence emails are synced automatically — no manual steps required.
+- The Description field includes helpful metadata, such as whether the email was part of a sequence or sent individually, its sequence step and status.
+- Syncing ensures that your Salesforce reports and dashboards always reflect the full picture of your outreach activity.

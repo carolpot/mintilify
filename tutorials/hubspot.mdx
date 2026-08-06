@@ -1,0 +1,80 @@
+---
+title: "HubSpot Contact Data Enrichment"
+description: "Enrich HubSpot Contact Data with Lusha's API key based on Full Name and Domain parameters without requiring any additional applications or special JSON codes."
+---
+
+## Overview
+Enrich HubSpot Contact Data with Lusha's API key based on Full Name and Domain parameters without requiring any additional applications or special JSON codes.
+
+## Requirements
+This workflow requires an active HubSpot subscription with the necessary feature enabled, along with the inclusion of Lusha resources (such as an API token for the account and available bulk credits).
+
+- A credit will be consumed only when a match is successfully found
+- Lusha's API key can be found [here](https://dashboard.lusha.com/enrich/api) (visible only by Lusha admins or managers)
+
+## What is HubSpot Workflow?
+HubSpot workflows are automated sequences of actions triggered by a specific set of conditions. These conditions can be based on user behavior, contact properties, or specific events. Workflows are designed to move contacts through a predefined set of actions.
+
+<iframe src="https://player.vimeo.com/video/1119416566" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+
+## How it Works
+
+### Step 1: Access HubSpot's Workflow Automation
+1. Log in to your HubSpot account
+2. Navigate to the 'Automation' section from the main dashboard
+3. Select 'Workflows' from the dropdown menu
+
+### Step 2: Create a New Workflow
+1. Click on the 'Create workflow' button
+2. Choose a 'Blank workflow' to start from scratch
+3. Name your workflow appropriately, such as "Contact Enrichment Workflow" (this specific example is going to refer to the contact enrichment using [Lusha's Person V2 endpoint](https://www.lusha.com/docs/#person-api-v2))
+
+### Step 3: Set the Enrollment Trigger
+1. Select **Set Enrollment trigger** to specify the criteria for contacts to enter the workflow
+2. Choose a property-based trigger (e.g., when a contact's property changes or is updated)
+3. Configure the trigger according to your specific needs (e.g., "Contact created" or "Contact property changed")
+
+![Enrollment Trigger Setup](https://downloads.intercomcdn.eu/i/o/19922575/9ce6a384fb4d4ea2ae1d9450/654497ab-ae1c-497e-ba50-442846c92a71.png?expires=1750089600&signature=0a826e8f8be55432ab53e255407ce91d2628b775955b787736bd047d49179cf0&req=0dxmx1r%2FqzJk2hL085ZhobLoeXkmOr3H2wYrPrpyRjmxkmQutmtCZR5aHn7F%0AD%2BWjlmuaq62xa%2BaW%0A)
+
+### Step 4: Add a Webhook Action
+1. Click on the plus icon **(+)** to add an action after the enrollment trigger
+2. Select **'Webhook'** from the available actions
+3. In the Webhook configuration, enter the Webhook URL that will be used to send the contact data for enrichment. You can see all Lusha's available endpoints [here](https://www.lusha.com/docs/#introduction)
+4. Choose the HTTP method (e.g., GET)
+5. Set up the Query Parameters to include the necessary contact information (e.g., LinkedIn URL, email or full name + company name/website)
+6. Add any required headers (e.g., Content-Type: application/json). *API key can be found [here](https://dashboard.lusha.com/enrich/api)
+
+![Webhook Configuration](https://downloads.intercomcdn.eu/i/o/19922661/2fa48a2d28838f05bfa0ac8b/2.png?expires=1750089600&signature=2c8e45e9a258035ec24db6d705af0106ae8f04c9a2d062a255659d4a0e51da95&req=0dxmx1r8qjZk2hL085ZhoY00gRPKZTcVR9A5dwD%2FsYkYqqEfOw19wmdQK7AA%0An%2FZhyWFINPznks1y%0A)
+
+### Step 5: Test the Webhook
+1. Before activating the workflow, test the webhook by sending a test request
+2. Ensure that the external system (where the webhook sends data) receives and processes the request correctly
+3. Check for any errors or issues and adjust the configuration as needed
+4. Select a property from the response to be added to the contact profile (Person ID and LinkedIn URL for instance as in the example below)
+
+![Webhook Testing](https://downloads.intercomcdn.eu/i/o/19922782/44dfcacf2ce4fe2b50bffe8a/3.png?expires=1750194000&signature=6c800e2224d8e4bc74e24a69870b25961971546fe49b3edc8983a20cb0220486&req=0dxmx1r9pDVk2hr889pg6tmXsr2F5GNa7LBeMWd016DWCAfYofL%2F9njHs4Q%3D%0A)
+![Webhook Testing2](https://downloads.intercomcdn.eu/i/o/19922793/e844777be39cd6eafdecf681/4_.png?expires=1750089600&signature=bf1109d5a4b020b8a04f6a04c231e154ef2b96dfffc7660b8d9ab6324ed8a1a3&req=0dxmx1r9pTRk2hL085ZhoUkPKEHhaU5HlGFRDGRd8kAiKMY1JMw13EP6YwW5%0ARwEJoIRBrZtnX51l%0A)
+
+### Step 6: Activate the Workflow
+1. Once the webhook is successfully tested, return to the workflow editor
+2. Ensure you have the following step to update the contact (e.g., "Copy property value" to an existing field)
+3. Click on the **'Review and Publish'** button
+4. Activate the workflow to start enriching contacts based on the specified criteria
+
+### Step 7: Monitor Workflow Activity
+1. After activation, monitor the workflow to ensure it functions as expected
+2. Regularly check the workflow history and any errors reported to troubleshoot any issues
+
+### Step 8: Adjust and Optimize (Optional)
+1. Based on the results, you may need to refine the enrollment criteria or webhook configuration
+2. Continuously monitor the workflow's performance and make adjustments to improve contact enrichment
+
+#### The flow is now finished 🔥
+
+## Additional Resources
+
+If you have any questions on the above feel free to reach out the support team:
+
+- Via live chat from the [Lusha website](http://www.lusha.com/)
+- Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
+- Via email: [support@lusha.com](mailto:support@lusha.com)

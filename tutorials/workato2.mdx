@@ -1,0 +1,159 @@
+---
+title: "Lusha Connect Prospecting Workflow Guide"
+description: "The Lusha Connect connector enables users to access Lusha's Prospecting API directly from within Workato. This article will guide you through the two key actions in the Prospecting workflow:"
+---
+
+The Lusha Connect connector enables users to access Lusha's Prospecting API directly from within Workato. This article will guide you through the two key actions in the Prospecting workflow:
+
+- **Step 1** – Contacts Search
+- **Step 2** – Contacts Enrich
+
+## Connector Setup
+
+To get started, you'll need a Lusha API key and an active Workato account.
+
+1. Go to your Lusha dashboard and get your API key [here](https://dashboard.lusha.com/enrich/api).
+2. Paste the key into the API Key field when setting up the connection.
+
+### Easy Step-by-Step Setup:
+
+1. **Log into Workato**: Open Workato and log in or create an account if you don't have one.
+
+2. **Install Lusha Connect**: Visit the [Workato Community Library Lusha Connect page](https://app.workato.com/custom_adapters/714499/details?community=true) and click "Install" to add the Lusha Connect connector to your account.
+
+3. **Create a New Recipe**: In Workato, click "Create Recipe" to start a new automation.
+
+4. **Set Up Your Trigger**: Choose an event to initiate the recipe, such as adding a new lead in your CRM.
+
+5. **Add Lusha Connect as an Action**: In the action step, search for "Lusha Connect" and select it.
+
+6. **Authenticate with API Key**: Enter your Lusha API key when prompted. This will authorize Workato to securely access Lusha's enriched data.
+
+7. **Configure Fields**: Depending on the selected action, map the fields in Workato to ensure the correct data is pulled from Lusha.
+
+## Step 1 – Search for Contacts
+
+Use this action to search for relevant B2B contacts by applying advanced filters across contact and company-level criteria.
+
+### 🔧 Action: [Prospecting] Step 1 - Contacts Search
+
+This action posts a search request to the Lusha Prospecting API and returns a list of matching contacts based on your input filters.
+
+### Input Parameters
+
+The search is divided into 3 main filter groups:
+
+#### 1. Contact Filters
+- **Countries** – Choose target regions
+- **Departments** – Filter by role (e.g., Sales, Engineering)
+- **Seniority** – From entry to C-level
+- **Job Titles** – Use keywords (e.g., "CTO", "Manager")
+- **Cities / States** – Narrow down geographically
+- **Existing Data Points** – Ensure the contact has an email or phone
+
+#### 2. Company Filters
+- **Company Name / Domain** – Target specific companies
+- **Main/Sub Industries** – Use predefined industry categories
+- **Employee Count / Revenue Range** – Match company size
+- **Company Location** – Target by geography
+
+#### 3. Exclusion Filters
+Use the same filters above to exclude companies or contacts (e.g., exclude interns or companies in the finance industry).
+
+#### 4. Pagination
+- **Page** – Index for the current result set (default = 0)
+- **Size** – Number of contacts per request (max = 40)
+
+### Main Output Fields
+- **Request ID** – Used to retrieve enrichment data in Step 2
+- **All Contact IDs** – All results
+- **Revealed Contact IDs** – Contacts you've already revealed
+- **New Contact IDs** – Contacts you've never revealed
+
+## Step 2 – Enrich Contacts
+
+Once you've selected your target contacts, use this action to get full enrichment data (emails, phones, company data, job info, etc.)
+
+### 🔧 Action: [Prospecting] Step 2 - Contacts Enrich
+
+Enriches contacts returned from a previous search.
+
+### Input Parameters
+- **Request ID** – From Step 1 output
+- **Contact IDs** – One or more contact IDs to enrich
+
+### Output Fields
+
+Each contact enriched will return:
+
+**Personal Information:**
+- Full Name, First & Last Name
+- Emails (with type & confidence)
+- Phone Numbers (with type & DNC flag)
+- Location – Country, State, City
+- LinkedIn Profile
+
+**Professional Information:**
+- Job Title, Departments, Seniority
+
+**Company Information:**
+- Name, Industry, Revenue, Employee count
+- Location, Social links, Technologies
+- Specialities, Funding, Intent topics
+
+## How to Use in a Recipe
+
+To create your first automated workflow (Recipe) with Lusha:
+
+1. **Install Lusha Connect**: Go to the [Workato Community Library Lusha Connect page](https://app.workato.com/custom_adapters/714499/details?community=true) and click "Install" to add the Lusha Connect connector to your account.
+
+![Install Connector](https://downloads.intercomcdn.eu/i/o/yu27vhse/49766114/7d56577376225f801941bd3e82fa/7220dccf-3786-4eea-8668-f5d625937a31.png?expires=1750087800&signature=2ea9c4ad4b83da66e47e668f5c1cca0bfa45d2e1ad6165880f0b50bc65c08281&req=1Nxow177rTNk2hL085ZhoVTQKJwHaEUxC72rzuJQDeMWZ04KisfP3Sc7bmIm%0Adec1%2BFmBD4KAFCmK%0A)
+
+2. **Create a new recipe**: In Workato, click "Create Recipe."
+
+3. **Select your trigger**: Define an event to trigger the recipe, such as adding a new lead in your CRM.
+
+4. **Add Lusha as an Action**: Select the first step ("Prospecting Search Contacts"):
+
+![Prospecting Search Action](https://downloads.intercomcdn.eu/i/o/yu27vhse/49766188/679b177c86fa4e6572b5199cc9f7/b612224d-72f9-43a9-88a0-7e44f3c8b2bf.png?expires=1750087800&signature=e1247f22831349c7830dc61d16518e5078be8152f62ddeb187be53feb8a726a4&req=1Nxow177pD9k2hL085ZhoVgnDp3%2B4oFt3kz9GaXW0IDtaeFv0GTJOO%2BRRXWL%0AXPKAqTBc2K03j22N%0A)
+
+5. **Map Fields**: In the setup step:
+
+   a. Review the fields available in the Lusha action. Select the ones that align with your data needs.
+
+   ![Field Review](https://downloads.intercomcdn.eu/i/o/yu27vhse/49766576/4c164117c5852921265ba4a71bd7/b59a4cc5-3976-4206-a117-4163d9564bd1.png?expires=1750087800&signature=31191295ca20267ca184fc911fc0b04372f9fa034e90c7874adf74cd6b389238&req=1Nxow17%2FqzFk2hL085ZhoVqsusON047Ca1IKVcC2Nqd8HTv%2Bu4aVTPbfCfBi%0ACS8f2UYYz8EZf5hv%0A)
+
+   b. Add only the fields you require for your workflow. (It's recommended to avoid adding all fields unless they're essential for your recipe, to keep it streamlined).
+
+   ![Field Selection](https://downloads.intercomcdn.eu/i/o/yu27vhse/49766663/e9556fca8ec0eb4c5bf5487d357e/7b2a55cf-c1a3-4474-86bc-e90df72ec8ac.png?expires=1750087800&signature=bdc94d59cfbe30064952c259a3d609eb2c8b1c5f390a5960ac31efe9da312cea&req=1Nxow178qjRk2hL085ZhofmUfL%2BgDQaxee%2FQd069pSXthy6MrB8i8NZ%2Ft67Q%0A97W03YeG6OQFgVCq%0A)
+
+6. **Add another Lusha Action**: Select the second step ("Prospecting Enrich Contacts"):
+
+![Prospecting Enrich Action](https://downloads.intercomcdn.eu/i/o/yu27vhse/49767298/d895f5ce47686539e593fb05e540/cc7f3a8b-c851-4ad9-8b2f-352a04fc327d.png?expires=1750087800&signature=2c0697a05f460febfa48bfb6b2204f379b312f13a3fee2fa2c88bbf0edd22fff&req=1Nxow1%2F4pT9k2hL085ZhodcHEaKpF9edvO8tgddWGvTK%2FqtpxafaUc5fXOhL%0AAwYb1zsE14qnoWj8%0A)
+
+   a. Map the "Request Id" from the datapill of the last action output:
+
+   ![Request ID Mapping](https://downloads.intercomcdn.eu/i/o/yu27vhse/49766957/83701e11fbf3fe4414eb69269f59/ddf4dae4-b765-4947-a5a6-fd06da06ba53.png?expires=1750087800&signature=2ab60cde83a3557c7ed85ded7a73f80e280dfb737330d3bf3b3c2a64e4ae4c90&req=1Nxow17zqTBk2hL085ZhoSSMRajWyhvU8nggUl021aoXN8g6g1QiAebZ4kEL%0AeGF8NBC8zWN45Vwd%0A)
+
+   b. Select either "All Contacts", "New Contacts" or "Revealed Contacts"
+
+   ![Contact Selection](https://downloads.intercomcdn.eu/i/o/yu27vhse/49767401/648b3237fc259de096e6bd375797/04c05955-1dd4-48ff-97a7-2306824c391d.png?expires=1750087800&signature=89e63cf79a207db817eea19bda278182ccdc4aa1eb8e30ac40f244852a8db9d5&req=1Nxow1%2F%2BrDZk2hL085ZhoavUGJNEKpXvQQyC6H8rmlT0T%2Buxw%2FK7hpp6cocx%0AtZBdh%2BbwqUIobE%2FU%0A)
+
+7. **Map Data to the Final Destination**: Map the enriched data from Lusha to the desired location within your workflow, ensuring it appears where it's needed.
+
+8. **Test and Activate the Recipe**: Run a test to ensure everything works as expected. Then, activate the recipe to start using it.
+
+## Tips & Best Practices
+
+- **Use "new_contact_ids"** to reveal only unseen contacts
+- **Apply exclusion filters** to optimize API credit usage
+- **Use Dynamic Fields**: Whenever possible, use Workato's dynamic fields to pass information like email addresses or company names directly into the Lusha connector, ensuring accuracy and efficiency
+- **Monitor API Usage**: Keep an eye on your API usage within Lusha, as enrichment calls can consume API credits
+- **Regular Testing**: Periodically test your recipes to confirm that data flows smoothly and meets your needs
+
+## Additional Resources
+
+For further assistance, consult the following:
+
+- **[Workato Help Center](https://support.workato.com/en/support/home)**: For general guidance on building workflows in Workato.
+- **Lusha Support**: If you need specific help with your API key or access permissions, contact [Lusha Support](mailto:support@lusha.com).

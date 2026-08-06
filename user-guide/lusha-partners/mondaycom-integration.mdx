@@ -1,0 +1,56 @@
+---
+title: "Monday.com integration"
+description: "How to set up the Lusha integration in monday.com to automatically enrich contact and company records in your boards."
+---
+
+The Lusha integration for monday.com automatically enriches your boards with verified contact and company data — no manual data entry required. When a trigger fires (a new row added or a key column updated), Lusha fills in the mapped fields using your API key.
+
+## Step 1: Prepare your board
+
+Make sure your monday.com board has columns ready to receive enriched data. The fields available depend on the enrichment type:
+
+**Company enrichment fields:** Address, Categories, Description, Founded, Funding, Industry, Number of Employees, Revenue, Specialities.
+
+**Contact enrichment fields:** First Name, Last Name, Job Title, Seniority, Department, Email, Phone, Company Name, City, State, Country.
+
+## Step 2: Add the integration
+
+1. Open your monday.com board or CRM and click **Integrations** at the top.
+2. Search for **Lusha** in the marketplace.
+3. Choose the integration type: **Contact Enrichment** or **Company Enrichment**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/70346027/9ae66d10c9da71bf913f93ff5e9f/152bcb08-8594-45f0-a648-12baf0a56053?expires=1779991200&signature=34e551b988c22aee660fc37ab436cc9ff9bfe0a5b1bce536995b9ff3f35116f7&req=19VswV76rjBk2hj99dpg6rxpaw%2F0qDveFaikx4tI4dV%2FXp%2FBR2YOrZ1eNcMX%0AL8bmaM%2FfXbn9t99kUlPTDFP4%0A" alt="" style={{maxWidth: '100%', height: 'auto'}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/70515783/82e3615f2ceff2e4f15f5087d7c0/80d74ee6-c5e6-4021-9454-7e3837130690?expires=1779991200&signature=771e8759e5aaa02bc80b26db1e3af6c53a99c603ff97aaadde3432d0ea0f1c79&req=19VqxF39pDRk2hj99dpg6vPPMnYif1bxhJitxw%2BFvDjjZSGYyVWfxiU9YkQ0%0A%2B0CaBFN7AH8TIlgSI1%2FVNcfV%0A" alt="" style={{maxWidth: '100%', height: 'auto'}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/70346028/1375ede641fe109cb223e9ad7689/dbc9d3f2-0321-4c79-82d6-ef09fc57cb8f?expires=1779991200&signature=1b525f2f4e9644e4eb9c7118b5ce2f62cbd33b124966387cc0de91f940e624b2&req=19VswV76rj9k2hj99dpg6vVhJg3HSSjenQvTxZcsnIXSF4%2BRqUYsh5Ucpiqa%0AqF0OwrwaddVWgQwMBAKYXYIt%0A" alt="" style={{maxWidth: '100%', height: 'auto'}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/70346030/d22b1705819635b0c2f3970b1062/752de223-597f-45b5-a0dc-803c36150d00?expires=1779991200&signature=c2c0411e7ae04417987f46099916f1615162b85337913ba9160c656a18146664&req=19VswV76rzdk2hj99dpg6gBtDGV1BjE6VcGINTII7Lj5XepRIUz%2FX5Z0cYu8%0AQK7KBonJGHKUjhvR0JVI%2Bm7E%0A" alt="" style={{maxWidth: '100%', height: 'auto'}} />
+
+## Step 3: Configure the integration
+
+After selecting the integration type, you'll see a one-liner setup with placeholders to configure.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/70346031/133d76d01e46b488dbf1cd60e84c/791effd0-1de3-4852-a383-f0393c9f10c9?expires=1779991200&signature=01abab6a9c323ec36b5cdb54eee803e17135f7abf9754171ee295fedf8844a46&req=19VswV76rzZk2hj99dpg6s71CyEwFqXHOh%2Bk26phmhqyukv2OEqOAc3x1zg0%0AAYHgaFE3l2SJFVEPaY0aOPEt%0A" alt="" style={{maxWidth: '100%', height: 'auto'}} />
+
+### Contact enrichment
+
+Configure: the column holding the contact's LinkedIn URL, your Lusha API key, which rows to enrich (all or only new/updated), which contact fields to populate, and whether to overwrite existing data.
+
+### Company enrichment
+
+Configure: the column holding the company name, your Lusha API key, which rows to enrich, which company fields to populate, and whether to overwrite existing data.
+
+## Step 4: Connect your Lusha API key
+
+When prompted, paste your Lusha API key. Your API key is available at [dashboard.lusha.com/enrich/api](https://dashboard.lusha.com/enrich/api) (visible to Admins and Managers only). The key is stored securely and only used for enrichment requests.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/70346032/52fc197ea978721cac2e25d067e3/dd5ffabd-1493-40b1-b16a-23329db59bee?expires=1779991200&signature=400180beca7181739f00c149fb3a6df00a460f92f41fdaa182bfacf5b076a160&req=19VswV76rzVk2hj99dpg6uvGObuf3AtguAIR6Cqh9QWVgwDiLgffbk85Ta81%0AQnLWOly6caTFzw9wTaRhUF3e%0A" alt="" style={{maxWidth: '100%', height: 'auto'}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/70346033/4bda62adaef68a23237e7d7a3ec5/bc95a467-9011-40bc-a484-12156ef60501?expires=1779991200&signature=0cfe05aca1caf566789dc768bcf43221d05638b11ebf41592a8549a6d15ddebb&req=19VswV76rzRk2hj99dpg6pPZSfCLezUyzxQBDc9O049HOIqQwGRTuBWWS7%2BE%0ABmh2gXxRpCMNOTPUDiMFfMvc%0A" alt="" style={{maxWidth: '100%', height: 'auto'}} />
+
+## Step 5: Start enriching
+
+Once setup is complete, rows enrich automatically whenever the trigger fires — either a new row is added or a key column (LinkedIn URL or company name) is updated. You can also trigger enrichment manually by updating a row with the relevant identifier.
+
+You're all set — your monday.com board will now stay enriched with verified Lusha data automatically.

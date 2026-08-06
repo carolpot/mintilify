@@ -1,0 +1,66 @@
+---
+title: "Lusha Security Overview"
+description: "An overview of how Lusha protects your account, your data, and your team's information."
+---
+
+Lusha takes data security seriously. This article summarizes the key security features available in your Lusha account and how Lusha protects the data you store and access through the platform.
+
+## Account security
+
+### Password protection
+
+Your Lusha account is protected by a password you set at signup. Lusha enforces minimum password strength requirements. You can update your password at any time via **Settings → My Profile → Send me Instructions.**
+
+### Single Sign-On (SSO)
+
+Scale plan customers can configure SSO using SAML 2.0, allowing team members to log in through your company's identity provider (e.g., Okta, Azure AD, Google Workspace). This gives your IT team centralized control over access.
+
+To set up SSO: go to **Settings → [Account Settings](https://dashboard.lusha.com/account/accountSettings) → Single Sign-On**. (Scale plan only.)
+
+Review SSO information in our [SSO article](/user-guide/security/how-to-set-up-sso-single-sign-on), or [SAML article](/user-guide/security/custom-saml-single-sign-on).
+
+## Session management
+
+Lusha automatically ends inactive sessions after a period of inactivity. You can manually sign out of all active sessions from **Settings → My Profile → Sign Out of All Sessions**.
+
+---
+
+## Data security
+
+### Encryption in transit
+
+All data transmitted between your browser and Lusha's servers is encrypted using TLS (Transport Layer Security).
+
+### Encryption at rest
+
+Data stored in Lusha's systems is encrypted at rest.
+
+### Access controls
+
+Lusha uses role-based access controls (RBAC) to ensure team members only see the data and settings relevant to their role (Admin, Manager, or User).
+
+---
+
+## Compliance
+
+Lusha is committed to compliance with applicable data protection regulations, including GDPR. For details on how Lusha sources, stores, and processes contact data, see the **GDPR Compliance** and **Data Sources & Accuracy** articles.
+
+<Note>
+Lusha holds a SOC 2 Type II certification. For security reports or compliance documentation (e.g., for vendor review), contact your Lusha Account Manager or reach out to Lusha Support.
+</Note>
+
+## Accessing Compliance Reports and Documentation
+
+Lusha provides a range of compliance documents to its customers, including security overviews, privacy policies, and sub-processor details, which are readily accessible in the [Lusha Trust Center](https://www.lusha.com/trust-center). However, sensitive documents such as the SOC 2 Type II report and penetration test reports require meeting specific access requirements.
+
+### SOC 2 Type II Reports
+
+The SOC 2 Type II report offers insights into Lusha's security, availability, and confidentiality controls. Access to the full, unredacted report is limited to customers on the Scale plan or accounts with transactions exceeding $10,000. This ensures sensitive information is shared only with eligible customers.
+
+### Penetration Test Reports
+
+Lusha's penetration test findings were assessed as very low risk, with minimal exposure due to the limited nature of customer data collected. The full penetration test report is available to customers who meet the access requirements, including signing an NDA. Separate remediation plans are not provided as the findings have already been addressed.
+
+## Reporting a security concern
+
+If you believe you've discovered a security vulnerability in Lusha's platform, contact Lusha's security team directly at [security@lusha.com](mailto:security@lusha.com).

@@ -1,0 +1,133 @@
+---
+title: "Lusha Workato Connector Guide"
+description: "The Lusha Workato Connector enables seamless integration of Lusha's enriched contact and company data into your workflows, helping you automate prospecting, lead enrichment, and customer insights."
+---
+
+## Overview
+The Lusha Workato Connector enables seamless integration of Lusha's enriched contact and company data into your workflows, helping you automate prospecting, lead enrichment, and customer insights. Follow this guide to set up and make the most of the connector for your business needs.
+
+## How it Works
+To get started, you'll need a Lusha API key and an active Workato account.
+
+### Easy Step-by-Step Setup:
+
+1. **Log into Workato**: Open Workato and log in or create an account if you don't have one.
+
+2. **Install Lusha Connect**: Visit the [Workato Community Library Lusha Connect page](https://app.workato.com/custom_adapters/714499/details?community=true) and click "Install" to add the Lusha Connect connector to your account.
+
+3. **Create a New Recipe**: In Workato, click "Create Recipe" to start a new automation.
+
+4. **Set Up Your Trigger**: Choose an event to initiate the recipe, such as adding a new lead in your CRM.
+
+5. **Add Lusha Connect as an Action**: In the action step, search for "Lusha Connect" and select it.
+
+6. **Authenticate with API Key**: Enter your Lusha API key when prompted. This will authorize Workato to securely access Lusha's enriched data.
+
+7. **Configure Fields**: Depending on the selected action (either "Enrich Contacts" or "Enrich Companies"), map the fields in Workato to ensure the correct data is pulled from Lusha.
+
+## Connector Actions: How They Work
+
+Lusha Connect on Workato offers two key actions:
+
+- **Enrich Contacts**: Pull detailed contact information from Lusha, allowing you to add job titles, company info, and other attributes directly into your workflows.
+
+- **Enrich Companies**: Retrieve company-specific information such as industry, location, and funding details, to help with account-level insights and profiling.
+
+## Required Fields for Enrichment
+
+Each enrichment action requires specific fields to return results. Here's what you need for each action:
+
+### Enrich Contacts
+Provide at least one of the following to retrieve contact information:
+- First Name and Last Name with either Company Name or Domain
+- Email Address
+- LinkedIn Profile URL
+
+### Enrich Companies
+Provide one of the following to retrieve company information:
+- Company Name
+- Company Domain
+- Company ID (if available)
+
+## Setting Up Your First Recipe with Lusha
+
+To create your first automated workflow (Recipe) with Lusha follow these steps:
+
+1. **Install Lusha Connect**: Go to the [Workato Community Library Lusha Connect page](https://app.workato.com/custom_adapters/714499/details?community=true) and click "Install" to add the Lusha Connect connector to your account.
+
+![Installing Lusha Connect](https://downloads.intercomcdn.eu/i/o/yu27vhse/25579534/a473e19effc32393f3f60fd4c264/1+%282%29.png?expires=1750087800&signature=a6cecfcb83f430b13b73c9c030c2c8dfe439939ab3f04a744f6628da3928a140&req=0tBqwlH%2FrzNk2hL085ZhoSY7wOwdbunDnQ5mAxQ4BwC69I5WcisP6kUZq13I%0AMrCETLvV2olBiayV%0A)
+
+2. **Create a New Recipe**: In Workato, click "Create Recipe."
+
+3. **Select Your Trigger**: Define an event to trigger the recipe, such as adding a new lead in your CRM.
+
+4. **Add Lusha as an Action**: Select either Enrich Contacts or Enrich Companies, depending on your data needs.
+
+![Adding Lusha Action](https://downloads.intercomcdn.eu/i/o/yu27vhse/25579739/acfb947a1e15b3aa3e34eed2ff12/3+%281%29.png?expires=1750087800&signature=919bdfcedfb1fbcdc4c13d86159e3462e93de6e2eb76354345e82c435e1dca44&req=0tBqwlH9rz5k2hL085ZhoQQYJ%2FJkPuiVc7mKTfy%2BCyhyvkByqzhmOuUnFR8i%0ABRHLvYSUBYJREuLi%0A)
+
+5. **Map Fields in the setup step**:
+
+   a. Review the fields available in the Lusha action. Select the ones that align with your data needs.
+
+   ![Field Selection](https://downloads.intercomcdn.eu/i/o/yu27vhse/25579819/20bb86c5ce36415c590dc873c432/4+%281%29.png?expires=1750087800&signature=5fc20766b38126e9e9aff05dd49ce08d98c066c313aecf9b2961fda887021ef3&req=0tBqwlHyrT5k2hL085ZhoXWZONKcOENgOrT7%2BxSzlisnV%2BGrStG7TErNUdRy%0AqMeDYE%2Bf079rT%2B77%0A)
+
+   b. Add only the fields you require for your workflow. (It's recommended to avoid adding all fields unless they're essential for your recipe, to keep it streamlined).
+
+   ![Field Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/25579839/2091c2082729303e95dd20010c16/5+%281%29.png?expires=1750087800&signature=e4127e9a693d521d8b9f1634bd565f6389b0c859d7e9768f4b87ae4cb90381db&req=0tBqwlHyrz5k2hL085ZhoSL7GrbD80d3tddJXKbUfXHVZ141QqLhTBwj%2Fd%2B8%0AjdI4iP8Mf%2B2o0HoR%0A)
+
+   c. Map fields using data from your trigger event or from previous test data to ensure correct data retrieval from Lusha.
+
+   ![Field Mapping](https://downloads.intercomcdn.eu/i/o/yu27vhse/25579874/987a4fe40316891b03c681928a91/6.png?expires=1750087800&signature=0b62793c764c12d3b0b75944f689a10d656c56079c2e740fc42abaeecceba761&req=0tBqwlHyqzNk2hL085ZhoeLzc1UgtAR7BWRwA9G2miKP8EEkCq7A4tgHMpMj%0ARwYWEuhhmas7gew3%0A)
+
+6. **Map Data to the Final Destination**: Map the enriched data from Lusha to the desired location within your workflow, ensuring it appears where it's needed.
+
+![Final Data Mapping](https://downloads.intercomcdn.eu/i/o/yu27vhse/25579937/d8ff9e9d6e61bcd68b881bcfbe06/7.png?expires=1750087800&signature=4cc8db276c3a28771484c9f7210be8867296c5a961bb61ad026418f7c167da58&req=0tBqwlHzrzBk2hL085ZhoRsITURSX2OWLnCkw%2BKyLN%2BX7tyT90JUqU6cC1vC%0AdxvXPfMa2ueqSssn%0A)
+
+7. **Test and Activate the Recipe**: Run a test to ensure everything works as expected. Then, activate the recipe to start using it.
+
+## Examples of Using the Lusha Connector in Workato
+
+### 1. Lead Enrichment
+- **Trigger**: New lead added in CRM (e.g., Salesforce).
+- **Action**: Enrich Contacts with Lusha.
+- **Outcome**: The new lead's information is automatically enriched with details like job title, company, and social profiles.
+
+### 2. Account Profiling
+- **Trigger**: New company added in a database.
+- **Action**: Enrich Companies with Lusha.
+- **Outcome**: Retrieve in-depth information about the company, including revenue range, employee count, and more, to inform your sales or account management team.
+
+## Best Practices for Using Lusha with Workato
+
+- **Use Dynamic Fields**: Whenever possible, use Workato's dynamic fields to pass information like email addresses or company names directly into the Lusha connector, ensuring accuracy and efficiency.
+
+- **Monitor API Usage**: Keep an eye on your API usage within Lusha, as enrichment calls can consume API credits.
+
+- **Regular Testing**: Periodically test your recipes to confirm that data flows smoothly and meets your needs.
+
+## ⚒️ FAQs
+
+**Q: What fields are required for Enrich Contacts and Enrich Companies actions?**
+
+A: For Enrich Contacts, provide either a First Name and Last Name with a Company Name or Domain, an Email Address, or a LinkedIn Profile URL.
+
+For Enrich Companies, provide a Company Name, Domain, or Company ID.
+
+**Q: Can I enrich historical data with the Lusha Connector?**
+
+A: Yes! You can create recipes that enrich existing data in your CRM or database by setting triggers on updates to records.
+
+**Q: What fields are returned by the Enrich Contacts and Enrich Companies actions?**
+
+A: The connector provides contact and company details, including job title, industry, location, and funding information, depending on the available data in Lusha.
+
+**Q: How can I troubleshoot connection errors?**
+
+A: Double-check your API key, ensure it has the right permissions, and verify that the fields being passed into Lusha are correctly formatted.
+
+## Additional Resources
+
+For further assistance, consult the following:
+
+- **[Workato Help Center](https://support.workato.com/en/support/home)**: For general guidance on building workflows in Workato.
+- **Lusha Support**: If you need specific help with your API key or access permissions, contact the support team via live chat from the Lusha website, your Lusha Dashboard, or via email: support@lusha.com.

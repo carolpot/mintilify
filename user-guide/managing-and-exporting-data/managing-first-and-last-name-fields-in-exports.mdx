@@ -1,0 +1,38 @@
+---
+title: "Managing First and Last Name Fields in Exports"
+description: "Lusha exports full names as a single field. Here's what that means and how to split them after export."
+---
+
+When you export contacts from Lusha, the contact's full name is exported as a single field. Lusha does not split first and last names into separate columns automatically, and there is no option to customise which fields are included in the export.
+
+If you need separate first and last name columns, you can split them manually in Excel or Google Sheets after the export. This article explains how.
+
+## What Lusha includes in the export
+
+Every export from Lusha includes all available contact fields. The full name appears as a single column — there is no way to separate it before or during the export, regardless of whether contacts have been revealed or saved to a table.
+
+## How to split names in Microsoft Excel
+
+1. Export your contacts from Lusha as usual and open the file in **Microsoft Excel**.
+2. Click the column header containing the full name to select it.
+3. Go to **Data → Text to Columns**.
+4. Select **Delimited** and click **Next**.
+5. Check the **Space** box as your delimiter and click **Next**.
+6. Choose a destination column for the split data and click **Finish**.
+7. Label the new columns as needed (e.g. **First Name**, **Last Name**) and review the results for any names that didn't split as expected.
+
+<Note>
+Names with prefixes, suffixes, or multiple words (e.g. "Dr. Jane van Der Berg") may not split cleanly using a space delimiter. Review those rows manually after splitting.
+</Note>
+
+## How to split names in Google Sheets
+
+1. Open your exported file in **Google Sheets**.
+2. In an empty column next to the full name column, enter the formula:\
+   ​`=SPLIT(A2," ")`\
+   Replace `A2` with the actual cell reference for your first name entry.
+3. Press **Enter**. The formula splits the name at each space and populates the adjacent columns.
+4. Drag the formula down to apply it to all rows.
+5. Label the resulting columns (e.g. **First Name**, **Last Name**) and review the results.
+
+Once you've split the name fields, you're ready to use your contact data however you need.

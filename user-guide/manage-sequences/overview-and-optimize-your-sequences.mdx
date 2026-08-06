@@ -1,0 +1,83 @@
+---
+title: "Overview and optimize your sequences"
+description: "How to activate, monitor, and edit your Lusha Engage sequences, manage contacts within a sequence, and fix placeholder warnings."
+---
+
+Once your sequence is built, you can review the full flow, activate it, and monitor how it performs. You can also manage contacts within a sequence and edit it at any time.
+
+## Reviewing and activating your sequence
+
+The full sequence flow is visible on the right-hand side panel. From here you can rename the sequence, review each step, and make changes before going live.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/48653546/45570671c8da4f2c1fe2d6235b6f/Screenshot+2025-05-08+at+17_12_31.png?expires=1779991200&signature=ce9ff45771839689c4a196a387c3a07e1cf831a9c5e98d1c5582baaab24376a3&req=1N1pwFv%2FqDFk2hj99dpg6n8I5W7kIsK%2BKLrcYa%2FT2APYAHoPmDxB5hHqPzIp%0A5pZRvEZ3g7Y6mp2sjZZ2Hh5P%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+When you're ready, click **Activate campaign**. You can also save it as a draft and activate it later.
+
+<Note>
+Pause your sequence if you're not ready for emails to go out yet.
+</Note>
+
+## Managing contacts within a sequence
+
+Go to the **Contacts** tab inside a sequence to manage individual contacts. Select the contacts you want to take action on, then use the action panel that appears at the top:
+
+- **Activate** — start the sequence for selected contacts
+- **Pause** — temporarily pause sending for selected contacts
+- **Mark as Replied** — Automatic/manually mark a contact as replied (see below)
+- **Remove** — permanently remove selected contacts; they will not receive any remaining steps
+
+You can also filter by Active or Paused status, or search for contacts by name using the search bar.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/48653546/45570671c8da4f2c1fe2d6235b6f/Screenshot+2025-05-08+at+17_12_31.png?expires=1779991200&signature=ce9ff45771839689c4a196a387c3a07e1cf831a9c5e98d1c5582baaab24376a3&req=1N1pwFv%2FqDFk2hj99dpg6n8I5W7kIsK%2BKLrcYa%2FT2APYAHoPmDxB5hHqPzIp%0A5pZRvEZ3g7Y6mp2sjZZ2Hh5P%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Manually marking a contact as Replied
+
+Sometimes a prospect responds outside your email sequence — via LinkedIn DM, phone, a forwarded thread, or a reply from a different email address. In those cases, Lusha won't detect the reply automatically. You can manually mark the contact as Replied so the sequence stops and your metrics stay accurate.
+
+To mark a contact as Replied:
+
+1. Open the sequence and go to the **Contacts** tab.
+2. Tick the box next to the contact's name.
+3. Click **Mark as Replied** in the actions menu at the top.
+
+Once marked, the contact stops receiving further sequence steps. In Engagement reporting, they are logged as **Replied** with a **Manually** tag, so your reply rate metrics reflect the actual outcome.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/146129502/fb741b00504f08d7324c16c5e9e7/Screenshot+2026-05-27+at+10_26_32.png?expires=1779991200&signature=f1c86dd191bf1b68b14ac2eee0c0493a492851b57d9a2ff08b69ae22a7410c04&req=0dFpxFrzqTcqlxv2%2BtxgpoBKugxsxIVLyOvinzR%2F7a2zRLF8AoEW6gufc8np%0ATzIVCHpC34MEb6jkMocvjyBUzg%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Note>
+This action is useful when a prospect replies on LinkedIn, calls you directly, or responds from a different email address — any channel Lusha can't detect automatically.
+</Note>
+
+## Editing existing sequences
+
+Click the **three dots (…)** next to a sequence to rename it or duplicate it. A duplicated sequence copies the steps but removes all contacts — the owner will be whoever duplicated it. Admins can duplicate other team members' sequences.
+
+You can also **pause** or **delete** a sequence from the same menu.
+
+<img src="https://downloads.intercomcdn.eu/i/o/18222647/230ff77b091308980e3d4736/Screenshot+2024-08-11+at+13_27_28.png?expires=1779991200&signature=fd612a553df7ef95fa42c1157ef4b6548b9519127d96d5f4a850196487ccd437&req=0d1tx1r8qDBk2hj99dpg6qIxzk%2FaTOtVu5AKPZBV8rxsElgLxYNECkkVvD94%0AgXk1jnZ8MdO6aW6cw8x26eQH%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Missing data - Placeholder to customize
+
+If you see a **placeholder to customize** a warning on a sequence, it means one of your emails contains a variable wrapped in `[[…]]` — such as Job Title — that isn't populated for that contact. Lusha automatically blocks that email from sending to prevent empty personalization fields from going out.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/46543156/cdc47a43e96e4ce4ccaf7196ce45/Screenshot+2025-04-20+at+19_05_17.png?expires=1779991200&signature=62d92a259b62f8ec46a57e12408534c71765bd27e603c91ee556df9687cf9ee8&req=1NNqwVv7qTFk2hj99dpg6kQfjEocJfFWZhdexWz2XhAMQBqekRG%2B%2F5Mmj0F8%0Afk9hVyqhc7ektz033nKtlyY%2F%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+To resolve this:
+
+1. Open the affected sequence.
+2. Switch to the **Email** step.
+3. Find the contact row marked with the orange placeholder icon.
+4. Click **Personalize**, then fill in the missing detail or delete the variable entirely.
+5. Click **Save**.
+
+Once all brackets are filled or removed, the warning disappears and the email will send.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/46542970/27492e21adf478ca1570930dc76b/Screenshot+2025-04-20+at+18_59_25.png?expires=1779991200&signature=b367440d04e6334b99a253cd8774654a15bf5ac43a24df2577e43a3a12a50773&req=1NNqwVrzqzdk2hj99dpg6njcIBQOIUtSZGnUAl%2FWGW6PgtHhSZHwkJqHw26v%0AJTsbyhFk53Nr5bI%2Bv%2BmaHhgT%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+Run a quick **Preview** before launching any sequence to catch remaining placeholders and confirm every message is fully personalized.
+
+<Note>
+While a sequence is active, Lusha monitors your inbox for related activity and updates the status in real time. If no emails are sent, opened, or received for three weeks, monitoring shifts to once every 24 hours. Activity detection restores real-time monitoring automatically.
+</Note>
+
+You're all set — your sequence is live and your contacts are on their way through your outreach flow.

@@ -1,0 +1,94 @@
+---
+title: "Lusha Connect on Pipedream"
+description: "The Lusha Pipedream Connector enables seamless integration of Lusha's enriched contact and company data into your workflows, helping you automate prospecting, lead enrichment, and account insights."
+---
+
+## Overview
+
+The Lusha Pipedream Connector enables seamless integration of Lusha's enriched contact and company data into your workflows, helping you automate prospecting, lead enrichment, and account insights. Follow this guide to set up and make the most of the connector for your business needs.
+
+## Getting Started with Lusha on Pipedream
+
+To get started, you'll need:
+- A Lusha API key
+- An active Pipedream account
+
+## Easy Step-by-Step Setup
+
+### 1. Log into Pipedream
+Open Pipedream and log in or create an account if you don't have one.
+
+### 2. Create a New Workflow
+From your dashboard, click "New + Workflow" to start building a new automation.
+
+![image copy 7.png](/tutorials/images/image%20copy%207.png)
+
+### 3. Set Up Your Trigger
+Choose an event to initiate the recipe, such as adding a new lead in your CRM.
+
+![image copy 8.png](/tutorials/images/image%20copy%208.png)
+
+### 4. Add Lusha App as Step
+Click "+" → "Add Step", then search for "Lusha". You'll see available actions like those listed below. Select the one that fits your use case.
+
+![image copy 9.png](/tutorials/images/image%20copy%209.png)
+
+### 5. Authenticate with API Key
+Enter your Lusha API key when prompted. This will authorize Pipedream to securely access Lusha's data.
+
+### 6. Configure the Input Fields
+Depending on the action you choose, provide the required fields.
+
+## Lusha App: Available Actions
+
+### ✨ Enrich Companies
+Retrieve firmographic details like revenue, employee count, and industry.
+
+### ✨ Enrich Contacts
+Get enriched contact details, including job title, phone, and LinkedIn profile.
+
+### 🔎 Find Company
+Search for a company based on various identifiers (e.g., domain, name).
+
+### 🔎 Find Contact
+Look up a specific contact by email, LinkedIn, or name + company.
+
+### 🔍 Search Companies
+Find multiple companies based on filters like industry, location, or keywords.
+
+### 🔍 Search Contacts
+Retrieve a list of contacts that match specific criteria, such as job title or location.
+
+For more detailed information on request parameters, response structure, and best practices, please refer to our [official API documentation](https://www.lusha.com/docs/#prospecting-filtering-options).
+
+## Examples of Using the Lusha Connector in Pipedream
+
+### Example 1: Lead Enrichment
+
+**Trigger:** New lead added in CRM (e.g., Salesforce).
+
+**Action:** Enrich Contacts with Lusha
+*Must have at least one of the following parameters for matching: email; linkedinUrl; first and last name + company name or domain.*
+
+**Outcome:** The new lead's information is automatically enriched with details like job title, seniority, phone number, etc.
+
+### Example 2: Company Profiling
+
+**Trigger:** New company added in a database.
+
+**Action:** Enrich Companies with Lusha
+*Must have at least one of the following parameters for matching: company name and/or domain.*
+
+**Outcome:** Retrieve in-depth information about the company, including revenue range, employee count, and more, to inform your sales or account management team.
+
+## Best Practices for Using Lusha's API
+
+- **Monitor API Usage:** Keep an eye on your API usage within Lusha, as enrichment calls can consume API credits.
+- **Regular Testing:** Periodically test your recipes to confirm that data flows smoothly and meets your needs.
+
+## Additional Resources
+
+For further assistance, consult the following:
+
+- [Pipedream Help Center](https://pipedream.com/support): For general guidance on building workflows and its structure in Pipedream.
+- [Lusha Support](mailto:support@lusha.com): If you need specific help with your API key or access permissions, contact Lusha Support.

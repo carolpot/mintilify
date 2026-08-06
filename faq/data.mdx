@@ -38,4 +38,23 @@ description: "Common questions about Lusha's data sources, coverage, accuracy, a
   Phone numbers marked `doNotCall: true` are on the Do Not Call registry. The `excludeDnc` parameter (Scale plan) filters out contacts whose phone numbers are all DNC, so only contacts with at least one callable number appear in results.
 </Accordion>
 
+<Accordion title="What is Waterfall Reveal, and how does it help with data coverage?">
+  Waterfall Reveal is an opt-in enhancement to Enrich Contacts. When Lusha's own data has no match for a field, it falls through to your enabled third-party providers to try to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
+
+  To use it:
+  - Pass `waterfallReveal` alongside `reveal`, listing the fields (`emails`, `phones`) you want covered by the waterfall.
+  - `reveal` still controls **which fields** come back; `waterfallReveal` is the subset of those fields allowed to fall through to third-party providers.
+  - **Requires Data Waterfall enabled on your account**, with specific providers turned on, under **Account > Waterfall** in the Lusha dashboard. If waterfall is off, or no providers are enabled, `waterfallReveal` has no additional effect beyond `reveal`.
+  - Lusha determines the provider query order — it isn't caller-configurable.
+  - Use of Data Waterfall is subject to Lusha's Supplementary Terms.
+
+  ```json
+  {
+    "ids": ["4389064654", "4389064624"],
+    "reveal": ["emails", "phones"],
+    "waterfallReveal": ["emails", "phones"]
+  }
+  ```
+</Accordion>
+
 </AccordionGroup>

@@ -1,0 +1,103 @@
+---
+title: "Lusha Connectors V3: What Changed and How to Update"
+description: "Learn what's new in Lusha's V3 connector update and how to migrate your automations on Zapier, Make, n8n, and Workato."
+---
+
+Learn what's new in Lusha's V3 connector update and how to migrate your automations on Zapier, Make, n8n, and Workato.
+
+Lusha has released a V3 update to its connectors across major automation platforms. This update simplifies how contacts are identified and how search actions work in your workflows. Depending on which platform you use, you may need to take action to start using V3.
+
+## **What's New in V3**
+
+V3 introduces two improvements that apply to all supported platforms:
+
+*   **Unified Contact ID:** In V2, managing a single contact required handling two separate identifiers (personId and contactId). V3 consolidates this into a single, unified ID per contact, simplifying data management.
+*   **Search and Enrich action** — The separate Search and Enrich steps are now merged into one unified action: **Search and Enrich**. Your workflows are simpler to build and maintain.
+
+## **Platform Availability**
+
+| Platform | Status | Minimum Version |
+| :--- | :--- | :--- |
+| **Zapier** | **✅ Live** | 3.5.0 or higher |
+| **Workato** | **✅ Live** | 161 or higher |
+| **Make** | **⏳ Coming Soon** | TBD |
+| **n8n** | **⏳ Coming Soon** | TBD |
+
+## **How Updates Work by Platform**
+
+Platforms fall into two categories depending on how V3 is deployed:
+
+*   **Manual update required** (Zapier, Make, n8n) — The legacy and V3 versions exist side by side. Your existing automations will not change automatically. You must manually choose V3 for new automations and update existing ones.
+*   **Automatic background update** (Workato) — The connector updates automatically. New flows use V3 immediately. Existing flows keep running but may need manual field adjustments.
+
+## **Zapier**
+
+**Status: Live** | **Minimum version:** 4.0.0 (current: 4.1.0)
+
+## **New Zaps**
+
+When creating a new Zap, you must create a new connection and explicitly select **version 4.0.0 or higher** to use V3 features.
+
+1.  In Zapier, create a new Zap and add a Lusha action.
+2.  When prompted to connect your account, click **Connect a new account**.
+3.  Select **version 4.0.0** or higher from the version picker.
+4.  Authenticate and complete setup. Your Zap will now use V3.
+
+## **Existing Zaps**
+
+Existing active Zaps continue to run on the old version. To use V3, you need to manually update the connection.
+
+1.  Open the Zap you want to update.
+2.  Go to the Lusha step and click **Change** next to your connected account.
+3.  Select **version 4.0.0** or higher and reconnect.
+4.  Review and update any action steps that now use **Search and Enrich** in place of separate Search / Enrich actions.
+5.  Test the Zap and publish.
+
+## **Workato**
+
+**Status: Live** | **Minimum version:** 161
+
+<Note>
+Workato updates automatically in the background — you do not need to manually change your connection to get V3.
+</Note>
+
+## **New Flows**
+
+New flows created in Workato will automatically use the V3 connector structure. No action is required.
+
+## **Existing Flows**
+
+Your existing active flows will continue to run. However, you need to open each flow and manually update specific data fields to match the new V3 structure.
+
+1.  Open an existing flow that uses a Lusha step.
+2.  Review the Lusha step for any field mapping errors or schema mismatches.
+3.  Update affected fields to align with the V3 data structure (single contact ID, **Search and Enrich** action).
+4.  Test the flow and save.
+
+## **Make**
+
+**Status: Coming Soon** | **Minimum version:** TBD
+
+<Note>
+Make V3 support is pending platform approval and is not yet available. Once live, the update process will work the same as Zapier — you'll need to manually select the new version for new scenarios and update connections for existing ones.
+</Note>
+
+When V3 is available on Make:
+
+*   **New scenarios** — create a new connection and select the V3 version when adding a Lusha module.
+*   **Existing scenarios** — manually update the connection on each Lusha module to the new version.
+
+## **n8n**
+
+**Status: Coming Soon** | **Minimum version:** TBD
+
+<Note>
+n8n V3 support is pending platform approval and is not yet available. Once live, the updae process will work the same as Zapier — you'll need to manually update or create a new connection to the V3 version for both new and existing workflows.
+</Note>
+
+When V3 is available on n8n:
+
+*   **New workflows** — create a new connection selecting the V3 version when setting up a Lusha node.
+*   **Existing workflows** — manually update the Lusha node connection to the new V3 version.
+
+Once updated, your automations will benefit from the simplified contact ID structure and the new **Search and Enrich** action. You're all set!.

@@ -1,0 +1,45 @@
+---
+title: "API usage analytics"
+description: "How to access and interpret the API Usage Analytics dashboard to monitor credit consumption by endpoint and API key."
+---
+
+The API Usage Analytics dashboard shows a breakdown of your credit consumption by endpoint and API key. This lets you monitor credit usage, investigate spikes, and optimise your integrations without needing to contact Support.
+
+<Note>
+This feature is available to Admins on paid plans only.
+</Note>
+
+## How to access API usage analytics
+
+1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/dashboard).
+2. Click your name in the left navigation.
+3. Go to **Analytics**.
+4. Click the **Credit usage** section.
+5. Use the **Source** or **User** tabs to filter by API origin, or scroll to the **API credit usage** table for a detailed technical breakdown.
+
+## Filtering your API data
+
+1. Click the **All API keys** dropdown on the right side of the API section and select a specific key, or keep it on All API keys for a full account view.
+2. Use the **Time range** selector (Daily, Weekly, Monthly) to see when credits were used.
+3. Check the **Endpoint** column to see which specific actions (such as `/v2/person` or `/v2/company`) are driving consumption.
+
+## Understanding the consumption table
+
+The table at the bottom of the page provides the most granular view:
+
+- **Endpoint** - the specific API path called (e.g., `prospecting/contact/enrich`)
+- **Number of calls** - total requests made to that endpoint
+- **Credits consumed** - actual credits deducted for those calls
+- **% of total usage** - a visual bar showing how much of your total API spend this endpoint represents
+
+<Note>
+API usage is tracked at the account level. Credits are drawn from your organisation's total pool, regardless of which API key made the call.
+</Note>
+
+## If you don't see the API section
+
+- **Permissions** - you must be logged in as an Admin. Regular users don't have access to account-wide API billing data.
+- **Plan** - API access and advanced analytics aren't available on the Free plan.
+- **No activity** - if no API calls were made in the selected time range, the table will appear empty.
+
+You're all set - now you have full visibility into how your API credits are being used.

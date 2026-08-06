@@ -1,0 +1,177 @@
+---
+title: "Export Contacts to CSV file"
+description: "Learn how to export contacts directly to a CSV file from Lusha Search or your tables, and how to troubleshoot common export issues."
+---
+
+You can export your contacts directly to a CSV file via the Search tool or your lists. Use Lusha data everywhere in your workflows that support CSV imports.
+
+<Note>
+Exporting to CSV from the Search tool is available for up to 150 contacts. Additionally, when using the Lusha Chrome extension, you can bulk reveal or export up to 25 contacts at a time from a list.
+</Note>
+
+## Overview of Export Limits
+
+Lusha provides various bulk export options to help users efficiently manage and export contact and company data. Below is a detailed overview of the bulk export limits across different platforms and use cases.
+
+## How it works
+
+### Exporting Contacts to a CSV File from the Search
+
+<Note>
+This section covers exporting from the classic Lusha Prospecting search. If you are working in a **Workspace search or filter view**, CSV export is not available directly — you must first save your results as a Workspace table, then export from there. See [Exporting from a Workspace Table](/user-guide/managing-and-exporting-data/exporting-from-a-workspace-table).
+</Note>
+
+1. First, reveal the relevant contacts by pressing "Show details" from the upper bar.
+2. Mark the revealed contacts you wish to export.
+3. Press on the "Export" icon.
+4. A notification will appear confirming the export, and the CSV file will be saved to your computer, your email, and in the Export History part of the platform.
+
+Ensure you are logged into Lusha with the same account that initiated the export to access the email titled "Your download is ready."
+
+<Note>
+Exporting contacts from Prospecting is only available after the Show details action.
+</Note>
+
+### Exporting Contacts to a CSV File from your table
+
+**Option 1: Export Selected Contacts**
+
+1. Open your table and tick the box next to the Contact column.
+2. You can select up to 150 contacts at a time.
+3. Click Export to CSV.
+4. The file will be downloaded to your computer.
+
+**Option 2: Export the Entire List**
+
+1. Open your table.
+2. Press on the export icon.
+3. Select Export table.
+4. The file will be downloaded to your computer.
+
+<Note>
+When exporting your CSV, you will have the option to include unshown contacts from your table.
+</Note>
+
+<Warning>
+Currently, the system doesn't support exporting the full "All contacts" list in a single file. However, you can easily export your contacts in groups of 25 at a time.
+</Warning>
+
+## CSV fields
+
+The exported file contains those fields, for shown contacts only (if available to your plan & according to the availability of the data):
+
+- Date
+- First name
+- Last name
+- User who showed this contact
+- Work email + Confidence Score
+- Direct email + Confidence Score
+- Additional email 1 + Confidence Score
+- Additional email 2 + Confidence Score
+- Phone 1 + Phone 1 type
+- Phone 2 + Phone 2 type
+- Job title
+- Seniority
+- Departments
+- LinkedIn URL
+- Continent
+- Country
+- State
+- City
+- Country ISO
+- Tags
+- Company name
+- Company domain
+- Company description
+- Company year founded
+- Company website
+- Company number of employees
+- Company revenue
+- Total funding amount
+- Total number of rounds
+- Last round/event amount
+- Last round/event type
+- Last round/event date
+- IPO
+- IPO Date
+- Company LinkedIn URL
+- Company country
+- Company state
+- Company city
+- Company street
+- Company main industry
+- Company sub industry
+- Company specialities
+- Company number of intent topics
+- Company intent topics
+- Company intent average score
+
+<Note>
+Can't get your CSV file to display correctly? Check out this step-by-step guide to sort it out.
+</Note>
+
+## Using Exported CSV Files
+
+Once you have downloaded the CSV file, you can open it using a spreadsheet application for easy viewing and management:
+
+- **Microsoft Excel:** Open Excel and import or open the CSV file to display the data in columns.
+- **Google Sheets:** Upload the CSV file to Google Drive and open it with Google Sheets to view the data in a readable table format.
+
+Both options render the CSV data into rows and columns, making it easy to analyze and manage your contact information.
+
+## Export History and Troubleshooting
+
+If your export isn't behaving as expected, start by checking its status in your Lusha account:
+
+1. Navigate to Accounts → Exports → Export History.
+2. Find the relevant export and check its status.
+3. Use the scenarios below to resolve the most common export issues.
+
+### Export is stuck in "Pending"
+
+A Pending status means the export is still being processed. Large exports (especially full-list exports) can take several minutes.
+
+**What to do:**
+
+1. Wait a few minutes, then refresh Accounts → Exports → Export History.
+2. If the export is still Pending after 15 minutes, try exporting a smaller batch (e.g., 150 contacts at a time) to check whether the issue is size-related.
+3. If it remains stuck, contact Lusha Support with the date and time of the export.
+
+### Export shows "Failed"
+
+A Failed status usually means something interrupted the export during processing.
+
+**What to do:**
+
+1. Go to Accounts → Exports → Export History and confirm the status is Failed.
+2. Try the export again. If you were exporting from Search, re-apply your filters and repeat the steps.
+3. If the export fails again, try reducing the number of contacts and export in smaller batches.
+4. If failures continue, contact Lusha Support.
+
+### Download email never arrived
+
+For large list exports, Lusha sends a download link to your email. If you haven't received it:
+
+1. Check your spam or junk folder for an email with the subject "Your download is ready."
+2. Make sure you're checking the inbox of the account you used to initiate the export.
+3. Go to Accounts → Exports → Export History. If the status shows Completed, you can download the file directly from there — no need to wait for the email.
+4. Note that download links from email are active for 24 hours. If yours has expired, run the export again.
+
+<Note>
+Export emails come from no-reply@lusha.com. If you're not seeing them, ask your IT team to whitelist this address.
+</Note>
+
+### Exported file is incomplete or missing contacts
+
+If the downloaded CSV has fewer contacts than expected, or some rows are empty:
+
+- Remember that the CSV only includes shown (revealed) contacts. Contacts you browsed but did not reveal will not appear in the file. To include them, use the Show details action first, then export.
+- Check whether you selected specific contacts before exporting. If you only selected a subset, only those contacts will be in the file.
+- If some contacts have blank fields (e.g., no phone number), this means that data was not available in Lusha's database for those contacts — it is not an export error.
+- If contacts you know were revealed are missing entirely, try re-exporting. If the issue persists, contact Lusha Support.
+
+<Note>
+If your CSV file opens but the data appears jumbled or in a single column, see CSV file opens in the wrong format for formatting fixes.
+</Note>
+
+You're all set! If you run into an issue not covered here, reach out to Lusha Support and we'll help you get your export on track.

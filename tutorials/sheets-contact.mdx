@@ -1,0 +1,1239 @@
+---
+title: "Automate Contact Data Enrichment"
+description: "This guide walks you through automating contact enrichment in Google Sheets using the Lusha API. You'll be able to send contact data in bulk, retrieve detailed information, and track the status of each enrichment request in real-time."
+---
+
+## Overview
+
+This guide walks you through automating contact enrichment in Google Sheets using the Lusha API. You'll be able to send contact data in bulk, retrieve detailed information, and track the status of each enrichment request in real-time.
+
+<Note>
+This guide uses the **Lusha V3 API** (`/v3/contacts/search-and-enrich`), which is the current recommended version. If you are still using the V2 script, see the [Legacy V2 Script](#legacy-v2-script) section at the bottom of this page.
+</Note>
+
+<iframe
+  width="100%"
+  height="450"
+  src="https://www.youtube.com/embed/uKvq6FY_LQE?si=jWJZ2nNHXBBmW7S7"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen>
+</iframe>
+
+---
+
+## How it Works
+
+### 1. Create a New Google Sheet
+
+Start by creating a new, blank Google Sheet.
+
+You'll use this sheet to store and enrich contact data with the Lusha API. The required column headers will be added automatically after you complete the setup and refresh the sheet.
+
+### 2. Add the Script to Google Sheet
+
+#### Open the Script Editor
+Go to **Extensions > Apps Script** in your Google Sheets file.
+
+#### Paste the Script
+In the script editor, paste the code below. If there's any existing code, delete it before pasting.
+
+#### Save the Script
+Click the save icon or press **Ctrl+S** (Windows) / **Cmd+S** (Mac) to save.
+
+```javascript
+// Lusha V3 Search and Enrich Script
+// Google Apps Script for Lusha Contact Enrichment
+// API: POST https://api.lusha.com/v3/contacts/search-and-enrich
+
+// ─────────────────────────────────────────────
+// SHEET LAYOUT
+// Row 1  : Status bar
+// Row 2  : Control panel labels  (Reveal Emails | Reveal Phones | Total Runs | | | | Total Emails | value)
+// Row 3  : Control panel inputs  (checkbox      | checkbox      |            | | | | Total Phones | value)
+// Row 4  : Input + output headers
+// Row 5+ : Data
+// ─────────────────────────────────────────────
+// INPUT COLUMNS (Row 4, Columns A–G)
+// A: First Name
+// B: Last Name
+// C: Company Name
+// D: Company Domain
+// E: Email Address
+// F: LinkedIn URL
+// G: Lusha ID             (stable Lusha contact ID from a previous run)
+// ─────────────────────────────────────────────
+// OUTPUT COLUMNS (Row 4, starting at Column H)
+// See setupOutputHeaders() for full list
+// ─────────────────────────────────────────────
+
+// INPUT / OUTPUT column counts
+var INPUT_COLS       = 7;  // A–G
+var OUTPUT_START_COL = 8;  // Column H
+
+// Row indices
+var HEADER_ROW     = 4;  // input + output column headers
+var DATA_START_ROW = 5;  // first data row
+
+// Control panel cell addresses
+var CTRL_REVEAL_EMAILS_LABEL = 'A2';
+var CTRL_REVEAL_EMAILS_VALUE = 'A3';
+var CTRL_REVEAL_PHONES_LABEL = 'B2';
+var CTRL_REVEAL_PHONES_VALUE = 'B3';
+var CTRL_TOTAL_RUNS_LABEL    = 'C2';
+var CTRL_TOTAL_RUNS_VALUE    = 'D2';
+var CTRL_TOTAL_EMAILS_LABEL  = 'G2';
+var CTRL_TOTAL_EMAILS_VALUE  = 'H2';
+var CTRL_TOTAL_PHONES_LABEL  = 'G3';
+var CTRL_TOTAL_PHONES_VALUE  = 'H3';
+
+// Output column offsets (0-based from OUTPUT_START_COL) — used for stats scanning
+// Status = offset 0  (col H)
+// Email 1 = offset 5, Email 2 = offset 9
+// Phone 1 = offset 13, Phone 2 = offset 15
+var OUT_EMAIL1_OFFSET = 5;
+var OUT_EMAIL2_OFFSET = 9;
+var OUT_PHONE1_OFFSET = 13;
+var OUT_PHONE2_OFFSET = 15;
+
+// Colors
+var COLOR_ROW1_STATIC  = '#d9d9d9';
+var COLOR_STATS_LABEL  = '#e8f4fe';
+var COLOR_STATS_VALUE  = '#e8f4fe';
+var COLOR_CTRL_LABEL   = '#DFCEFF';
+var COLOR_OUTPUT_HDR   = '#ECE2FF';
+var COLOR_STATUS_HDR   = '#DFCEFF';
+
+// ─────────────────────────────────────────────
+// MENU
+// ─────────────────────────────────────────────
+
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Lusha Enrichment')
+    .addItem('Enrich All Contacts', 'enrichAllContacts')
+    .addItem('Enrich From Specific Row', 'enrichFromSpecificRow')
+    .addSeparator()
+    .addItem('🔍 Diagnose Contact Data', 'diagnoseContactData')
+    .addItem('🧪 Test API Connection', 'testAPIConnection')
+    .addToUi();
+
+  setupInitialStructure();
+}
+
+// ─────────────────────────────────────────────
+// SHEET SETUP
+// ─────────────────────────────────────────────
+
+function setupInitialStructure() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  setupStatusRow(sheet);
+  setupControlPanel(sheet);
+  setupInputHeaders(sheet);
+  sheet.setFrozenRows(4);
+
+  try {
+    const lastCol = sheet.getLastColumn();
+    if (lastCol > 0) {
+      sheet.getRange(1, 1, 4, Math.max(lastCol, OUTPUT_START_COL + 40))
+           .setWrapStrategy(SpreadsheetApp.WrapStrategy.OVERFLOW);
+    }
+  } catch (e) {
+    Logger.log('Error setting initial wrap strategy: ' + e.message);
+  }
+}
+
+function setupStatusRow(sheet) {
+  if (sheet.getRange('A1').getValue() === 'Enrichment Status') return;
+
+  sheet.getRange('A1').setValue('Enrichment Status').setFontWeight('bold');
+  sheet.getRange('C1').setValue('Last Updated:').setFontWeight('bold');
+  sheet.getRange('G1').setValue('Final Stats:').setFontWeight('bold');
+  sheet.getRange('B1').setValue('Not started');
+  sheet.getRange('D1').setValue('-');
+  sheet.getRange('H1').setValue('Success: -');
+  sheet.getRange('I1').setValue('No Data: -');
+  sheet.getRange('J1').setValue('Failed: -');
+
+  sheet.getRange('A1').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('C1:K1').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('B1').setBackground('#fff2cc');
+  sheet.getRange('D1').setBackground(COLOR_STATS_LABEL);
+  sheet.getRange('H1:J1').setBackground(COLOR_STATS_LABEL);
+}
+
+// ─────────────────────────────────────────────
+// CONTROL PANEL  (rows 2–3)
+// ─────────────────────────────────────────────
+
+function setupControlPanel(sheet) {
+  if (sheet.getRange(CTRL_REVEAL_EMAILS_LABEL).getValue() === 'Reveal Emails') return;
+
+  sheet.getRange(CTRL_REVEAL_EMAILS_LABEL).setValue('Reveal Emails').setFontWeight('bold');
+  sheet.getRange(CTRL_REVEAL_PHONES_LABEL).setValue('Reveal Phones').setFontWeight('bold');
+  sheet.getRange('A2:B2').setBackground(COLOR_CTRL_LABEL);
+
+  sheet.getRange(CTRL_REVEAL_EMAILS_VALUE).insertCheckboxes().setValue(true);
+  sheet.getRange(CTRL_REVEAL_PHONES_VALUE).insertCheckboxes().setValue(true);
+  sheet.getRange('A3:B3').setHorizontalAlignment('center');
+
+  sheet.getRange(CTRL_TOTAL_RUNS_LABEL).setValue('Total Runs').setFontWeight('bold');
+  sheet.getRange(CTRL_TOTAL_RUNS_VALUE).setValue(0);
+  sheet.getRange('C2:D2').setBackground(COLOR_STATS_LABEL);
+
+  sheet.getRange(CTRL_TOTAL_EMAILS_LABEL).setValue('Total Emails').setFontWeight('bold');
+  sheet.getRange(CTRL_TOTAL_EMAILS_VALUE).setValue(0);
+  sheet.getRange(CTRL_TOTAL_PHONES_LABEL).setValue('Total Phones').setFontWeight('bold');
+  sheet.getRange(CTRL_TOTAL_PHONES_VALUE).setValue(0);
+  sheet.getRange('G2:G3').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('H2:H3').setBackground(COLOR_STATS_LABEL);
+
+  sheet.getRange('C2:C3').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('D3').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('E2:E3').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('F2:F3').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('I2:I3').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('J2:J3').setBackground(COLOR_ROW1_STATIC);
+  sheet.getRange('K1:K3').setBackground(COLOR_ROW1_STATIC);
+}
+
+function readControlPanelSettings() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  const revealEmails = sheet.getRange(CTRL_REVEAL_EMAILS_VALUE).getValue();
+  const revealPhones = sheet.getRange(CTRL_REVEAL_PHONES_VALUE).getValue();
+
+  const reveal = [];
+  if (revealEmails === true) reveal.push('emails');
+  if (revealPhones === true) reveal.push('phones');
+
+  Logger.log('Control panel — reveal: [' + reveal.join(', ') + ']');
+
+  return { reveal };
+}
+
+function setupInputHeaders(sheet) {
+  const inputHeaders = [
+    'First Name (Input)',
+    'Last Name (Input)',
+    'Company Name (Input)',
+    'Company Domain (Input)',
+    'Email Address (Input)',
+    'LinkedIn URL (Input)',
+    'Lusha ID (Input)'
+  ];
+
+  const existing = sheet.getRange(HEADER_ROW, 1, 1, INPUT_COLS).getValues()[0];
+  if (existing.some(v => v !== '')) return;
+
+  sheet.getRange(HEADER_ROW, 1, 1, INPUT_COLS).setValues([inputHeaders])
+       .setFontWeight('bold').setBackground('#f3f3f3');
+  sheet.autoResizeColumns(1, INPUT_COLS);
+}
+
+function setupOutputHeaders(sheet) {
+  const outputHeaders = [
+    'Status',
+    'Contact ID',
+    'First Name',
+    'Last Name',
+    'Full Name',
+    'Email 1',
+    'Email Type 1',
+    'Email Confidence 1',
+    'Email Updated Date 1',
+    'Email 2',
+    'Email Type 2',
+    'Email Confidence 2',
+    'Email Updated Date 2',
+    'Phone 1',
+    'Do Not Call 1',
+    'Phone 2',
+    'Do Not Call 2',
+    'Job Title',
+    'Departments',
+    'Seniority',
+    'Location Country',
+    'Location Country ISO2',
+    'Location State',
+    'Location City',
+    'Location Continent',
+    'Location Coordinates',
+    'Is EU Contact',
+    'LinkedIn URL',
+    'X (Twitter) URL',
+    'Prev Job Title',
+    'Prev Departments',
+    'Prev Seniority',
+    'Prev Company Name',
+    'Prev Company Domain',
+    'Company Domain',
+    'Company Industry',
+    'Company ID',
+    'Tags'
+  ];
+
+  const numOutputCols = outputHeaders.length;
+  const existing = sheet.getRange(HEADER_ROW, OUTPUT_START_COL, 1, numOutputCols).getValues()[0];
+  const needsUpdate = existing.some((h, i) => h !== outputHeaders[i]);
+
+  if (needsUpdate) {
+    sheet.getRange(HEADER_ROW, OUTPUT_START_COL, 1, 1)
+         .setValues([['Status']])
+         .setFontWeight('bold')
+         .setBackground(COLOR_STATUS_HDR);
+
+    if (numOutputCols > 1) {
+      sheet.getRange(HEADER_ROW, OUTPUT_START_COL + 1, 1, numOutputCols - 1)
+           .setValues([outputHeaders.slice(1)])
+           .setFontWeight('bold')
+           .setBackground(COLOR_OUTPUT_HDR);
+    }
+  }
+
+  return numOutputCols;
+}
+
+// ─────────────────────────────────────────────
+// STATUS HELPERS
+// ─────────────────────────────────────────────
+
+function updateStatusInTopRow(message) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  setupStatusRow(sheet);
+
+  sheet.getRange('B1').setValue(message);
+  sheet.getRange('D1').setValue(
+    Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss')
+  );
+
+  if (message.includes('Complete')) {
+    sheet.getRange('B1').setBackground('#d9ead3');
+  } else if (message.includes('Error') || message.includes('Stopped')) {
+    sheet.getRange('B1').setBackground('#f4cccc');
+  } else {
+    sheet.getRange('B1').setBackground('#fff2cc');
+  }
+}
+
+function updateFinalStats(success, nodata, failed) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  sheet.getRange('H1').setValue('Success: ' + success);
+  sheet.getRange('I1').setValue('No Data: ' + nodata);
+  sheet.getRange('J1').setValue('Failed: ' + failed);
+  sheet.getRange('H1:J1').setBackground('#e8f4fe');
+}
+
+// ─────────────────────────────────────────────
+// STATE MANAGEMENT
+// ─────────────────────────────────────────────
+
+function saveState(state) {
+  PropertiesService.getScriptProperties().setProperty(
+    'enrichment_state', JSON.stringify(state)
+  );
+}
+
+function getState() {
+  const json = PropertiesService.getScriptProperties().getProperty('enrichment_state');
+  return json ? JSON.parse(json) : null;
+}
+
+// ─────────────────────────────────────────────
+// ENTRY POINTS
+// ─────────────────────────────────────────────
+
+function enrichAllContacts() {
+  startEnrichment(true);
+}
+
+function enrichFromSpecificRow() {
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.prompt(
+    'Enrich From Specific Row',
+    'Enter the row number to start from:',
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (response.getSelectedButton() !== ui.Button.OK) return;
+
+  const rowNumber = parseInt(response.getResponseText());
+  if (isNaN(rowNumber) || rowNumber < DATA_START_ROW) {
+    ui.alert('Invalid row number. Please enter a number >= ' + DATA_START_ROW + '.');
+    return;
+  }
+  startEnrichment(true, rowNumber);
+}
+
+// ─────────────────────────────────────────────
+// MAIN ORCHESTRATION
+// ─────────────────────────────────────────────
+
+function startEnrichment(processAll, customStartRow) {
+  PropertiesService.getScriptProperties().deleteProperty('enrichment_state');
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  setupOutputHeaders(sheet);
+
+  const settings = readControlPanelSettings();
+
+  const lastRow  = sheet.getLastRow();
+  const startRow = customStartRow || DATA_START_ROW;
+  const totalRows = lastRow < DATA_START_ROW ? 0 : (lastRow - startRow + 1);
+
+  updateStatusInTopRow('In progress: Starting enrichment...');
+
+  const state = {
+    processAll: processAll,
+    startRow: startRow,
+    chunkSize: 1000,
+    batchSize: 100,
+    reveal: settings.reveal,
+    totalRowsToProcess: totalRows,
+    stats: { processed: 0, success: 0, nodata: 0, failed: 0, batches: 0 }
+  };
+
+  saveState(state);
+
+  SpreadsheetApp.getActiveSpreadsheet().toast(
+    'Enrichment started. Revealing: ' + (settings.reveal.length ? settings.reveal.join(' & ') : 'all (no filter)') +
+    '. Check row 1 for status updates.',
+    'Process Started', 10
+  );
+
+  if (totalRows <= 0) {
+    updateStatusInTopRow('Complete: No data to process');
+    updateFinalStats(0, 0, 0);
+    return;
+  }
+
+  processNextChunk();
+}
+
+function processNextChunk() {
+  const state = getState();
+  if (!state) return;
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+
+  if (state.currentChunkStart && state.currentChunkStart > lastRow) {
+    completeProcessing(state);
+    return;
+  }
+
+  const chunkStart = state.currentChunkStart || state.startRow;
+  const chunkEnd   = Math.min(chunkStart + state.chunkSize - 1, lastRow);
+
+  updateStatusInTopRow('In progress: Processing rows ' + chunkStart + ' to ' + chunkEnd);
+
+  processChunk(chunkStart, chunkEnd);
+
+  state.currentChunkStart = chunkEnd + 1;
+  saveState(state);
+
+  if (chunkEnd < lastRow) {
+    processNextChunk();
+  } else {
+    completeProcessing(state);
+  }
+}
+
+function processChunk(startRow, endRow) {
+  const state = getState();
+  if (!state) return;
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  const API_KEY = PropertiesService.getScriptProperties().getProperty('api_key');
+  if (!API_KEY) {
+    throw new Error("API key not found. Set it in Project Settings > Script Properties with key 'api_key'.");
+  }
+
+  const data = sheet.getRange(startRow, 1, endRow - startRow + 1, INPUT_COLS).getValues();
+
+  let statuses = [];
+  if (!state.processAll) {
+    statuses = sheet.getRange(startRow, OUTPUT_START_COL, endRow - startRow + 1, 1)
+                    .getValues().flat();
+  }
+
+  const validContacts = [];
+
+  data.forEach((row, index) => {
+    const rowIndex = startRow + index;
+    const [firstName, lastName, companyName, companyDomain,
+           emailAddress, linkedinUrl, lushaId] = row;
+
+    if (!state.processAll && statuses[index] === 'Success') {
+      Logger.log('Skipping row ' + rowIndex + ' (already Success)');
+      return;
+    }
+
+    const hasLushaId   = lushaId       && lushaId.toString().trim()       !== '';
+    const hasLinkedIn  = linkedinUrl   && linkedinUrl.toString().trim()   !== '';
+    const hasEmail     = emailAddress  && emailAddress.toString().trim()  !== '';
+    const hasName      = (firstName    && firstName.toString().trim()     !== '') ||
+                         (lastName     && lastName.toString().trim()      !== '');
+    const hasCompany   = (companyName  && companyName.toString().trim()   !== '') ||
+                         (companyDomain && companyDomain.toString().trim() !== '');
+
+    const hasStrongIdentifier = hasLushaId || hasLinkedIn || hasEmail || (hasName && hasCompany);
+
+    if (!hasStrongIdentifier) {
+      const dataPresent = [];
+      if (hasName)    dataPresent.push('name');
+      if (hasCompany) dataPresent.push('company');
+
+      const msg = dataPresent.length > 0
+        ? 'Failed: Insufficient data — Lusha requires: Lusha ID, LinkedIn URL, Email, or (Name AND Company). Have: ' + dataPresent.join(', ')
+        : 'Failed: No data provided';
+
+      sheet.getRange(rowIndex, OUTPUT_START_COL).setValue(msg).setFontColor('#8B0000');
+      state.stats.failed++;
+      return;
+    }
+
+    validContacts.push({ rowIndex, data: row });
+  });
+
+  Logger.log('Valid contacts to process: ' + validContacts.length);
+
+  for (let i = 0; i < validContacts.length; i += state.batchSize) {
+    const batch = validContacts.slice(i, i + state.batchSize);
+
+    state.stats.batches++;
+    state.stats.processed += batch.length;
+
+    updateStatusInTopRow('In progress: Processing batch ' + state.stats.batches);
+
+    const result = processBatch(batch, API_KEY, sheet, state);
+
+    if (result && result.outOfCredits) {
+      Logger.log('⚠️ Out of credits — stopping at row ' + result.stopRow);
+      updateStatusInTopRow(
+        '⚠️ Stopped: Out of Lusha credits at row ' + result.stopRow +
+        '. Please add credits and resume from that row.'
+      );
+      saveState(state);
+      return;
+    }
+
+    saveState(state);
+
+    if (i + state.batchSize < validContacts.length) {
+      Utilities.sleep(1000);
+    }
+  }
+
+  saveState(state);
+}
+
+// ─────────────────────────────────────────────
+// BATCH PROCESSOR
+// ─────────────────────────────────────────────
+
+function processBatch(contacts, apiKey, sheet, state) {
+  const url = 'https://api.lusha.com/v3/contacts/search-and-enrich';
+
+  const contactsPayload = contacts.map(contact => {
+    const [firstName, lastName, companyName, companyDomain,
+           emailAddress, linkedinUrl, lushaId] = contact.data;
+
+    const clean = v => (v && v.toString().trim() !== '') ? v.toString().trim() : undefined;
+
+    const entry = { clientReferenceId: String(contact.rowIndex) };
+
+    const id         = clean(lushaId);
+    const linkedin   = clean(linkedinUrl);
+    const email      = clean(emailAddress);
+    const first      = clean(firstName);
+    const last       = clean(lastName);
+    const company    = clean(companyName);
+    const domain     = clean(companyDomain);
+
+    if (id)       entry.id            = id;
+    if (linkedin) entry.linkedinUrl   = linkedin;
+    if (email)    entry.email         = email;
+    if (first)    entry.firstName     = first;
+    if (last)     entry.lastName      = last;
+    if (company)  entry.companyName   = company;
+    if (domain)   entry.companyDomain = domain;
+
+    return entry;
+  });
+
+  const refToRow = {};
+  contacts.forEach(contact => {
+    refToRow[String(contact.rowIndex)] = contact.rowIndex;
+  });
+
+  const requestBody = { contacts: contactsPayload };
+  if (state.reveal && state.reveal.length > 0) {
+    requestBody.reveal = state.reveal;
+  }
+
+  Logger.log('=== V3 API REQUEST ===');
+  Logger.log('Batch size: ' + contactsPayload.length);
+  Logger.log('Reveal: ' + (state.reveal && state.reveal.length ? '[' + state.reveal.join(', ') + ']' : 'omitted (all data)'));
+  Logger.log('Sample payload (first): ' + JSON.stringify(contactsPayload[0], null, 2));
+
+  const options = {
+    method: 'POST',
+    contentType: 'application/json',
+    headers: {
+      'api_key': apiKey,
+      'x-partner-name': 'prtnr-google_sheets_connector-prod'
+    },
+    muteHttpExceptions: true,
+    payload: JSON.stringify(requestBody)
+  };
+
+  try {
+    const response     = UrlFetchApp.fetch(url, options);
+    const statusCode   = response.getResponseCode();
+    const responseText = response.getContentText();
+
+    Logger.log('=== V3 API RESPONSE ===');
+    Logger.log('HTTP Status: ' + statusCode);
+    Logger.log('Response (first 2000 chars): ' + responseText.substring(0, 2000));
+
+    if (statusCode === 402) {
+      contacts.forEach(c => {
+        writeStatusOnly(sheet, c.rowIndex, '⚠️ Stopped: Out of Lusha credits', '#8B0000');
+        state.stats.failed++;
+      });
+      return { outOfCredits: true, stopRow: contacts[0].rowIndex };
+    }
+
+    if (statusCode < 200 || statusCode >= 300) {
+      let errMsg = 'API Error (HTTP ' + statusCode + ')';
+      try {
+        const errBody = JSON.parse(responseText);
+        errMsg += ': ' + (errBody.message || responseText);
+        if (errBody.errors && errBody.errors.length) {
+          errMsg += ' — ' + errBody.errors.join('; ');
+        }
+      } catch (e) {
+        errMsg += ': ' + responseText;
+      }
+
+      Logger.log('HTTP error: ' + errMsg);
+      contacts.forEach(c => {
+        writeStatusOnly(sheet, c.rowIndex, 'Failed: ' + errMsg, '#8B0000');
+        state.stats.failed++;
+      });
+      updateStatusInTopRow('Error: ' + errMsg);
+      saveState(state);
+      return null;
+    }
+
+    let responseData;
+    try {
+      responseData = JSON.parse(responseText);
+    } catch (e) {
+      const errMsg = 'Failed to parse API response: ' + e.message;
+      Logger.log(errMsg);
+      contacts.forEach(c => {
+        writeStatusOnly(sheet, c.rowIndex, 'Failed: ' + errMsg, '#8B0000');
+        state.stats.failed++;
+      });
+      saveState(state);
+      return null;
+    }
+
+    if (!responseData.results || !Array.isArray(responseData.results)) {
+      const errMsg = "API response missing 'results' array";
+      Logger.log(errMsg);
+      contacts.forEach(c => {
+        writeStatusOnly(sheet, c.rowIndex, 'Failed: ' + errMsg, '#8B0000');
+        state.stats.failed++;
+      });
+      saveState(state);
+      return null;
+    }
+
+    if (responseData.billing) {
+      Logger.log('API billing info: ' + JSON.stringify(responseData.billing));
+    }
+
+    Logger.log('Results returned: ' + responseData.results.length);
+
+    const updateData    = [];
+    const statusUpdates = [];
+    const rowsWithResults = new Set();
+
+    responseData.results.forEach(result => {
+      const ref      = result.clientReferenceId;
+      const rowIndex = refToRow[ref];
+
+      if (!rowIndex) {
+        Logger.log('WARNING: Could not map clientReferenceId "' + ref + '" to a row');
+        return;
+      }
+
+      rowsWithResults.add(rowIndex);
+
+      if (result.error) {
+        const code    = result.error.code    || '';
+        const message = result.error.message || 'Unknown error';
+
+        Logger.log('Row ' + rowIndex + ' error: code=' + code + ' msg=' + message);
+
+        let statusMsg;
+        if (code === 'NOT_FOUND') {
+          statusMsg = 'Could not find requested data';
+        } else if (code === 'COMPLIANCE_RESTRICTED') {
+          statusMsg = 'Failed: Contact restricted due to compliance (GDPR/CCPA)';
+        } else if (code === 'ENRICH_FAILED') {
+          statusMsg = 'Failed: Enrichment failed — ' + message;
+        } else {
+          statusMsg = 'Failed: ' + (code ? '[' + code + '] ' : '') + message;
+        }
+
+        const color = code === 'NOT_FOUND' ? '#FF8C00' : '#8B0000';
+        writeStatusOnly(sheet, rowIndex, statusMsg, color);
+
+        if (code === 'NOT_FOUND') {
+          state.stats.nodata++;
+        } else {
+          state.stats.failed++;
+        }
+        return;
+      }
+
+      state.stats.success++;
+
+      const emails   = result.emails   || [];
+      const phones   = result.phones   || [];
+      const job      = result.jobTitle || {};
+      const loc      = result.location || {};
+      const social   = result.socialLinks || {};
+      const prevJobs = result.previousEmployment || [];
+      const company  = result.company  || {};
+      const tags     = result.tags     || [];
+
+      const coords = loc.coordinates
+        ? loc.coordinates[1] + ',' + loc.coordinates[0]
+        : '';
+
+      const email1 = emails[0] ? emails[0].email  : '';
+      const email2 = emails[1] ? emails[1].email  : '';
+      const phone1 = phones[0] ? phones[0].number : '';
+      const phone2 = phones[1] ? phones[1].number : '';
+
+      const rowData = [
+        'Success',
+        result.id        || '',
+        result.firstName || '',
+        result.lastName  || '',
+        result.fullName  || '',
+        email1,
+        emails[0] ? emails[0].type       : '',
+        emails[0] ? emails[0].confidence : '',
+        emails[0] ? emails[0].updateDate : '',
+        email2,
+        emails[1] ? emails[1].type       : '',
+        emails[1] ? emails[1].confidence : '',
+        emails[1] ? emails[1].updateDate : '',
+        phone1,
+        phones[0] ? (phones[0].doNotCall ? 'TRUE' : 'FALSE') : '',
+        phone2,
+        phones[1] ? (phones[1].doNotCall ? 'TRUE' : 'FALSE') : '',
+        job.title                            || '',
+        job.departments ? job.departments.join(', ') : '',
+        job.seniority                        || '',
+        loc.country     || '',
+        loc.countryIso2 || '',
+        loc.state       || '',
+        loc.city        || '',
+        loc.continent   || '',
+        coords,
+        loc.isEuContact ? 'TRUE' : 'FALSE',
+        social.linkedin || '',
+        social.xUrl     || '',
+        prevJobs[0] ? (prevJobs[0].jobTitle  && prevJobs[0].jobTitle.title       || '') : '',
+        prevJobs[0] ? (prevJobs[0].jobTitle  && prevJobs[0].jobTitle.departments
+                        ? prevJobs[0].jobTitle.departments.join(', ') : '')             : '',
+        prevJobs[0] ? (prevJobs[0].jobTitle  && prevJobs[0].jobTitle.seniority   || '') : '',
+        prevJobs[0] ? (prevJobs[0].company   && prevJobs[0].company.name         || '') : '',
+        prevJobs[0] ? (prevJobs[0].company   && prevJobs[0].company.domain       || '') : '',
+        company.domain   || '',
+        company.industry || '',
+        company.id       || '',
+        tags.map(t => t.name).join(', ')
+      ];
+
+      updateData.push({ row: rowIndex, data: rowData });
+      statusUpdates.push({ row: rowIndex, color: '#006400' });
+    });
+
+    contacts.forEach(c => {
+      if (!rowsWithResults.has(c.rowIndex)) {
+        Logger.log('WARNING: Row ' + c.rowIndex + ' missing from API response');
+        writeStatusOnly(sheet, c.rowIndex, 'Failed: Contact missing from API response', '#8B0000');
+        state.stats.failed++;
+      }
+    });
+
+    batchUpdateSheet(sheet, updateData, statusUpdates);
+    incrementTotalRuns();
+    saveState(state);
+
+  } catch (e) {
+    Logger.log('=== EXCEPTION ===');
+    Logger.log('Type:    ' + e.name);
+    Logger.log('Message: ' + e.message);
+    Logger.log('Stack:   ' + e.stack);
+
+    const errMsg = 'Connection Error: ' + e.message;
+    contacts.forEach(c => {
+      writeStatusOnly(sheet, c.rowIndex, 'Failed: ' + errMsg, '#8B0000');
+      state.stats.failed++;
+    });
+
+    updateStatusInTopRow('Error: ' + errMsg);
+    saveState(state);
+  }
+
+  return null;
+}
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+
+function incrementTotalRuns() {
+  try {
+    const sheet  = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const cell   = sheet.getRange(CTRL_TOTAL_RUNS_VALUE);
+    const current = cell.getValue();
+    cell.setValue((typeof current === 'number' ? current : 0) + 1);
+  } catch (e) {
+    Logger.log('Error incrementing Total Runs: ' + e.message);
+  }
+}
+
+function updateEmailPhoneCounts() {
+  try {
+    const sheet   = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const lastRow = sheet.getLastRow();
+    if (lastRow < DATA_START_ROW) {
+      sheet.getRange(CTRL_TOTAL_EMAILS_VALUE).setValue(0);
+      sheet.getRange(CTRL_TOTAL_PHONES_VALUE).setValue(0);
+      return;
+    }
+
+    const numDataRows = lastRow - DATA_START_ROW + 1;
+
+    const email1Col = OUTPUT_START_COL + OUT_EMAIL1_OFFSET;
+    const email2Col = OUTPUT_START_COL + OUT_EMAIL2_OFFSET;
+    const phone1Col = OUTPUT_START_COL + OUT_PHONE1_OFFSET;
+    const phone2Col = OUTPUT_START_COL + OUT_PHONE2_OFFSET;
+
+    const email1Vals = sheet.getRange(DATA_START_ROW, email1Col, numDataRows, 1).getValues().flat();
+    const email2Vals = sheet.getRange(DATA_START_ROW, email2Col, numDataRows, 1).getValues().flat();
+    const phone1Vals = sheet.getRange(DATA_START_ROW, phone1Col, numDataRows, 1).getValues().flat();
+    const phone2Vals = sheet.getRange(DATA_START_ROW, phone2Col, numDataRows, 1).getValues().flat();
+
+    const hasVal = v => v && v.toString().trim() !== '';
+
+    let totalEmails = 0;
+    let totalPhones = 0;
+
+    for (let i = 0; i < numDataRows; i++) {
+      if (hasVal(email1Vals[i]) || hasVal(email2Vals[i])) totalEmails++;
+      if (hasVal(phone1Vals[i]) || hasVal(phone2Vals[i])) totalPhones++;
+    }
+
+    sheet.getRange(CTRL_TOTAL_EMAILS_VALUE).setValue(totalEmails);
+    sheet.getRange(CTRL_TOTAL_PHONES_VALUE).setValue(totalPhones);
+
+    Logger.log('Email/phone counts updated — emails: ' + totalEmails + ', phones: ' + totalPhones);
+  } catch (e) {
+    Logger.log('Error updating email/phone counts: ' + e.message);
+  }
+}
+
+function writeStatusOnly(sheet, rowIndex, statusMsg, color) {
+  try {
+    sheet.getRange(rowIndex, OUTPUT_START_COL)
+         .setValue(statusMsg)
+         .setFontColor(color);
+  } catch (e) {
+    Logger.log('Error writing status for row ' + rowIndex + ': ' + e.message);
+  }
+}
+
+function batchUpdateSheet(sheet, rowUpdates, statusUpdates) {
+  const NUM_OUTPUT_COLS = 38;
+
+  rowUpdates.forEach(update => {
+    try {
+      if (update.row < 1) return;
+
+      const data = update.data;
+      while (data.length < NUM_OUTPUT_COLS) data.push('');
+      if (data.length > NUM_OUTPUT_COLS) data.length = NUM_OUTPUT_COLS;
+
+      sheet.getRange(update.row, OUTPUT_START_COL, 1, NUM_OUTPUT_COLS).setValues([data]);
+    } catch (e) {
+      Logger.log('Error updating row ' + update.row + ': ' + e.message);
+      try {
+        sheet.getRange(update.row, OUTPUT_START_COL)
+             .setValue('Failed: Error writing row (' + e.message + ')')
+             .setFontColor('#8B0000');
+      } catch (e2) {
+        Logger.log('Unable to write error for row ' + update.row + ': ' + e2.message);
+      }
+    }
+  });
+
+  statusUpdates.forEach(update => {
+    try {
+      sheet.getRange(update.row, OUTPUT_START_COL).setFontColor(update.color);
+    } catch (e) {
+      Logger.log('Error setting color for row ' + update.row + ': ' + e.message);
+    }
+  });
+}
+
+// ─────────────────────────────────────────────
+// COMPLETION
+// ─────────────────────────────────────────────
+
+function completeProcessing(state) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  const finalStats = { success: 0, nodata: 0, failed: 0 };
+
+  if (sheet.getLastRow() >= DATA_START_ROW) {
+    try {
+      const statusValues = sheet.getRange(DATA_START_ROW, OUTPUT_START_COL, sheet.getLastRow() - DATA_START_ROW + 1, 1)
+                                .getValues().flat();
+      statusValues.forEach(s => {
+        if (s === 'Success') {
+          finalStats.success++;
+        } else if (s === 'Could not find requested data') {
+          finalStats.nodata++;
+        } else if (s && s !== '') {
+          finalStats.failed++;
+        }
+      });
+    } catch (e) {
+      Logger.log('Error reading final stats: ' + e.message);
+    }
+  }
+
+  updateStatusInTopRow('Complete!');
+  updateFinalStats(finalStats.success, finalStats.nodata, finalStats.failed);
+  updateEmailPhoneCounts();
+
+  SpreadsheetApp.getActiveSpreadsheet().toast(
+    'Enrichment complete! Success: ' + finalStats.success +
+    ', No data: ' + finalStats.nodata +
+    ', Failed: ' + finalStats.failed,
+    'Process Complete', 10
+  );
+
+  PropertiesService.getScriptProperties().deleteProperty('enrichment_state');
+}
+
+// ─────────────────────────────────────────────
+// DIAGNOSTIC
+// ─────────────────────────────────────────────
+
+function diagnoseContactData() {
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.prompt(
+    'Diagnose Contact Data',
+    'Enter the row number to diagnose (data rows start at row ' + DATA_START_ROW + '):',
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (response.getSelectedButton() !== ui.Button.OK) return;
+
+  const rowNumber = parseInt(response.getResponseText());
+  if (isNaN(rowNumber) || rowNumber < DATA_START_ROW) {
+    ui.alert('Invalid row number. Please enter a number >= ' + DATA_START_ROW + '.');
+    return;
+  }
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getRange(rowNumber, 1, 1, INPUT_COLS).getValues()[0];
+  const [firstName, lastName, companyName, companyDomain,
+         emailAddress, linkedinUrl, lushaId] = data;
+
+  Logger.log('=== CONTACT DIAGNOSIS: Row ' + rowNumber + ' ===');
+  Logger.log('First Name:           "' + firstName     + '"');
+  Logger.log('Last Name:            "' + lastName      + '"');
+  Logger.log('Company Name:         "' + companyName   + '"');
+  Logger.log('Company Domain:       "' + companyDomain + '"');
+  Logger.log('Email:                "' + emailAddress  + '"');
+  Logger.log('LinkedIn URL:         "' + linkedinUrl   + '"');
+  Logger.log('Lusha ID:             "' + lushaId       + '"');
+
+  const clean = v => v && v.toString().trim() !== '';
+  const hasLushaId  = clean(lushaId);
+  const hasLinkedIn = clean(linkedinUrl);
+  const hasEmail    = clean(emailAddress);
+  const hasName     = clean(firstName) || clean(lastName);
+  const hasCompany  = clean(companyName) || clean(companyDomain);
+  const strongId    = hasLushaId || hasLinkedIn || hasEmail || (hasName && hasCompany);
+
+  Logger.log('\n=== IDENTIFIER CHECK ===');
+  Logger.log('Has Lusha ID:        ' + hasLushaId);
+  Logger.log('Has LinkedIn URL:    ' + hasLinkedIn);
+  Logger.log('Has Email:           ' + hasEmail);
+  Logger.log('Has Name:            ' + hasName);
+  Logger.log('Has Company:         ' + hasCompany);
+  Logger.log('Has Name + Company:  ' + (hasName && hasCompany));
+  Logger.log('Strong identifier:   ' + strongId + (strongId ? ' ✅' : ' ❌'));
+
+  Logger.log('\n=== PAYLOAD THAT WOULD BE SENT ===');
+  const entry = { clientReferenceId: String(rowNumber) };
+  if (hasLushaId)           entry.id            = lushaId.toString().trim();
+  if (hasLinkedIn)          entry.linkedinUrl   = linkedinUrl.toString().trim();
+  if (hasEmail)             entry.email         = emailAddress.toString().trim();
+  if (clean(firstName))     entry.firstName     = firstName.toString().trim();
+  if (clean(lastName))      entry.lastName      = lastName.toString().trim();
+  if (clean(companyName))   entry.companyName   = companyName.toString().trim();
+  if (clean(companyDomain)) entry.companyDomain = companyDomain.toString().trim();
+  Logger.log(JSON.stringify(entry, null, 2));
+
+  ui.alert(
+    'Diagnosis Complete',
+    'Check the Logs (View > Logs) for row ' + rowNumber + '.\n\n' +
+    'Strong identifier found: ' + (strongId ? 'YES ✅' : 'NO ❌ — this row would be skipped'),
+    ui.ButtonSet.OK
+  );
+}
+
+// ─────────────────────────────────────────────
+// API CONNECTION TEST
+// ─────────────────────────────────────────────
+
+function testAPIConnection() {
+  const API_KEY = PropertiesService.getScriptProperties().getProperty('api_key');
+  if (!API_KEY) {
+    SpreadsheetApp.getUi().alert('Error: No API key found in Script Properties.');
+    return;
+  }
+
+  const settings = readControlPanelSettings();
+
+  const testPayload = {
+    contacts: [
+      {
+        clientReferenceId: 'test-1',
+        firstName: 'Orit',
+        lastName: 'Shilvock',
+        companyDomain: 'lusha.com'
+      }
+    ]
+  };
+
+  if (settings.reveal.length > 0) {
+    testPayload.reveal = settings.reveal;
+  }
+
+  const options = {
+    method: 'POST',
+    contentType: 'application/json',
+    headers: {
+      'api_key': API_KEY,
+      'x-partner-name': 'prtnr-google_sheets_connector-prod'
+    },
+    muteHttpExceptions: true,
+    payload: JSON.stringify(testPayload)
+  };
+
+  Logger.log('=== V3 API CONNECTION TEST ===');
+  Logger.log('Payload: ' + JSON.stringify(testPayload, null, 2));
+
+  try {
+    const response     = UrlFetchApp.fetch('https://api.lusha.com/v3/contacts/search-and-enrich', options);
+    const statusCode   = response.getResponseCode();
+    const responseText = response.getContentText();
+
+    Logger.log('Status Code: ' + statusCode);
+    Logger.log('Response:    ' + responseText);
+
+    SpreadsheetApp.getUi().alert(
+      'Test Complete',
+      'HTTP Status: ' + statusCode + '\n\nCheck View > Logs for full response details.',
+      SpreadsheetApp.getUi().ButtonSet.OK
+    );
+  } catch (e) {
+    Logger.log('Test failed: ' + e.message);
+    SpreadsheetApp.getUi().alert('Error', 'Request failed: ' + e.message, SpreadsheetApp.getUi().ButtonSet.OK);
+  }
+}
+```
+
+### 3. Add Your API Key
+
+I. Go to **Project Settings** (gear icon in the script editor).
+
+II. Under **Script Properties**, add a new property:
+   - **Key**: `api_key`
+   - **Value**: your actual Lusha API key
+
+This keeps your API key secure and out of the main code.
+
+### 4. Refresh the Spreadsheet
+
+After saving the script and adding your API key, refresh the Google Sheets page.
+
+You'll see a new menu option: **Lusha Enrichment**, and your sheet will automatically populate the required headers across rows 1-4:
+
+- **Row 1**: Status bar (enrichment progress and final stats)
+- **Rows 2-3**: Control panel (Reveal Emails, Reveal Phones, run/email/phone counts)
+- **Row 4**: Column headers
+- **Row 5+**: Your data
+
+Input columns (A-G):
+
+- **Column A**: First Name
+- **Column B**: Last Name
+- **Column C**: Company Name
+- **Column D**: Company Domain
+- **Column E**: Email Address
+- **Column F**: LinkedIn URL
+- **Column G**: Lusha ID *(stable Lusha contact ID from a previous run)*
+
+---
+
+## Control Panel
+
+Before running enrichment, check the control panel in rows 2-3:
+
+- **Reveal Emails** (checkbox): Include email addresses in results. Checked by default.
+- **Reveal Phones** (checkbox): Include phone numbers in results. Checked by default.
+
+If both checkboxes are unchecked, the script omits the `reveal` filter entirely and Lusha returns all available data.
+
+The control panel also tracks **Total Runs**, **Total Emails**, and **Total Phones** across all enrichment sessions.
+
+---
+
+## Minimum Input Requirements
+
+Each row must include at least one of the following:
+
+- **Lusha ID** *(most precise - from a prior enrichment run)*
+- **LinkedIn URL**
+- **Email Address**
+- **Full Name (First + Last) and Company Name or Domain**
+
+Rows that don't meet these requirements are automatically marked as `Failed` with a descriptive message.
+
+---
+
+## Use the Script
+
+The **Lusha Enrichment** menu provides:
+
+- **Enrich All Contacts**: Enriches every row with data, re-processing even previously successful rows.
+- **Enrich From Specific Row**: Prompts for a starting row number and enriches all rows from that point onward. Useful for resuming after an interruption or adding new rows.
+
+---
+
+## Review and Analyze Results
+
+Once enrichment is complete, results are written starting at **Column H**:
+
+- **Column H (Status)**: `Success`, `Could not find requested data`, or a specific error message.
+- **Columns I onward**: Contact ID, name, emails, phones, job title, location, company, social links, previous employment, tags, and more.
+
+The status bar in Row 1 updates in real-time and displays final counts for Success, No Data, and Failed.
+
+---
+
+## Troubleshooting
+
+- **Status shows `Failed: Insufficient data`**: The row is missing a required identifier. Check that at least one of the combinations in [Minimum Input Requirements](#minimum-input-requirements) is present.
+- **Status shows `Could not find requested data`**: Lusha processed the contact but found no matching record. Shown in orange.
+- **Status shows `⚠️ Stopped: Out of Lusha credits`**: Enrichment halted due to no remaining credits. Add credits and use **Enrich From Specific Row** to resume from where it stopped.
+- **API key errors**: Confirm the key is correctly entered in Project Settings > Script Properties with the key name `api_key`.
+- **Use Diagnose Contact Data**: This tool (in the Lusha Enrichment menu) logs exactly what payload would be sent for a given row, helping you identify data issues before running enrichment.
+
+---
+
+## Automate with Triggers (Optional)
+
+To keep contact data continuously updated, you can set up a time-driven trigger:
+
+1. In the Apps Script editor, go to **Triggers** (clock icon in the left sidebar).
+2. Add a new trigger set to **Time-driven**.
+3. Choose your desired frequency (e.g., daily or weekly).
+
+This runs enrichment automatically without manual intervention.
+
+---
+
+## Legacy V2 Script
+
+<Warning>
+This script uses the Lusha V2 API (`/v2/person`), which is no longer the recommended version. New integrations should use the [V3 script](#2-add-the-script-to-google-sheet) above. The V2 script is preserved here for teams that have not yet migrated.
+</Warning>
+
+<details>
+<summary><strong>Show V2 Script and Setup Instructions</strong></summary>
+
+### Setup
+
+Follow the same steps as the V3 guide: create a new Google Sheet, open **Extensions > Apps Script**, paste the script below, save, and add your API key under Project Settings > Script Properties with the key `api_key`.
+
+After refreshing, your sheet will populate headers in Columns A-F:
+
+- **Column A**: First Name
+- **Column B**: Last Name
+- **Column C**: Company Name
+- **Column D**: Company Domain
+- **Column E**: Email Address
+- **Column F**: LinkedIn URL
+
+### Minimum Input Requirements (V2)
+
+Each row must include at least one of:
+
+- **Full Name (First + Last) and Company Name or Domain**
+- **Email Address**
+- **LinkedIn URL**
+
+### V2 Script
+
+```javascript
+// Enhanced Lusha Enrichment Script with Contact Validation Fixes
+// Google Apps Script for Lusha Contact Enrichment
+// API: POST https://api.lusha.com/v2/person
+
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Lusha Enrichment')
+    .addItem('Enrich All Contacts', 'enrichAllContacts')
+    .addItem('Enrich From Specific Row', 'enrichFromSpecificRow')
+    .addSeparator()
+    .addItem('🔍 Diagnose Contact Data', 'diagnoseContactData')
+    .addItem('🧪 Test API with Working Example', 'testWithWorkingExample')
+    .addToUi();
+    
+  setupInitialStructure();
+}
+
+// [Full V2 script code — see original article version or contact support@lusha.com for the complete file]
+```
+
+> For the full V2 script, refer to the previous version of this article or reach out to [support@lusha.com](mailto:support@lusha.com).
+
+</details>
+
+---
+
+> ## Additional Resources
+>
+> If you have any questions, feel free to reach out to the support team:
+>
+> - Via live chat from the [Lusha website](http://www.lusha.com/)
+> - Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
+> - Via email: [support@lusha.com](mailto:support@lusha.com)

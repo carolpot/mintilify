@@ -1,0 +1,32 @@
+---
+title: "Salesforce integration: read and write permissions explained"
+description: "Why the Salesforce integration requires read and write permissions, what they're used for, and how your data is protected."
+---
+
+When you connect Lusha to Salesforce, you're granting Lusha read and write access to your Salesforce data. This article explains what those permissions are used for and what safeguards are in place.
+
+## What read permissions are used for
+
+Lusha reads Salesforce data in the following situations:
+
+- **Duplicate detection** - when you push a contact or company from Lusha to Salesforce, Lusha checks whether that record already exists to prevent duplicates.
+- **Salesforce indicator** - if enabled, Lusha reads your CRM to flag existing contacts in Search results.
+- **Exclude Salesforce objects** - if enabled, Lusha reads your CRM to skip existing contacts during bulk reveal actions.
+- **CRM enrichment** - when using the enrichment workflow to update existing Salesforce records with Lusha data.
+
+Lusha will **not** read your Salesforce data unless you enable one of the features above.
+
+## What write permissions are used for
+
+Lusha writes to Salesforce when you export contacts or companies from Lusha. The fields written are determined by your field mapping configuration.
+
+## How your data is protected
+
+- Lusha acts as a data processor for your Salesforce data. Any data transmitted from Salesforce is sent to Lusha's AWS EU servers and used solely to provide the integration service.
+- Lusha does not add your Salesforce data to its contact database for resale. That database is physically separated and located on AWS US servers.
+- When you sign Lusha's DPA (included in the MSA), it covers the use of subprocessors like Salesforce and sets rules for how your data is protected.
+
+## Additional resources
+
+- [Lusha Data Processing Addendum (DPA)](https://www.lusha.com/legal/dpa-2-2/)
+- [Salesforce integration setup guide](/user-guide/salesforce/salesforce-integration)

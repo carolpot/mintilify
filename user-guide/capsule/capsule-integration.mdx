@@ -1,0 +1,77 @@
+---
+title: "Capsule Integration"
+description: "How to connect Lusha to Capsule, configure field mapping, and push enriched contact and organization data to your Capsule workspace."
+---
+
+The Lusha–Capsule integration lets you push enriched contact and organization data from Lusha directly into Capsule, removing the need to copy and paste between platforms. Once connected, any contact you reveal in Lusha can be exported to Capsule with data mapped to the fields you configure.
+
+<Note>
+  Editing integration settings requires Admin or Manager access in Lusha. You must also be a Capsule admin to activate the integration.
+</Note>
+
+---
+
+## How to connect Capsule
+
+1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/) and click your name in the left navigation.
+2. Go to the [Integrations tab](https://dashboard.lusha.com/lusha-integrations) and select **Capsule**.
+3. Click **Connect** — you'll be redirected to the Capsule login page.
+4. Sign in to Capsule if prompted and authorize Lusha's access to your account.
+5. Once authorized, click **Continue to field mapping**.
+6. In the Field mapping environment, you'll see two record types: **People** and **Organisations**.
+7. To update existing records in your database, toggle on **Allow Override**.
+
+<Note>
+  Allow Override is a Lusha setting that controls whether Lusha will update fields that already have a value in Capsule. When toggled off, Lusha will only populate empty fields.
+</Note>
+
+---
+
+## Adding predefined value fields
+
+1. Choose the record type (**People** or **Organisations**).
+2. Click **+ Add field** and select **Predefined Value**.
+3. Select a Capsule field from the available options.
+4. Enter the predefined value.
+5. Click **Save changes** before switching tabs.
+
+---
+
+## Account export preferences
+
+Admins can control which object types users can export to Capsule. When the toggle is off, users can only save contacts to existing Capsule accounts — not create new ones.
+
+<Note>
+  These settings apply to all team members in your account.
+</Note>
+
+To manage export preferences, go to **Integrations → Capsule → Settings tab**.
+
+---
+
+## Default field mapping
+
+If you modify your field mapping and need to revert to the original settings, use the tables below as a reference.
+
+### People
+
+| Lusha field | Capsule field          |
+|-------------|------------------------|
+| Full Name   | First Name + Last Name |
+| Emails      | Email                  |
+| Phones      | Phone                  |
+| Job Title   | Job Title              |
+
+### Organisations
+
+| Lusha field     | Capsule field |
+|-----------------|---------------|
+| Company Name    | Name          |
+| Company Street  | Address       |
+| Company Website | Website       |
+
+To learn more about field mapping values, see [Fields for field mapping and descriptions](/user-guide/integrations-basics/fields-for-field-mapping-and-descriptions).
+
+---
+
+You're all set — Lusha will now push enriched contact and organization data directly into Capsule whenever you reveal a contact.

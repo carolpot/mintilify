@@ -1,0 +1,1266 @@
+---
+title: "Automate Company Data Enrichment"
+description: "This guide will help you enrich your company data directly in Google Sheets using the Lusha Company Enrichment API. You'll be able to send requests to Lusha to retrieve detailed company information, automatically update your sheet, and track which companies have been enriched or failed."
+---
+
+## Overview
+This guide will help you enrich your company data directly in Google Sheets using the Lusha Company Enrichment API. You'll be able to send requests to Lusha to retrieve detailed company information, automatically update your sheet, and track which companies have been enriched or failed.
+
+<iframe
+  width="100%"
+  height="450"
+  src="https://www.youtube.com/embed/YeYX67lbDwo"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen>
+</iframe>
+
+## How it Works?
+
+### 1. Add the Script to Google Sheets
+
+1. Open a [new Google Sheets](https://sheets.new)
+2. Go to **Extensions > Apps Script**
+3. Delete any existing code and replace it with the following script:
+
+```javascript
+// Enhanced Lusha Company Enrichment Script
+// Google Apps Script for Lusha Company Enrichment with Advanced Error Handling
+
+// Function to create the custom menu when the spreadsheet opens
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Set up the initial structure
+  setupInitialStructure();
+
+  ui.createMenu('Company Enrichment')
+    .addItem('Enrich All Companies', 'enrichAllCompanies')
+    .addItem('Enrich From Specific Row', 'enrichFromSpecificRow')
+    .addSeparator()
+    .addItem('🔍 Diagnose Company Data', 'diagnoseCompanyData')
+    .addItem('🧪 Test API with Working Example', 'testWithWorkingExample')
+    .addToUi();
+}
+
+// Function to set up the initial spreadsheet structure
+function setupInitialStructure() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Set up status row (row 1)
+  setupStatusRow(sheet);
+  
+  // Set up input headers (row 2)
+  setupInputHeaders(sheet);
+  
+  // Format the sheet for better usability
+  sheet.setFrozenRows(2);  // Freeze both header rows
+}
+
+// Function to set up the status row (row 1)
+function setupStatusRow(sheet) {
+  // Check if status row already exists
+  const hasStatusLabel = sheet.getRange("A1").getValue() === "Enrichment Status";
+  
+  if (!hasStatusLabel) {
+    // Set up simplified status area in row 1
+    sheet.getRange("A1").setValue("Enrichment Status");
+    sheet.getRange("A1").setFontWeight("bold");
+    
+    sheet.getRange("C1").setValue("Last Updated:");
+    sheet.getRange("C1").setFontWeight("bold");
+    
+    // Move final stats to start from column G
+    sheet.getRange("G1").setValue("Final Stats:");
+    sheet.getRange("G1").setFontWeight("bold");
+    
+    // Set placeholder values
+    sheet.getRange("B1").setValue("Not started");
+    sheet.getRange("D1").setValue("-");
+    
+    // Set placeholder values for final stats starting at column H
+    sheet.getRange("H1").setValue("Success: -");
+    sheet.getRange("I1").setValue("No Data: -");
+    sheet.getRange("J1").setValue("Failed: -");
+    
+    // Format the status row
+    sheet.getRange("A1:J1").setBackground("#f3f3f3");
+  }
+}
+
+// Function to set up input headers in row 2 (columns A-D)
+function setupInputHeaders(sheet) {
+  const inputHeaders = [
+    "Company Name (Input)", 
+    "Company Domain (Input)",
+    "Company ID (Input)",
+    "Lusha Company ID (Input)"
+  ];
+  
+  // Check if headers already exist in row 2
+  const existingHeaders = sheet.getRange("A2:D2").getValues()[0];
+  const hasHeaders = existingHeaders.some(header => header !== "");
+  
+  // If no headers exist, add them to row 2
+  if (!hasHeaders) {
+    sheet.getRange("A2:D2").setValues([inputHeaders]);
+    sheet.getRange("A2:D2").setFontWeight("bold");
+    sheet.getRange("A2:D2").setBackground("#f3f3f3");
+    
+    // Auto-resize columns for better visibility
+    sheet.autoResizeColumns(1, 4);
+  }
+}
+
+// Function to set up output headers in row 2 (starting at column E)
+function setupOutputHeaders(sheet) {
+  const outputHeaders = [
+    "Status", "Lusha Company ID", "Company ID", "Company Name", "Company Size Min", "Company Size Max",
+    "Company FQDN", "Founded", "Description", "Logo URL",
+    "SIC Codes", "NAICS Codes", "LinkedIn", "Main Industry", "Sub Industry",
+    "City", "State", "Country", "Country ISO2", "Continent", "Raw Location",
+    "CrunchBase", "Specialties",
+    "Funding Total Rounds", "Funding Total Amount", "Funding Currency", "Funding Is IPO",
+    "Funding Last Round Type", "Funding Last Round Amount", "Funding Last Round Date",
+    "Funding Rounds Details",
+    "Revenue Range Min", "Revenue Range Max",
+    "Intent Topics", "Intent Topic Count"
+  ];
+  
+  // Check if headers already exist and are correct
+  const existingHeaders = sheet.getRange(2, 5, 1, outputHeaders.length).getValues()[0];
+  if (existingHeaders.some((header, i) => header !== outputHeaders[i])) {
+    sheet.getRange(2, 5, 1, outputHeaders.length).setValues([outputHeaders]);
+    sheet.getRange(2, 5, 1, outputHeaders.length).setFontWeight("bold");
+    sheet.getRange(2, 5, 1, outputHeaders.length).setBackground("#f3f3f3");
+  }
+}
+
+// Function to update status in the first row
+function updateStatusInTopRow(message, processed, total) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Ensure status row exists
+  setupStatusRow(sheet);
+  
+  // Update only status and timestamp
+  sheet.getRange("B1").setValue(message);
+  
+  // Format date and time with both date and time
+  sheet.getRange("D1").setValue(Utilities.formatDate(
+    new Date(), 
+    Session.getScriptTimeZone(), 
+    "yyyy-MM-dd HH:mm:ss"
+  ));
+  
+  // Set status background
+  if (message.includes("Complete")) {
+    sheet.getRange("B1").setBackground("#d9ead3"); // Green for complete
+  } else if (message.includes("Error")) {
+    sheet.getRange("B1").setBackground("#f4cccc"); // Red for error
+  } else {
+    sheet.getRange("B1").setBackground("#fff2cc"); // Yellow for in progress
+  }
+}
+
+// Function to update final statistics
+function updateFinalStats(success, nodata, failed) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Set final statistics in row 1, starting at column H
+  sheet.getRange("H1").setValue("Success: " + success);
+  sheet.getRange("I1").setValue("No Data: " + nodata);
+  sheet.getRange("J1").setValue("Failed: " + failed);
+  
+  // Format stats
+  sheet.getRange("H1:J1").setBackground("#e8f4fe");
+}
+
+// Trigger to enrich all companies
+function enrichAllCompanies() {
+  startEnrichment(true);
+}
+
+// Function to enrich from a specific row
+function enrichFromSpecificRow() {
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.prompt(
+    'Enrich From Specific Row',
+    'Enter the row number to start enrichment from:',
+    ui.ButtonSet.OK_CANCEL
+  );
+  
+  // Check if the user clicked "OK"
+  if (response.getSelectedButton() == ui.Button.OK) {
+    const rowNumber = parseInt(response.getResponseText());
+    
+    // Validate that it's a valid row number (must be >= 3 now that headers are in row 2)
+    if (isNaN(rowNumber) || rowNumber < 3) {
+      ui.alert('Invalid row number. Please enter a number greater than or equal to 3.');
+      return;
+    }
+    
+    // Call the enrichment function with the specific row number
+    startEnrichment(true, rowNumber);
+  }
+}
+
+// Main function to start enrichment process
+function startEnrichment(processAll, customStartRow) {
+  // Clear any previous enrichment state to ensure a fresh start
+  PropertiesService.getScriptProperties().deleteProperty('enrichment_state');
+  
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Set up the output headers now (only when enrichment is actually starting)
+  setupOutputHeaders(sheet);
+  
+  // Get sheet and calculate total rows to process
+  const lastRow = sheet.getLastRow();
+  const startRow = customStartRow || 3; // Start from row 3 by default (after headers)
+  const totalRowsToProcess = lastRow < 3 ? 0 : (lastRow - startRow + 1);
+  
+  // Initialize the status area
+  updateStatusInTopRow("In progress: Starting enrichment process...", 0, totalRowsToProcess);
+  
+  // Create and store enrichment state
+  const state = {
+    processAll: processAll,
+    startRow: startRow,
+    chunkSize: 1000,  // Process data in chunks of 1000 rows at a time
+    batchSize: 100,   // Lusha API batch size - 100 companies per request for optimal speed
+    totalRowsToProcess: totalRowsToProcess,
+    stats: {
+      processed: 0,
+      success: 0,
+      nodata: 0,
+      failed: 0,
+      batches: 0
+    }
+  };
+  
+  // Save state
+  saveState(state);
+  
+  // Display toast notification to inform user
+  SpreadsheetApp.getActiveSpreadsheet().toast(
+    "Enrichment process has started. Hidden/filtered rows will be skipped automatically. You can continue working while the process runs in the background. Check the status in row 1 for updates.",
+    "Process Started",
+    10 // Show for 10 seconds
+  );
+  
+  // If no data to process, complete immediately
+  if (totalRowsToProcess <= 0) {
+    updateStatusInTopRow("Complete: No data to process", 0, 0);
+    updateFinalStats(0, 0, 0);
+    return;
+  }
+  
+  // Start the first chunk processing
+  processNextChunk();
+}
+
+// Function to save current state to script properties
+function saveState(state) {
+  PropertiesService.getScriptProperties().setProperty(
+    'enrichment_state', 
+    JSON.stringify(state)
+  );
+}
+
+// Function to retrieve state from script properties
+function getState() {
+  const stateJson = PropertiesService.getScriptProperties().getProperty('enrichment_state');
+  return stateJson ? JSON.parse(stateJson) : null;
+}
+
+// Function to process the next chunk of data
+function processNextChunk() {
+  const state = getState();
+  if (!state) return;
+  
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // DEBUG: Log what we're doing
+  Logger.log("Processing next chunk...");
+  Logger.log("Current processed count: " + state.stats.processed);
+  
+  // IMPORTANT: Get the last row with any data
+  const lastRow = sheet.getLastRow();
+  Logger.log("Last row with any data: " + lastRow);
+  
+  // Check if we've processed all rows
+  if (state.currentChunkStart && state.currentChunkStart > lastRow) {
+    Logger.log("All rows processed. Current chunk start: " + state.currentChunkStart + ", Last row: " + lastRow);
+    completeProcessing(state);
+    return;
+  }
+  
+  // Determine the current chunk boundaries
+  const chunkStart = state.currentChunkStart || state.startRow;
+  const chunkEnd = Math.min(chunkStart + state.chunkSize - 1, lastRow);
+  
+  Logger.log("Processing chunk from row " + chunkStart + " to " + chunkEnd);
+  
+  // Update status
+  updateStatusInTopRow(
+    `In progress: Processing rows ${chunkStart} to ${chunkEnd}`,
+    state.stats.processed,
+    state.totalRowsToProcess
+  );
+  
+  // Process this chunk
+  processChunk(chunkStart, chunkEnd);
+  
+  // Update state for next chunk
+  state.currentChunkStart = chunkEnd + 1;
+  saveState(state);
+  
+  // Log the updated state
+  Logger.log("After processing chunk, processed count is now: " + state.stats.processed);
+  
+  // Schedule the next chunk processing
+  if (chunkEnd < lastRow) {
+    processNextChunk();
+  } else {
+    completeProcessing(state);
+  }
+}
+
+// Function to process a chunk of data
+function processChunk(startRow, endRow) {
+  const state = getState();
+  if (!state) return;
+  
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  // Get the API key
+  const API_KEY = PropertiesService.getScriptProperties().getProperty('api_key');
+  if (!API_KEY) {
+    throw new Error("API key not found in Script Properties. Please set it under Project Settings with the key 'api_key'.");
+  }
+  
+  // Get data for this chunk (4 columns: name, domain, companyId, lushaCompanyId)
+  const dataRange = sheet.getRange(startRow, 1, endRow - startRow + 1, 4);
+  const data = dataRange.getValues();
+  
+  // DEBUG: Log the data we're attempting to process
+  Logger.log("Processing rows from " + startRow + " to " + endRow);
+  Logger.log("Number of rows in data: " + data.length);
+  
+  // Get statuses if needed (status is now in column E, which is column 5)
+  let statuses = [];
+  if (!state.processAll) {
+    statuses = sheet.getRange(startRow, 5, endRow - startRow + 1, 1).getValues().flat();
+    Logger.log("Not processing all - number of status values: " + statuses.length);
+  } else {
+    Logger.log("Processing all rows regardless of status");
+  }
+  
+  // Collect companies for this chunk with improved validation
+  const validCompanies = [];
+  let skippedHiddenCount = 0;
+  
+  data.forEach((row, index) => {
+    const rowIndex = startRow + index;
+    const [companyName, companyDomain, companyId, lushaCompanyId] = row;
+    
+    // Skip hidden rows (filtered or manually hidden)
+    try {
+      const isHiddenByFilter = sheet.isRowHiddenByFilter(rowIndex);
+      const isHiddenByUser = sheet.isRowHiddenByUser(rowIndex);
+      
+      if (isHiddenByFilter || isHiddenByUser) {
+        skippedHiddenCount++;
+        Logger.log("Skipping row " + rowIndex + " because it is hidden (filter: " + isHiddenByFilter + ", manual: " + isHiddenByUser + ")");
+        return;
+    }
+  } catch (e) {
+      // If there's an error checking visibility, continue processing the row
+      Logger.log("Warning: Could not check visibility for row " + rowIndex + ": " + e.message);
+    }
+    
+    // Skip if already successful and not processing all
+    if (!state.processAll && statuses[index] === "Success") {
+      Logger.log("Skipping row " + rowIndex + " because status is Success");
+      return;
+    }
+    
+    // Check if this row has ANY data at all
+    const hasAnyData = companyName || companyDomain || companyId || lushaCompanyId;
+    
+    if (hasAnyData) {
+      Logger.log("Row " + rowIndex + " has data and will be processed");
+      validCompanies.push({
+        rowIndex: rowIndex,
+        data: row
+      });
+  } else {
+      // Completely empty row
+      Logger.log("Row " + rowIndex + " is completely empty");
+      sheet.getRange(rowIndex, 5).setValue("Failed: No data provided");
+      sheet.getRange(rowIndex, 5).setFontColor("#8B0000");
+      state.stats.failed++;
+    }
+  });
+  
+  if (skippedHiddenCount > 0) {
+    Logger.log(`⏭️ Skipped ${skippedHiddenCount} hidden/filtered rows in this chunk`);
+  }
+  
+  Logger.log("Companies with data found: " + validCompanies.length);
+  
+  // Process companies in API batches
+  for (let i = 0; i < validCompanies.length; i += state.batchSize) {
+    const batchCompanies = validCompanies.slice(i, i + state.batchSize);
+    
+    // Update batch counter BEFORE processing
+    state.stats.batches++;
+    
+    Logger.log("========================================");
+    Logger.log(`PROCESSING BATCH #${state.stats.batches} of ${batchCompanies.length} companies`);
+    Logger.log(`Rows in this batch: ${batchCompanies.map(c => c.rowIndex).join(", ")}`);
+    Logger.log("========================================");
+    
+    // Update processed count before sending to API
+    state.stats.processed += batchCompanies.length;
+    
+    // Update status with simplified message
+    updateStatusInTopRow(
+      `In progress: Processing batch ${state.stats.batches}`,
+      state.stats.processed,
+      state.totalRowsToProcess
+    );
+    
+    // Process the batch
+    const batchResult = processBatch(batchCompanies, API_KEY);
+    
+    // Check if we hit credit limit
+    if (batchResult && batchResult.outOfCredits) {
+      Logger.log("⚠️ OUT OF CREDITS - Stopping enrichment");
+      updateStatusInTopRow(
+        `⚠️ Stopped: Out of Lusha credits at row ${batchResult.stopRow}. Please add credits and resume.`,
+        state.stats.processed,
+        state.totalRowsToProcess
+      );
+      saveState(state);
+      return; // Stop processing
+    }
+    
+    // Save state after each batch
+    saveState(state);
+    
+    // Add delay between batches to avoid rate limiting (except for last batch)
+    if (i + state.batchSize < validCompanies.length) {
+      Logger.log("⏱️ Waiting 1 second before next batch to avoid rate limiting...");
+      Utilities.sleep(1000); // 1 second delay between batches
+    }
+  }
+  
+  // Save state after all batches in this chunk
+  saveState(state);
+  
+  // Log final progress after this chunk
+  const percentComplete = (state.stats.processed / state.totalRowsToProcess) * 100;
+  Logger.log("After all batches, progress is: " + state.stats.processed + 
+            " / " + state.totalRowsToProcess + " = " + percentComplete + "%");
+  
+  // Retry failed companies in smaller batches
+  retryFailedCompanies(state, API_KEY);
+}
+
+// Function to process a batch of companies
+function processBatch(companies, apiKey) {
+  if (companies.length === 0) return;
+  
+  const state = getState();
+  if (!state) return;
+  
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const url = 'https://api.lusha.com/v2/company';
+  
+  // STEP 1: Filter companies into valid and insufficient categories
+  const validCompanies = [];
+  const insufficientCompanies = [];
+  
+  companies.forEach(company => {
+    const [companyName, companyDomain, companyId, lushaCompanyId] = company.data;
+    
+    // Lusha API requires at least one of: name, domain, companyId, or lushaCompanyId
+    const hasName = companyName && companyName.toString().trim() !== "";
+    const hasDomain = companyDomain && companyDomain.toString().trim() !== "";
+    const hasCompanyId = companyId && companyId.toString().trim() !== "";
+    const hasLushaCompanyId = lushaCompanyId && lushaCompanyId.toString().trim() !== "";
+    
+    if (hasName || hasDomain || hasCompanyId || hasLushaCompanyId) {
+      validCompanies.push(company);
+    } else {
+      // Insufficient data for Lusha API
+      insufficientCompanies.push(company);
+    }
+  });
+  
+  Logger.log(`Company filtering: ${validCompanies.length} valid, ${insufficientCompanies.length} insufficient`);
+  
+  // STEP 2: Immediately mark insufficient companies as failed (don't send to API)
+  insufficientCompanies.forEach(company => {
+    const rowIndex = company.rowIndex;
+    
+    sheet.getRange(rowIndex, 5).setValue(
+      `Failed: Insufficient data - Lusha requires at least one of: name, domain, companyId, or lushaCompanyId`
+    );
+    sheet.getRange(rowIndex, 5).setFontColor("#8B0000");
+    state.stats.failed++;
+    
+    Logger.log(`Row ${rowIndex}: Marked as insufficient - missing all required identifiers`);
+  });
+  
+  // STEP 3: Process valid companies if any exist
+  if (validCompanies.length > 0) {
+    // Prepare the companies for the API request with validation
+    const batchData = [];
+    const rowMap = {};
+    const invalidCompanies = [];
+    
+    validCompanies.forEach(company => {
+      const [companyName, companyDomain, companyId, lushaCompanyId] = company.data;
+      
+      // Clean and validate domain
+      const domainResult = cleanAndValidateDomain(companyDomain);
+      
+      // Check for validation errors
+      const validationErrors = [];
+      if (!domainResult.isValid && companyDomain) {
+        validationErrors.push(`Domain: ${domainResult.error}`);
+      }
+      
+      // If there are validation errors, mark company as failed
+      if (validationErrors.length > 0) {
+        Logger.log(`Row ${company.rowIndex}: Data validation failed - ${validationErrors.join(', ')}`);
+        invalidCompanies.push({
+          rowIndex: company.rowIndex,
+          errors: validationErrors
+        });
+    return;
+  }
+
+      // Build payload for API matching the exact structure
+      let companyPayload = {
+        id: String(company.rowIndex),
+        domain: "",
+        name: "",
+        companyId: "",
+        lushaCompanyId: ""
+      };
+      
+      // Add domain if provided
+      if (domainResult.cleaned && domainResult.cleaned !== "") {
+        companyPayload.domain = domainResult.cleaned;
+      }
+      
+      // Add name if provided
+      if (companyName && companyName.toString().trim() !== "") {
+        companyPayload.name = companyName.toString().trim();
+      }
+      
+      // Add companyId if provided
+      if (companyId && companyId.toString().trim() !== "") {
+        companyPayload.companyId = companyId.toString().trim();
+      }
+      
+      // Add lushaCompanyId if provided
+      if (lushaCompanyId && lushaCompanyId.toString().trim() !== "") {
+        companyPayload.lushaCompanyId = lushaCompanyId.toString().trim();
+      }
+      
+      batchData.push(companyPayload);
+      rowMap[company.rowIndex] = company.rowIndex;
+    });
+    
+    // Mark invalid companies immediately
+    invalidCompanies.forEach(company => {
+      sheet.getRange(company.rowIndex, 5).setValue(`Failed: Data validation error - ${company.errors.join('; ')}`);
+      sheet.getRange(company.rowIndex, 5).setFontColor("#8B0000");
+      state.stats.failed++;
+    });
+    
+    // Send the batch request for valid companies
+    if (batchData.length > 0) {
+      const result = sendBatchRequest(batchData, rowMap, validCompanies.filter(c => !invalidCompanies.find(ic => ic.rowIndex === c.rowIndex)), apiKey, url, sheet, state);
+      if (result && result.outOfCredits) {
+        return result; // Propagate out of credits signal
+      }
+    }
+  } else {
+    Logger.log("No valid companies to send to API in this batch");
+  }
+  
+  // Save updated state after processing
+  saveState(state);
+  
+  return null; // No issues
+}
+
+// Function to retry failed companies in smaller batches
+function retryFailedCompanies(state, apiKey) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  
+  if (lastRow < 3) return; // No data rows
+  
+  Logger.log("========================================");
+  Logger.log("🔄 CHECKING FOR FAILED COMPANIES TO RETRY");
+  Logger.log("========================================");
+  
+  // Get all status cells
+  const statusRange = sheet.getRange(3, 5, lastRow - 2, 1);
+  const statuses = statusRange.getValues().flat();
+  
+  // Get all input data
+  const inputRange = sheet.getRange(3, 1, lastRow - 2, 4);
+  const inputData = inputRange.getValues();
+  
+  // Find companies with errors that might benefit from retry
+  const failedCompanies = [];
+  statuses.forEach((status, index) => {
+    const statusStr = String(status);
+    // Check if this is a retriable failure
+    if (statusStr.includes("Failed") && !statusStr.includes("Insufficient data")) {
+      const rowIndex = index + 3;
+      const row = inputData[index];
+      const [companyName, companyDomain, companyId, lushaCompanyId] = row;
+      
+      // Check if we have at least some data to retry with
+      if (companyName || companyDomain || companyId || lushaCompanyId) {
+        failedCompanies.push({
+          rowIndex: rowIndex,
+          data: row
+        });
+        Logger.log(`Found failed company at row ${rowIndex}: ${companyName} - ${companyDomain}`);
+      }
+    }
+  });
+  
+  if (failedCompanies.length === 0) {
+    Logger.log("✅ No failed companies to retry");
+    return;
+  }
+
+  Logger.log(`🔄 Found ${failedCompanies.length} failed companies to retry in smaller batches`);
+  
+  // Retry in very small batches of 10
+  const retryBatchSize = 10;
+  let retriedCount = 0;
+  let retrySuccessCount = 0;
+  
+  for (let i = 0; i < failedCompanies.length; i += retryBatchSize) {
+    const retryBatch = failedCompanies.slice(i, i + retryBatchSize);
+    
+    Logger.log(`========================================`);
+    Logger.log(`🔄 RETRY BATCH ${Math.floor(i / retryBatchSize) + 1} - ${retryBatch.length} companies`);
+    Logger.log(`Rows: ${retryBatch.map(c => c.rowIndex).join(", ")}`);
+    Logger.log(`========================================`);
+    
+    // Update status to show retry
+    updateStatusInTopRow(
+      `🔄 Retrying ${failedCompanies.length} failed companies (batch ${Math.floor(i / retryBatchSize) + 1})`,
+      state.stats.processed,
+      state.totalRowsToProcess
+    );
+    
+    // Process the retry batch
+    const beforeFailed = state.stats.failed;
+    processBatch(retryBatch, apiKey);
+    const afterFailed = state.stats.failed;
+    
+    // Calculate how many succeeded in this retry
+    const retrySuccess = beforeFailed - afterFailed;
+    if (retrySuccess > 0) {
+      retrySuccessCount += retrySuccess;
+      Logger.log(`✅ Retry batch recovered ${retrySuccess} companies!`);
+    }
+    
+    retriedCount += retryBatch.length;
+    
+    // Small delay between retry batches
+    if (i + retryBatchSize < failedCompanies.length) {
+      Logger.log("⏱️ Waiting 2 seconds before next retry batch...");
+      Utilities.sleep(2000);
+    }
+  }
+  
+  Logger.log(`========================================`);
+  Logger.log(`🔄 RETRY COMPLETE: ${retrySuccessCount}/${retriedCount} recovered`);
+  Logger.log(`========================================`);
+  
+  saveState(state);
+}
+
+// Function to clean and validate domain
+function cleanAndValidateDomain(domain) {
+  if (!domain) return { cleaned: "", isValid: true, error: null };
+  
+  let cleaned = domain.toString().trim().toLowerCase();
+  
+  // If it's empty after trimming, return empty
+  if (cleaned === "") return { cleaned: "", isValid: true, error: null };
+  
+  // Remove common prefixes
+  cleaned = cleaned.replace(/^(https?:\/\/)?(www\.)?/i, '');
+  
+  // Remove trailing slashes and paths
+  cleaned = cleaned.split('/')[0];
+  
+  // Basic validation - just check for obvious issues
+  // Must contain at least one dot
+  if (!cleaned.includes('.')) {
+    return { cleaned: cleaned, isValid: false, error: "Domain missing TLD (e.g., .com)" };
+  }
+  
+  // Check for spaces (obvious error)
+  if (cleaned.includes(' ')) {
+    return { cleaned: cleaned, isValid: false, error: "Domain contains spaces" };
+  }
+  
+  // Must have something before and after the dot
+  const parts = cleaned.split('.');
+  if (parts.some(part => part.length === 0)) {
+    return { cleaned: cleaned, isValid: false, error: "Invalid domain structure" };
+  }
+  
+  // Return cleaned domain - let the API do final validation
+  return { cleaned: cleaned, isValid: true, error: null };
+}
+
+// ENHANCED sendBatchRequest function with comprehensive error handling
+function sendBatchRequest(batchData, rowMap, companies, apiKey, url, sheet, state) {
+  // Log the request payload for debugging
+  const requestPayload = { companies: batchData };
+  
+  // Get current batch number from state
+  const batchNumber = state.stats.batches;
+  
+  // Log first few companies for debugging
+  Logger.log("=== API REQUEST DEBUG ===");
+  Logger.log("Batch Number: " + batchNumber);
+  Logger.log("Number of companies in this API call: " + batchData.length);
+  Logger.log("Sample company payload (first company): " + JSON.stringify(batchData[0], null, 2));
+  if (batchData.length > 1) {
+    Logger.log("Sample company payload (second company): " + JSON.stringify(batchData[1], null, 2));
+  }
+  Logger.log("Row indices in this API call: " + companies.map(c => c.rowIndex).join(", "));
+  
+  // CRITICAL: Log the full request body for the first batch
+  if (batchNumber === 1) {
+    Logger.log("=== FULL BATCH #1 REQUEST (first 3 companies) ===");
+    Logger.log(JSON.stringify({ companies: batchData.slice(0, 3) }, null, 2));
+  }
+  
+  Logger.log("API URL: " + url);
+  Logger.log("Has API key: " + (apiKey ? "Yes" : "No"));
+
+  const options = {
+    method: 'post',
+    headers: {
+      "Content-Type": "application/json",
+      "api_key": apiKey,
+      "x-partner-name": "prtnr-google_sheets_connector-prod"
+    },
+    payload: JSON.stringify(requestPayload),
+    muteHttpExceptions: true
+  };
+
+  try {
+    Logger.log("Sending API request with " + batchData.length + " companies");
+    const response = UrlFetchApp.fetch(url, options);
+    const rawResponse = response.getContentText();
+    const statusCode = response.getResponseCode();
+
+    Logger.log("=== API RESPONSE DEBUG ===");
+    Logger.log("HTTP Status Code: " + statusCode);
+    Logger.log("Response Body (first 1000 chars): " + rawResponse.substring(0, 1000));
+
+    let results;
+    try {
+      results = JSON.parse(rawResponse);
+    } catch (e) {
+      companies.forEach(company => {
+        sheet.getRange(company.rowIndex, 5).setValue("Failed: Failed to parse response");
+        sheet.getRange(company.rowIndex, 5).setFontColor("#8B0000");
+        state.stats.failed++;
+      });
+      saveState(state);
+      return;
+    }
+
+    // Check if results is structured as {"data": {...}} for single company calls
+    if (results.data && typeof results.data === 'object' && !Array.isArray(results.data)) {
+      // Single company response structure
+      const singleResults = results.data;
+      // Convert to expected bulk structure
+      results = {
+        [batchData[0].id]: singleResults
+      };
+    }
+    
+    let outOfCreditsCount = 0;
+    let outOfCreditsRow = null;
+    
+    companies.forEach(company => {
+      const result = results[company.rowIndex];
+      const companyRow = company.rowIndex;
+      
+      let isValidResponse = false;
+      
+      if (result && typeof result === 'object' && Object.keys(result).length > 0) {
+        // Check if there's meaningful data
+        isValidResponse = (
+          (result.name && result.name !== "EMPTY_DATA" && result.name !== "N/A") ||
+          (result.fqdn && result.fqdn !== "N/A") ||
+          (result.companySize && result.companySize.length > 0) ||
+          result.industryPrimaryGroupDetails ||
+          result.id
+        );
+      }
+      
+      if (!isValidResponse) {
+        sheet.getRange(company.rowIndex, 5).setValue("Could not find requested data");
+        sheet.getRange(company.rowIndex, 5).setFontColor("#FF8C00"); // Orange for no data
+        state.stats.nodata++;
+      } else {
+        // Success case - prepare enriched data matching the new header structure
+        const sics = result?.industryPrimaryGroupDetails?.sics?.map(s => `${s.sic}: ${s.description}`).join('; ') || 'N/A';
+        const naics = result?.industryPrimaryGroupDetails?.naics?.map(n => `${n.naics}: ${n.description}`).join('; ') || 'N/A';
+        
+        // Format intent topics with scores and trends
+        const intentTopics = result?.intent?.detectedTopics?.map(t => 
+          `${t.topicName} (Score: ${t.metadata.topicScore}, Trend: ${t.metadata.topicTrend})`
+        ).join('; ') || 'N/A';
+        
+        // Format funding rounds details
+        const fundingRoundsDetails = result?.funding?.rounds?.map((r, i) => 
+          `Round ${i+1}: ${r.roundType || 'N/A'} - ${r.currency || ''} ${r.roundAmount?.toLocaleString() || 'N/A'} (${r.roundDate || 'N/A'})`
+        ).join('; ') || 'N/A';
+        
+        const enrichedData = [
+          "Success", // Status
+          result?.lushaCompanyId || 'N/A', // Lusha Company ID
+          result?.id || 'N/A', // Company ID
+          result?.name || 'N/A', // Company Name
+          result?.companySize?.[0] || 'N/A', // Company Size Min
+          result?.companySize?.[1] || 'N/A', // Company Size Max
+          result?.fqdn || 'N/A', // Company FQDN
+          result?.founded || 'N/A', // Founded
+          result?.description || 'N/A', // Description
+          result?.logoUrl || 'N/A', // Logo URL
+          sics, // SIC Codes
+          naics, // NAICS Codes
+          result?.linkedin || 'N/A', // LinkedIn
+          result?.mainIndustry || 'N/A', // Main Industry
+          result?.subIndustry || 'N/A', // Sub Industry
+          result?.city || 'N/A', // City
+          result?.state || 'N/A', // State
+          result?.country || 'N/A', // Country
+          result?.countryIso2 || 'N/A', // Country ISO2
+          result?.continent || 'N/A', // Continent
+          result?.rawLocation || 'N/A', // Raw Location
+          result?.crunchbase || 'N/A', // CrunchBase
+          (result?.specialities || []).join(', ') || 'N/A', // Specialties
+          result?.funding?.totalRounds || 'N/A', // Funding Total Rounds
+          result?.funding?.totalRoundsAmount?.toLocaleString() || 'N/A', // Funding Total Amount
+          result?.funding?.currency || 'N/A', // Funding Currency
+          result?.funding?.isIpo ? 'Yes' : 'No', // Funding Is IPO
+          result?.funding?.lastRoundType || 'N/A', // Funding Last Round Type
+          result?.funding?.lastRoundAmount?.toLocaleString() || 'N/A', // Funding Last Round Amount
+          result?.funding?.lastRoundDate || 'N/A', // Funding Last Round Date
+          fundingRoundsDetails, // Funding Rounds Details
+          result?.revenueRange?.[0] || 'N/A', // Revenue Range Min
+          result?.revenueRange?.[1] || 'N/A', // Revenue Range Max
+          intentTopics, // Intent Topics
+          result?.intent?.topicCount || 'N/A' // Intent Topic Count
+        ];
+        
+        sheet.getRange(company.rowIndex, 5, 1, enrichedData.length).setValues([enrichedData]);
+        sheet.getRange(company.rowIndex, 5).setFontColor("#006400"); // Green for success
+        
+        // Set CLIP wrap strategy - text is hidden if too long but stays in cell, rows stay small
+        sheet.getRange(company.rowIndex, 5, 1, enrichedData.length).setWrapStrategy(SpreadsheetApp.WrapStrategy.CLIP);
+        
+        state.stats.success++;
+      }
+    });
+    
+    // Save updated state
+    saveState(state);
+    
+    // Check if we should stop due to out of credits
+    const batchSize = batchData.length;
+    const outOfCreditsPercentage = (outOfCreditsCount / batchSize) * 100;
+    
+    if (outOfCreditsCount > 0 && outOfCreditsPercentage > 50) {
+      Logger.log(`⚠️ STOPPING: More than 50% of batch returned OUT_OF_CREDIT`);
+      return { outOfCredits: true, stopRow: outOfCreditsRow };
+    }
+    
+  } catch (error) {
+    Logger.log("=== EXCEPTION DEBUG ===");
+    Logger.log("Exception type: " + error.name);
+    Logger.log("Exception message: " + error.message);
+    
+    const errorMessage = `Connection Error: ${error.message}`;
+    Logger.log(errorMessage);
+    
+    companies.forEach(company => {
+      sheet.getRange(company.rowIndex, 5).setValue(`Failed: ${errorMessage}`);
+      sheet.getRange(company.rowIndex, 5).setFontColor("#8B0000");
+      state.stats.failed++;
+    });
+    
+    updateStatusInTopRow(
+      `Error: ${errorMessage}`,
+      state.stats.processed,
+      state.totalRowsToProcess
+    );
+    
+    saveState(state);
+  }
+}
+
+function parseFoundedDate(dateValue) {
+  return typeof dateValue === 'string' ? dateValue : 'N/A';
+}
+
+function formatFundingData(funding) {
+  if (!funding || !funding.rounds) return 'N/A';
+
+  funding.rounds.sort((a, b) => new Date(a.roundDate) - new Date(b.roundDate));
+
+  const totalRounds = funding.totalRounds || 'N/A';
+  const totalAmount = funding.totalRoundsAmount ? funding.totalRoundsAmount.toLocaleString('en-US') : 'N/A';
+  const currency = funding.currency || '';
+  const isIpo = funding.isIpo ? 'IPO' : 'Private';
+  let fundingInfo = `Total Rounds: ${totalRounds}, Total Amount: ${currency} ${totalAmount}, IPO Status: ${isIpo}\n`;
+
+  funding.rounds.forEach((round, index) => {
+    const roundType = round.roundType || 'Unknown Type';
+    const roundAmount = round.roundAmount ? round.roundAmount.toLocaleString('en-US') : 'N/A';
+    const roundDate = round.roundDate || 'Unknown Date';
+    fundingInfo += `${index + 1}. Round Type: ${roundType}, Amount: ${currency} ${roundAmount}, Date: ${roundDate}\n`;
+  });
+
+  return fundingInfo.trim();
+}
+
+// Function to complete the processing
+function completeProcessing(state) {
+  // Get accurate final statistics from the sheet
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  let finalStats = {
+    processed: state.stats.processed,
+    success: 0,
+    nodata: 0,
+    failed: 0,
+    batches: state.stats.batches
+  };
+  
+  // Only count status values if there are rows with data
+  if (sheet.getLastRow() > 2) {
+    try {
+      const statusRange = sheet.getRange(3, 5, sheet.getLastRow() - 2, 1);
+      const statusValues = statusRange.getValues().flat();
+      
+      // Count each type of status
+      statusValues.forEach(status => {
+        if (status === "Success") {
+          finalStats.success++;
+        } else if (status === "Could not find requested data") {
+          finalStats.nodata++;
+        } else if (status && status !== "" && status.toString().startsWith("Failed:")) {
+          finalStats.failed++;
+        }
+      });
+      
+      Logger.log("Final stats from sheet - Success: " + finalStats.success + 
+                ", No data: " + finalStats.nodata + 
+                ", Failed: " + finalStats.failed);
+      
+    } catch (e) {
+      Logger.log('Error counting final stats: ' + e);
+    }
+  }
+  
+  // Update final status
+  updateStatusInTopRow(
+    `Complete!`,
+    state.totalRowsToProcess,
+    state.totalRowsToProcess
+  );
+  
+  // Update final stats
+  updateFinalStats(finalStats.success, finalStats.nodata, finalStats.failed);
+  
+  // Show toast notification
+  SpreadsheetApp.getActiveSpreadsheet().toast(
+    `Enrichment process complete! Successfully enriched: ${finalStats.success}, No data found: ${finalStats.nodata}, Failed: ${finalStats.failed}`,
+    "Process Complete",
+    10
+  );
+  
+  // Clean up state
+  PropertiesService.getScriptProperties().deleteProperty('enrichment_state');
+}
+
+// TEST FUNCTION - Test with working example
+function testWithWorkingExample() {
+  const API_KEY = PropertiesService.getScriptProperties().getProperty('api_key');
+  
+  if (!API_KEY) {
+    Logger.log("ERROR: No API key found!");
+    SpreadsheetApp.getUi().alert("Error: No API key found in Script Properties");
+      return;
+    }
+    
+  // Test with known companies using exact API format
+  const testPayload = {
+    "companies": [
+      {
+        "id": "1",
+        "domain": "",
+        "name": "",
+        "companyId": "",
+        "lushaCompanyId": "16303253"
+      },
+      {
+        "id": "2",
+        "domain": "",
+        "name": "Apple",
+        "companyId": "",
+        "lushaCompanyId": ""
+      },
+      {
+        "id": "3",
+        "domain": "amazon.com",
+        "name": "",
+        "companyId": "",
+        "lushaCompanyId": ""
+      }
+    ]
+  };
+  
+  const options = {
+    method: 'post',
+    headers: {
+      "Content-Type": "application/json",
+      "api_key": API_KEY,
+      "x-partner-name": "prtnr-google_sheets_connector-prod"
+    },
+    payload: JSON.stringify(testPayload),
+    muteHttpExceptions: true
+  };
+  
+  Logger.log("=== TESTING WITH KNOWN COMPANIES ===");
+  Logger.log("Testing: Lusha (by lushaCompanyId), Apple (by name), Amazon (by domain)");
+  Logger.log("Payload: " + JSON.stringify(testPayload, null, 2));
+  
+  try {
+    const response = UrlFetchApp.fetch('https://api.lusha.com/v2/company', options);
+    const statusCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    
+    Logger.log("=== TEST RESPONSE ===");
+    Logger.log("Status Code: " + statusCode);
+    Logger.log("Response Body: " + responseText);
+    
+    try {
+      const responseData = JSON.parse(responseText);
+      Logger.log("\nParsed Response:");
+      Logger.log(JSON.stringify(responseData, null, 2));
+      
+      SpreadsheetApp.getUi().alert("Test Complete", 
+        "Status: " + statusCode + "\nCheck the logs (View > Logs) for full details", 
+        SpreadsheetApp.getUi().ButtonSet.OK);
+      
+    } catch (e) {
+      Logger.log("Response is not valid JSON: " + e.message);
+      SpreadsheetApp.getUi().alert("Error", "Response is not valid JSON: " + e.message, SpreadsheetApp.getUi().ButtonSet.OK);
+    }
+    
+  } catch (error) {
+    Logger.log("=== REQUEST FAILED ===");
+    Logger.log("Error: " + error.message);
+    Logger.log("Error stack: " + error.stack);
+    SpreadsheetApp.getUi().alert("Error", "Request failed: " + error.message, SpreadsheetApp.getUi().ButtonSet.OK);
+  }
+}
+
+// DIAGNOSTIC FUNCTION - Run this on a specific row to diagnose data issues
+function diagnoseCompanyData() {
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.prompt(
+    'Diagnose Company Data',
+    'Enter the row number to diagnose (e.g., 3 for the first data row after headers):',
+    ui.ButtonSet.OK_CANCEL
+  );
+  
+  if (response.getSelectedButton() !== ui.Button.OK) {
+    return;
+  }
+  
+  const rowNumber = parseInt(response.getResponseText());
+  
+  if (isNaN(rowNumber) || rowNumber < 3) {
+    ui.alert('Invalid row number. Please enter a number >= 3.');
+    return;
+  }
+  
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getRange(rowNumber, 1, 1, 4).getValues()[0];
+  const [companyName, companyDomain, companyId, lushaCompanyId] = data;
+  
+  Logger.log("=== COMPANY DATA DIAGNOSIS ===");
+  Logger.log(`Row: ${rowNumber}`);
+  Logger.log(`Company Name: "${companyName}" (Type: ${typeof companyName}, Length: ${companyName ? companyName.toString().length : 0})`);
+  Logger.log(`Company Domain: "${companyDomain}" (Type: ${typeof companyDomain}, Length: ${companyDomain ? companyDomain.toString().length : 0})`);
+  Logger.log(`Company ID: "${companyId}" (Type: ${typeof companyId}, Length: ${companyId ? companyId.toString().length : 0})`);
+  Logger.log(`Lusha Company ID: "${lushaCompanyId}" (Type: ${typeof lushaCompanyId}, Length: ${lushaCompanyId ? lushaCompanyId.toString().length : 0})`);
+  
+  // Run validation
+  Logger.log("\n=== VALIDATION RESULTS ===");
+  
+  const domainResult = cleanAndValidateDomain(companyDomain);
+  Logger.log(`Domain Validation: ${domainResult.isValid ? "PASS" : "FAIL"}`);
+  if (!domainResult.isValid) {
+    Logger.log(`  Error: ${domainResult.error}`);
+  } else if (domainResult.cleaned) {
+    Logger.log(`  Cleaned: "${domainResult.cleaned}"`);
+  }
+  
+  // Check for special characters
+  Logger.log("\n=== SPECIAL CHARACTER CHECK ===");
+  const checkSpecialChars = (value, fieldName) => {
+    if (!value) return;
+    const str = value.toString();
+    const specialChars = str.match(/[^\x20-\x7E]/g);
+    if (specialChars) {
+      Logger.log(`${fieldName} contains special characters: ${specialChars.join(', ')} (codes: ${specialChars.map(c => c.charCodeAt(0)).join(', ')})`);
+    } else {
+      Logger.log(`${fieldName}: No special characters detected`);
+    }
+  };
+  
+  checkSpecialChars(companyName, "Company Name");
+  checkSpecialChars(companyDomain, "Company Domain");
+  
+  // Show what would be sent to API
+  Logger.log("\n=== PAYLOAD THAT WOULD BE SENT ===");
+  const payload = {
+    id: String(rowNumber),
+    domain: "",
+    name: "",
+    companyId: "",
+    lushaCompanyId: ""
+  };
+  
+  if (domainResult.cleaned && domainResult.cleaned !== "") {
+    payload.domain = domainResult.cleaned;
+  }
+  
+  if (companyName && companyName.toString().trim() !== "") {
+    payload.name = companyName.toString().trim();
+  }
+  
+  if (companyId && companyId.toString().trim() !== "") {
+    payload.companyId = companyId.toString().trim();
+  }
+  
+  if (lushaCompanyId && lushaCompanyId.toString().trim() !== "") {
+    payload.lushaCompanyId = lushaCompanyId.toString().trim();
+  }
+  
+  Logger.log(JSON.stringify(payload, null, 2));
+  
+  ui.alert(
+    'Diagnosis Complete',
+    'Check the Logs (View > Logs or Ctrl+Enter) for detailed diagnostics of row ' + rowNumber,
+    ui.ButtonSet.OK
+  );
+}
+```
+
+### 2. Customize and Run
+
+This script has an action to fetch the API key as a property. In order to add your API key as a property:
+
+1. Head to **Project Settings**
+2. Under **Script Properties**, add the property `api_key`
+3. Under the **Value**, paste your actual API key
+
+**Requirements:**
+- To match a company in Lusha's database using the Company API, you need to populate either the **company name (column A)** or **company domain (column B)**
+- Run the script by selecting the desired option from the **"Company Enrichment"** menu in Google Sheets
+
+### 3. Review and Analyze Results
+
+The script will automatically populate the sheet with enriched company information, such as industry, location, and website details. The "Data Update" column will be updated with the timestamp of the enrichment, and the status will indicate whether the enrichment was successful or failed.
+
+## Available Enrichment Options
+
+The **Company Enrichment** menu provides several options:
+
+- **Enrich All Companies**: Enriches every row with company data
+- **Enrich New/Failed Companies**: Only processes rows that haven't been successfully enriched
+- **Choose Row Range to Enrich**: Specify exact start and end rows for targeted enrichment
+- **Set Max Row for All/New Enrichment**: Set a limit to cap bulk enrichment operations
+
+## Data Fields Returned
+
+The script populates your sheet with comprehensive company information including:
+
+**Basic Information:**
+- Company Name, FQDN, Founded date
+- Company Size, Employee count
+- Description, Specialties
+
+**Industry & Business:**
+- Main Industry, Sub Industry, Categories
+- Technologies, Intent topics
+- Revenue Range, Funding information
+
+**Location Data:**
+- Full Location, Address
+- Country, City, State, State Code
+- Country ISO2 code
+
+**Social & Links:**
+- Company LinkedIn, CrunchBase
+- Website and social media links
+
+**Status Tracking:**
+- Enrichment Status, Status Codes
+- Error Messages, Timestamps
+
+## Troubleshooting
+
+If you encounter any issues:
+
+- **Error Messages**: Check the "Status Code" and "Message" columns for details on what went wrong during the enrichment process
+- **Invalid JSON Response**: Ensure your API key is correctly entered and that the data formatting in your sheet matches the expected structure
+
+
+## Automating with Triggers (Optional)
+
+To automate the enrichment process, you can set up a time-driven trigger in Google Apps Script to run the script at regular intervals (e.g., daily). This way, your company data will stay up-to-date with minimal manual intervention.
+
+
+> ## Additional Resources
+>
+> If you have any questions on the above feel free to reach out the support team:
+>
+> • Via live chat from the [Lusha website](http://www.lusha.com/)
+>
+> • Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
+>
+> • Via email: [support@lusha.com](mailto:support@lusha.com)

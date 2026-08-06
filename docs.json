@@ -13,9 +13,16 @@
     "dark": "https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg"
   },
   "navbar": {
+    "links": [
+      {
+        "label": "Home",
+        "href": "/",
+        "icon": "house"
+      }
+    ],
     "primary": {
       "type": "button",
-      "label": "Get API Key",
+      "label": "Contact Sales",
       "href": "https://www.lusha.com/signup/"
     }
   },
@@ -75,8 +82,18 @@
               "signals/company-signals"
             ]
           },
-          { "group": "Decision Makers", "pages": ["decision-makers/overview"] },
-          { "group": "Website Visits", "pages": ["website-visits/overview"] },
+          {
+            "group": "Decision Makers",
+            "pages": [
+              "decision-makers/overview"
+            ]
+          },
+          {
+            "group": "Website Visits",
+            "pages": [
+              "website-visits/overview"
+            ]
+          },
           {
             "group": "Webhooks",
             "pages": [
@@ -96,43 +113,597 @@
           },
           {
             "group": "Filters Reference",
-            "pages": ["filters/contact-filters", "filters/company-filters"]
+            "pages": [
+              "filters/contact-filters",
+              "filters/company-filters"
+            ]
           },
-          { "group": "Account", "pages": ["account/usage"] }
+          {
+            "group": "Account",
+            "pages": [
+              "account/usage"
+            ]
+          }
         ]
       },
       {
         "tab": "User Guide",
-        "groups": [
+        "dropdowns": [
           {
-            "group": "The Platform",
-            "pages": [
-              "user-guide/overview",
-              "user-guide/dashboard",
-              "user-guide/search-and-lists"
+            "dropdown": "Getting Started",
+            "icon": "flag",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "user-guide/index",
+                  "user-guide/overview",
+                  "user-guide/getting-started/lusha-glossary"
+                ]
+              },
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "user-guide/getting-started/index",
+                  "user-guide/getting-started/introduction-to-lusha",
+                  "user-guide/getting-started/lushas-key-features-at-a-glance",
+                  "user-guide/getting-started/your-lusha-dashboard-a-quick-tour",
+                  "user-guide/getting-started/notifications-and-feed-your-lusha-activity-center",
+                  "user-guide/getting-started/how-credits-work-in-lusha",
+                  "user-guide/getting-started/how-to-contact-lusha-support",
+                  "user-guide/getting-started/join-lusha-community",
+                  "user-guide/getting-started/feature-requests",
+                  {
+                    "group": "Explore Key Features",
+                    "pages": [
+                      "user-guide/introduction-and-getting-started/workspace-ai-powered-table-building",
+                      "user-guide/automations-connectors/lusha-api-connectors-build-and-automate",
+                      "user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations",
+                      "user-guide/getting-started-with-prospecting/lusha-lookalikes-finding-similar-contacts-and-companies",
+                      "user-guide/csv-enrichment/the-enrich-page-lushas-enrichment-hub",
+                      "user-guide/integrations-basics/lusha-integrations-connect-your-crm",
+                      "user-guide/extension/lusha-extension-prospect-from-anywhere",
+                      "user-guide/getting-started-with-engage/lusha-engage-outreach-built-into-lusha",
+                      "user-guide/getting-started-with-prospecting/the-ultimate-guide-to-prospect-search-with-lusha",
+                      "user-guide/getting-started-with-conversations/lusha-conversations-overview",
+                      "user-guide/getting-started/understanding-data-quality-and-coverage",
+                      "user-guide/shared/features/website-visitors"
+                    ]
+                  },
+                  {
+                    "group": "User Setup",
+                    "pages": [
+                      "user-guide/user-setup/how-to-sign-up-to-lusha",
+                      "user-guide/user-setup/two-factor-authentication-2fa",
+                      "user-guide/user-setup/how-to-change-your-password",
+                      "user-guide/user-setup/forgot-your-password",
+                      "user-guide/user-setup/your-lusha-account-settings-a-complete-guide",
+                      "user-guide/user-setup/why-does-my-email-address-appear-as-invalid-or-suspicious",
+                      "user-guide/user-setup/how-to-change-your-login-email-or-transfer-admin-access"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "group": "Browser Extensions",
-            "pages": [
-              "user-guide/chrome-extension",
-              "user-guide/linkedin-extension"
+            "dropdown": "Workspace & Prospecting",
+            "icon": "table",
+            "groups": [
+              {
+                "group": "Workspace & Tables",
+                "pages": [
+                  "user-guide/platform-and-workspace",
+                  "user-guide/dashboard",
+                  "user-guide/search-and-lists",
+                  {
+                    "group": "Introduction & Agentic Search",
+                    "pages": [
+                      "user-guide/introduction-and-getting-started/workspace-ai-powered-table-building",
+                      "user-guide/building-your-workspace-tables/how-to-use-the-ai-chat-to-build-a-table",
+                      "user-guide/introduction-and-getting-started/workspace-credit-costs-full-breakdown",
+                      "user-guide/introduction-and-getting-started/moving-from-classic-tables-to-workspaces"
+                    ]
+                  },
+                  {
+                    "group": "Building & Filtering Tables",
+                    "pages": [
+                      "user-guide/building-your-workspace-tables/using-workspace-filters-contact-and-company-filter-panel",
+                      "user-guide/building-your-workspace-tables/how-to-build-your-first-api-request-using-tables",
+                      "user-guide/shared/filters/technology-filter-technographics",
+                      "user-guide/shared/filters/funding-data",
+                      "user-guide/shared/filters/sic-and-naics-filters",
+                      "user-guide/shared/filters/hiring-surge-premium-filter"
+                    ]
+                  },
+                  {
+                    "group": "Account-Based Workspace (Beta)",
+                    "pages": [
+                      "user-guide/getting-started-with-prospecting/account-based-prospecting-beta",
+                      "user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/account-based-prospecting-filters-overview",
+                      "user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/not-in-my-crm-filter",
+                      "user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/importing-from-crm-into-workspace",
+                      "user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/how-to-target-existing-crm-records-in-lusha"
+                    ]
+                  },
+                  {
+                    "group": "Managing Views, Signals & Sharing",
+                    "pages": [
+                      "user-guide/shared/tables/working-inside-a-saved-workspace-table",
+                      "user-guide/enriching-with-data-and-signals/workspace-enrichment-lusha-data-vs-ai-data-columns",
+                      "user-guide/enriching-with-data-and-signals/workspace-signals-tracking-buying-intent-and-contact-changes",
+                      "user-guide/shared/tables/permissions-ownership-and-shared-tables",
+                      "user-guide/managing-and-exporting-data/exporting-from-a-workspace-table",
+                      "user-guide/managing-and-exporting-data/managing-first-and-last-name-fields-in-exports",
+                      "user-guide/shared/export/csv-file-opens-in-the-wrong-format"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Prospecting",
+                "pages": [
+                  {
+                    "group": "Getting Started with Prospecting",
+                    "pages": [
+                      "user-guide/getting-started-with-prospecting/getting-started-with-lusha-prospecting",
+                      "user-guide/getting-started-with-prospecting/lushas-flex-search",
+                      "user-guide/getting-started-with-prospecting/company-bulk-search",
+                      "user-guide/getting-started-with-prospecting/saved-and-recent-searches",
+                      "user-guide/getting-started-with-prospecting/update-your-shown-contacts",
+                      "user-guide/getting-started-with-prospecting/contact-tagging",
+                      "user-guide/getting-started-with-prospecting/company-360-company-page",
+                      "user-guide/getting-started-with-prospecting/why-am-i-seeing-a-search-activity-limit",
+                      "user-guide/shared/features/website-visitors"
+                    ]
+                  },
+                  {
+                    "group": "Core Filters",
+                    "pages": [
+                      "user-guide/shared/filters/filters-breakdown-how-to-reach-your-icp",
+                      "user-guide/shared/filters/technology-filter-technographics",
+                      "user-guide/shared/filters/funding-data",
+                      "user-guide/shared/filters/sic-and-naics-filters",
+                      "user-guide/shared/filters/email-confidence-ratings"
+                    ]
+                  },
+                  {
+                    "group": "Intent Data",
+                    "pages": [
+                      "user-guide/intent/what-is-lusha-intent",
+                      "user-guide/intent/how-to-use-lushas-intent-solution"
+                    ]
+                  },
+                  {
+                    "group": "Saving Searches to Tables",
+                    "pages": [
+                      "user-guide/shared/tables/working-inside-a-saved-workspace-table",
+                      "user-guide/managing-and-exporting-data/adding-contacts-to-an-existing-workspace-table",
+                      "user-guide/shared/tables/permissions-ownership-and-shared-tables"
+                    ]
+                  },
+                  {
+                    "group": "Exports & CSVs",
+                    "pages": [
+                      "user-guide/export/export-contacts-to-csv-file",
+                      "user-guide/export/export-company-data-to-csv",
+                      "user-guide/shared/export/csv-file-opens-in-the-wrong-format",
+                      "user-guide/export/exclude-salesforce-contacts-from-bulk-reveal",
+                      "user-guide/export/why-are-some-contacts-excluded-from-bulk-reveal"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "CSV Enrichment",
+                "pages": [
+                  "user-guide/csv-enrichment/csv-enrichment",
+                  "user-guide/csv-enrichment/how-to-create-a-csv-file",
+                  "user-guide/csv-enrichment/csv-enrichment-how-matching-and-match-rates-work",
+                  "user-guide/csv-enrichment/crm-data-enrichment"
+                ]
+              },
+              {
+                "group": "Recommendations",
+                "pages": [
+                  {
+                    "group": "AI Recommendations",
+                    "pages": [
+                      "user-guide/ai-recommendations/how-ai-recommendations-work",
+                      "user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations",
+                      "user-guide/ai-recommendations/how-to-create-a-target-profile",
+                      "user-guide/ai-recommendations/decision-makers-find-the-right-contacts-fast",
+                      "user-guide/ai-recommendations/credits-and-unified-recommendations-table"
+                    ]
+                  },
+                  {
+                    "group": "Event-Based Recommendations",
+                    "pages": [
+                      "user-guide/event-based-recommendations/activity-based-recommendations",
+                      "user-guide/event-based-recommendations/crm-based-recommendations",
+                      "user-guide/event-based-recommendations/intent-based-recommendations"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Conversations",
+                "pages": [
+                  {
+                    "group": "Getting Started with Conversations",
+                    "pages": [
+                      "user-guide/getting-started-with-conversations/lusha-conversations-overview",
+                      "user-guide/getting-started-with-conversations/how-to-connect-your-calendar-to-lusha-conversations",
+                      "user-guide/getting-started-with-conversations/how-to-record-a-live-or-unscheduled-meeting",
+                      "user-guide/getting-started-with-conversations/lusha-over-calendar"
+                    ]
+                  },
+                  {
+                    "group": "Using the Platform",
+                    "pages": [
+                      "user-guide/using-the-platform/deal-view-in-lusha-conversations",
+                      "user-guide/using-the-platform/using-the-snippets-library",
+                      "user-guide/using-the-platform/understanding-your-meeting-analysis",
+                      "user-guide/using-the-platform/lusha-conversations-insights",
+                      "user-guide/using-the-platform/zoom-settings-blocking-the-conversations-bot"
+                    ]
+                  },
+                  {
+                    "group": "Team & Administration",
+                    "pages": [
+                      "user-guide/team-and-administration/coaching-your-team-with-lusha-conversations"
+                    ]
+                  },
+                  {
+                    "group": "Trust & Compliance",
+                    "pages": [
+                      "user-guide/trust-and-compliance/lusha-conversations-data-security-and-compliance"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "group": "CRM Integrations",
-            "pages": [
-              "user-guide/salesforce",
-              "user-guide/hubspot",
-              "user-guide/other-integrations"
+            "dropdown": "Extension & Outreach",
+            "icon": "puzzle-piece",
+            "groups": [
+              {
+                "group": "Extension",
+                "pages": [
+                  "user-guide/extension/extension-overview",
+                  "user-guide/chrome-extension",
+                  "user-guide/linkedin-extension",
+                  "user-guide/extension/install-lusha-extension",
+                  "user-guide/extension/getting-started-with-lushas-extension",
+                  "user-guide/extension/access-saved-contacts-in-the-lusha-extension",
+                  "user-guide/extension/wishlist-saving-contacts-with-no-available-data",
+                  "user-guide/extension/how-to-edit-contact-details-in-the-lusha-extension",
+                  "user-guide/extension/lusha-extension-for-recruiters",
+                  {
+                    "group": "Sales Navigator \u2013 Bulk Enrichment",
+                    "pages": [
+                      "user-guide/sales-navigator-bulk-enrichment/bulk-enrichment-over-linkedin-sales-navigator",
+                      "user-guide/sales-navigator-bulk-enrichment/bulk-save-to-table-on-linkedin-sales-navigator",
+                      "user-guide/sales-navigator-bulk-enrichment/bulk-save-leads-to-crm-from-linkedin-sales-navigator"
+                    ]
+                  },
+                  {
+                    "group": "Lusha Everywhere",
+                    "pages": [
+                      "user-guide/lusha-everywhere/what-is-lusha-everywhere",
+                      "user-guide/lusha-everywhere/enabling-lusha-everywhere-in-every-b2b-website",
+                      "user-guide/lusha-everywhere/prospecting-with-lusha-on-hubspot",
+                      "user-guide/lusha-everywhere/prospecting-with-lusha-on-salesforce",
+                      "user-guide/lusha-everywhere/prospecting-with-lusha-extension-through-gmail"
+                    ]
+                  },
+                  {
+                    "group": "FAQs & Troubleshooting",
+                    "pages": [
+                      "user-guide/faqs-and-troubleshooting/cancel-lusha-extension-auto-open",
+                      "user-guide/faqs-and-troubleshooting/how-to-update-your-lusha-extension",
+                      "user-guide/faqs-and-troubleshooting/why-is-my-extension-blank-on-chrome",
+                      "user-guide/faqs-and-troubleshooting/why-is-lusha-extension-asking-me-to-log-in-when-im-already-logged-in",
+                      "user-guide/faqs-and-troubleshooting/why-lusha-asks-for-permissions-to-read-and-change-data-across-all-websites",
+                      "user-guide/faqs-and-troubleshooting/troubleshoot-the-lusha-extension"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Engage & Sequences",
+                "pages": [
+                  "user-guide/engage-and-sequences",
+                  {
+                    "group": "Getting Started with Engage",
+                    "pages": [
+                      "user-guide/getting-started-with-engage/what-is-lusha-engage",
+                      "user-guide/getting-started-with-engage/send-a-one-time-email-from-a-table"
+                    ]
+                  },
+                  {
+                    "group": "Building Sequences",
+                    "pages": [
+                      "user-guide/building-sequences/how-to-compose-your-email-sequence",
+                      "user-guide/building-sequences/how-lusha-composes-ai-email-sequences",
+                      "user-guide/building-sequences/how-to-set-up-your-sequence-schedule",
+                      "user-guide/add-contacts/how-to-add-contacts-to-a-sequence",
+                      "user-guide/add-contacts/how-to-add-contacts-to-engage-via-lusha-extension",
+                      "user-guide/add-contacts/how-to-add-contacts-to-engage-via-lusha-search",
+                      "user-guide/add-contacts/upload-a-csv-of-contacts-to-your-sequences"
+                    ]
+                  },
+                  {
+                    "group": "Manage Sequences",
+                    "pages": [
+                      "user-guide/manage-sequences/overview-and-optimize-your-sequences",
+                      "user-guide/manage-sequences/auto-sequence",
+                      "user-guide/manage-sequences/how-to-reorder-steps-in-a-sequence",
+                      "user-guide/manage-sequences/syncing-sequences-to-salesforce"
+                    ]
+                  },
+                  {
+                    "group": "Performance & Troubleshooting",
+                    "pages": [
+                      "user-guide/performance-and-troubleshooting/email-limits-best-practices",
+                      "user-guide/performance-and-troubleshooting/engage-sending-limits-by-email-provider",
+                      "user-guide/performance-and-troubleshooting/out-of-office-auto-reply-in-lusha-engage",
+                      "user-guide/performance-and-troubleshooting/understanding-email-bounces-in-engage",
+                      "user-guide/performance-and-troubleshooting/how-to-resolve-outlook-518-sending-error",
+                      "user-guide/performance-and-troubleshooting/why-are-my-engage-emails-going-to-spam",
+                      "user-guide/add-contacts/why-are-my-engage-sequences-not-sending",
+                      "user-guide/performance-and-troubleshooting/outlook-exe"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "group": "Account & Team",
-            "pages": [
-              "user-guide/team-management",
-              "user-guide/billing-and-plans",
-              "user-guide/privacy-and-compliance"
+            "dropdown": "Integrations & API",
+            "icon": "plug",
+            "groups": [
+              {
+                "group": "Integrations",
+                "pages": [
+                  "user-guide/native-crm-integrations",
+                  "user-guide/integrations-basics/available-crm-integrations",
+                  "user-guide/salesforce",
+                  "user-guide/hubspot",
+                  "user-guide/other-integrations",
+                  "user-guide/getting-started-with-slack",
+                  {
+                    "group": "Integration Basics",
+                    "pages": [
+                      "user-guide/integrations-basics/crm-permissions-required-for-lusha-integration",
+                      "user-guide/integrations-basics/fields-for-field-mapping-and-descriptions",
+                      "user-guide/integrations-basics/field-mapping-test",
+                      "user-guide/integrations-basics/how-to-export-contacts-to-crm-using-lusha",
+                      "user-guide/integrations-basics/industry-taxonomy-update-for-crm-integration",
+                      "user-guide/integrations-basics/gmail-integration-setup",
+                      "user-guide/integrations-basics/outlook-integration-setup"
+                    ]
+                  },
+                  {
+                    "group": "Salesforce",
+                    "pages": [
+                      "user-guide/salesforce/salesforce-integration",
+                      "user-guide/salesforce/salesforce-identifier-indicator",
+                      "user-guide/salesforce/how-to-configure-a-salesforce-record-type",
+                      "user-guide/salesforce/salesforce-common-errors",
+                      "user-guide/salesforce/salesforce-integration-read-and-write-permissions-explained"
+                    ]
+                  },
+                  {
+                    "group": "HubSpot",
+                    "pages": [
+                      "user-guide/hubspot/hubspot-integration",
+                      "user-guide/hubspot/hubspot-identifier-indicator",
+                      "user-guide/hubspot/hubspot-common-errors",
+                      "user-guide/hubspot-signals-setup",
+                      "user-guide/webhooks/hubspot-contact-data-enrichment",
+                      "user-guide/webhooks/enrich-hubspot-contacts-with-lushas-api-using-zapier"
+                    ]
+                  },
+                  {
+                    "group": "Bullhorn",
+                    "pages": [
+                      "user-guide/bullhorn/bullhorn-integration",
+                      "user-guide/bullhorn/bullhorn-identifier-indicator",
+                      "user-guide/bullhorn/bullhorn-common-errors"
+                    ]
+                  },
+                  {
+                    "group": "Pipedrive",
+                    "pages": [
+                      "user-guide/pipedrive/pipedrive-integration",
+                      "user-guide/pipedrive/pipedrive-common-errors"
+                    ]
+                  },
+                  {
+                    "group": "Outreach",
+                    "pages": [
+                      "user-guide/outreach/outreach-integration"
+                    ]
+                  },
+                  {
+                    "group": "Salesloft",
+                    "pages": [
+                      "user-guide/salesloft/salesloft-integration"
+                    ]
+                  },
+                  {
+                    "group": "Zoho",
+                    "pages": [
+                      "user-guide/zoho/zoho-integration",
+                      "user-guide/zoho/zoho-common-errors",
+                      "user-guide/zoho/api-usage-analytics"
+                    ]
+                  },
+                  {
+                    "group": "Dynamics",
+                    "pages": [
+                      "user-guide/dynamics/ms-dynamics-field-mapping",
+                      "user-guide/dynamics/ms-dynamics-common-errors"
+                    ]
+                  },
+                  {
+                    "group": "Capsule",
+                    "pages": [
+                      "user-guide/capsule/capsule-integration"
+                    ]
+                  },
+                  {
+                    "group": "Lusha Partners",
+                    "pages": [
+                      "user-guide/lusha-partners/chilipiper-integration",
+                      "user-guide/lusha-partners/mondaycom-integration",
+                      "user-guide/lusha-partners/sourcewhale-integration",
+                      "user-guide/lusha-partners/webmetic-integration",
+                      "user-guide/lusha-partners/wyzardai-integration",
+                      "user-guide/lusha-partners/augmented-4-integration",
+                      "user-guide/lusha-partners/scalestack-integration"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Lusha's API",
+                "pages": [
+                  "user-guide/lushas-api/api-overview",
+                  "user-guide/lushas-api/all-there-is-to-know-about-lushas-api",
+                  "user-guide/lushas-api/signals-api",
+                  "user-guide/lushas-api/lookalike-api",
+                  "user-guide/lushas-api/website-visitors-api",
+                  "user-guide/lushas-api/decision-makers-api",
+                  "user-guide/lushas-api/tables-api",
+                  "user-guide/lushas-api/industry-taxonomy-update-for-prospecting-api",
+                  "user-guide/lushas-api/lusha-api-error-codes-reference",
+                  {
+                    "group": "Automations & Connectors",
+                    "pages": [
+                      "user-guide/automations-connectors/lusha-connectors-centralized-automation-hub",
+                      "user-guide/automations-connectors/using-lusha-with-connectors-lusha-campus-plays",
+                      "user-guide/automations-connectors/lusha-connectors-v3-what-changed-and-how-to-update",
+                      "user-guide/webhooks/how-to-set-up-webhooks-in-lusha"
+                    ]
+                  },
+                  {
+                    "group": "MCP",
+                    "pages": [
+                      "user-guide/mcp/lusha-model-context-protocol-mcp-server",
+                      "user-guide/mcp/using-lusha-inside-llms",
+                      "user-guide/mcp/how-to-use-the-lusha-plugin-for-claude"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "dropdown": "Account & Billing",
+            "icon": "user-gear",
+            "groups": [
+              {
+                "group": "Billing & Plans",
+                "pages": [
+                  "user-guide/billing-and-plans",
+                  {
+                    "group": "Plans & Upgrades",
+                    "pages": [
+                      "user-guide/plans-and-upgrades/lushas-pricing-system-2",
+                      "user-guide/plans-and-upgrades/how-to-upgrade-your-plan",
+                      "user-guide/plans-and-upgrades/how-to-set-up-auto-top-up-for-credits",
+                      "user-guide/plans-and-upgrades/where-can-i-find-my-credits-renewal-date",
+                      "user-guide/plans-and-upgrades/account-cancellation-what-happens-to-your-credits-and-data"
+                    ]
+                  },
+                  {
+                    "group": "Billing & Payments",
+                    "pages": [
+                      "user-guide/billing-and-payments/why-was-my-payment-declined",
+                      "user-guide/billing-and-payments/i-was-charged-unexpectedly-what-do-i-do",
+                      "user-guide/billing-and-payments/billing-faq",
+                      "user-guide/billing-and-payments/how-to-update-your-billing-information",
+                      "user-guide/billing-and-payments/how-to-download-your-invoices-and-receipts",
+                      "user-guide/billing-and-payments/how-to-freeze-your-lusha-subscription",
+                      "user-guide/billing-and-payments/how-to-cancel-your-lusha-subscription",
+                      "user-guide/billing-and-payments/how-to-delete-your-lusha-account",
+                      "user-guide/billing-and-payments/reporting-on-incorrect-data",
+                      "user-guide/billing-and-payments/tax-related-documents-provided-by-lusha"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Account & Team Management",
+                "pages": [
+                  "user-guide/account-and-team-management",
+                  "user-guide/team-management",
+                  "user-guide/team-management/user-roles-and-permissions",
+                  "user-guide/team-management/how-to-join-your-companys-lusha-account",
+                  "user-guide/team-management/how-to-change-your-login-email-or-transfer-admin-access",
+                  "user-guide/team-management/how-to-see-each-team-members-credit-usage",
+                  {
+                    "group": "Team Capabilities & Permissions",
+                    "pages": [
+                      "user-guide/manage-your-team-capabilities/how-to-change-roles-within-your-account",
+                      "user-guide/manage-your-team-capabilities/how-to-limit-credits-per-user-or-group",
+                      "user-guide/security/how-to-set-an-inactivity-timeout"
+                    ]
+                  },
+                  {
+                    "group": "Manage Your Users",
+                    "pages": [
+                      "user-guide/manage-your-users/how-to-invite-a-user-to-your-plan",
+                      "user-guide/manage-your-users/how-to-accept-an-invitation-to-join-an-account",
+                      "user-guide/manage-your-users/cancel-a-user-invitation-to-the-plan",
+                      "user-guide/manage-your-users/how-to-remove-a-team-member-from-your-account"
+                    ]
+                  },
+                  {
+                    "group": "Analytics & Usage",
+                    "pages": [
+                      "user-guide/usage-analytics/understanding-the-analytics-dashboard",
+                      "user-guide/lushas-api/api-usage-analytics",
+                      "user-guide/usage-analytics/how-credits-are-counted",
+                      "user-guide/usage-analytics/how-to-set-up-automated-usage-report",
+                      "user-guide/team-management/export-your-usage-report"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Security & Legal",
+                "pages": [
+                  "user-guide/security-and-legal",
+                  "user-guide/privacy-and-compliance",
+                  "legal/terms",
+                  {
+                    "group": "Security",
+                    "pages": [
+                      "user-guide/security/lusha-security-overview",
+                      "user-guide/security/okta-saml-20-setup-for-lusha-sso",
+                      "user-guide/security/how-to-set-up-sso-single-sign-on",
+                      "user-guide/security/custom-saml-single-sign-on",
+                      "user-guide/security/how-to-set-an-inactivity-timeout"
+                    ]
+                  },
+                  {
+                    "group": "Privacy & Compliance",
+                    "pages": [
+                      "user-guide/privacy-and-compliance/how-can-i-ensure-compliance-with-privacy-laws-when-using-lushas-data-for-b2b-out",
+                      "user-guide/privacy-and-compliance/what-are-my-rights-as-a-data-subject",
+                      "user-guide/privacy-and-compliance/how-to-remove-your-details-from-lusha",
+                      "user-guide/privacy-and-compliance/a-contact-is-asking-how-you-got-their-data",
+                      "user-guide/privacy-and-compliance/do-not-call-dnc-tables",
+                      "user-guide/privacy-and-compliance/opt-out-contacts",
+                      "user-guide/privacy-and-compliance/why-was-my-lusha-account-suspended"
+                    ]
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -146,87 +717,253 @@
             "default": true,
             "openapi": "openapi.json",
             "groups": [
-              { "group": "Overview", "pages": ["api-reference/overview"] },
               {
-                "group": "Search",
+                "group": "Overview",
                 "pages": [
-                  "POST /v3/contacts/search",
-                  "POST /v3/companies/search"
+                  "api-reference/overview"
+                ],
+                "icon": "compass"
+              },
+              {
+                "group": "Tutorials",
+                "pages": [
+                  {
+                    "group": "Getting Started",
+                    "pages": [
+                      "tutorials/index",
+                      "tutorials/api_fundamentals",
+                      "tutorials/postman-environment-guide",
+                      "tutorials/person-api-v1-deprecation",
+                      "tutorials/v3-migration-guide"
+                    ]
+                  },
+                  {
+                    "group": "CRM Tutorials",
+                    "pages": [
+                      "tutorials/hubspot",
+                      "tutorials/hubspot-prospecting",
+                      "tutorials/salesforce-contact",
+                      "tutorials/salesforce-company",
+                      "tutorials/zoho"
+                    ]
+                  },
+                  {
+                    "group": "Spreadsheet Tutorials",
+                    "pages": [
+                      "tutorials/sheets-contact",
+                      "tutorials/sheets-company",
+                      "tutorials/sheets-prospecting-contacts",
+                      "tutorials/sheets-prospecting-company"
+                    ]
+                  },
+                  {
+                    "group": "Automation Platforms",
+                    "pages": [
+                      "tutorials/albato",
+                      "tutorials/make",
+                      "tutorials/n8n",
+                      "tutorials/pipedream",
+                      "tutorials/workato1",
+                      "tutorials/workato2",
+                      "tutorials/zapier",
+                      "tutorials/clay-data",
+                      "tutorials/clay-lookalikes",
+                      "tutorials/clay-signals",
+                      "tutorials/clay-workflow"
+                    ]
+                  },
+                  {
+                    "group": "Signals & Recommendations",
+                    "pages": [
+                      "tutorials/signals",
+                      "tutorials/recommendations"
+                    ]
+                  },
+                  {
+                    "group": "Tables",
+                    "pages": [
+                      "tutorials/tables"
+                    ],
+                    "icon": "table"
+                  }
+                ],
+                "icon": "graduation-cap"
+              },
+              {
+                "group": "FAQ",
+                "pages": [
+                  {
+                    "group": "API & Integration",
+                    "pages": [
+                      "faq/api"
+                    ]
+                  },
+                  {
+                    "group": "Data & Coverage",
+                    "pages": [
+                      "faq/data"
+                    ]
+                  },
+                  {
+                    "group": "Credits & Billing",
+                    "pages": [
+                      "faq/billing"
+                    ]
+                  },
+                  {
+                    "group": "MCP",
+                    "pages": [
+                      "faq/mcp"
+                    ]
+                  }
                 ]
               },
               {
-                "group": "Enrich",
+                "group": "Endpoints",
+                "icon": "server",
                 "pages": [
-                  "POST /v3/contacts/enrich",
-                  "POST /v3/companies/enrich"
+                  {
+                    "group": "Search",
+                    "pages": [
+                      "POST /v3/contacts/search",
+                      "POST /v3/companies/search"
+                    ],
+                    "icon": "magnifying-glass"
+                  },
+                  {
+                    "group": "Enrich",
+                    "pages": [
+                      "POST /v3/contacts/enrich",
+                      "POST /v3/companies/enrich"
+                    ],
+                    "icon": "address-book"
+                  },
+                  {
+                    "group": "Search & Enrich",
+                    "pages": [
+                      "POST /v3/contacts/search-and-enrich",
+                      "POST /v3/companies/search-and-enrich"
+                    ],
+                    "icon": "wand-magic-sparkles"
+                  },
+                  {
+                    "group": "Prospecting",
+                    "pages": [
+                      "POST /v3/contacts/prospecting",
+                      "POST /v3/companies/prospecting"
+                    ],
+                    "icon": "magnifying-glass"
+                  },
+                  {
+                    "group": "Tables",
+                    "pages": [
+                      {
+                        "group": "Contact Tables",
+                        "pages": [
+                          "POST /v3/contacts/tables",
+                          "POST /v3/contacts/tables/list",
+                          "GET /v3/contacts/tables/{table_id}",
+                          "PATCH /v3/contacts/tables/{table_id}",
+                          "DELETE /v3/contacts/tables/{table_id}",
+                          "GET /v3/contacts/tables/{table_id}/entities",
+                          "POST /v3/contacts/tables/{table_id}/entities",
+                          "DELETE /v3/contacts/tables/{table_id}/entities",
+                          "GET /v3/contacts/tables/{table_id}/columns",
+                          "DELETE /v3/contacts/tables/{table_id}/columns/{column_id}",
+                          "POST /v3/contacts/tables/{table_id}/columns/{column_id}/run"
+                        ],
+                        "icon": "address-book"
+                      },
+                      {
+                        "group": "Company Tables",
+                        "pages": [
+                          "POST /v3/companies/tables",
+                          "POST /v3/companies/tables/list",
+                          "GET /v3/companies/tables/{table_id}",
+                          "PATCH /v3/companies/tables/{table_id}",
+                          "DELETE /v3/companies/tables/{table_id}",
+                          "GET /v3/companies/tables/{table_id}/entities",
+                          "POST /v3/companies/tables/{table_id}/entities",
+                          "DELETE /v3/companies/tables/{table_id}/entities",
+                          "GET /v3/companies/tables/{table_id}/columns",
+                          "DELETE /v3/companies/tables/{table_id}/columns/{column_id}",
+                          "POST /v3/companies/tables/{table_id}/columns/{column_id}/run"
+                        ],
+                        "icon": "building"
+                      }
+                    ],
+                    "icon": "table"
+                  },
+                  {
+                    "group": "Filters",
+                    "pages": [
+                      "GET /v3/contacts/prospecting/filters",
+                      "GET /v3/contacts/prospecting/filters/{filterType}",
+                      "GET /v3/companies/prospecting/filters",
+                      "GET /v3/companies/prospecting/filters/{filterType}"
+                    ],
+                    "icon": "filter"
+                  },
+                  {
+                    "group": "Lookalikes",
+                    "pages": [
+                      "POST /v3/contacts/lookalike",
+                      "POST /v3/companies/lookalike"
+                    ],
+                    "icon": "users"
+                  },
+                  {
+                    "group": "Signals",
+                    "pages": [
+                      "POST /v3/contacts/signals",
+                      "GET /v3/contacts/signals/types",
+                      "POST /v3/companies/signals",
+                      "GET /v3/companies/signals/filters",
+                      "GET /v3/companies/signals/filters/{filterType}",
+                      "GET /v3/companies/signals/types"
+                    ],
+                    "icon": "bolt"
+                  },
+                  {
+                    "group": "Decision Makers",
+                    "pages": [
+                      "POST /v3/contacts/decision-makers"
+                    ],
+                    "icon": "user-tie"
+                  },
+                  {
+                    "group": "Website Visits",
+                    "pages": [
+                      "POST /v3/companies/website-visits"
+                    ],
+                    "icon": "globe"
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "POST /api/subscriptions",
+                      "GET /api/subscriptions",
+                      "GET /api/subscriptions/{id}",
+                      "PATCH /api/subscriptions/{id}",
+                      "POST /api/subscriptions/delete",
+                      "POST /api/subscriptions/{id}/test",
+                      "POST /api/subscriptions/opt-out",
+                      "GET /api/audit-logs",
+                      "GET /api/audit-logs/stats",
+                      "GET /api/account/secret",
+                      "POST /api/account/secret/regenerate"
+                    ],
+                    "icon": "webhook"
+                  },
+                  {
+                    "group": "Account",
+                    "pages": [
+                      "GET /v3/account/usage"
+                    ],
+                    "icon": "chart-bar"
+                  }
                 ]
-              },
-              {
-                "group": "Search & Enrich",
-                "pages": [
-                  "POST /v3/contacts/search-and-enrich",
-                  "POST /v3/companies/search-and-enrich"
-                ]
-              },
-              {
-                "group": "Prospecting",
-                "pages": [
-                  "POST /v3/contacts/prospecting",
-                  "POST /v3/companies/prospecting"
-                ]
-              },
-              {
-                "group": "Filters",
-                "pages": [
-                  "GET /v3/contacts/prospecting/filters",
-                  "GET /v3/contacts/prospecting/filters/{filterType}",
-                  "GET /v3/companies/prospecting/filters",
-                  "GET /v3/companies/prospecting/filters/{filterType}"
-                ]
-              },
-              {
-                "group": "Lookalikes",
-                "pages": [
-                  "POST /v3/contacts/lookalike",
-                  "POST /v3/companies/lookalike"
-                ]
-              },
-              {
-                "group": "Signals",
-                "pages": [
-                  "POST /v3/contacts/signals",
-                  "GET /v3/contacts/signals/types",
-                  "POST /v3/companies/signals",
-                  "GET /v3/companies/signals/filters",
-                  "GET /v3/companies/signals/filters/{filterType}",
-                  "GET /v3/companies/signals/types"
-                ]
-              },
-              {
-                "group": "Decision Makers",
-                "pages": ["POST /v3/contacts/decision-makers"]
-              },
-              {
-                "group": "Website Visits",
-                "pages": ["POST /v3/companies/website-visits"]
-              },
-              {
-                "group": "Webhooks",
-                "pages": [
-                  "POST /api/subscriptions",
-                  "GET /api/subscriptions",
-                  "GET /api/subscriptions/{id}",
-                  "PATCH /api/subscriptions/{id}",
-                  "POST /api/subscriptions/delete",
-                  "POST /api/subscriptions/{id}/test",
-                  "POST /api/subscriptions/opt-out",
-                  "GET /api/audit-logs",
-                  "GET /api/audit-logs/stats",
-                  "GET /api/account/secret",
-                  "POST /api/account/secret/regenerate"
-                ]
-              },
-              { "group": "Account", "pages": ["GET /v3/account/usage"] }
+              }
             ]
           },
           {
@@ -234,7 +971,190 @@
             "tag": "Deprecated",
             "openapi": "v2/openapi.json",
             "groups": [
-              { "group": "Overview", "pages": ["v2/api-reference/overview"] }
+              {
+                "group": "Overview",
+                "pages": [
+                  "v2/introduction",
+                  "v2/authentication",
+                  "v2/rate-limiting",
+                  "v2/error-codes",
+                  "v2/api-reference/overview"
+                ],
+                "icon": "compass"
+              },
+              {
+                "group": "Credits & Plans",
+                "pages": [
+                  "v2/credits/overview",
+                  "v2/credits/costs",
+                  "v2/credits/unified-credits"
+                ],
+                "icon": "credit-card"
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  {
+                    "group": "Enrichment",
+                    "pages": [
+                      "v2/enrichment/overview",
+                      "v2/enrichment/single-contact",
+                      "v2/enrichment/single-company",
+                      "v2/enrichment/bulk-contacts",
+                      "v2/enrichment/bulk-companies"
+                    ],
+                    "icon": "address-book"
+                  },
+                  {
+                    "group": "Prospecting",
+                    "pages": [
+                      "v2/prospecting/overview",
+                      "v2/prospecting/search-contacts",
+                      "v2/prospecting/enrich-contacts",
+                      "v2/prospecting/search-companies",
+                      "v2/prospecting/enrich-companies"
+                    ],
+                    "icon": "magnifying-glass"
+                  },
+                  {
+                    "group": "Filters",
+                    "pages": [
+                      "v2/filters/contact-filters",
+                      "v2/filters/company-filters"
+                    ],
+                    "icon": "filter"
+                  },
+                  {
+                    "group": "Lookalikes",
+                    "pages": [
+                      "v2/lookalikes/overview",
+                      "v2/lookalikes/contact-lookalikes",
+                      "v2/lookalikes/company-lookalikes"
+                    ],
+                    "icon": "users"
+                  },
+                  {
+                    "group": "Signals",
+                    "pages": [
+                      "v2/signals/overview",
+                      "v2/signals/contact-signals",
+                      "v2/signals/company-signals"
+                    ],
+                    "icon": "bolt"
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "v2/webhooks/overview",
+                      "v2/webhooks/manage-subscriptions",
+                      "v2/webhooks/security",
+                      "v2/webhooks/audit-logs"
+                    ],
+                    "icon": "webhook"
+                  }
+                ],
+                "icon": "book-open"
+              },
+              {
+                "group": "Endpoints",
+                "icon": "server",
+                "pages": [
+                  {
+                    "group": "Enrichment",
+                    "pages": [
+                      "GET /v2/person",
+                      "POST /v2/person",
+                      "GET /v2/company",
+                      "POST /bulk/company/v2"
+                    ],
+                    "icon": "address-book"
+                  },
+                  {
+                    "group": "Prospecting",
+                    "pages": [
+                      "POST /prospecting/contact/search",
+                      "POST /prospecting/contact/enrich",
+                      "POST /prospecting/company/search",
+                      "POST /prospecting/company/enrich"
+                    ],
+                    "icon": "magnifying-glass"
+                  },
+                  {
+                    "group": "Filters",
+                    "pages": [
+                      {
+                        "group": "Contact Filters",
+                        "pages": [
+                          "GET /prospecting/filters/contacts/all_countries",
+                          "GET /prospecting/filters/contacts/departments",
+                          "GET /prospecting/filters/contacts/existing_data_points",
+                          "POST /prospecting/filters/contacts/locations",
+                          "GET /prospecting/filters/contacts/seniority"
+                        ],
+                        "icon": "user-check"
+                      },
+                      {
+                        "group": "Company Filters",
+                        "pages": [
+                          "GET /prospecting/filters/companies/industries_labels",
+                          "GET /prospecting/filters/companies/intent_topics",
+                          "POST /prospecting/filters/companies/locations",
+                          "GET /prospecting/filters/companies/naics",
+                          "POST /prospecting/filters/companies/names",
+                          "GET /prospecting/filters/companies/revenues",
+                          "GET /prospecting/filters/companies/sics",
+                          "GET /prospecting/filters/companies/sizes",
+                          "POST /prospecting/filters/companies/technologies"
+                        ],
+                        "icon": "building"
+                      }
+                    ],
+                    "icon": "filter"
+                  },
+                  {
+                    "group": "Lookalikes",
+                    "pages": [
+                      "POST /v3/lookalike/contacts",
+                      "POST /v3/lookalike/companies"
+                    ],
+                    "icon": "users"
+                  },
+                  {
+                    "group": "Signals",
+                    "pages": [
+                      "POST /api/signals/contacts",
+                      "POST /api/signals/contacts/search",
+                      "POST /api/signals/companies",
+                      "POST /api/signals/companies/search",
+                      "GET /api/signals/filters/{objectType}"
+                    ],
+                    "icon": "bolt"
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "POST /api/subscriptions",
+                      "GET /api/subscriptions",
+                      "GET /api/subscriptions/{id}",
+                      "PATCH /api/subscriptions/{id}",
+                      "POST /api/subscriptions/delete",
+                      "POST /api/subscriptions/{id}/test",
+                      "GET /api/audit-logs",
+                      "GET /api/audit-logs/stats",
+                      "GET /api/account/secret",
+                      "POST /api/account/secret/regenerate"
+                    ],
+                    "icon": "webhook"
+                  },
+                  {
+                    "group": "Account",
+                    "pages": [
+                      "GET /account/usage"
+                    ],
+                    "icon": "chart-bar"
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -242,7 +1162,12 @@
       {
         "tab": "Data Catalog",
         "groups": [
-          { "group": "Overview", "pages": ["data-catalog/overview"] },
+          {
+            "group": "Overview",
+            "pages": [
+              "data-catalog/overview"
+            ]
+          },
           {
             "group": "Contact Data",
             "pages": [
@@ -260,27 +1185,42 @@
               "data-catalog/company-funding"
             ]
           },
-          { "group": "Signals", "pages": ["data-catalog/signal-types"] }
+          {
+            "group": "Signals",
+            "pages": [
+              "data-catalog/signal-types"
+            ]
+          }
         ]
       },
       {
         "tab": "MCP",
         "groups": [
-          { "group": "Overview", "pages": ["mcp/overview", "mcp/setup"] },
-          { "group": "Reference", "pages": ["mcp/tools", "mcp/examples"] }
+          {
+            "group": "Overview",
+            "pages": [
+              "mcp/overview",
+              "mcp/setup"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "mcp/tools",
+              "mcp/examples"
+            ]
+          }
         ]
       },
       {
         "tab": "Changelog",
-        "groups": [{ "group": "2026", "pages": ["changelog/may-2026"] }]
-      },
-      {
-        "tab": "FAQ",
         "groups": [
-          { "group": "API & Integration", "pages": ["faq/api"] },
-          { "group": "Data & Coverage", "pages": ["faq/data"] },
-          { "group": "Credits & Billing", "pages": ["faq/billing"] },
-          { "group": "MCP", "pages": ["faq/mcp"] }
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog/overview"
+            ]
+          }
         ]
       }
     ]

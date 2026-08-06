@@ -1,0 +1,171 @@
+---
+title: "Signals API"
+description: "A guide to every signal available in Lusha, who they're for, and how credits are charged."
+---
+
+Lusha Signals are real-time intelligence events that surface meaningful changes happening to your contacts and target accounts. Instead of manually monitoring your CRM for stale data or researching accounts one by one, Signals alert you the moment something relevant happens — a contact changes jobs, a company raises funding, a key hire is made, or a target account shows signs of growth or risk.
+
+## Who Are Signals For?
+
+Signals are most useful for:
+
+- **Sales teams** who want to be notified when a champion changes jobs, gets promoted, or moves to a new company.
+- **RevOps and marketing teams** who want to trigger automated workflows based on account-level events — funding rounds, new locations, hiring surges, or tech spend changes.
+- **Customer success teams** tracking churn risk signals such as headcount decline, IT spend decrease, or key executive departures.
+
+---
+
+## How Signals Fit Your Workflow
+
+Signals let you automate your Go-To-Market strategy. Instead of reaching out to a table of accounts at random, you can set triggers to notify your sales team the moment a target account enters a buying window.
+
+For example, a **Surge in Hiring** in a specific department often signals a new budget or project, making it the ideal time to reach out with a relevant solution.
+
+Common use cases:
+
+- **Re-engage past buyers who changed companies** — monitor job change signals for past buyers and trigger personalized outreach when they land at new companies.
+- **Time outreach around career milestones** — catch decision-makers during their onboarding period when they're most open to evaluating new solutions.
+- **Spot companies in expansion mode** — identify accounts with growing budgets and route high-growth companies to sales before competitors do.
+- **Build early warning systems for churn risk** — alert CSMs when decision-makers at customer accounts change jobs, enabling proactive intervention before renewals are at risk.
+
+---
+
+## How Signals Work
+
+Signals are detected continuously from verified data sources including LinkedIn activity, job posting data, news event monitoring, web traffic data, and IT spend indicators. Each signal represents a discrete, dated event or trend change associated with a specific contact or company.
+
+Signals are updated on the following cadences:
+
+| **Cadence** | **Signal types** |
+|-------------|-----------------|
+| Daily | Website visitor tracking |
+| Weekly | Hiring surges, job postings, new locations, news events (financial, commercial, corporate, product, people, market intelligence, risk), job change, promotion, LinkedIn Activity Intent |
+| Monthly | Headcount changes, website traffic changes, IT spend changes |
+
+---
+
+## Available Signals
+
+### Contact Signals
+
+Contact signals track changes happening to individual people.
+
+| **Signal** | **Cadence** | **What it tells you** |
+|------------|-------------|----------------------|
+| Job Change | Weekly | A contact has moved to a new company. Ideal for re-engaging lapsed prospects and tracking champion moves. |
+| Promotion | Weekly | A contact has been promoted within their current company. Useful for identifying new decision-makers and upsell triggers. |
+
+---
+
+### Growth Signals
+
+Growth signals track positive momentum at the company level — hiring, headcount expansion, traffic, and spend increases.
+
+| **Signal** | **Cadence** | **What it tells you** |
+|------------|-------------|----------------------|
+| Headcount Increase | Monthly | Employee count has grown over the specified period. Available in 1, 3, 6, and 12-month windows. |
+| Surge in Hiring | Weekly | Overall job posting activity has increased significantly, indicating growth mode or a major initiative. |
+| Hiring Surge by Department | Weekly | Hiring activity has spiked in a specific department (e.g. Engineering, Sales). Useful for identifying budget holders and expansion areas. |
+| Hiring Surge by Location | Weekly | Job postings have spiked in a specific geography. Indicates market expansion or new office activity. |
+| New Job Posting | Weekly | A new job post has appeared in a specific department or location. |
+| New Location | Weekly | The company has opened a new office or expanded into a new location. |
+| Website Traffic Increase | Monthly | The company's website traffic has grown, indicating increased market interest or successful campaigns. |
+| IT Spend Increase | Monthly | The company's estimated annual IT spend has increased, signalling technology investment and buying potential. |
+
+---
+
+### Intent Signals
+
+Intent signals indicate that a company is actively researching topics relevant to your product or solution. They help you prioritise outreach to accounts that are already in-market.
+
+| **Signal** | **Cadence** | **What it tells you** |
+|------------|-------------|----------------------|
+| Intent | Weekly | The company is showing above-baseline research activity around topics related to your product category, powered by Bombora B2B intent data. |
+| Intent by Geography | Weekly | Intent activity is segmented by the geographic location of the researching users within the company. |
+| Website Visitor Tracking | Daily | Anonymous website visitors from this company have been identified on your own site via the Lusha tracking pixel. |
+
+💡 **Note:** Website Visitor Tracking requires the Lusha tracking pixel to be set up on your site. See [Website Visitors](#) for setup details.
+
+---
+
+### Social Signals
+
+Social signals surface buying intent from what a company's employees are actually posting on LinkedIn — a timely, authentic read on what they care about before they ever talk to a vendor.
+
+| **Signal** | **Cadence** | **What it tells you** |
+|------------|-------------|----------------------|
+| LinkedIn Activity Intent | Weekly | A company's employees are posting LinkedIn content that maps to a Bombora intent category — Lusha's first Social Signal. Refine results by intent category; the post author and any people or companies mentioned are included as contact-level metadata. |
+
+<Note>
+  LinkedIn Activity Intent is company-level only — for legal reasons, the author of a matching post is surfaced as metadata on the signal, not as a separately billed contact signal. Results are limited to a trailing 90-day window and capped at 50 posts per company, regardless of the `startDate` or `maxResultsPerSignal` values passed.
+</Note>
+
+---
+
+### News Event Signals
+
+News event signals surface company-level events detected from business news.
+
+| **Signal** | **Cadence** | **What it tells you** |
+|------------|-------------|----------------------|
+| Financial Events | Weekly | Funding rounds, asset investments, strategic investments, IPO. Indicates capital availability and growth trajectory. |
+| Commercial Activity | Weekly | New partnerships, new customers, new vendors. Signals active buying and selling activity. |
+| Corporate Strategy | Weekly | M&A activity, facility expansions, new locations, facility closures. Indicates major strategic changes. |
+| Product Activity | Weekly | Product launches, product development announcements, new product integrations. Signals innovation and investment in product. |
+| People News | Weekly | Executive hires, executive departures, executive promotions, headcount changes. Key for tracking decision-maker movements. |
+| Market Intelligence | Weekly | Event participation, awards and recognition, competitor activity. Useful for timing and personalising outreach. |
+| Risk News | Weekly | Security issues, lawsuits faced. Indicates instability or distraction that may affect deal timing. |
+
+---
+
+### Risk Signals
+
+Risk signals flag negative trends at the account level. Most useful for customer success teams monitoring churn risk, or sales teams qualifying accounts before investing time.
+
+| **Signal** | **Cadence** | **What it tells you** |
+|------------|-------------|----------------------|
+| Headcount Decrease | Monthly | Employee count has declined over the specified period. Available in 1, 3, 6, and 12-month windows. |
+| Website Traffic Decrease | Monthly | The company's website traffic has declined, which may indicate reduced market activity or brand challenges. |
+| IT Spend Decrease | Monthly | The company's estimated annual IT spend has fallen, signalling potential budget constraints or technology consolidation. |
+| Risk News | Weekly | Security issues and lawsuits are surfaced here as risk indicators. |
+
+---
+
+## Credits
+
+Credits are charged when signal data is successfully returned.
+
+- **Contact signals** — credits are charged per contact per signal type returned.
+- **Company signals** — credits are charged per company per signal type returned.
+- **Webhooks** — credits are charged when a signal is detected and delivered; retries do not incur additional charges.
+
+<Note>
+  Every API response includes a `creditCharged` field showing exactly how many credits were consumed by that request.
+</Note>
+
+---
+
+## FAQs
+
+**Q: How are Signals different from regular enrichment or intent data?**
+Unlike static enrichment or intent inferred from online behavior, Signals surface real, verified business changes — like a contact being promoted or a company posting new jobs. They provide timely, actionable triggers that directly inform outreach and pipeline decisions.
+
+**Q: How accurate is the data?**
+Signals are powered by Lusha's verified, structured data. They're refreshed on the cadences tableed above and validated through multiple sources.
+
+**Q: Do I need a developer to use Signals?**
+No. Lusha Signals work with no-code tools like Make, Zapier, or n8n — no developer resources needed for most workflows.
+
+**Q: What if I'm already using another enrichment tool?**
+Signals go beyond static enrichment — they surface real-time buying signals that enrich your CRM with actionable, time-based triggers, helping you catch timely opportunities other tools may miss.
+
+**Q: Are Signals GDPR compliant?**
+Yes. Signals are built with GDPR compliance in mind, using scoped, secure data access. Contact-level signals are tied to publicly available career updates only.
+
+---
+
+<Note>
+  [Signals API documentation on docs.lusha.com](https://docs.lusha.com/tutorials/signals)
+
+  You can also explore the [API Signals reference](https://docs.lusha.com/apis/openapi/signals) for the full endpoint specification.
+</Note>

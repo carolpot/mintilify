@@ -1,0 +1,83 @@
+---
+title: "Importing from CRM into Workspace"
+description: "How to import Salesforce/HubSpot records into a Workspace table, choose your import method, preview results, and enrich or export them."
+---
+
+The CRM Import feature lets you bring existing records from your Salesforce/HubSpot account directly into a Workspace table, enrich them with Lusha's verified contact data and AI insights, and push them back — closing the loop on your data hygiene without leaving Lusha.
+
+<Note>
+  Currently supported CRMs: Salesforce (production and sandbox) & HubSpot.
+</Note>
+
+## Prerequisites
+
+Before you can import, make sure:
+
+- Your Salesforce/HubSpot account is connected under **Integrations** in the top navigation bar
+- Your integration settings allow Lusha to read Salesforce records
+- You have access to the Salesforce reports or objects you want to import
+
+## How to start a CRM import
+
+There are two entry points:
+
+**From the homepage:** Click **Import from CRM** below the AI chat input on the home screen.
+
+**From the "+" button in Recents:** Click the **+** button in the Recents section on the homepage, then select **Import from CRM**.
+
+## Choose your import method
+
+After clicking Import from CRM, you'll choose between two methods:
+
+**Method 1: Salesforce/HubSpot Report**
+
+Import directly from a saved Salesforce report. Select from the table of reports available in your Salesforce account. This is the fastest method if you already have reports defined in Salesforce — for example, a "Q2 Target Accounts" report or a "Leads from last 30 days" report.
+
+- Maximum filters: 5
+- Best for: pre-defined segments you already manage in Salesforce
+
+**Method 2: Objects & Fields**
+
+Build a custom query within Lusha by selecting a Salesforce/HubSpot object type and the fields you want to pull. Available objects: **Contact**, **Lead**, or **Account**.
+
+- Maximum filters: 25
+- Best for: custom queries that don't have a matching report in Salesforce; pulling specific field combinations
+
+### Add filters (optional)
+
+Regardless of method, you can apply filters to narrow down the records before importing. This is useful for reducing the import size or targeting a specific segment (e.g., only accounts in a particular region or leads above a certain lead score).
+
+### Preview your import
+
+Before committing, Lusha shows up to **25 sample rows** from your Salesforce/HubSpot selection. Review these rows to confirm the records match what you intended to import. If the preview looks right, click **Insert to table** to complete the import.
+
+**Row limit:** Up to 10,000 rows can be imported per table.
+
+## What happens after import
+
+Once imported, your CRM records appear as a Workspace table. The table will contain the fields pulled from Salesforce plus Lusha's standard columns. From here you can:
+
+- **Enrich** — Add Lusha contact data (emails, phone numbers) or AI data columns to supplement your CRM records
+- **Add Signals** — Layer in real-time behavioral signals to prioritize which imported accounts to call first
+- **Export back to CRM** — Select contacts and click the **CRM** button in the toolbar to push enriched data back to Salesforce
+- **Export to CSV** — Download the enriched table for use in other tools
+
+## Tips
+
+- Use "Objects & Fields" with the Lead object to enrich unqualified leads in bulk before passing them to sales
+- Import an Account table, add the "Headcount increase" signal, and filter to show only growing accounts — an effective account prioritization play
+- CRM columns (from the Add enrichment → CRM tab) are free and let you bring additional CRM field values into the table view alongside Lusha data
+
+## FAQs
+
+**Which CRMs are supported today?**
+
+Salesforce (production and sandbox environments) and HubSpot. Additional CRM integrations are in progress.
+
+**Will imported records overwrite my Salesforce data?**
+
+No. Importing brings Salesforce data into Lusha for enrichment. Pushing data back to Salesforce only occurs when you explicitly click the CRM export button.
+
+**What if my import returns more than 10,000 records?**
+
+The import will be limited to 10,000 rows. Apply filters to narrow your Salesforce selection before importing to stay within the limit.

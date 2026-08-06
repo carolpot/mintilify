@@ -1,0 +1,67 @@
+---
+title: "HubSpot contact data enrichment"
+description: "How to enrich HubSpot contact records with Lusha data using HubSpot workflow automation and the Lusha Person API."
+---
+
+This guide shows you how to enrich HubSpot contact records with Lusha data using HubSpot's built-in workflow automation and Lusha's Person API. No additional apps or JSON configuration are required — just your Lusha API key.
+
+<Note>
+You'll need an active HubSpot subscription with Workflows enabled, a Lusha API key (visible to Admins and Managers at [dashboard.lusha.com/enrich/api](https://dashboard.lusha.com/enrich/api)), and available bulk credits on your Lusha account.
+</Note>
+
+## Step 1: Access HubSpot workflow automation
+
+1. Log in to your HubSpot account.
+2. Go to **Automation → Workflows**.
+
+## Step 2: Create a new workflow
+
+1. Click **Create workflow** and choose **Blank workflow**.
+2. Name it something descriptive, such as "Contact Enrichment Workflow".
+
+## Step 3: Set the enrollment trigger
+
+1. Click **Set enrollment trigger** and choose a property-based trigger (e.g., "Contact created" or a custom filter).
+2. Configure the trigger to match your specific needs.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/65330316/aa34da7124830f0fb8e283ddc24e/8a8fa1c1-4b85-48e0-b128-cb4430b2c95e.png?expires=1780056000&signature=873df1250e6b5cdea10e79cddf1617d8dd42100d6006b9d1790a0f696b32dc39&req=1tBsxlj5rTFk2hj99dpg6s%2BJKOnLWpkJnpdHOsaQFa4xPRgYAQn3kigwb0PK%0A4hAeNNK%2FpyKlA8RsUOpvWckz%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 4: Add a webhook action
+
+1. Click the **+** icon to add an action.
+2. Select **Webhook**.
+3. Enter the [Lusha API endpoint URL](https://docs.lusha.com) in the Webhook URL field.
+4. Set the HTTP method to **GET**.
+5. Add query parameters for the contact identifiers you want to use (e.g., LinkedIn URL, email, or full name + company domain).
+6. Add a request header with your Lusha API key. Your API key is available at [dashboard.lusha.com/enrich/api](https://dashboard.lusha.com/enrich/api).
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/65330441/f2bb230bf1fff6b8d749ed064dd6/22.png?expires=1780056000&signature=72ac1264e50b81e7a96183207d8533900cc18f6abca1eccce05d0b31eea3ad9d&req=1tBsxlj%2BqDZk2hj99dpg6h39ytCgx3pukUq4CPr5SxS85CoVjTpg3dy43C1c%0Ar5ge65gDMtxlESrfiZU7XCpq%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 5: Test the webhook
+
+1. Send a test request to verify the webhook is returning data correctly.
+2. Select the response properties you want to map to HubSpot contact fields (for example, City and State).
+3. Fix any errors before proceeding.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/65330625/e297290a79a5a2293f82668f1d41/f866e5cd-1808-4235-aa12-6a54e5e9f9ff.png?expires=1780056000&signature=cd4fd1a4cc75315e686dfb2578301ea3045c9ae18ea5bece56eaf217bbde6bdc&req=1tBsxlj8rjJk2hj99dpg6lGdC4xDnSCH%2F47%2FIHPv%2BtWwhcvyXYDL%2B%2FzvzAAJ%0A1SkZq7aVoTf2ZzZUp82hpCuD%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 6: Activate the workflow
+
+1. Add an **Edit Record** step to write the enriched values back to the contact.
+2. Click **Review and Publish**, then activate the workflow.
+
+## Step 7: Monitor and optimize
+
+Check the workflow history regularly and review any error logs. Adjust the enrollment trigger or field mappings as needed to improve match rates.
+
+## Tips for best results
+
+- Be mindful of Lusha API rate limits and HubSpot workflow execution limits.
+- Ensure contacts have at least one identifier (email, LinkedIn URL, or full name + domain) before entering the workflow.
+- Test with a small batch of contacts before activating for your full database.
+
+<Tip>
+**Top play:** [Auto-enrich incomplete HubSpot contacts](https://www.lusha.com/campus/plays/auto-enrich-incomplete-hubspot-contacts/) — automatically fill in missing contact data for new HubSpot records using Lusha.
+</Tip>
+
+For help, see the [Lusha API documentation](https://docs.lusha.com), the [HubSpot Workflow documentation](https://knowledge.hubspot.com/workflows), or contact [support@lusha.com](mailto:support@lusha.com).

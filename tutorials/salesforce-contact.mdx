@@ -1,0 +1,116 @@
+---
+title: "Salesforce Contact Enrichment"
+description: "The integration between Salesforce and Lusha's Person API enables efficient contact data enrichment by pulling accurate and detailed information directly into Salesforce."
+---
+
+## Overview
+The integration between Salesforce and Lusha's Person API enables efficient contact data enrichment by pulling accurate and detailed information directly into Salesforce.
+
+## Use Case
+This feature is particularly valuable for enhancing CRM data with verified details such as job titles, phone numbers, and emails, ensuring sales and outreach teams have the most up-to-date information.
+
+By automating the process through workflows and API calls, users can save time, reduce manual data entry errors, and boost productivity. Ideal for organizations on Lusha's Scale plans, this integration streamlines data enrichment, improves targeting accuracy, and equips teams with the insights needed for personalized and effective engagement.
+
+## Requirements
+This workflow requires an active Salesforce subscription with the necessary Flow function enabled, along with the inclusion of Lusha resources (such as an API token for the account and available bulk credits).
+
+- A credit will be consumed only when a match is successfully found
+- Lusha's API key can be found [here](https://dashboard.lusha.com/enrich/api) (visible only by Lusha admins or managers)
+
+## How it Works?
+
+### Step 1: Create a Named Credential
+
+1. **Navigate to Named Credentials**: From the Salesforce Setup, go to the Named Credentials section.
+
+2. **Create an External Credential**: Set up an external credential with no authentication needed.
+
+3. **Use Lusha's Person v2 API**: Input the Person V2 API URL from Lusha's [documentation](https://www.lusha.com/docs/?_gl=1*uf3wfj*_ga*MTU3Mzg5MTI5Ni4xNzI2ODE5NDg4*_up*MQ..*_ga_7C6N0WZ5Q3*MTcyNjgxOTQ4Ny4xLjAuMTcyNjgxOTQ4Ny4wLjAuMA..#company-api) ([https://api.lusha.com/v2/person](https://api.lusha.com/v2/person)) while creating the named credential.
+
+4. **Add Headers**:
+   - Add a header named `api_key` with your actual Lusha API key as the value
+   - Add a second header named `Accept` with the value set as `*/*`
+
+![API Headers Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979293/474bf92e8cea5d0eb5483e856bcf/1023fe68-a5a3-4a91-a0d3-b64c4cad6303.png?expires=1750089600&signature=cb845fe28d5a4623d47913aad93486554b3869076a4097127c26c0ccbc8d6dd7&req=0tNmwlH4pTRk2hL085Zhof85ALDaWs5LfzFwNxS50owDsfByIsurTE4TB3eq%0A0k4LBiiU5FOhhf9%2B%0A)
+
+### Step 2: Build the Flow for Contact Enrichment
+
+1. **Start a New Workflow**: In Salesforce, create a new screen flow with a Free Form layout.
+
+2. Under the Toolbox Manager, create a new Variable and name it `recordId`. Choose the Data Type to be Text, and then go to the Get Contact Records, and choose the Get Record ID. This way we will have a variable that will automatically get the Contact ID to enrich.
+
+3. Choose the **Get Records** element and drag it to your layout. In the Get Records element, choose the Contact object.
+
+4. Under the **Filter Contact Records**, make sure you choose the All Conditions Are Met requirement, then choose the ID field on your Contact object > Equals operator > recordId variable that we created.
+
+![Get Records Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979304/b62f8b20d163ccefab707dd8a70c/cab609b7-2e40-45ef-8981-34819508c3ff.png?expires=1750089600&signature=32060fe9b85094f8113b3c758bfe1fab46508ca9c6363de147c67b0103cf4085&req=0tNmwlH5rDNk2hL085ZhocW9g1OWdKg1QkXJGqdxjW9l9nHr76yxJQXCYGsn%0AJunJvOwCJ%2BqgaST4%0A)
+
+5. Next, drag an **Action** element onto the layout. Give the Action a name you will remember (LushaContactAPI for example), and connect the Named Credential we created in Step 1, with the Person v2 API URL.
+
+6. Under the **Query Parameter Values**, choose Contact from get_related_contact and then choose the field that stores the relevant contact details - First Name, Last Name, and Company Name/Domain (or email + LinkedIn URL for higher match accuracy).
+
+![Action Element Setup](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979316/887bc0215399ccabed29a1707698/aaafcb16-c4de-4061-b9f0-6e3aaacb954c.png?expires=1750089600&signature=ee495b3e5ed70d05df7ae2bd489ad5b783d23a0030cecad47c5f6e42c921c7b5&req=0tNmwlH5rTFk2hL085ZhoX5bE2JmYeIVLMF%2BoAUUT1wHzRIWSlVq5rZWhbrR%0AHwtXxtzLTqp3%2FU4C%0A)
+
+### Step 3: Create Formulas for Data Points
+
+For each API field you wish to populate (e.g., job title, email, phone), create a formula to extract the data from the API response:
+
+#### Create a Formula for Each Data Point:
+
+1. In **Toolbox > New Resource > Formula**, select the corresponding data from the API response (e.g., [LushaPersonAPI]>2xx>Data>jobTitle).
+2. Set the correct data type (e.g., Text for job_title).
+3. Continue to create Formulas this way for each data point that you will want to use in your Update Records stage.
+
+![Formula Creation](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979336/01ab8fd3d389bb28ca241810127b/89627e7b-46a8-4943-9f79-900bff900abb.png?expires=1750089600&signature=477830682c14a53bab30c0031b2fadb361059e61b0ed2fb97ff176aafbbeaf20&req=0tNmwlH5rzFk2hL085ZhoWo05EFqPRIS0zgqv4RJIFAm7ASnthZFY2SX5WOL%0AeG9z0%2BNTS6hkfH0n%0A)
+
+#### Update Contact Records:
+
+1. Use the **Update Records** element to specify which Contact fields to update.
+2. Under **How to Find Records to Update** choose the Specify conditions option, and then choose the Contact object.
+3. Choose the **All Conditions Are Met (AND)** option, then choose your Contact ID field > Operator Equals > under the value select the recordId variable we created in part 2.
+4. Map each contact field to the respective formula created from the API response (e.g., map the Job Title formula to the Contact's Job Title field).
+
+![Update Records Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979360/af0f73c0d9e80a1f88fa31987320/8eea7640-440f-4f3c-bec6-d2e08a3523c8.png?expires=1750089600&signature=5e1cb8878f351f5de40bed383887b04cba4e658df3dcb18f0dbab37790a4652b&req=0tNmwlH5qjdk2hL085ZhoayiUMfkGzQ4Wh65RD4ESVU98xfiavihhFzjOUdJ%0AP6ewUsFk9maNLNNm%0A)
+
+### Step 4: Create a Screen Interaction
+
+Every time a user chooses to enrich the Contact with the Person API action, this will give a screen pop-up, that will show which data points were enriched through the workflow.
+
+1. Drag the **Screen** element to the layout, and name label "Done".
+
+2. In the **Display Text** you can write down each datapoint followed by a dash (-), and then Insert a resource and choose the respective formula.Continue with each field that you wish to enrich with the process. This will ensure that for every field that gets enriched, the user will see it in the pop-up screen first.
+
+![Screen Element Setup](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979370/b17919a28c7a69d4d77f18a8de82/4a4e58f3-4abc-4751-8fcc-cded53bf4f44.png?expires=1750089600&signature=60b693a0f21da81326cc376d10a43345496cef5ec2ce6f0362f45e8eebc12a91&req=0tNmwlH5qzdk2hL085ZhoVwuSBr1I1t9E%2BYdPhKeMw0cpFe1QdlAhpeZNvz%2F%0Af6Z16P6Fu0fCzv86%0A)
+
+3. **Save and Debug**: After designing the screen, save your flow and run a debug using a Contact ID to test the API call and see the response.
+
+**The end result should look similar to this:**
+
+![Complete Flow Layout](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979379/7bcad884c92842c70e57ccbc2061/3243d7c7-de98-4e95-80b2-1f85beeb5b4a.png?expires=1750089600&signature=9d8cf7a47b2db51d4f17edcc9e488c25dbc654964a23b5f218ba33319ff8c268&req=0tNmwlH5qz5k2hL085ZhofbfS6e1w07RKlA2i7um47cyZaKTeLe6WfCAI30Q%0AYJZhRWjxtRwe30cb%0A)
+
+### Step 5: Add a Button to Trigger the Flow
+
+1. Go to **Setup > Object Manager > Contact > Buttons, Links, and Actions**.
+
+2. Create a new action that triggers the flow created earlier.
+
+3. Under the **Contact Page Layout**, you can choose where to position the button on the Contact page so that the users can have access to enrich the Contact with the person data from Lusha.
+
+![Button Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979388/188c81d61aae2d07147b52e933b2/23ff756f-e91a-47b2-b404-cec02fb5d0d2.png?expires=1750089600&signature=a442df22f9031f43d7e3772f3531e4ea4a7c278a052e99d2efdfc7b76d15737a&req=0tNmwlH5pD9k2hL085ZhoT%2BH0CbFHKdD8ZZfftK0%2B92ibTOHGgSCmeSQgIem%0Ae%2B972HPS97WdhzIq%0A)
+
+### Step 6: Monitor Workflow Activity (Adjust and Optimize as Needed)
+
+1. After deploying the workflow, monitor its performance through workflow history and error logs.
+2. Make adjustments as needed to optimize performance and fix any issues.
+
+#### The flow is now finished 🔥
+
+> ## Additional Resources
+>
+> If you have any questions on the above feel free to reach out the support team:
+>
+> • Via live chat from the [Lusha website](http://www.lusha.com/)
+>
+> • Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
+>
+> • Via email: [support@lusha.com](mailto:support@lusha.com)

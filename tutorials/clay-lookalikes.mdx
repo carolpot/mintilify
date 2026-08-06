@@ -1,0 +1,60 @@
+---
+title: "Find company and people lookalikes in Clay"
+description: "How to use Lusha's lookalike feature in Clay to generate lists of companies or people that match your best-fit customers."
+---
+
+Lusha's lookalike feature in Clay lets you generate a list of up to 5,000 companies or people that closely resemble a small set of "seed" examples - like your best-fit customers or closed-won accounts. It replaces manual prospecting by automatically surfacing high-fit leads based on firmographic and contact signals.
+
+**Prerequisites:** An active Clay workspace and either a Lusha API key (Scale plan) or access to a Clay-managed Lusha account. You'll also need at least 5 seed identifiers - company domains for company lookalikes, or work emails or LinkedIn URLs for people lookalikes.
+
+<Note>
+Using 10-20 seeds significantly improves match accuracy.
+</Note>
+
+---
+
+## Step 1: Create a lookalike table
+
+1. In your Clay workspace, click **Create** in the left sidebar.
+2. Search for **Lusha**.
+3. Select **Find company lookalikes with Lusha** or **Find people lookalikes with Lusha**.
+
+---
+
+## Step 2: Connect your Lusha account
+
+1. When prompted, choose your **Personal Lusha key**, a **Teammate's key**, or the **Clay-managed Lusha account**.
+2. Click **Continue**.
+
+---
+
+## Step 3: Configure search inputs
+
+1. In the **Company identifiers** or **Personal identifiers** field, paste your seed list (e.g., `lusha.com` or `person@company.com`).
+2. In the **Exclusion** fields, add domains or emails of existing customers or competitors you want to filter out.
+3. Set **Max results** - the default is 5,000, but you can reduce this for a more focused list.
+4. Click **Submit**.
+
+<Note>
+When entering domains, don't include `https://` or `www.` - just the domain itself (e.g., `lusha.com`).
+</Note>
+
+---
+
+## Step 4: Enrich your results
+
+Once Clay populates the table with names and LinkedIn URLs, add deeper data:
+
+1. Click **+ Add column** and search for **Lusha**.
+2. Select **Enrich company** or **Enrich person**.
+3. Map **Company Domain** or **Email** to the corresponding Clay column.
+4. Click **Continue to add fields** and toggle on the data points you need (e.g., Employee count, Revenue, Verified Email).
+5. Click **Save and run**.
+
+Your table will populate with lookalike prospects and their enriched contact details as the run completes.
+
+---
+
+## Top play
+
+**[Identify similar companies from Pipedrive deals](https://www.lusha.com/campus/plays/identify-similar-companies-from-pipedrive-deals/)** - automatically surface lookalike accounts from your best closed-won deals.

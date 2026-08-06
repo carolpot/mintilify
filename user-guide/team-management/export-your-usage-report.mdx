@@ -1,0 +1,52 @@
+---
+title: "Export your Usage Report"
+description: "Download a full breakdown of credit usage across your team — by user, group, and credit type — for the current billing cycle."
+---
+
+The Usage Report is a CSV export available from the Analytics page. It shows exactly how credits were used across your account — broken down by user, group, month, and credit type (Phone, Email, API Search, API Company Enrichment). Use it to audit team activity, spot heavy users, and plan credit allocation.
+
+The report covers your full current billing cycle and updates automatically. Data refreshes approximately once per day.
+
+### Before you start
+
+You must have an Admin or Manager role to access Analytics and export the Usage Report.
+
+### How to export the Usage Report
+
+Go to Analytics in the left navigation. (Press your name > Analytics)
+
+In the top-right corner of the Analytics page, click Usage report.
+
+The CSV file downloads automatically to your browser's default downloads folder.
+
+<Note>
+The report always exports the full current billing cycle — the time filter on the Analytics page does not affect the export.
+</Note>
+
+### What's included in the report
+
+The CSV contains one row per user. Each row includes:
+
+User details: User Group Name, User Country Code, User Email, User Status (active or disabled), Role, Verify Time, Disabled Time.
+
+Activity timestamps: User Last Credit Usage, User Last Login Time.
+
+Monthly credit breakdown: Phone reveals, Email reveals, API Search credits, API Company Enrichment credits, and total credits — split by month for the full billing cycle.
+
+Totals: Phones Total, Emails Total, Credits Total, API Search Total, API Company Enrichment Total, and Grand Total per user.
+
+The report also includes summary rows for each User Group and a Total row at the bottom of the file.
+
+<Note>
+API credits (used by API keys rather than individual users) appear as a separate row labeled "API credits" and are not attributed to a named user.
+</Note>
+
+### How to read the report
+
+Open the file in Excel, Google Sheets, or any CSV viewer. The first two rows show the Cycle Start and Cycle End dates, followed by the report's last update time. The data table begins on row 6.
+
+Monthly columns repeat for each month in the cycle. For example, under 01/2026 you'll find sub-columns for Phones, Emails, API Search, Credits, and API Company Enrichment for that month.
+
+<Warning>
+Disabled users are still included in the report for the months they were active. Their status column will show "disabled," and their Disabled Time column will show when they were deactivated.
+</Warning>

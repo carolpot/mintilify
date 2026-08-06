@@ -1,0 +1,47 @@
+---
+title: "CSV Enrichment - How Matching and Match Rates Work"
+description: "How Lusha matches contacts in your uploaded CSV file, what affects your match rate, and how to interpret enrichment results."
+---
+
+When you upload a CSV file for enrichment, Lusha attempts to match each row to a contact or company in its database and fill in missing fields. This article explains how that matching works, what affects your match rate, and what to do when a file shows lower results than expected.
+
+## How Lusha matches your contacts
+
+Lusha uses identity signals from the columns in your file to find matches. The more signals you include, the more accurate the match. In order of matching strength:
+
+1. **LinkedIn URL** — the most reliable identifier. If present, Lusha matches directly to the profile.
+2. **Email address** — a strong signal for contacts already in the Lusha database.
+3. **Full name + Company name** — used when LinkedIn URL and email are absent. Less precise for common names.
+4. **Full name + Company domain** — similar to name + company name, with slightly higher precision.
+
+<Tip>
+  Including a LinkedIn URL column significantly improves match rates. Even partial URLs (e.g. linkedin.com/in/jane-doe) are accepted.
+</Tip>
+
+## What data Lusha adds
+
+Once a match is found, Lusha enriches the row with available data. This can include: business email, direct dial, mobile phone, job title, seniority, department, LinkedIn URL, company name, company domain, industry, employee count, and location.
+
+## Understanding your match rate
+
+After processing, your file shows two key numbers:
+
+- **Scanned rows** — the total number of rows Lusha attempted to match
+- **Enriched** — the number of rows where at least one new field was added
+
+Match rates vary based on the quality of your input data. Common reasons for a low match rate:
+
+- Missing identity fields (no LinkedIn URL, email, or company name)
+- Contacts not present in Lusha's database
+- Stale or incorrect company names
+- Personal (non-business) email addresses in the email column
+
+## Enriched vs. Potential enrichment
+
+Some rows show a **Potential enrichment** count. This means Lusha identified a match but would need additional credits to reveal phone number data for those contacts. Click **Enrich X phones** to unlock those fields using your credit balance.
+
+## File expiry
+
+Enriched files are available to download for a limited time after processing. Once a file expires, the status changes to **Expired** and the download is no longer available. Your results are still saved as a Workspace Table and remain accessible via **View table**.
+
+Now you know exactly what to include in your next upload to get the best results.

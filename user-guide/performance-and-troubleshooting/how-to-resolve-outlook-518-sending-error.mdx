@@ -1,0 +1,82 @@
+---
+title: "How to Resolve Outlook 5.1.8 Sending Error"
+description: "How to identify and resolve the 550 5.1.8 Access Denied sending error in Lusha Engage when using a Microsoft Outlook mailbox."
+---
+
+When using Lusha Engage with a Microsoft Outlook mailbox, you may encounter a *550 5.1.8 Access Denied, Bad Outbound Sender* error. This occurs because Microsoft's email servers have flagged your email address as potentially compromised or as a source of spam, leading to undelivered emails.
+
+<Note>
+The issue typically happens due to company inbox limits.
+</Note>
+
+## How to identify the problem
+
+- You will receive a Non-Delivery Report (NDR) email in your mailbox from Microsoft. This email contains details about the failed delivery and instructions to contact your administrator.
+- You will also see a top banner in Lusha Engage with the note: *"Some emails failed to be delivered due to company inbox limits. Contact your system administrator to fix it, then reactivate the relevant sequences."*
+- A **Failed** status will be visible on affected sequences.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/33249098/9718375c6567828b772d724af2bc/AD_4nXeAQEmQzWZP1CCj1H12_fJwmcBrMUMx8snYFocvI3FalwdZGvgJAwwioDV1Vw8ObpiItqnl3JayI5X4uTtUUF02j-JHt0ljRWQLJXwWWBeptoz4rIZQfB7-puCkk0Jx1DUFVIGRgQ?expires=1780056000&signature=2b264cd62d162e499482caac8c5bcd9739ea52f9b34259057023a2d08ddd9223&req=09ZtwVH6pT9k2hj99dpg6vYpsDFpBdDnCBA4mEdlLxGmNGht1JgA0N%2FyAquY%0AWBs4fz9uR2X74Vnr67K8tbEK%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## What happens when emails fail
+
+When Lusha Engage detects an Outlook issue, the non-delivered email is marked as **Failed**. All scheduled emails are cancelled by pausing active sequences, and contacts' sequence delivery is paused.
+
+## How to resolve this issue
+
+### 1. Contact your email administrator
+
+Reach out to your organisation's email administrator to address the issue.
+
+**Unblock the user's account.**
+
+If the account is secure, the administrator can remove the user from the restricted table by:
+
+1. Logging into the **Microsoft 365 Defender** portal.
+2. Navigating to **Email & Collaboration > Review > Restricted Entities**.
+3. Selecting the affected user and clicking **Unblock**.
+4. Confirming the action.
+
+<Note>
+Unblocking may take up to an hour to complete.
+</Note>
+
+### 2. Review your anti-spam protection settings
+
+Discuss with your system administrator to review your sending limits and, if needed, request to increase them. Here is where the administrator can configure anti-spam protection settings in the Microsoft 365 Admin Center:
+
+1. Go to the **Admin Center**.
+2. Navigate to **Security > Email & Collaboration > Policies & Rules > Threat Policies > Policies > Anti-Spam > Protection Settings**. Recommended settings:
+
+- **Restrict sending to external recipients (per hour):** Set to **6**.
+- **Maximum recipient limit per day:** Set to **50**.
+
+### 3. Reactivate your Lusha Engage sequences
+
+Before reactivating, ensure you have reviewed your internal email limits with your system administrator and received their approval. Once confirmed:
+
+1. Log back into [Lusha Engage](https://dashboard.lusha.com/engage).
+2. Reactivate the sequence flagged as **Failed** by switching the toggle on, or clicking the 3 dots of the sequence and pressing **Activate** in the action menu.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/33249099/c041a66e3700d9a255aaceef6ad4/AD_4nXd3-R46XHckz549gBUPopURp5_uVvsWESDG2EUcyjNuPoKHSJFJ8NfPjnvWODdtirURhFRwntLZ8j67hg361PfSk2A2-eWKlLDPQWaW5VclwlCdUaPurRzKY_kFDoFKRn-9DGIT?expires=1780056000&signature=1228d336848feeff8ee23efa64bd605b8b4a7c014482a627130e1dc3f3122328&req=09ZtwVH6pT5k2hj99dpg6s%2FAvazzCQuPjxNk4CIJhrCuxQ1n245KeGPRxjoL%0ALMCKX5%2BaVEaJvYuH37vXaRoT%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. The emails that weren't sent will be rescheduled from the same point they stopped.
+
+## Preventing future issues
+
+**Monitor sending limits**
+
+- Follow [Lusha's best practices for email limits](/user-guide/performance-and-troubleshooting/email-limits-best-practices).
+- Stay within Microsoft's sending limits to avoid restrictions.
+
+**Enhance account security**
+
+- Enable multi-factor authentication (MFA).
+- Use strong, unique passwords.
+
+**Update security protocols**
+
+- Regularly update SPF, DKIM, and DMARC settings to ensure email authentication.
+
+<Note>
+If you have any questions, feel free to reach out to the support team via live chat from the [Lusha website](http://www.lusha.com/), your [Lusha Dashboard](http://dashboard.lusha.com/dashboard), or via email at [support@lusha.com](mailto:support@lusha.com).
+</Note>

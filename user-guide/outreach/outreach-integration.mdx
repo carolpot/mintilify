@@ -1,0 +1,105 @@
+---
+title: "Outreach Integration"
+description: "How to connect Lusha to Outreach, configure field mapping, and push enriched prospect and account data to your Outreach workspace."
+---
+
+The Lusha–Outreach integration lets you push enriched prospect and account data from Lusha directly into Outreach, removing the need to copy and paste between platforms. Once connected, any contact you reveal in Lusha can be exported to Outreach with data mapped to the fields you configure.
+
+<Note>
+Editing integration settings requires Admin or Manager access in Lusha. You must also be an Outreach admin to activate the integration.
+</Note>
+
+## How to connect Outreach
+
+1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/) and click your name in the left navigation.
+2. Go to the [Integrations tab](https://dashboard.lusha.com/lusha-integrations) and select **Outreach**.
+3. Click **Connect** — you'll be redirected to the Outreach login page.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259833/ec9bc96ef65031ff51981639/Screen%2BShot%2B2022-11-24%2Bat%2B14_18_43.png?expires=1780056000&signature=d3cf9c573f1fcae6d7f650eb431154031770a880f52a1a904f58f17de86d321d&req=0dZtwFHyrzRk2hj99dpg6nHWFgLEeyux9JoNa0c4pds0ew%2Fza5YOV4TZS8Bk%0AtYwAy8PhMrTO0%2F5wPiR6z8Fn%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Sign in to Outreach if prompted, then click **Continue to field mapping**.
+2. In the Field mapping environment, you'll see two record types: **Prospects** and **Accounts**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900629/be9b8c2e4af7ecc909105732/Screenshot+2024-06-14+at+8_36_21.png?expires=1780056000&signature=8137f8b3b2147a70fd3ae107a7c2fe193987b39688901d6d1854f81d4115a2a6&req=0dFmxVj8rj5k2hj99dpg6kyk3%2BXhv6ZBkfmHw96Nq6OjpUqSd0zG48QKVChj%0ABliE0QGcUDDBWFu1fLzjBVuE%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. To update existing records in your database, toggle on **Allow Override**.
+
+<Note>
+When adding a new field, the field type must match the Lusha field type. Each mapped field determines which Outreach field will be updated by Lusha.
+</Note>
+
+## Adding predefined value fields
+
+1. Choose the record type (Prospects or Accounts).
+2. Click **+ Add field** and select **Predefined Value**.
+3. Select an Outreach field from the available options.
+4. Enter the predefined value.
+5. Click **Save changes** before switching tabs.
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900650/fd0bbb6fc59c7fd614016f3f/Screenshot+2024-06-14+at+8_25_47.png?expires=1780056000&signature=ada8954d264b15874d4cd0ed3e0eced15349d0abf18154dc8c79e9a6b8d0dc02&req=0dFmxVj8qTdk2hj99dpg6j%2B71wVxJDmXvXkT79pqJUmvVQcXSvQ4j0rb9xWZ%0Ao%2FDDSMVkZmuz6BhgCxXzgISg%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900651/d0c73d3d9012ef02b1ea0309/Screenshot+2024-06-14+at+8_37_30.png?expires=1780056000&signature=ce1e93211f4c015a26acd833dc126258450e4857871062cd7c05438366c7f258&req=0dFmxVj8qTZk2hj99dpg6uQHazifHT58sRJG7Mwtqh7nfQVW23rg9KD%2Bty5l%0Acdlbm4HgAwRH9mgLJzTnO2OT%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Conditional field mapping
+
+Conditional field mapping lets you set a follow-up field update whenever an email or phone field is enriched — useful for routing leads or marking prospects as enriched.
+
+1. In the Field mapping environment, click **Advanced** next to the **Emails** or **Phones** Lusha field.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259971/39c202c2bd74b7df3e70f3c0/Screen%2BShot%2B2022-11-21%2Bat%2B15_03_27.png?expires=1780056000&signature=6ea9d07a9075a6182d1a52d74db0228d83e501230c480c9e91163febbaff0400&req=0dZtwFHzqzZk2hj99dpg6rCXIXjblig3RPiQmMNe7xDQB%2BqnKdMYgVh77xYC%0AXhtPORNEq7nc58myRvaMBHxC%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+2. Click the **Map** dropdown and enter a text value to define the predefined field that updates after the parent field is enriched.
+
+3. Click **Apply**, then **Save Changes** at the bottom of the page.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260001/595acae87270acb8e661299a/Screen%2BShot%2B2022-11-22%2Bat%2B14_25_51.png?expires=1780056000&signature=ec91e0d1547124cd88a21867636a44827e3f3182a951442abc2b0628bc8a1384&req=0dZtw1j6rDZk2hj99dpg6nKck9YgtLdGSZg2LonICGKmoRmSJ1%2BIq2QXcBEc%0Ax3tDDpTEspa8O66Jx7LLmekW%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Account export preferences
+
+Admins can control which object types users can export to Outreach. When the toggle is off, users can only save contacts to existing Outreach accounts — not create new ones.
+
+<Note>
+These settings apply to all team members in your account.
+</Note>
+
+To manage export preferences, go to **Integrations → Outreach → [Settings tab](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesloft/settings)**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260025/97dd3b06d270638c84bfee17/Screen%2BShot%2B2022-12-08%2Bat%2B12_14_51.png?expires=1780056000&signature=964d48b9ba70d228cb34b4213bd76737e39585ad6bb6eb630e8abfa960e8adf6&req=0dZtw1j6rjJk2hj99dpg6j10neI%2BZQIOzyPy%2FdSlqZIdxyGiQc8BDCpk%2FFjb%0AOo0R8hGaEwwGAqQXPqX4hh6j%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Default field mapping
+
+If you modify your field mapping and need to revert to the original settings, use the tables below as a reference.
+
+## Prospect
+
+| Lusha field | Outreach field |
+| --- | --- |
+| Job Title | Title |
+| Emails Array | Emails |
+| Predefined | Source |
+| Last Name | LastName |
+| First Name | FirstName |
+| Company City | AddressCity |
+| Phones | Other Phones |
+| Company State | Address State |
+| Company Country | Address Country |
+
+## Account
+
+| Lusha field | Outreach field |
+| --- | --- |
+| Company Name | Name |
+| Categories | Tags |
+| Domain | Domain |
+| CompanyMainIndustry | Industry |
+| CompanyState | Locality |
+| CompanyFounded | Founded At |
+| Website | Website Url |
+| Linkedin | LinkedIn Url |
+| Employees | Number Of Employees |
+
+You're all set — Lusha will now push enriched prospect and account data directly into Outreach whenever you reveal a contact.
+
+<Tip>
+🎯 **Top play with Outreach + Lusha:** [Enrich Salesforce leads for Outreach](https://www.lusha.com/campus/plays/enrich-salesforce-leads-for-outreach/) — automatically enrich new Salesforce leads and enrol qualified prospects into Outreach sequences.
+</Tip>

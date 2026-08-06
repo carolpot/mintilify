@@ -1,0 +1,48 @@
+---
+title: "Field Mapping Test"
+description: "How to test and validate CRM field mappings in Lusha before your team starts exporting contacts, so errors are caught before they cause problems."
+---
+
+The Field Mapping Test lets admins validate their CRM field mappings before team members start exporting contacts. By running a test against a sample record, you can catch mismatches and data type errors early — saving time and preventing errors from reaching your CRM.
+
+<Note>
+Editing integration settings can only be done by the Lusha account's **admin**.
+</Note>
+
+## How it works
+
+1. After successfully connecting to your 3rd party tool ([find integration guides here](https://info.lusha.com/en/?q=integrations)), go to the **Field mapping** screen.
+2. Select which object you'd like to enrich (for example, when using Salesforce: Leads, Contacts, or Accounts).
+3. Add a new field by clicking **Add field** at the bottom left and choosing the field you want to connect. If you already have fields set up, select an existing field and update it as needed.
+
+4. Choose the correct field in the dropdown to connect to the Lusha field.
+
+5. Click **Test mapping** at the bottom right.
+
+6. If the test is successful, a pop-up will appear confirming approval. Click **Save Mapping** to continue.
+
+<Note>
+For test mapping purposes, Lusha adds a **Sample Contact** and **Sample Account** to your CRM. You can review and delete these entries after the test.
+</Note>
+
+7. If the test detects an error, you'll see an error screen asking you to correct the Lusha field mapping.
+
+## FAQs
+
+**How do I access the Field Mapping Test feature?**\
+Only admins can access this feature. Go to the integration page in your Lusha dashboard, click **Connect** or **Manage** for each integration, and navigate to the **Field Mapping** section.
+
+**What if my test shows errors?**\
+The test will highlight any errors. Adjust the field mappings accordingly and re-run the test until all issues are resolved.
+
+**Can I test multiple field mappings at once?**\
+Testing is field by field for optimal accuracy. If an error is found, you'll need to re-run the test to identify other potential issues.
+
+**Is the Field Mapping Test available for all CRMs?**\
+The feature supports all major CRMs that integrate with Lusha. See the [integration documentation](https://info.lusha.com/en/collections/314220-integrations) for the full table.
+
+**How often should I use it?**\
+Use this feature whenever you set up a new integration or make changes to existing field mappings.
+
+**What types of errors can it identify?**\
+Mismatched fields, data type inconsistencies, and missing required fields. To learn more about field mapping types, see [Fields for field mapping and descriptions](/user-guide/integrations-basics/fields-for-field-mapping-and-descriptions).

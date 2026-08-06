@@ -1,0 +1,1072 @@
+---
+title: "Automate Contact Search and Enrich"
+description: "This guide walks you through automating your prospecting process by searching and enriching contact data directly in Google Sheets using the Lusha V3 API."
+---
+
+## Overview
+
+This guide walks you through automating your prospecting process by searching and enriching contact data directly in Google Sheets using the Lusha V3 API. With this setup, you'll be able to populate a list of contacts based on specific filters, retrieve detailed contact data, and track enrichment progress efficiently.
+
+<Note>
+This guide uses the **Lusha V3 API** (`/v3/contacts/prospecting` and `/v3/contacts/enrich`), which is the current recommended version. If you are still using the V2 script, see the [Legacy V2 Script](#legacy-v2-script) section at the bottom of this page.
+</Note>
+
+---
+
+## Setup Instructions
+
+### Step 1: Create a Google Sheet
+
+Create a new Google Sheet and name the tab **"Sheet1"**, or update the `SHEET_NAME` variable at the top of the script to match your tab name.
+
+### Step 2: Add the Script
+
+1. In your Google Sheet, go to **Extensions > Apps Script**.
+2. Delete any existing code in the editor.
+3. Paste the script below and click **Save** (Ctrl+S / Cmd+S).
+
+```javascript
+const SHEET_NAME = "Sheet1"; // Update this with your actual sheet tab name
+const BASE_URL = 'https://api.lusha.com/v3';
+
+// ---------------------------------------------------------------------------
+// Column index reference (0-based)
+// A=0  (First Name)
+// B=1  (Last Name)
+// C=2  (Full Name)
+// D=3  (Job Title)
+// E=4  (Company Name)
+// F=5  (Company Website)
+// G=6  (Has Work Email)
+// H=7  (Has Phones)
+// I=8  (Request ID)
+// J=9  (Contact ID)
+// K=10 (Enrich Email)
+// L=11 (Enrich Phone)
+// M=12 (Enriched ✅)
+//
+// Enrichment output columns (0-based):
+// N=13  (Email 1)
+// O=14  (Email Type 1)
+// P=15  (Email Confidence 1)
+// Q=16  (Email 2)
+// R=17  (Email Type 2)
+// S=18  (Email Confidence 2)
+// T=19  (Phone 1)
+// U=20  (Phone Type 1)
+// V=21  (Do Not Call 1)
+// W=22  (Phone Updated Date 1)
+// X=23  (Phone 2)
+// Y=24  (Phone Type 2)
+// Z=25  (Do Not Call 2)
+// AA=26 (Phone Updated Date 2)
+// AB=27 (Job Title)
+// AC=28 (Departments)
+// AD=29 (Seniority)
+// AE=30 (Location Country)
+// AF=31 (Location Country ISO2)
+// AG=32 (Location State)
+// AH=33 (Location City)
+// AI=34 (Location Continent)
+// AJ=35 (Location Coordinates)
+// AK=36 (Is EU Contact)
+// AL=37 (LinkedIn URL)
+// AM=38 (X (Twitter) URL)
+// AN=39 (Prev Job Title)
+// AO=40 (Prev Departments)
+// AP=41 (Prev Seniority)
+// AQ=42 (Prev Company Name)
+// AR=43 (Prev Company Domain)
+// AS=44 (Company Domain)
+// AT=45 (Company Industry)
+// AU=46 (Company ID)
+//
+// Dashboard (rows 1-2):
+// A1: "Page"               A2: page counter
+// B1: "Total Contacts"     B2: value
+// C1: "Total Emails"       C2: value
+// D1: "Total Phones"       D2: value
+// E1: "Est. Credits"       E2: value
+// F1: "Last Search"        F2: timestamp
+// G1: "Last Enrich"        G2: timestamp
+// H1: "Batch Size"         H2: number (default 25)
+// K1: "Global Override"    K2: dropdown
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// API Key — stored as a Script Property named 'api_key'
+// To set it: Extensions > Apps Script > Project Settings > Script Properties
+// Add a property with name: api_key  and value: your Lusha API key
+// ---------------------------------------------------------------------------
+
+function getApiKey() {
+  const key = PropertiesService.getScriptProperties().getProperty('api_key');
+  if (!key) {
+    throw new Error('API key not set. Please add it under Project Settings > Script Properties.');
+  }
+  return key;
+}
+
+// ---------------------------------------------------------------------------
+// Menu
+// ---------------------------------------------------------------------------
+
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Lusha Actions')
+    .addItem('Search Contacts', 'populateContacts')
+    .addItem('Enrich Contacts', 'enrichContacts')
+    .addToUi();
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function getHeaders() {
+  return {
+    'api_key': getApiKey(),
+    'Content-Type': 'application/json',
+    'x-partner-name': 'prtnr-google_sheets_connector-prod'
+  };
+}
+
+function getSheet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    throw new Error(`Sheet with name '${SHEET_NAME}' not found.`);
+  }
+  return sheet;
+}
+
+// ---------------------------------------------------------------------------
+// Dashboard (rows 1-2)
+// ---------------------------------------------------------------------------
+
+function setupDashboard(sheet) {
+  const labels = [
+    'Page',                       // A1
+    'Total Contacts',             // B1
+    'Total Emails',               // C1
+    'Total Phones',               // D1
+    'Est. Credits (Next Enrich)', // E1
+    'Last Search',                // F1
+    'Last Enrich',                // G1
+    'Batch Size'                  // H1
+  ];
+  const labelRange = sheet.getRange("A1:H1");
+  labelRange.setValues([labels]);
+  labelRange.setFontWeight("bold");
+  labelRange.setFontStyle("normal");
+
+  const k1 = sheet.getRange("K1");
+  k1.setValue("Global Override");
+  k1.setFontWeight("bold");
+
+  const batchCell = sheet.getRange("H2");
+  if (!batchCell.getValue()) {
+    batchCell.setValue(25);
+  }
+
+  sheet.getRange("F2:G2").setNumberFormat("dd/mm/yyyy HH:mm");
+
+  const k2 = sheet.getRange("K2");
+  const dropdownRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(['Enrich Only Emails', 'Enrich Only Phones', 'Custom'], true)
+    .build();
+  k2.setDataValidation(dropdownRule);
+  if (!k2.getValue()) {
+    k2.setValue('Custom');
+  }
+
+  applyDashboardStyles(sheet);
+}
+
+function applyDashboardStyles(sheet) {
+  [
+    sheet.getRange("A3:K3"),
+    sheet.getRange("I1:J2"),
+    sheet.getRange("L1:L3")
+  ].forEach(r => r.setBackground("#d9d9d9"));
+
+  [
+    sheet.getRange("A1:H1"),
+    sheet.getRange("K1")
+  ].forEach(r => r.setBackground("#f3f3f3"));
+
+  [
+    sheet.getRange("A2:H2"),
+    sheet.getRange("K2")
+  ].forEach(r => r.setBackground("#e8f4fe"));
+}
+
+function updateDashboard(sheet) {
+  const sheetData    = sheet.getDataRange().getValues();
+  const contactIdIdx = 9;  // J
+  const hasEmailIdx  = 6;  // G
+  const hasPhoneIdx  = 7;  // H
+  const enrichedIdx  = 12; // M
+  const email1Idx    = 13; // N
+  const phone1Idx    = 19; // T
+
+  let totalContacts       = 0;
+  let totalEmails         = 0;
+  let totalPhones         = 0;
+  let unenrichedWithEmail = 0;
+  let unenrichedWithPhone = 0;
+
+  for (let i = 4; i < sheetData.length; i++) {
+    const row = sheetData[i];
+    if (!row[contactIdIdx]) continue;
+
+    totalContacts++;
+
+    const enriched    = String(row[enrichedIdx]).trim();
+    const hasEmail    = String(row[hasEmailIdx]).trim();
+    const hasPhone    = String(row[hasPhoneIdx]).trim();
+    const email1Value = row.length > email1Idx ? String(row[email1Idx]).trim() : '';
+    const phone1Value = row.length > phone1Idx ? String(row[phone1Idx]).trim() : '';
+
+    if (enriched === 'Yes') {
+      if (email1Value && email1Value !== '') totalEmails++;
+      if (phone1Value && phone1Value !== '') totalPhones++;
+    }
+
+    if (enriched !== 'Yes' && enriched !== 'Excluded') {
+      if (hasEmail === 'Yes') unenrichedWithEmail++;
+      if (hasPhone === 'Yes') unenrichedWithPhone++;
+    }
+  }
+
+  const unenrichedTotal  = Math.max(unenrichedWithEmail, unenrichedWithPhone);
+  const revealCredits    = (unenrichedWithEmail * 1) + (unenrichedWithPhone * 5);
+  const requestCredits   = unenrichedTotal > 0 ? Math.ceil(unenrichedTotal / 25) : 0;
+  const estimatedCredits = revealCredits + requestCredits;
+
+  sheet.getRange("B2").setValue(totalContacts);
+  sheet.getRange("C2").setValue(totalEmails);
+  sheet.getRange("D2").setValue(totalPhones);
+  sheet.getRange("E2").setValue(estimatedCredits);
+}
+
+// ---------------------------------------------------------------------------
+// Sheet setup
+// ---------------------------------------------------------------------------
+
+function setupHeaders(sheet) {
+  setupDashboard(sheet);
+
+  const coreHeaders = [
+    'First Name',      // A
+    'Last Name',       // B
+    'Full Name',       // C
+    'Job Title',       // D
+    'Company Name',    // E
+    'Company Website', // F
+    'Has Work Email',  // G
+    'Has Phones',      // H
+    'Request ID',      // I
+    'Contact ID',      // J
+    'Enrich Email',    // K
+    'Enrich Phone',    // L
+    'Enriched ✅'      // M
+  ];
+  const coreRange = sheet.getRange("A4:M4");
+  if (!coreRange.getValues().flat().some(h => h)) {
+    coreRange.setValues([coreHeaders]);
+  }
+  coreRange.setFontWeight("bold");
+
+  const enrichHeaders = [
+    'Email 1',               // N
+    'Email Type 1',          // O
+    'Email Confidence 1',    // P
+    'Email 2',               // Q
+    'Email Type 2',          // R
+    'Email Confidence 2',    // S
+    'Phone 1',               // T
+    'Phone Type 1',          // U
+    'Do Not Call 1',         // V
+    'Phone Updated Date 1',  // W
+    'Phone 2',               // X
+    'Phone Type 2',          // Y
+    'Do Not Call 2',         // Z
+    'Phone Updated Date 2',  // AA
+    'Job Title',             // AB
+    'Departments',           // AC
+    'Seniority',             // AD
+    'Location Country',      // AE
+    'Location Country ISO2', // AF
+    'Location State',        // AG
+    'Location City',         // AH
+    'Location Continent',    // AI
+    'Location Coordinates',  // AJ
+    'Is EU Contact',         // AK
+    'LinkedIn URL',          // AL
+    'X (Twitter) URL',       // AM
+    'Prev Job Title',        // AN
+    'Prev Departments',      // AO
+    'Prev Seniority',        // AP
+    'Prev Company Name',     // AQ
+    'Prev Company Domain',   // AR
+    'Company Domain',        // AS
+    'Company Industry',      // AT
+    'Company ID'             // AU
+  ];
+  const enrichRange = sheet.getRange("N4:AU4");
+  if (!enrichRange.getValues().flat().some(h => h)) {
+    enrichRange.setValues([enrichHeaders]);
+  }
+  enrichRange.setFontWeight("bold");
+
+  sheet.getRange("A4:L4").setBackground("#f3f3f3");
+  sheet.getRange("M4").setBackground("#DFCEFF");
+  sheet.getRange("N4:AU4").setBackground("#ECE2FF");
+
+  applyConditionalFormatting(sheet);
+}
+
+function applyConditionalFormatting(sheet) {
+  const enrichedColumn = sheet.getRange("M5:M");
+  let rules = sheet.getConditionalFormatRules();
+
+  rules = rules.filter(rule => {
+    const ranges = rule.getRanges();
+    return ranges.length === 0 || ranges[0].getA1Notation() !== enrichedColumn.getA1Notation();
+  });
+
+  const noRule = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo("No")
+    .setBackground("#F5B7B1")
+    .setRanges([enrichedColumn])
+    .build();
+
+  const yesRule = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextContains("Yes")
+    .setBackground("#A9DFBF")
+    .setRanges([enrichedColumn])
+    .build();
+
+  const excludedRule = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo("Excluded")
+    .setBackground("#D3D3D3")
+    .setRanges([enrichedColumn])
+    .build();
+
+  rules.push(noRule, yesRule, excludedRule);
+  sheet.setConditionalFormatRules(rules);
+}
+
+// ---------------------------------------------------------------------------
+// Prospecting  (POST /v3/contacts/prospecting)
+// ---------------------------------------------------------------------------
+
+function populateContacts() {
+  const apiUrl    = `${BASE_URL}/contacts/prospecting`;
+  const sheet     = getSheet();
+  setupHeaders(sheet);
+
+  const pageCell  = sheet.getRange("A2");
+  const batchSize = Number(sheet.getRange("H2").getValue()) || 25;
+  let currentPage = Number(pageCell.getValue()) || 0;
+
+  const payload = {
+    // UPDATE THE FILTERS BELOW TO MATCH YOUR ICP
+    "pagination": { "page": currentPage, "size": batchSize },
+    "filters": {
+      "companies": {
+        "include": {
+          "locations": [{ "state": "New York", "country": "United States" }],
+          "sizes": [{ "min": 51, "max": 500 }]
+        }
+      }
+    }
+  };
+
+  const options = {
+    method: 'POST',
+    contentType: 'application/json',
+    headers: getHeaders(),
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(apiUrl, options);
+    const result   = JSON.parse(response.getContentText());
+
+    Logger.log(`🔍 Full API Response: ${JSON.stringify(result, null, 2)}`);
+
+    if (result.statusCode && result.statusCode !== 200) {
+      Logger.log(`❌ API error ${result.statusCode}: ${result.message}`);
+      return;
+    }
+
+    if (result.results && Array.isArray(result.results)) {
+      Logger.log(`📌 Contacts received: ${result.results.length}`);
+      appendContactsToSheet(sheet, result.results, result.requestId);
+      currentPage++;
+      pageCell.setValue(currentPage);
+
+      sheet.getRange("F2").setValue(new Date());
+      updateDashboard(sheet);
+    } else {
+      Logger.log("⚠️ No results found in response.");
+    }
+  } catch (error) {
+    Logger.log(`❌ Request failed: ${error.message}`);
+  }
+}
+
+function appendContactsToSheet(sheet, contacts, requestId) {
+  if (!contacts || contacts.length === 0) {
+    Logger.log("⚠️ No contacts to append.");
+    return;
+  }
+
+  Logger.log(`🔍 First contact structure: ${JSON.stringify(contacts[0], null, 2)}`);
+
+  const data = contacts.map(contact => {
+    const firstName     = contact.firstName        || '';
+    const lastName      = contact.lastName         || '';
+    const fullName      = contact.fullName         || `${firstName} ${lastName}`.trim();
+    const jobTitle      = contact.jobTitle?.title  || '';
+    const companyName   = contact.company?.name    || '';
+    const companyDomain = contact.company?.domain  || '';
+
+    const has          = contact.has || [];
+    const hasWorkEmail = has.includes('emails') ? 'Yes' : 'No';
+    const hasPhones    = has.includes('phones') ? 'Yes' : 'No';
+
+    return [
+      firstName,        // A
+      lastName,         // B
+      fullName,         // C
+      jobTitle,         // D
+      companyName,      // E
+      companyDomain,    // F
+      hasWorkEmail,     // G
+      hasPhones,        // H
+      requestId || '',  // I
+      contact.id || '', // J
+      true,             // K - Enrich Email (checked by default)
+      true,             // L - Enrich Phone (checked by default)
+      'No'              // M - Enriched
+    ];
+  });
+
+  const allData = sheet.getDataRange().getValues();
+  let startRow  = 5;
+  for (let i = 4; i < allData.length; i++) {
+    if (allData[i].join('') !== '') {
+      startRow = i + 2;
+    }
+  }
+  startRow = Math.max(startRow, 5);
+
+  try {
+    sheet.getRange(startRow, 1, data.length, data[0].length).setValues(data);
+
+    const checkboxRule = SpreadsheetApp.newDataValidation()
+      .requireCheckbox()
+      .build();
+    sheet.getRange(startRow, 11, data.length, 2).setDataValidation(checkboxRule);
+
+    Logger.log(`✅ Appended ${data.length} contacts starting at row ${startRow}.`);
+  } catch (error) {
+    Logger.log(`❌ Error appending contacts: ${error.message}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Enrichment  (POST /v3/contacts/enrich)
+// ---------------------------------------------------------------------------
+
+function enrichContacts() {
+  const apiUrl         = `${BASE_URL}/contacts/enrich`;
+  const sheet          = getSheet();
+  const globalOverride = String(sheet.getRange("K2").getValue()).trim();
+  const batchSize      = Number(sheet.getRange("H2").getValue()) || 25;
+
+  const sheetData      = sheet.getDataRange().getValues();
+  const contactIdIdx   = 9;  // J
+  const enrichEmailIdx = 10; // K
+  const enrichPhoneIdx = 11; // L
+  const enrichedIdx    = 12; // M
+
+  const rowsToEnrich = [];
+
+  for (let i = 4; i < sheetData.length; i++) {
+    const row       = sheetData[i];
+    const contactId = String(row[contactIdIdx]).trim();
+    const enriched  = String(row[enrichedIdx]).trim();
+
+    if (!contactId || enriched === 'Yes') continue;
+
+    const emailChecked = row[enrichEmailIdx] === true;
+    const phoneChecked = row[enrichPhoneIdx] === true;
+
+    if (!emailChecked && !phoneChecked) {
+      sheet.getRange(i + 1, 13).setValue('Excluded');
+      Logger.log(`⏭️ Row ${i + 1} excluded — both checkboxes unchecked.`);
+      continue;
+    }
+
+    let reveal = [];
+    if (globalOverride === 'Enrich Only Emails') {
+      reveal = ['emails'];
+    } else if (globalOverride === 'Enrich Only Phones') {
+      reveal = ['phones'];
+    } else {
+      if (emailChecked) reveal.push('emails');
+      if (phoneChecked) reveal.push('phones');
+    }
+
+    rowsToEnrich.push({ rowNumber: i + 1, contactId, reveal });
+  }
+
+  if (rowsToEnrich.length === 0) {
+    Logger.log("⚠️ No eligible contacts found for enrichment.");
+    return;
+  }
+
+  const batches = {};
+  rowsToEnrich.forEach(r => {
+    const key = r.reveal.slice().sort().join(',');
+    if (!batches[key]) batches[key] = [];
+    batches[key].push(r);
+  });
+
+  Object.entries(batches).forEach(([revealKey, rows]) => {
+    const reveal = revealKey.split(',');
+    for (let i = 0; i < rows.length; i += batchSize) {
+      enrichBatch(sheet, apiUrl, rows.slice(i, i + batchSize), reveal);
+    }
+  });
+
+  sheet.getRange("G2").setValue(new Date());
+  updateDashboard(sheet);
+}
+
+function enrichBatch(sheet, apiUrl, batch, reveal) {
+  const payload = {
+    ids: batch.map(r => r.contactId),
+    reveal: reveal
+  };
+
+  const options = {
+    method: 'POST',
+    contentType: 'application/json',
+    headers: getHeaders(),
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(apiUrl, options);
+    const result   = JSON.parse(response.getContentText());
+
+    Logger.log(`🔍 Enrich API Response: ${JSON.stringify(result, null, 2)}`);
+
+    if (result.statusCode && result.statusCode !== 200) {
+      let errorMessage;
+      switch (result.statusCode) {
+        case 402: errorMessage = 'Error: Credit limit reached'; break;
+        case 401: errorMessage = 'Error: Invalid API key';      break;
+        case 429: errorMessage = 'Error: Rate limit exceeded';  break;
+        default:  errorMessage = `Error: ${result.statusCode} - ${result.message}`;
+      }
+      batch.forEach(r => {
+        sheet.getRange(r.rowNumber, 13).setValue(errorMessage);
+      });
+      Logger.log(`❌ ${errorMessage}`);
+      return;
+    }
+
+    if (!result.results || !Array.isArray(result.results)) {
+      Logger.log("⚠️ No results in enrich response.");
+      return;
+    }
+
+    const rowMap = {};
+    batch.forEach(r => { rowMap[r.contactId] = r.rowNumber; });
+
+    writeEnrichedData(sheet, result.results, rowMap);
+
+    Logger.log(`✅ Enriched ${result.results.length} contacts (reveal: ${reveal.join(', ')}).`);
+  } catch (error) {
+    Logger.log(`❌ Enrich request failed: ${error.message}`);
+  }
+}
+
+function writeEnrichedData(sheet, enrichedContacts, rowMap) {
+  enrichedContacts.forEach(contact => {
+    const contactId = String(contact.id || '').trim();
+    if (!contactId) return;
+
+    const rowToUpdate = rowMap[contactId];
+    if (!rowToUpdate) {
+      Logger.log(`❌ Contact ID ${contactId} not found in current batch. Skipping.`);
+      return;
+    }
+
+    if (contact.error) {
+      Logger.log(`⚠️ Contact ${contactId} error: ${contact.error.code} - ${contact.error.message}`);
+      sheet.getRange(rowToUpdate, 13).setValue(`Error: ${contact.error.code}`);
+      return;
+    }
+
+    const emails  = contact.emails  || [];
+    const email1  = emails[0] || null;
+    const email2  = emails[1] || null;
+
+    const phones  = contact.phones  || [];
+    const phone1  = phones[0] || null;
+    const phone2  = phones[1] || null;
+
+    const jobTitle   = contact.jobTitle?.title                              || '';
+    const department = (contact.jobTitle?.departments || []).join(', ')     || '';
+    const seniority  = contact.jobTitle?.seniority                          || '';
+
+    const locCountry     = contact.location?.country     || '';
+    const locCountryISO2 = contact.location?.countryIso2 || '';
+    const locState       = contact.location?.state       || '';
+    const locCity        = contact.location?.city        || '';
+    const locContinent   = contact.location?.continent   || '';
+    const coords         = contact.location?.coordinates;
+    const locCoords      = Array.isArray(coords) && coords.length === 2
+                             ? `${coords[1]}, ${coords[0]}`
+                             : '';
+    const isEU           = contact.location?.isEuContact != null
+                             ? String(contact.location.isEuContact)
+                             : '';
+
+    const linkedIn = contact.socialLinks?.linkedin || '';
+    const twitter  = contact.socialLinks?.twitter  || '';
+
+    const prevEmp        = (contact.previousEmployment || [])[0] || null;
+    const prevTitle      = prevEmp?.jobTitle?.title                              || '';
+    const prevDept       = (prevEmp?.jobTitle?.departments || []).join(', ')     || '';
+    const prevSeniority  = prevEmp?.jobTitle?.seniority                          || '';
+    const prevCompany    = prevEmp?.company?.name                                || '';
+    const prevDomain     = prevEmp?.company?.domain                              || '';
+
+    const companyDomain   = contact.company?.domain   || '';
+    const companyIndustry = contact.company?.industry || '';
+    const companyId       = contact.company?.id       || '';
+
+    const outputRow = [
+      email1?.email        || '',  // N  - Email 1
+      email1?.type         || '',  // O  - Email Type 1
+      email1?.confidence   || '',  // P  - Email Confidence 1
+      email2?.email        || '',  // Q  - Email 2
+      email2?.type         || '',  // R  - Email Type 2
+      email2?.confidence   || '',  // S  - Email Confidence 2
+      phone1?.number       || '',  // T  - Phone 1
+      phone1?.type         || '',  // U  - Phone Type 1
+      phone1?.doNotCall != null ? String(phone1.doNotCall) : '', // V - Do Not Call 1
+      phone1?.updateDate   || '',  // W  - Phone Updated Date 1
+      phone2?.number       || '',  // X  - Phone 2
+      phone2?.type         || '',  // Y  - Phone Type 2
+      phone2?.doNotCall != null ? String(phone2.doNotCall) : '', // Z - Do Not Call 2
+      phone2?.updateDate   || '',  // AA - Phone Updated Date 2
+      jobTitle,                    // AB - Job Title
+      department,                  // AC - Departments
+      seniority,                   // AD - Seniority
+      locCountry,                  // AE - Location Country
+      locCountryISO2,              // AF - Location Country ISO2
+      locState,                    // AG - Location State
+      locCity,                     // AH - Location City
+      locContinent,                // AI - Location Continent
+      locCoords,                   // AJ - Location Coordinates
+      isEU,                        // AK - Is EU Contact
+      linkedIn,                    // AL - LinkedIn URL
+      twitter,                     // AM - X (Twitter) URL
+      prevTitle,                   // AN - Prev Job Title
+      prevDept,                    // AO - Prev Departments
+      prevSeniority,               // AP - Prev Seniority
+      prevCompany,                 // AQ - Prev Company Name
+      prevDomain,                  // AR - Prev Company Domain
+      companyDomain,               // AS - Company Domain
+      companyIndustry,             // AT - Company Industry
+      companyId                    // AU - Company ID
+    ];
+
+    sheet.getRange(rowToUpdate, 14, 1, 34).setValues([outputRow]);
+    sheet.getRange(rowToUpdate, 13).setValue('Yes');
+
+    Logger.log(`✅ Row ${rowToUpdate} enriched.`);
+  });
+}
+```
+
+### Step 3: Add Your API Key
+
+1. In the Apps Script editor, go to **Project Settings** (gear icon).
+2. Under **Script Properties**, add a new property:
+   - **Key**: `api_key`
+   - **Value**: your actual Lusha API key
+
+You can find your API key in your [Lusha Dashboard](https://dashboard.lusha.com/enrich/api) (admins and managers only).
+
+<Warning>
+**Do not paste your API key directly into the script.** Storing it in Script Properties keeps it secure and out of the code.
+</Warning>
+
+### Step 4: Customize Your Filters
+
+Before running **Search Contacts**, update the `payload` object inside `populateContacts()` to match your ICP. The template includes example filters for:
+
+- **Location**: United States, New York
+- **Company size**: 51-500 employees
+
+You can modify or extend these filters using any of the available fields in the [Lusha API documentation](https://docs.lusha.com/apis/openapi). After making changes, save the script.
+
+### Step 5: Refresh the Sheet and Run
+
+Refresh your Google Sheet. You'll see a **Lusha Actions** menu appear in the toolbar.
+
+When the sheet first loads, the script automatically sets up:
+
+- **Rows 1-2**: A dashboard with live counters for Total Contacts, Total Emails, Total Phones, and an estimated credit cost for the next enrichment run. Row 2 also shows the current page, last search/enrich timestamps, and the configurable **Batch Size** (default: 25).
+- **Row 3**: A spacer row.
+- **Row 4**: Column headers for all input and output fields.
+- **Row 5+**: Your data.
+
+In **column K2**, a **Global Override** dropdown lets you control what gets revealed across all enrichments:
+- **Custom** (default): respects the per-row Enrich Email and Enrich Phone checkboxes.
+- **Enrich Only Emails**: reveals emails for all rows, regardless of checkboxes.
+- **Enrich Only Phones**: reveals phones for all rows, regardless of checkboxes.
+
+---
+
+## Running the Script
+
+### Search Contacts
+
+Click **Lusha Actions > Search Contacts** to populate the sheet with contacts matching your filters. Each run fetches one page of results (default: 25 contacts) and increments the page counter in A2 automatically, so successive runs pull the next page.
+
+Each contact is written to a new row starting at row 5, with:
+- Basic contact info in columns A-H
+- Per-row **Enrich Email** and **Enrich Phone** checkboxes in columns K-L (both checked by default)
+- **Enriched** status set to `No` in column M
+
+### Enrich Contacts
+
+Click **Lusha Actions > Enrich Contacts** to retrieve full contact details for all rows where **Enriched** is not yet `Yes`.
+
+The script reads the per-row checkboxes and the Global Override setting to determine what to reveal for each contact, then groups rows into batches and sends them to the API. Results are written to columns N-AU. The **Enriched** column (M) updates to:
+
+- `Yes` (green) - enrichment succeeded
+- `Excluded` (grey) - both checkboxes were unchecked for that row
+- `Error: [code]` - the API returned an error for that contact
+
+The dashboard counters and timestamps update automatically after each run.
+
+---
+
+## Minimum Input Requirements for Enrichment
+
+The enrich step uses the stable **Contact ID** (column J) populated by the search step. As long as Search Contacts ran successfully, no additional input is needed per row.
+
+---
+
+## Data Fields Returned
+
+**Core contact columns (A-M):** First Name, Last Name, Full Name, Job Title, Company Name, Company Website, Has Work Email, Has Phones, Request ID, Contact ID, Enrich Email checkbox, Enrich Phone checkbox, Enriched status.
+
+**Enrichment output columns (N-AU):** Emails (up to 2) with type and confidence, Phones (up to 2) with type and Do Not Call flag, Job Title, Departments, Seniority, full Location breakdown, LinkedIn URL, X (Twitter) URL, Previous Employment (title, departments, seniority, company), and Company Domain, Industry, and ID.
+
+---
+
+## Troubleshooting
+
+- **`Error: Credit limit reached`**: Your account has no remaining credits. Add credits and re-run enrichment - already enriched rows are skipped automatically.
+- **`Error: Invalid API key`**: Confirm the key is correctly set in Project Settings > Script Properties with the key name `api_key`.
+- **`Error: Rate limit exceeded`**: Too many requests in a short window. Wait a moment and re-run.
+- **Contacts not appearing after search**: Check the Apps Script logs under **View > Logs** for the raw API response. Confirm your filters are valid by testing them in the [Lusha API documentation](https://docs.lusha.com/apis/openapi).
+- **Enriched column shows `Excluded`**: Both the Enrich Email and Enrich Phone checkboxes are unchecked for that row. Check at least one to include it in the next enrichment run.
+
+---
+
+## Automate with Triggers (Optional)
+
+To run search or enrichment on a schedule:
+
+1. In the Apps Script editor, go to **Triggers** (clock icon in the left sidebar).
+2. Click **Add Trigger**.
+3. Choose `populateContacts` or `enrichContacts` as the function.
+4. Set the trigger type to **Time-driven** and choose your frequency.
+
+---
+
+## Legacy V2 Script
+
+<Warning>
+This script uses the Lusha V2 API, which is no longer the recommended version. New integrations should use the [V3 script](#step-2-add-the-script) above. The V2 script is preserved here for teams that have not yet migrated.
+</Warning>
+
+<details>
+<summary><strong>Show V2 Script and Setup Instructions</strong></summary>
+
+### What's Different in V2
+
+The V2 script uses different API endpoints (`/prospecting/contact/search/` and `/prospecting/contact/enrich`) and a different response structure. It does not include the dashboard, per-row checkboxes, Global Override dropdown, or the expanded enrichment output columns that the V3 script provides.
+
+### Setup (V2)
+
+Follow the same steps as V3: create a new Google Sheet, open **Extensions > Apps Script**, paste the script below, and save. In V2, the API key is pasted directly into the script on the line:
+
+```javascript
+const API_KEY = 'YOUR API KEY HERE';
+```
+
+After refreshing, headers are written to row 4 (A-N), and data starts at row 5.
+
+### Filters (V2)
+
+Customize the `payload` object inside `populateContacts()`. The template uses United States / New York and company size 51-500 as defaults.
+
+### V2 Script
+
+```javascript
+const SHEET_NAME = "Sheet1"; // Update this with your actual sheet name
+const API_KEY = 'YOUR API KEY HERE'; // Replace with your actual API key
+const BASE_URL = 'https://api.lusha.com/prospecting';
+
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Lusha Actions')
+    .addItem('Search Contacts', 'populateContacts')
+    .addItem('Enrich Contacts', 'enrichContacts')
+    .addToUi();
+}
+
+function getHeaders() {
+  return { 
+    'api_key': API_KEY,
+    'x-partner-name': 'prtnr-google_sheets_connector-prod'
+  };
+}
+
+function getSheet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    throw new Error(`Sheet with name '${SHEET_NAME}' not found.`);
+  }
+  return sheet;
+}
+
+function setupHeaders(sheet) {
+  const headers = [
+    'First Name', 'Last Name', 'Full Name', 'Job Title', 'Company Name', 'Company Website',
+    'Has Work Email', 'Has Phones', 'Has Mobile Phone', 'Has Direct Phone', 'Request ID', 'Contact ID',
+    'isShown', 'Enriched ✅'
+  ];
+  const headerRange = sheet.getRange("A4:N4");
+  if (!headerRange.getValues().flat().some(h => h)) {
+    headerRange.setValues([headers]);
+  }
+  headerRange.setFontWeight("bold");
+
+  const labelCell = sheet.getRange("A1");
+  labelCell.setValue("Prospecting Page");
+  labelCell.setFontStyle("italic");
+
+  const enrichHeaders = [
+    'LinkedIn URL', 'Department', 'Seniority', 'Email(s)', 'Phone(s)', 'Phone Types'
+  ];
+  const enrichHeaderRange = sheet.getRange("O4:T4");
+  if (!enrichHeaderRange.getValues().flat().some(h => h)) {
+    enrichHeaderRange.setValues([enrichHeaders]);
+  }
+  enrichHeaderRange.setFontWeight("bold");
+  applyConditionalFormatting(sheet);
+}
+
+function applyConditionalFormatting(sheet) {
+  const enrichedColumn = sheet.getRange("N5:N");
+  let rules = sheet.getConditionalFormatRules();
+  rules = rules.filter(rule => rule.getRanges()[0].getA1Notation() !== enrichedColumn.getA1Notation());
+
+  const noRule = SpreadsheetApp.newConditionalFormatRule()
+    .whenTextEqualTo("No")
+    .setBackground("#F5B7B1")
+    .setRanges([enrichedColumn])
+    .build();
+
+  rules.push(noRule);
+  sheet.setConditionalFormatRules(rules);
+}
+
+function populateContacts() {
+  const apiUrl = `${BASE_URL}/contact/search/`;
+  const sheet = getSheet();
+  const userProperties = PropertiesService.getUserProperties();
+  setupHeaders(sheet);
+
+  const pageCell = sheet.getRange("A2");
+  let currentPage = Number(pageCell.getValue()) || 0;
+
+  const payload = {
+    "pages": { "page": currentPage, "size": 40 },
+    "filters": {
+      "companies": {
+        "include": {
+          "locations": [{ "state": "New York", "country": "United States" }],
+          "sizes": [{ "min": 51, "max": 500 }]
+        }
+      }
+    }
+  };
+
+  const options = {
+    method: 'POST',
+    contentType: 'application/json',
+    headers: getHeaders(),
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(apiUrl, options);
+    const result = JSON.parse(response.getContentText());
+
+    if (result.requestId) {
+      userProperties.setProperty('requestId', result.requestId);
+    }
+
+    if (result.data && Array.isArray(result.data)) {
+      const contactIds = result.data.map(contact => String(contact.contactId));
+      userProperties.setProperty('contactIdsList', JSON.stringify(contactIds));
+      appendContactsToSheet(sheet, result.data);
+      currentPage++;
+      pageCell.setValue(currentPage);
+    } else {
+      Logger.log("No data found in response.");
+    }
+  } catch (error) {
+    Logger.log(`Request failed: ${error.message}`);
+  }
+}
+
+function appendContactsToSheet(sheet, contacts) {
+  if (!contacts || contacts.length === 0) return;
+
+  const data = contacts.map(contact => {
+    const fullName = contact.name || '';
+    const nameParts = fullName.trim().split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+
+    return [
+      firstName,
+      lastName,
+      fullName,
+      contact.jobTitle || '',
+      contact.companyName || '',
+      contact.fqdn || '',
+      contact.hasWorkEmail ? 'Yes' : 'No',
+      contact.hasPhones ? 'Yes' : 'No',
+      contact.hasMobilePhone ? 'Yes' : 'No',
+      contact.hasDirectPhone ? 'Yes' : 'No',
+      PropertiesService.getUserProperties().getProperty('requestId') || '',
+      contact.contactId || '',
+      contact.isShown ? 'Yes' : 'No',
+      'No'
+    ];
+  });
+
+  const lastRow = sheet.getLastRow();
+  const startRow = lastRow < 4 ? 5 : lastRow + 1;
+  sheet.getRange(startRow, 1, data.length, data[0].length).setValues(data);
+}
+
+function enrichContacts() {
+  const apiUrl = `${BASE_URL}/contact/enrich`;
+  const sheet = getSheet();
+  const userProperties = PropertiesService.getUserProperties();
+
+  const requestId = userProperties.getProperty('requestId');
+  const contactIdsList = JSON.parse(userProperties.getProperty('contactIdsList') || '[]');
+
+  if (!requestId || contactIdsList.length === 0) {
+    Logger.log("❌ No requestId or contact IDs available for enrichment.");
+    return;
+  }
+
+  const payload = { requestId: requestId, contactIds: contactIdsList };
+
+  const options = {
+    method: 'POST',
+    contentType: 'application/json',
+    headers: getHeaders(),
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(apiUrl, options);
+    const result = JSON.parse(response.getContentText());
+
+    if (result.contacts && Array.isArray(result.contacts)) {
+      appendEnrichedContactsToSheet(sheet, result.contacts);
+    } else {
+      Logger.log("⚠️ No contacts returned in enrichment response.");
+    }
+  } catch (error) {
+    Logger.log(`❌ Enrichment request failed: ${error.message}`);
+  }
+}
+
+function appendEnrichedContactsToSheet(sheet, enrichedContacts) {
+  if (!enrichedContacts || enrichedContacts.length === 0) return;
+
+  const sheetData = sheet.getDataRange().getValues();
+  const contactIdColumnIndex = 12;
+  const enrichedColumnIndex = 14;
+
+  let rowMapping = {};
+  for (let i = 4; i < sheetData.length; i++) {
+    let contactId = String(sheetData[i][contactIdColumnIndex - 1]).trim();
+    if (contactId) rowMapping[contactId] = i + 1;
+  }
+
+  enrichedContacts.forEach(contact => {
+    const contactId = String(contact.id || contact.contactId || '').trim();
+    if (!contactId) return;
+
+    let rowToUpdate = rowMapping[contactId];
+    if (!rowToUpdate) return;
+
+    const linkedIn = contact.data?.socialLinks?.linkedin || 'N/A';
+    const department = (contact.data?.departments || []).join(', ') || 'N/A';
+    const seniority = (contact.data?.seniority || []).map(s => s.value).join(', ') || 'N/A';
+    const emails = (contact.data?.emailAddresses || []).map(e => e.email).join(', ') || 'N/A';
+    const phoneNumbers = (contact.data?.phoneNumbers || []).map(p => p.number).join(', ') || 'N/A';
+    const phoneTypes = (contact.data?.phoneNumbers || []).map(p => p.phoneType).join(', ') || 'N/A';
+
+    sheet.getRange(rowToUpdate, enrichedColumnIndex).setValue("Yes");
+    sheet.getRange(rowToUpdate, enrichedColumnIndex).setBackground("#A9DFBF");
+    sheet.getRange(rowToUpdate, 15, 1, 6).setValues([
+      [linkedIn, department, seniority, emails, phoneNumbers, phoneTypes]
+    ]);
+  });
+}
+```
+
+<Note>
+For questions about migrating from V2 to V3, reach out to [support@lusha.com](mailto:support@lusha.com).
+</Note>
+
+</details>
+
+---
+
+## Additional Resources
+
+If you have any questions, feel free to reach out to the support team:
+
+- Via live chat from the [Lusha website](http://www.lusha.com/)
+- Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
+- Via email: [support@lusha.com](mailto:support@lusha.com)

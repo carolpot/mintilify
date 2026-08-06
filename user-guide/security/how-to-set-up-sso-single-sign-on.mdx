@@ -1,0 +1,110 @@
+---
+title: "How to set up SSO (single sign-on)"
+description: "How to set up SSO for Lusha using the pre-built integrations for Google, Office 365, Okta (Integration Network app), or Azure AD."
+---
+
+Lusha supports three SSO options: Google, Office 365, and SAML-based SSO via Okta or Azure. Admins and Managers on Scale plans can configure SAML SSO for their team. Google and Office 365 sign-in are available to all users.
+
+For a custom SAML 2.0 app built from scratch in Okta, see the [Okta SAML 2.0 setup article](/user-guide/security/okta-saml-20-setup-for-lusha-sso) instead.
+
+## Sign up with Google or Office 365
+
+### Google
+
+1. Go to the [Lusha signup page](https://auth.lusha.com/signup).
+2. Click **Continue with Google**.
+3. Select your Gmail Business account from the pop-up.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259825/e62c57e7f9bd5cd0f1be2076/Screen%2BShot%2B2022-12-14%2Bat%2B16_25_46.png?expires=1780056000&signature=a07e3ff16dc87bf20ae0513a4f968183aa80a4b8631cbadbe0c799939e7428ca&req=0dZtwFHyrjJk2hj99dpg6rfyIxlL9a7q%2BOQrFsOb8vG0vw1ONCj%2BTsH2N9SG%0ACylDEqbjfS46Tq0YXa27EWdg%0A" alt="" style="max-width:100%;height:auto;" />
+
+### Office 365
+
+1. Go to the [Lusha signup page](https://auth.lusha.com/signup).
+2. Click **Continue with Office 365**.
+3. Select your Microsoft Office Business account.
+
+<Note>
+You can switch from Google/Office 365 to a password-based login at any time by clicking **Forgot password** — a reset link will be sent to your email address.
+</Note>
+
+## Set up Okta SSO
+
+You'll need Lusha Admin or Manager permissions and Okta admin access to complete this setup.
+
+### Step 1: Set up in Okta (performed by the Okta admin)
+
+1. In Okta, go to the **Applications** tab and add Lusha to your applications.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259937/b1acfc30979a37c9afe79b32/image.png?expires=1780056000&signature=d5cfcce8872ec33d16b601529addace4c4d1083eab3912504e1b36f99b0123e2&req=0dZtwFHzrzBk2hj99dpg6rt9Zl9yQSTqrn%2Bk75U6m1Eky9MdSiGduYfVy7Qw%0AcHxmXBBTG1P4IiimrarClx2L%0A" alt="" style="max-width:100%;height:auto;" />
+
+2. Assign the team members who will use Lusha with Okta to the Lusha application.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259980/42e1b057ba95378bdccab6b9/image.png?expires=1780056000&signature=f7b3c9af4c8190f78bdda9f9875dd7e9a082899260e4883abb3036a2c1c00472&req=0dZtwFHzpDdk2hj99dpg6kmE3gPUfB%2F1fIyyJSYSefhIBnE2A5rXRtI12GYx%0AWTLZyHTQNr3SdxymYRbq3Zj1%0A" alt="" style="max-width:100%;height:auto;" />
+
+1. Go to the **Sign-On** tab and click **View SAML setup instructions**.
+2. Copy the IDP metadata XML.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260010/8b8512652f3ff1a549581dc2/Screen%2BShot%2B2022-10-25%2Bat%2B12_47_56.png?expires=1780056000&signature=9a2d7112beaf6c07e61433e8aab45985b346ea73532065d003bcb1a41344bc78&req=0dZtw1j6rTdk2hj99dpg6tlQf4yswWvON9VPjZKKhF%2BRcsP2CMMOd9adImuW%0AsowNgX5DjZAbia9LnC4ehGVv%0A" alt="" style="max-width:100%;height:auto;" />
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260033/4e0f861fc9be28b7ab0ef3a5/Screen%2BShot%2B2022-10-25%2Bat%2B12_50_19.png?expires=1780056000&signature=8fa794de28d9c29be0258b3632cd0b00062e63ff13bf25eaa0aaea17b549b8f0&req=0dZtw1j6rzRk2hj99dpg6mRugzjy7thkXTCECdtfD%2BfjGM7Hu0uyywynTMD9%0ApCxW0U8B39lbTf8xz4oWQyj3%0A" alt="" style="max-width:100%;height:auto;" />
+
+## Step 2: Configure in Lusha
+
+1. Go to **[Account Settings](https://dashboard.lusha.com/account/accountSettings)**.
+2. Paste the XML metadata under the **Okta activation** section.
+3. Click **Test SSO**. Lusha runs a real sign-in against the metadata you provided and only shows **SSO test passed** once it succeeds — nothing is enforced yet at this point.
+4. Once the test passes, click **Apply**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260067/9afcd03dd5c6939929e4fd8e/Screen%2BShot%2B2022-11-16%2Bat%2B13_13_51.png?expires=1780056000&signature=363819b6b29a6cbaaf1ed68d220945cec0cebeb0cb8f55d28a563b54a63419bc&req=0dZtw1j6qjBk2hj99dpg6hsZ%2FnwvSUDX8RMqu%2BmxilRv6Xr0HrHcUTdz2mh0%0Af0809NNYAeAi04m0%2B2DO%2FYoK%0A" alt="" style="max-width:100%;height:auto;" />
+
+Your account is now integrated with Okta. Team members assigned in Okta will sign in via Okta only.
+
+<Note>
+Users must already be part of your Lusha account before being assigned in Okta. After assigning, they can sign in via Okta or from Lusha's login page by clicking **Sign in with SSO provider**.
+</Note>
+
+## Set up Azure AD SSO
+
+You'll need Lusha Admin or Manager permissions and Azure admin access to complete this setup.
+
+### Part 1: Add Lusha in Azure
+
+1. Sign in to the [Azure portal](https://portal.azure.com).
+2. Go to **Enterprise applications** and add Lusha.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260086/6dd7fd0d3e9dbf44073e3423/Screen%2BShot%2B2022-12-20%2Bat%2B16_47_49.png?expires=1780056000&signature=bfcd9c1cc23d95bbed3826dc47189f34fab1f758ce8913424923c00dae672b97&req=0dZtw1j6pDFk2hj99dpg6oSCk9o08L%2F%2Fc5nXoEeUCU5%2BWZa8ole9KNjT4qOC%0ABGpiTPjjmdxTZsiEgGi8KWaZ%0A" alt="" style="max-width:100%;height:auto;" />
+
+3. Search for Lusha and click the Lusha URL in the results.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260096/771f5158726b573c15a76bfe/Screen%2BShot%2B2022-12-20%2Bat%2B16_51_14.png?expires=1780056000&signature=4ccf820a33afe3f5447c7dd7a7a0be56b09eadcf9810afebb55c9aaf5fda6a6c&req=0dZtw1j6pTFk2hj99dpg6rG5Deh0qFGgjqt7Wi%2F9bXCIseWqEAkwOftKdSr2%0Ai5B5JOpFz%2FvxKmyO6s6OWj9K%0A" alt="" style="max-width:100%;height:auto;" />
+
+4. Click **Single sign-on** from the left panel.
+
+5. Under **SAML Certificate**, download the **Federation Metadata XML**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260101/28ab85a9055941315ca79548/Screen%2BShot%2B2022-12-20%2Bat%2B16_57_00.png?expires=1780056000&signature=d26dd8a986b6d4d2d9275daf2f84af6b5e1edffa3d3255f1a01b805ce10fafb3&req=0dZtw1j7rDZk2hj99dpg6ngj%2FnsdssnZ2qsS%2FMhGqGJ9gdNUyfM2gM540Smy%0AIhMFskECwPYAZLNnfdmhdmFN%0A" alt="" style="max-width:100%;height:auto;" />
+
+<img src="https://downloads.intercomcdn.eu/i/o/14042481/478e0f99c6dcafb4beef8126/Screen%2BShot%2B2022-12-20%2Bat%2B16_58_18.png?expires=1780056000&signature=14552f84c05fb478c3433e2750c1bc057666b23ab3bb0b0c6f83c2b16939874a&req=0dFvwVr%2BpDZk2hj99dpg6prNl5c08JMbVV29T4wN9B3hXF0b2KKcBBmPzRPR%0AKpkepxry%2BXAxebcKmQb%2BxmjR%0A" alt="" style="max-width:100%;height:auto;" />
+
+### Part 2: Configure in Lusha
+
+1. Go to **[Account Settings](https://dashboard.lusha.com/account/accountSettings)**.
+2. Paste the XML under the **Azure AD activation** section.
+3. Click **Test SSO**. Lusha runs a real sign-in against the metadata you provided and only shows **SSO test passed** once it succeeds — nothing is enforced yet at this point.
+4. Once the test passes, click **Connect**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260113/0b4e834b33bdba06f68a9673/Screen%2BShot%2B2022-11-10%2Bat%2B12_21_53.png?expires=1780056000&signature=4238a9c7c7b35a2be4969f8ca94ba53436df0ab7d8cc2e97a381a7642b862a86&req=0dZtw1j7rTRk2hj99dpg6lPUUdFabUcKD%2FusvSsjTsUC%2F%2FWlOGWS1S4Kdl%2FM%0AHFNtC%2B1tMNNALnkV7Ewu3Fb0%0A" alt="" style="max-width:100%;height:auto;" />
+
+1. Assign team members by going to the **Users** tab → **New user** → **Invite users**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260119/98ba2462b72a832a5abe943d/skitch%2B-281-29.png?expires=1780056000&signature=40f19a84da9a314871876af8b8db084d36c9a0376311f7faf4779f22c5a3ea17&req=0dZtw1j7rT5k2hj99dpg6uDJz3yYczaoRx4yKSafD4jb8q05BBB0nwjqM9Cs%0AS2LYiUu0RxHD74m7rJWouC%2F6%0A" alt="" style="max-width:100%;height:auto;" />
+
+Your account is now integrated with Azure. Team members will be able to sign in using Azure SSO and Office 365.
+
+<Note>
+Users must already be part of your Lusha account before being assigned in Azure. After assigning, they can sign in via Azure or via Lusha's login page by clicking **Sign in with SSO provider**.
+</Note>
+
+For custom SAML SSO configuration, see [Custom SAML single sign-on](/user-guide/security/custom-saml-single-sign-on).
+
+For a custom SAML 2.0 app built from scratch in Okta, see the [Okta SAML 2.0 setup article](/user-guide/security/okta-saml-20-setup-for-lusha-sso) instead.

@@ -1,0 +1,44 @@
+---
+title: "How to configure a Salesforce record type"
+description: "How to configure a default Salesforce Record Type in Lusha so new Leads and Contacts are automatically assigned the right Record Type on export."
+---
+
+A Record Type in Salesforce lets you define different business processes, page layouts, and picktable values for the same object type (such as Leads or Contacts). Many organisations require every new Lead or Contact to have a specific Record Type assigned for tracking purposes.
+
+Lusha lets you set a default Record Type that will be applied automatically whenever you export a contact or lead to Salesforce.
+
+<Note>
+You need Admin permissions in Lusha to enable this setting.
+</Note>
+
+## How to configure a default Record Type
+
+1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/dashboard).
+2. Go to **[Integrations](https://dashboard.lusha.com/lusha-integrations)** and click **Manage** next to Salesforce.
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900148/78cffa701abe157a32f2f04d/Screenshot+2024-06-14+at+8_01_27.png?expires=1780056000&signature=0836a0946c272f742b83f63bb174323f4dacfb42a72a78e30417637e25d7a725&req=0dFmxVj7qD9k2hj99dpg6vHy5RlshEpubgO6hKwQH7cErVT8Id4GNH%2BrEZ9z%0AbWECBC7A0PkgT7fMN3CMGQeV%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. Go to the **Settings** tab.
+
+4. Toggle on the **Record Type** option and select your default Record Type from the dropdown.
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900175/0aa1703dc406d0a7da63e63d/Screenshot+2024-06-14+at+8_02_32.png?expires=1780056000&signature=d1e8121f15ba4d1b8272d1f866dfccdb9b174cdb52f4de1b45855bd0322e639d&req=0dFmxVj7qzJk2hj99dpg6k%2F2yPRILodCDZC%2BklgatdUSxblXgiNDdnQE3bJB%0A2rhTWsaEYJCBnWopfFzBiALw%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+You're all set - the selected Record Type will now be applied automatically when you export contacts or leads from Lusha to Salesforce.
+
+## FAQs
+
+**Do I need to create new Record Types in Salesforce first?**\
+Your existing Salesforce Record Types are already available in Lusha. Any new Record Types must be created in Salesforce before you can select them in Lusha.
+
+**What happens if I don't set a Record Type in Lusha?**\
+Salesforce will use its default behaviour - assigning the default Record Type for the user's profile, or the Master Record Type if no others are configured.
+
+**Can I set different Record Types for different users or teams?**\
+The default Record Type setting in Lusha is global across your account. For team-specific configurations, manage that through Salesforce user profiles and workflows.
+
+**Can I change the Record Type in Salesforce after exporting from Lusha?**\
+Yes, you can manually update a Record Type on any Lead or Contact in Salesforce after export, as long as you have the correct permissions.
+
+**Not sure which Record Type to use?**\
+Ask your Salesforce administrator - they'll know which Record Types are in use across your teams.

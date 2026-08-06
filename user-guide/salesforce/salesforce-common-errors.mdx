@@ -1,0 +1,120 @@
+---
+title: "Salesforce common errors"
+description: "How to diagnose and fix the most common Salesforce integration errors in Lusha, including API limits, field mapping issues, permissions, and OAuth session expiry."
+---
+
+When exporting contacts from Lusha to Salesforce, you may encounter errors related to permissions, field mapping, or your Salesforce configuration. This article covers the most common errors and how to fix each one.
+
+<Note>
+Most of these issues can only be resolved by a Salesforce Admin and a Lusha Admin. In many cases, this is the same person.
+</Note>
+
+## Reached CRM API limit
+
+This error means your Salesforce account has hit its daily API call limit, which restricts how much data Lusha can read or push.
+
+To fix this:
+
+1. Ask your Salesforce Admin to increase the daily API limit. They can also adjust it in Lusha via **Settings → Integrations → Salesforce → [API request limit](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesforce/dataEnrichment)**.
+2. After changing the limit, disconnect and reconnect the Lusha–Salesforce integration for the update to take effect.
+3. Alternatively, wait 24 hours — the API limit resets daily.
+
+## Lead assignment rules issue
+
+This error appears when a saved lead is automatically reassigned to another owner, or when Salesforce blocks the lead from saving due to an existing assignment rule.
+
+To fix this, your Salesforce Admin needs to add a new rule to bypass the existing assignment logic for Lusha-sourced leads:
+
+1. In Salesforce Setup, search for **Lead Assignment Rules**.
+2. Open the relevant rule and add a new entry at sort order **No. 1**.
+3. Set the condition: when **Lead Source** equals **Lusha**, then select **Do Not Reassign Owner**.
+4. Save the rule.
+
+## Bad value for restricted picktable field
+
+This error means the value Lusha is trying to push to a restricted picktable field in Salesforce doesn't match any of the allowed values in that table. This often comes down to case sensitivity or small differences in how values are written — for example, Lusha sends "Russia" but Salesforce expects "Russian Federation".
+
+To fix this, update your Lusha field mapping so the value matches exactly what's configured in the Salesforce picktable.
+
+## Please enter "[field name]" (required field)
+
+This error means a Salesforce field marked as required isn't included in your Lusha field mapping, so Salesforce is blocking the export because that field is empty.
+
+To fix this, add the required Salesforce field to your Lusha field mapping at **Settings → Integrations → Salesforce → Field mapping**.
+
+## No such column "[X]" on entity "[Y]"
+
+This error means a field referenced in your Lusha field mapping doesn't exist in Salesforce.
+
+To fix this, either ask your Salesforce Admin to create the missing field, or remove the field from your Lusha field mapping.
+
+## Admin cannot connect the integration ("Something went wrong")
+
+This error means Salesforce is blocking the Lusha app from connecting. Some Salesforce orgs block all third-party app connections by default.
+
+To fix this:
+
+1. In Salesforce Setup, go to **Connected Apps OAuth Usage**.
+2. Find **Lusha Push to Salesforce** and unblock it.
+3. Review your OAuth policies to confirm third-party app connections are permitted.
+4. Adjust IP restrictions if needed to allow data push from Lusha.
+
+## The REST API is not enabled for this organization
+
+This error means your Salesforce edition doesn't include Web Services API access, which Lusha requires to push contact data.
+
+To fix this, upgrade to a Salesforce edition that includes API access. See [Salesforce's documentation on API-enabled editions](https://help.salesforce.com/s/articleView?language=en_US&id=000326486&type=1) for details.
+
+## Record Type ID: This ID value isn't valid for the user
+
+This error means the user doesn't have access to the Salesforce Record Type configured in the Lusha integration.
+
+To fix this, either ask your Salesforce Admin to grant the user access to the relevant Record Type, or ask the Lusha Admin to disable the Record Type default or select a Record Type all users can access.
+
+## Cannot reference converted lead
+
+This error occurs when Lusha tries to update a record owned by a deactivated Salesforce user.
+
+To fix this:
+
+1. Create a "General Owner" admin in Salesforce with full read/write access and reassign all objects owned by deactivated users, or
+2. Go to **Setup → User Interface** and enable both **Set Audit Fields upon Record Creation** and **Update Records with Inactive Owners**, or create a permission set with **Update Records with Inactive Owners** enabled.
+
+See [Salesforce's documentation](https://help.salesforce.com/s/articleView?id=000386699&type=1) for additional guidance.
+
+## Owner is inactive
+
+This error means the Salesforce user who owns the existing record has been deactivated, so Lusha can't update it.
+
+To fix this, create a new Salesforce user and reassign records from deactivated owners, or enable the **Update Records with Inactive Owners** permission as described above.
+
+## Salesforce session keeps expiring — users are being logged out
+
+Lusha's Salesforce integration uses an OAuth connection. If your Salesforce org has a short session timeout policy, that policy can also apply to the OAuth token — causing the integration to lose its connection and silently log users out. This is not a Lusha bug; it's a Salesforce org configuration issue.
+
+Users experiencing this typically see one or more of the following:
+
+- The Salesforce integration appearing disconnected each time they open Lusha
+- Exports failing with an authentication or token error
+- Being prompted to reconnect the integration repeatedly, even after reconnecting recently
+
+## Fix: adjust the connected app's session timeout in Salesforce
+
+A Salesforce Admin needs to set the OAuth session policy for the Lusha connected app to prevent it from expiring with the org's general session timeout:
+
+1. In Salesforce Setup, go to **Apps → Connected Apps → Manage Connected Apps**.
+2. Find **Lusha** (or **Lusha Push to Salesforce**) and click **Edit Policies**.
+3. Under **Session Policies**, set **Timeout Value** to **24 hours** — or the longest value your organisation's policy permits.
+4. Save the changes.
+
+<Warning>
+If your Salesforce org enforces a session timeout at the profile or org level that's shorter than the connected app setting, the shorter timeout takes precedence. Ask your Salesforce Admin to review both the org-wide session settings (**Setup → Session Settings**) and any profile-level overrides.
+</Warning>
+
+## How to reconnect after a session drop
+
+1. Go to **[Integrations](https://dashboard.lusha.com/lusha-integrations)** in your Lusha dashboard.
+2. Click **Connect** next to Salesforce and complete the OAuth flow.
+3. Your field mapping and settings are preserved — no reconfiguration is needed after reconnecting.
+
+If none of the above resolves your issue, contact Lusha Support using the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com).

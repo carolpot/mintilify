@@ -1,0 +1,47 @@
+---
+title: "Lusha connector on Clay: Data enrichment"
+description: "How to add Lusha contact, company, and signal enrichments to your Clay tables to automate prospecting workflows."
+---
+
+Lusha enrichments let you add professional and firmographic data to existing rows in your Clay tables. By mapping an identifier like a LinkedIn URL, email, or company domain, you can automatically pull in phone numbers, emails, and growth signals without leaving Clay.
+
+**Prerequisites:** An active Clay account and a Lusha API key for contact and company enrichments. Your API key is available at [dashboard.lusha.com/enrich/api](https://dashboard.lusha.com/api) (visible to Admins and Managers only). For full API reference, see [docs.lusha.com](https://docs.lusha.com).
+
+---
+
+## How to add a Lusha enrichment to a Clay table
+
+1. Open your table in Clay and click **+ Add column** in the toolbar.
+2. Type "Lusha" in the search bar of the tools panel.
+3. Select the enrichment you want to use (e.g., **Enrich person** or **Find company news signal**).
+4. Map the required input field from your table - such as **Email**, **LinkedIn URL**, or **Company Domain**.
+5. Click **Save and Run** to start enriching your rows.
+
+---
+
+## What each enrichment returns
+
+- **Person enrichments** - job titles, seniority, departments, and verified contact details
+- **Company enrichments** - employee count, founded year, company type, and firmographics
+- **Signal enrichments** - website traffic trends, IT spend estimates, headcount growth, and recent news
+
+<Note>
+**Enrich person** and **Enrich company** deduct from your Lusha plan credits. All signal enrichments and Lookalike sources use Clay credits.
+</Note>
+
+---
+
+## Tips for scaling
+
+- **Test first** - run the enrichment on 10-20 rows before processing your full table to validate output and credit cost
+- **Check balances** - view Lusha credits in your Lusha account; view Clay credits in the top-right of the Clay interface
+- **Use filters** - apply table filters to run enrichments only on rows that meet your criteria and save credits
+
+---
+
+## Top plays with Clay + Lusha
+
+- [Automated Lusha prospecting pipeline for Salesforce](https://www.lusha.com/campus/plays/automated-lusha-prospecting-pipeline-for-salesforce/)
+- [Score new HubSpot contacts and flag high-quality leads](https://www.lusha.com/campus/plays/score-new-hubspot-contacts-with-lusha-and-flag-high-quality-leads/)
+- [Build a scheduled company enrichment pipeline](https://www.lusha.com/campus/plays/build-a-scheduled-company-enrichment-pipeline/)
+- [Identify similar companies from Pipedrive deals](https://www.lusha.com/campus/plays/identify-similar-companies-from-pipedrive-deals/)

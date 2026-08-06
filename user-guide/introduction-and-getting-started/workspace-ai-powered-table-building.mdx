@@ -1,0 +1,112 @@
+---
+title: "Workspace: AI-Powered table Building"
+description: "What Workspace is, how to build a table using AI chat or filters, how to enrich and export your table, and where to find each detailed guide."
+---
+
+Workspace is Lusha's AI-powered table-building environment. Instead of running one-off searches, you build persistent tables of contacts and companies — enriched with verified data, real-time signals, and AI insights — and take action directly from there.
+
+Use Workspace to describe your target audience in plain language, refine results through conversation, enrich with live web data, import your CRM records, and push everything to your CRM or Engage sequences — all without leaving the page.
+
+<Note>
+This feature is not avilable to our legacy Scale users.
+</Note>
+
+## How to build a table
+
+There are three ways to start a table in Workspace:
+
+- **AI chat** — Type your audience in plain language (e.g. "VPs of Sales at Series B SaaS companies in Boston") and Workspace builds a matching table. Refine it by continuing the conversation. See Building a table with AI Chat.
+- **Filter panel** — Use structured filters for job title, seniority, industry, location, company size, funding stage, and more. Combine with chat for extra precision. See Using Workspace Filters.
+- **CRM import** — Bring existing Salesforce records into a Workspace table, enrich them, and push updated data back. See Importing from CRM into Workspace.
+
+When your results look right, click **Save first X contacts** (50, 150, 500, or 1,000) to create a permanent table.
+
+## Going from search to API
+
+The Add Contacts/Companies Workspace Search control bar now includes two ways to bridge your UI search directly to the API:
+
+- **Get API request** — opens a popover showing your current search as a ready-to-run API request, in cURL, Python, or TypeScript. Copy it and drop it straight into your code.
+- **Table / JSON view toggle** — flips the results view between the familiar table and the raw JSON API response, so you can see exactly what the API returns for the same search, filters and all.
+
+This gives technical and trial users a fast way to go from searching in the UI to calling the API, with no separate docs lookup required to get started.
+
+## AI-recommended leads
+
+Workspace surfaces new prospects for you automatically in two ways:
+
+- **Homepage recommendations** — Daily AI-generated suggestions based on your past prospecting activity. Click **View all** to open a temporary table of up to 75 matches, then save what you want to keep.
+- **Add similar contacts** — Inside any saved table, click **Add contacts → Add similar contacts**. Workspace analyzes your existing rows and suggests 5 new lookalike prospects each day. Click **Regenerate** for a fresh set.
+
+See Adding Contacts to an Existing Workspace Table for full details.
+
+## Enriching your table
+
+Once a table is saved, you can add four types of data columns from the **Add enrichment** toolbar button:
+
+- **Lusha Data** — Standard contact and company fields from Lusha's verified database. Free, populates instantly.
+- **AI Data** — Real-time web enrichment: company news, competitors, executive changes, open jobs, and more. 1 credit per cell.
+- **Signals** — Behavioral intelligence: hiring surges, headcount changes, website traffic, IT spend, job changes, and promotions. 1 credit per signal detected.
+- **CRM** — Live field values from your connected Salesforce account. Free.
+
+See Workspace Enrichment: Lusha Data vs. AI Data Columns and Workspace Signals for full details.
+
+## Working inside a saved table
+
+Every saved table gives you a full set of actions from the toolbar: sort and filter your rows, reveal contact details, search by name, view company employees, and continue refining via the AI chat panel on the left.
+
+See Working Inside a Saved Table for a full walkthrough.
+
+## Exporting your table
+
+Select contacts and choose your destination:
+
+- **CSV** — Export selected rows, the current page, or all rows. Includes all visible columns and enrichment data. Cost: 1 credit per 25 rows.
+- **CRM** — Sync directly to your CRM.
+- **Sequence** — Push contacts into an active Lusha Engage email sequence.
+
+See Exporting from a Workspace Table for full details, including legacy export format options.
+
+---
+
+## Credits and costs
+
+| **Action** | **Credit cost** |
+| --- | --- |
+| AI chat prompts | 1 credit per 5 prompts |
+| Contact or company details | Based on your Lusha plan |
+| AI Data enrichment | 1 credit per cell |
+| Signals enrichment | 1 credit per signal detected |
+| CSV export | 1 credit per 25 rows |
+| Lusha Data columns | Free |
+| CRM columns | Free |
+| CRM sync | 1 credit per export |
+
+## FAQs
+
+**Is Workspace available to all users?**
+
+It's currently being rolled out and will be available to all users by May 2026.
+
+**Can I combine chat and filters?**
+
+Yes. Start with chat and refine with filters, or vice versa — both work on the same table.
+
+**Can I import from CRMs other than Salesforce?**
+
+Not yet. Salesforce (production and sandbox) is supported now. More CRM integrations are coming soon.
+
+**Will I be charged credits just for chatting with the AI?**
+
+You consume 1 credit for every 5 chat prompts, so you can explore and refine freely before committing to a table.
+
+**Is the AI Data web enrichment live or cached?**
+
+It's pulled in real-time. When you run an enrichment column, Lusha performs a fresh web crawl.
+
+**What's the difference between Workspace and Lusha Search?**
+
+Workspace is for building and enriching deep, persistent tables. Lusha Search is designed for quick, one-off searches and reveals.
+
+**What's the difference between a table and a table?**
+
+A table is your dynamic workspace where you search, filter, and enrich. A table is a named saved set of contacts or companies you want to track or act on. You save contacts from a table into a table.

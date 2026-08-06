@@ -1,0 +1,22 @@
+---
+title: "Why are some contacts excluded from bulk reveal?"
+description: "Why some contacts are excluded from bulk reveal actions in Lusha, including DNC tables, Salesforce indicator settings, and plan restrictions."
+---
+
+If you run a bulk reveal in Lusha Search and get fewer results than expected, one of the following reasons is usually the cause.
+
+## Do Not Call (DNC) table exclusions
+
+If your Admin has enabled the DNC feature, contacts whose phone numbers are registered on a national do-not-call table will be excluded from bulk reveal results. This applies to DNC tables in the UK (TPS & CTPS) and the US.
+
+For more information, see [Do Not Call (DNC) tables](/user-guide/privacy-and-compliance/do-not-call-dnc-tables).
+
+## Salesforce indicator exclusions
+
+If the Salesforce indicator is enabled on your account, contacts that already exist in your Salesforce account will be excluded from bulk reveal to prevent duplicate records. This means the reveal count may be lower than the number of results shown.
+
+For more information, see [Exclude Salesforce contacts from bulk show actions](/user-guide/export/exclude-salesforce-contacts-from-bulk-reveal).
+
+## Restricted contacts for free and trial users
+
+Free and trial users cannot reveal contacts based in Illinois due to compliance requirements. Affected contacts will appear blurred and the **Show details** button and checkbox will be disabled. If you're on a trial and seeing partial results, this restriction may be the reason.

@@ -1,0 +1,51 @@
+---
+title: "How to export contacts to CRM using Lusha"
+description: "How to export contacts from Lusha to your CRM from Lusha Search, the extension, or your contact tables."
+---
+
+You can push contacts revealed in Lusha directly to your CRM from three places: Lusha Search, the Lusha extension, and your Contact tables.
+
+Export limits vary by CRM - up to 150 contacts to Salesforce, 100 to HubSpot, and 25 to all other supported CRMs.
+
+<Note>
+Each CRM export costs 1 credit, charged at the time of export and separate from the original reveal cost.
+</Note>
+
+<Note>
+HubSpot now also supports pushing companies directly from Lusha. When exporting from Lusha's company search, select **HubSpot** and choose **Company** as the record type. You can control company record creation in **Settings → Integrations → HubSpot → Settings tab**. See [HubSpot integration](/user-guide/hubspot/hubspot-integration) for full details.
+</Note>
+
+## From Lusha Search (Prospecting)
+
+1. Go to [Lusha Search](https://dashboard.lusha.com/prospecting/contacts) and find the contacts you want.
+2. Select the contacts and click **Show details**.
+3. Click the **CRM** button in the action bar.
+4. Select the CRM integration you want to export to. If you have connected integrations, they appear at the top of the list under **Connected**. Other available integrations are shown below under **Not Connected**.
+5. Choose the record type (Lead, Contact, Company, etc.).
+
+Lusha will detect the relevant account or company name automatically. If no existing record is found, it will flag that a new account will be created (shown in green).
+
+6. To assign all selected contacts to the same account, click **Assign all [#] contacts to an account**, then select or type the account name.
+
+7. Click **Save**. A confirmation screen will appear when the export is complete.
+
+## From the Lusha extension
+
+1. Open the extension and reveal the contact's details.
+2. Click **CRM**.
+3. Select your CRM and the record type. Connected integrations appear at the top of the list; other available ones are shown below.
+
+## From Contact tables
+
+1. Open a table from the left navigation panel.
+2. Select the number of contacts you would like to export.
+3. Click **CRM** and follow the same steps as above.
+
+Please note that each integration has export limits.
+
+Up to 150 contacts to Salesforce, 100 to HubSpot, and 25 to all other supported CRMs.
+
+## Troubleshooting
+
+- **Mapping errors** - check your field mapping configuration in Integrations settings.
+- **Integration issues** - go to Integrations and reauthenticate your CRM connection.

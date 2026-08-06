@@ -1,0 +1,153 @@
+---
+title: "Tables API"
+description: "Learn how to create, manage, and automate Workspace tables using the Lusha REST API."
+---
+
+Learn how to create, manage, and automate Workspace tables using the Lusha REST API.
+
+## What is Tables API?
+
+Tables API lets you create and manage Workspace tables programmatically - the same tables you build manually in the Workspace UI, now automatable via REST API.
+
+You can create tables, add contacts or companies, enrich records, run signals, and read results - all without opening the UI. Every change made via the API reflects in your Workspace in real time, and vice versa. Tables are a single source of truth across both surfaces.
+
+**Available for:** Scale and Enterprise plans (full access). Pro plan (read only). Not available on Free.
+
+## Why use it?
+
+Until now, data retrieved via the Lusha API had nowhere to land inside Lusha - it went to a spreadsheet, a CRM, or disappeared at the end of a session. The Tables API closes that gap.
+
+- Developers can persist search and enrichment results directly inside Lusha
+- RevOps teams can automate weekly list rebuilds without manual work
+- Automation platform users (Zapier, Make, n8n) get a native Lusha destination
+- MCP users can manage tables through Claude in natural language - no code needed
+
+## What you can do today
+
+The Tables API covers three groups of endpoints, symmetric for contacts and companies (replace `/contacts/` with `/companies/` for company tables):
+
+| Group | Endpoint | What it does |
+|---|---|---|
+| Tables | `POST /v3/contacts/tables/create` | Create a new table |
+| Tables | `POST /v3/contacts/tables/list` | List all tables you own or that are shared with your account |
+| Tables | `POST /v3/contacts/tables/status` | Get a table's metadata and processing state |
+| Tables | `POST /v3/contacts/tables/update` | Update name, description, visibility, or archive state |
+| Tables | `POST /v3/contacts/tables/delete` | Permanently delete a table |
+| Entities | `POST /v3/contacts/tables/entities/add` | Add up to 500 entity IDs |
+| Entities | `POST /v3/contacts/tables/entities/remove` | Remove entity IDs from a table (up to 500 per call) |
+| Entities | `POST /v3/contacts/tables/entities/get` | Read entities with full column data and per-cell status (charges per row) |
+| Columns | `POST /v3/contacts/tables/columns/list` | List columns on a table |
+| Columns | `POST /v3/contacts/tables/columns/run` | Run a column on all, missing, or specific rows |
+| Columns | `POST /v3/contacts/tables/columns/remove` | Remove a column and its data |
+
+<Note>
+All endpoints use the `api_key` header for authentication. When authenticating with an API key, `owner.email` is required in every request body - omitting it returns a 400 error. Symmetric endpoints exist for `/v3/companies/tables/*`.
+</Note>
+
+## `tableId=` on existing V3 endpoints
+
+`tableId=` on four existing V3 endpoints to search or enrich and persist results to a table in one call:
+
+| V3 endpoint | What `tableId=` adds |
+|---|---|
+| `POST /v3/contacts/prospecting` | Search and save results to a table |
+| `POST /v3/contacts/lookalike` | Find lookalike contacts and save to a table |
+| `POST /v3/contacts/enrich` | Reveal email/phone and populate the relevant columns |
+| `POST /v3/contacts/signals` | Fetch signals and populate the Signals column |
+
+opt-in. If you don't pass `tableId=`, these endpoints behave exactly as today. No breaking changes.
+
+## Adding columns - coming soon
+
+You can list, run, and remove columns via the API today. However, adding new columns programmatically (for example, adding a Signals column or an AI insights column) is not yet available via API.
+
+<Note>
+To add columns now, open your table in the Workspace UI and add them manually. Once added there, you can run and manage those columns via the API.
+</Note>
+
+<Warning>
+**Heads up:** The API reference at docs.lusha.com currently lists a `columns/add` endpoint. This endpoint is not yet active. We'll update this article as soon as it's available.
+</Warning>
+
+Adding columns via API is coming soon. We'll update this article when it's available.
+
+## Plan availability
+
+| Plan | Tables Access | Column Ops | Read Entities |
+|---|---|---|---|
+| Free | Not available | — | — |
+| Pro | Read only | — | ✅ |
+| Scale | Full access | Full access* | ✅ |
+| Enterprise | Full access | Full access* | ✅ |
+
+\* Column operations include: list, run, and remove. Adding columns via API is Phase 2.
+
+## How to get started
+
+Here's the full flow from creating a table to reading enriched results:
+
+1. **Create a table**
+   `POST /v3/contacts/tables/create` with a name and optional description. The response returns a `tableId` and a `workspaceUrl` you can open directly in Workspace.
+
+2. **Add contacts or search and save in one call**
+   `POST /v3/contacts/tables/entities/add` to add up to 500 Lusha contact IDs per call. Or search and add in one step by passing `tableId=` on `POST /v3/contacts/prospecting`.
+
+3. **Add columns in the Workspace UI**
+   Open your table in Workspace and add the columns you need - Signals, enrichment fields, AI insights, custom fields. Once created, you can run and manage them via the API.
+
+4. **Run a column**
+   `POST /v3/contacts/tables/columns/run` with `scope: "all"` to populate data for all rows, `"missing"` for rows not yet processed, or `"specific"` with a list of entity IDs.
+
+5. **Poll for completion**
+   `POST /v3/contacts/tables/status` until `isProcessing` is `false`. The response also tells you which columns are still running.
+
+6. **Read the table**
+   `POST /v3/contacts/tables/entities/get` to retrieve all rows with full column data and per-cell status. Note: reading entities charges per row returned.
+
+<Note>
+Every table response includes a `workspaceUrl`. Click it to open the table directly in Workspace - the same data, the same table, both surfaces in sync.
+</Note>
+
+## Via MCP (Claude)
+
+If you're using Lusha via MCP in Claude, you can manage tables through natural language - no API knowledge required.
+
+Tell Claude what you need (for example: "find VP Sales in US tech and save them to a table") and it handles the API calls. The table appears in your Workspace automatically.
+
+Each REST endpoint maps to an atomic MCP tool: `table_create`, `table_search_and_save`, `table_enrich`, `table_signals`, `table_run_column`, `table_status`, and more.
+
+<Note>
+MCP capabilities for Tables are rolling out shortly. Check the Lusha MCP connector in Claude for availability.
+</Note>
+
+## Credit model
+
+Credits are charged based on what data is revealed or processed:
+
+- Free: Table CRUD, listing columns, adding/removing entities (contacts tables)
+- Reading entities: charges per row returned
+- Adding companies to a table: charges `reveal_company` per newly added company (deduped - already-present companies aren't charged again)
+- Contact reveal: 1 credit per email, 5 credits per phone - charged once per account
+- Company enrichment column: charged once per company per table; re-runs on an already-paid company are free
+- Signals, AI columns, premium data points: charged per row, per run (re-running charges again)
+- Adding a column: free; if `runScope` triggers an immediate run, that run is billed as a normal column run
+
+Every API response includes a `billing` field that shows exactly how many credits were charged and for which rows.
+
+## Account limits
+
+- Up to 500 entity IDs per add or remove call
+- Up to 50,000 entities per table
+- Up to 500 tables per account
+
+## Common error codes
+
+| Code | Meaning |
+|---|---|
+| `TABLE_NOT_FOUND` | The `tableId` doesn't exist or you don't have access |
+| `TABLE_NAME_CONFLICT` | A table with that name already exists on your account |
+| `BATCH_LIMIT_EXCEEDED` | More than 500 IDs in a single `entities/add` or `entities/remove` call |
+| `FORBIDDEN` | Your plan doesn't include this operation |
+| `RATE_LIMIT_EXCEEDED` | Slow down and retry |
+
+You're all set! Your tables are ready to automate. 🎉

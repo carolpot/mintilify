@@ -1,0 +1,143 @@
+---
+title: "CSV Enrichment"
+description: "Use the Enrich page to upload contact tables and fill in missing data at scale"
+---
+
+CSV enrichment is a dedicated enrichment hub that lets you upload large tables of contacts and automatically fill in missing or outdated data - business emails, direct dials, job titles, company details, and more.
+
+Use Enrich when you already have a table and need to complete it, rather than building a new table from scratch.
+
+<Note>
+  Each plan has a different row limit per enrichment: Free — 100 rows | Professional — up to 300 | Premium — up to 500 | Scale — up to 10,000. You can enrich as many files as your credits allow.
+</Note>
+
+## What you can do with Enrich
+
+Upload a CSV file of contacts with partial information (name, company, LinkedIn URL, or email) and Lusha will match each row against its database and return verified data for every field it can fill.
+
+Enrich is designed for volume. It handles large batches efficiently and gives you a clean, exportable file when it's done.
+
+## How to enrich a table
+
+1. Go to **Enrich > CSV Enrichment** in the left navigation, or go directly [here](https://dashboard.lusha.com/enrich/csv).
+2. Click **Upload CSV** and select your file. Your CSV must contain at least one of the following:
+
+| **Required data** | **Example** |
+| --- | --- |
+| A LinkedIn profile URL (optimal) | [https://www.linkedin.com/in/profilename/](https://www.linkedin.com/in/assaf-eisenstein-a7b187159/) |
+| Email | [john.smith@lusha.com](mailto:john.smith@lusha.com) |
+| Full name + Company name | John Smith \| Lusha |
+
+The file must also meet these requirements: CSV format only, no more than 20 MB, no more than 10,000 rows.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/135027540/eb21b85bcaf1ffe04d3c3d2c5e62/Screenshot%2B2024-06-18%2Bat%2B9_42_48.png?expires=1780056000&signature=3479d2e010b81fc437f9e33b3bafa9b9cc1aff5edb9c94785f138555da097479&req=0dZqxVr9qTMolxv2%2BtxgptDnMJsPGoZMlV0q2iw9Glx9PMK%2BBvGmLa4cIr1w%0AcoQHghxDPke567brwagoFN1Ydw%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. Map your file's columns to Lusha's fields (e.g. map "Full Name" → First Name + Last Name, "Company" → Company Name).
+
+<img src="https://downloads.intercomcdn.eu/i/o/15037756/76c26406f631f66ae888b21e/Screenshot+2024-06-18+at+9_56_26.png?expires=1780056000&signature=2079c270554b24da64e934ee2664ab89c951ea16723499edc5004cf2217b93fc&req=0dBvxl%2F9qTFk2hj99dpg6viyPOaykE6E6CkLBy4Os0uzI3F224ZwGvlaX8pT%0AxBXZiwHPMNwt2Kje57rZbN5p%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+4. Choose whether to enrich **emails**, **phones**, or **both**. Only contacts Lusha matches will be charged credits and click **Start Enrichment**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/135027763/c262d2a71b87fb57ba6342716534/Screenshot%2B2024-06-18%2Bat%2B9_43_23.png?expires=1780056000&signature=62d7a7fdd967c2e09c9773fed6a93ce289a72afd1b4af6881177f87279d7eac4&req=0dZqxVr9qzErlxv2%2BtxgpmDiaxJDBfWwczCKyoq%2FZS4IBrTRadfgzoNjp7PL%0A0vO97t8HGJ03%2BCQwpSVC7ROAcg%3D%3D%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+5. Lusha processes your file. Depending on the file size, this may take a few minutes.
+
+6. Once complete, click **Download** to export your enriched CSV.
+
+<Tip>
+  The more identifying fields you include in your upload (LinkedIn URL, work email, full name + company), the higher your match rate will be.
+</Tip>
+
+7. You can also view the enriched data as a table by clicking **View table** within the [CSV Enrichment](https://dashboard.lusha.com/enrich/csv) dashboard — this automatically creates a new table in the left-hand menu.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/54336320/0b3dc8a6e17ed4fa9314f52982bb/Screenshot+2025-06-17+at+19_16_26.png?expires=1780056000&signature=6e15542ee3e233b1d6f762b90fad14598d27ae298640b2562e77a1500bc955e2&req=1dFsxl75rjdk2hj99dpg6j2k3Vm9I1Bz%2BSN%2FHlbKInDIXsQDU0x3MBiETXAt%0AoFOQ3OZXI%2B8SaUKpHJ0PTlbb%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+8. Download the enriched table by clicking the three dots (⋮) next to the table name > **Export to CSV**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/54336086/e5d1e1e17e8d79e6225cde652dd0/Screenshot+2025-06-17+at+19_20_57.png?expires=1780056000&signature=e5507162a7ed0f6d36abdff6e3539d83a274876650be4d1b45acb977f8c58c11&req=1dFsxl76pDFk2hj99dpg6tmd1iEEj9z9NcnCDi%2F4OhWeSq9fVpYZbjC8ab4b%0At4SGw3bpuZfBKRv8%2BN9Mip1F%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## How to manage your enriched CSV files
+
+Any CSV file you enrich can be accessed through the Enrich tab for 3 months. To remove a table, click the trashcan icon to confirm deletion.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/54336698/8a6d24600b00069eab5c12aa1ece/Screenshot+2025-06-17+at+19_28_24.png?expires=1780056000&signature=5f7420f7d9c386b1b1c85f78d67dbdb2c4fb99eb8525ad24d6b184666039e161&req=1dFsxl78pT9k2hj99dpg6iPVILsfsI0cWH62dC%2BBTCgYAVrUroSAdbJFxoSj%0Awqqz2Rh9X1bM6YB3TeaoUeXm%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Note>
+  After 3 months, you'll only be able to access the enriched data through the created table, which can be exported to a new CSV file.
+</Note>
+
+## Credits and costs
+
+Each successfully enriched contact costs 1 credit. Rows that are not matched do not use credits.
+
+<Note>
+  Credits are only consumed when Lusha finds and returns verified data for a contact. Unmatched rows are free.
+</Note>
+
+## Troubleshooting CSV import errors
+
+If you see an error when uploading your file — such as "Import a CSV format" or the upload button does nothing — one of the following is usually the cause.
+
+## The file isn't saved as a true CSV
+
+The most common cause is saving an Excel file with a .csv extension without properly converting it. Open your file in Excel or Google Sheets and re-export it.
+
+1. In **Excel**: go to **File → Save As** and choose **CSV UTF-8 (Comma delimited) (.csv)**.
+2. In **Google Sheets**: go to **File → Download → Comma-separated values (.csv)**.
+3. Try uploading the re-exported file.
+
+## The file uses semicolons or tabs instead of commas
+
+Lusha expects comma-separated values. If your file uses semicolons (common in European Excel locales) or tab characters, it will be rejected.
+
+1. Open the file in a text editor (Notepad, TextEdit).
+2. Check what separates the values in the first row — it should be a comma.
+3. If you see semicolons, re-export from Excel using **CSV UTF-8 (Comma delimited)**, or use Google Sheets to convert.
+
+## File encoding issues (BOM or UTF-16)
+
+Files saved with a BOM (Byte Order Mark) or in UTF-16 encoding can cause upload failures even when the file looks correct.
+
+1. Open the file in a plain-text editor.
+2. Save it explicitly as **UTF-8 without BOM** (in Notepad, choose **Save As → Encoding: UTF-8**).
+3. Try uploading again.
+
+## Extra blank columns or rows at the end of the file
+
+Empty columns or trailing blank rows can cause the upload to fail or produce incorrect mapping.
+
+1. Open your file in Excel or Google Sheets.
+2. Select and delete any blank columns to the right of your data, and any blank rows below it.
+3. Re-save and try uploading again.
+
+<Note>
+  If none of the above resolves the error, contact Lusha Support via the chat icon in your dashboard and share a sample of your file (with any sensitive data removed). Our team will identify the issue.
+</Note>
+
+## **🛠️ FAQs**
+
+**What's the difference between Enrich and CSV Enrichment?**
+
+They are the same workflow. "Enrich" is the name of the page in the dashboard. "CSV Enrichment" refers to the file-based method. Both point to the same place.
+
+**Can I enrich company data only, without contacts?**
+
+Yes. Map your company name and/or domain and Lusha will return firmographic data (industry, size, revenue, HQ location) for each company row.
+
+**What happens to rows Lusha can't match?**
+
+Unmatched rows are included in your download with the original data intact and the enrichment columns left blank. No credits are used for those rows.
+
+**Is there a row limit per upload?**
+
+Yes, each plan has a different row limit per enrichment:
+
+Free — 100 rows
+
+Professional — up to 300
+
+Premium — up to 500
+
+Scale — up to 10,000.
+
+You can enrich as many files as your credits allow.

@@ -4,122 +4,178 @@ description: "Unified B2B data for enrichment, prospecting, signals, and AI work
 mode: "custom"
 ---
 
-<div style={{ maxWidth: "860px", margin: "0 auto", padding: "60px 24px 56px" }}>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" />
+
+<div style={{ maxWidth: "1120px", margin: "0 auto", padding: "56px 24px 88px" }}>
 
   <div
-    className="border border-violet-100 dark:border-violet-900 bg-gradient-to-br from-violet-50 via-purple-50 to-white dark:from-violet-950 dark:via-purple-950 dark:to-gray-950"
-    style={{ borderRadius: "16px", padding: "48px 44px", marginBottom: "48px" }}
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+      gap: "48px",
+      alignItems: "center",
+      paddingBottom: "56px",
+    }}
+    className="border-b border-gray-100 dark:border-gray-800"
   >
-    <h1
-      className="text-gray-900 dark:text-gray-100"
-      style={{ fontSize: "2.4rem", fontWeight: 700, lineHeight: 1.2, marginBottom: "14px" }}
-    >
-      Unified B2B data for prospecting,<br />enrichment &amp; signals
-    </h1>
-    <p
-      className="text-gray-500 dark:text-gray-400"
-      style={{ fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "32px", maxWidth: "500px" }}
-    >
-      Build with Lusha's API to enrich records, find new prospects,
-      detect account changes, and connect to AI workflows.
-    </p>
-    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-      <a
-        href="/api-reference/overview"
-        style={{ display: "inline-block", background: "#863fff", color: "#ffffff", padding: "11px 24px", borderRadius: "7px", textDecoration: "none", fontWeight: 600, fontSize: "0.95rem" }}
+    <div>
+      <p
+        className="text-violet-600 dark:text-violet-400"
+        style={{ fontFamily: "'IBM Plex Mono', ui-monospace, monospace", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", margin: "0 0 18px" }}
       >
-        API Documentation →
-      </a>
-      <a
-        href="/introduction"
-        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600"
-        style={{ display: "inline-block", padding: "11px 24px", borderRadius: "7px", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem" }}
+        API · User Guide · Data · MCP
+      </p>
+      <h1
+        className="text-gray-900 dark:text-gray-100"
+        style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "2.6rem", fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.01em", margin: "0 0 20px" }}
       >
-        Get started
-      </a>
+        Lusha Knowledge Hub
+      </h1>
+      <p
+        className="text-gray-500 dark:text-gray-400"
+        style={{ fontSize: "1.05rem", lineHeight: 1.65, maxWidth: "460px", margin: "0 0 32px" }}
+      >
+        One destination for data docs, developer APIs, and user guides across the Lusha platform.
+      </p>
+      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+        <a
+          href="https://www.lusha.com/signup/"
+          style={{ display: "inline-block", background: "#863fff", color: "#ffffff", padding: "12px 22px", borderRadius: "8px", textDecoration: "none", fontWeight: 600, fontSize: "0.9rem" }}
+        >
+          Get your API key
+        </a>
+        <a
+          href="/introduction"
+          className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700"
+          style={{ display: "inline-block", padding: "12px 22px", borderRadius: "8px", textDecoration: "none", fontWeight: 600, fontSize: "0.9rem" }}
+        >
+          Browse the docs
+        </a>
+      </div>
+    </div>
+
+    <div
+      className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+      style={{ borderRadius: "14px", padding: "22px 22px 18px", fontFamily: "'IBM Plex Mono', ui-monospace, monospace", boxShadow: "0 20px 45px -25px rgba(23, 19, 31, 0.35)" }}
+    >
+      <div className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.75rem", fontWeight: 600 }}>
+        POST /v3/contacts/search-and-enrich
+      </div>
+      <div className="text-gray-900 dark:text-gray-100" style={{ fontSize: "0.8rem", fontWeight: 600, marginTop: "4px" }}>
+        "Dustin M." · lusha.com
+      </div>
+
+      <div className="border-gray-100 dark:border-gray-800" style={{ borderTop: "1px solid", margin: "14px 0 10px" }} />
+
+      <div style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", fontSize: "0.8rem" }}>
+        <span className="text-gray-500 dark:text-gray-400">Email</span>
+        <span className="text-gray-900 dark:text-gray-100" style={{ fontWeight: 500 }}>
+          d••••@lusha.com{" "}
+          <span className="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950" style={{ borderRadius: "999px", padding: "1px 7px", fontSize: "0.7rem", fontWeight: 600 }}>✓ verified</span>
+        </span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", fontSize: "0.8rem" }}>
+        <span className="text-gray-500 dark:text-gray-400">Phone</span>
+        <span className="text-gray-900 dark:text-gray-100" style={{ fontWeight: 500 }}>
+          +1 ••• ••••{" "}
+          <span className="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950" style={{ borderRadius: "999px", padding: "1px 7px", fontSize: "0.7rem", fontWeight: 600 }}>✓ verified</span>
+        </span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", fontSize: "0.8rem" }}>
+        <span className="text-gray-500 dark:text-gray-400">Credits used</span>
+        <span className="text-gray-900 dark:text-gray-100" style={{ fontWeight: 500 }}>2</span>
+      </div>
+
+      <div
+        className="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950"
+        style={{ marginTop: "14px", borderRadius: "8px", padding: "9px 12px", fontSize: "0.75rem", fontWeight: 500, display: "flex", alignItems: "center", gap: "7px" }}
+      >
+        <span className="bg-violet-600 dark:bg-violet-400" style={{ width: "6px", height: "6px", borderRadius: "50%", flexShrink: 0 }} />
+        New signal — Headcount +12% in 90 days
+      </div>
     </div>
   </div>
 
-  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px" }}>
+  <p
+    className="text-gray-400 dark:text-gray-500"
+    style={{ fontFamily: "'IBM Plex Mono', ui-monospace, monospace", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", margin: "48px 0 20px" }}
+  >
+    Find your way in
+  </p>
 
-    <div
-      className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
-      style={{ borderTop: "3px solid #863fff", borderRadius: "12px", padding: "28px 24px" }}
-    >
-      <h2
-        className="text-gray-900 dark:text-gray-100"
-        style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "8px", marginTop: 0 }}
-      >
-        API & Developers
-      </h2>
-      <p
-        className="text-gray-500 dark:text-gray-400"
-        style={{ fontSize: "0.875rem", lineHeight: 1.6, marginBottom: "20px", marginTop: 0 }}
-      >
-        REST API reference, authentication, rate limits, and code examples.
-      </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
-        <a href="/introduction" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Quickstart</a>
-        <a href="/authentication" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Authentication</a>
-        <a href="/api-reference/search/search-contacts" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Search & Enrich API</a>
-        <a href="/api-reference/prospecting/prospecting-contacts" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Prospecting API</a>
-        <a href="/api-reference/signals/contact-signals" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Signals & Webhooks</a>
-        <a href="/error-codes" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Error codes</a>
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "18px" }}>
+
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "12px", padding: "22px 20px" }}>
+      <div className="bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400" style={{ width: "32px", height: "32px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", marginBottom: "12px" }}>◆</div>
+      <h3 className="text-gray-900 dark:text-gray-100" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "1rem", fontWeight: 600, margin: "0 0 6px" }}>API &amp; Developers</h3>
+      <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>REST API reference, authentication, rate limits, and the Tables API.</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <a href="/introduction" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Quickstart</a>
+        <a href="/authentication" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Authentication</a>
+        <a href="/enrichment/search-and-enrich-contacts" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Search &amp; Enrich API</a>
+        <a href="/prospecting/overview" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Prospecting API</a>
+        <a href="/user-guide/lushas-api/tables-api" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Tables API</a>
+        <a href="/error-codes" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Error codes</a>
       </div>
     </div>
 
-    <div
-      className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
-      style={{ borderTop: "3px solid #863fff", borderRadius: "12px", padding: "28px 24px" }}
-    >
-      <h2
-        className="text-gray-900 dark:text-gray-100"
-        style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "8px", marginTop: 0 }}
-      >
-        User Guide
-      </h2>
-      <p
-        className="text-gray-500 dark:text-gray-400"
-        style={{ fontSize: "0.875rem", lineHeight: 1.6, marginBottom: "20px", marginTop: 0 }}
-      >
-        Platform features, browser extensions, and CRM integrations.
-      </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
-        <a href="/user-guide/overview" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Platform overview</a>
-        <a href="/user-guide/chrome-extension" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Chrome extension</a>
-        <a href="/user-guide/salesforce" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Salesforce integration</a>
-        <a href="/user-guide/hubspot" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>HubSpot integration</a>
-        <a href="/user-guide/team-management" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Team management</a>
-        <a href="/user-guide/billing-and-plans" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Billing & plans</a>
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "12px", padding: "22px 20px" }}>
+      <div className="bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" style={{ width: "32px", height: "32px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", marginBottom: "12px" }}>▤</div>
+      <h3 className="text-gray-900 dark:text-gray-100" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "1rem", fontWeight: 600, margin: "0 0 6px" }}>User Guide</h3>
+      <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>Platform features, browser extensions, and CRM integrations.</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <a href="/user-guide/overview" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Platform overview</a>
+        <a href="/user-guide/chrome-extension" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Chrome extension</a>
+        <a href="/user-guide/salesforce" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Salesforce integration</a>
+        <a href="/user-guide/hubspot" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>HubSpot integration</a>
+        <a href="/user-guide/team-management" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Team management</a>
+        <a href="/user-guide/billing-and-plans" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Billing &amp; plans</a>
       </div>
     </div>
 
-    <div
-      className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
-      style={{ borderTop: "3px solid #863fff", borderRadius: "12px", padding: "28px 24px" }}
-    >
-      <h2
-        className="text-gray-900 dark:text-gray-100"
-        style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "8px", marginTop: 0 }}
-      >
-        Data & Reference
-      </h2>
-      <p
-        className="text-gray-500 dark:text-gray-400"
-        style={{ fontSize: "0.875rem", lineHeight: 1.6, marginBottom: "20px", marginTop: 0 }}
-      >
-        Field definitions, coverage, signal types, and MCP tools.
-      </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
-        <a href="/data-catalog/overview" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Data catalog</a>
-        <a href="/data-catalog/contact-identity" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Contact fields</a>
-        <a href="/data-catalog/company-firmographics" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Company fields</a>
-        <a href="/data-catalog/signal-types" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>Signal types</a>
-        <a href="/mcp/overview" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>MCP overview</a>
-        <a href="/faq/api" style={{ fontSize: "0.875rem", color: "#863fff", textDecoration: "none", fontWeight: 500 }}>FAQ</a>
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "12px", padding: "22px 20px" }}>
+      <div className="bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400" style={{ width: "32px", height: "32px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", marginBottom: "12px" }}>◈</div>
+      <h3 className="text-gray-900 dark:text-gray-100" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "1rem", fontWeight: 600, margin: "0 0 6px" }}>Data &amp; Reference</h3>
+      <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>Field definitions, coverage, signal types, and MCP tools.</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <a href="/data-catalog/overview" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Data catalog</a>
+        <a href="/data-catalog/contact-identity" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Contact fields</a>
+        <a href="/data-catalog/company-firmographics" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Company fields</a>
+        <a href="/data-catalog/signal-types" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Signal types</a>
+        <a href="/tutorials/index" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Tutorials</a>
+        <a href="/faq/api" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>FAQ</a>
       </div>
     </div>
 
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "12px", padding: "22px 20px" }}>
+      <div className="bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" style={{ width: "32px", height: "32px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", marginBottom: "12px" }}>✦</div>
+      <h3 className="text-gray-900 dark:text-gray-100" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "1rem", fontWeight: 600, margin: "0 0 6px" }}>MCP &amp; AI Agents</h3>
+      <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>Connect Lusha to Claude, Cursor, and any MCP-compatible client.</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <a href="/mcp/overview" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>MCP overview</a>
+        <a href="/mcp/setup" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Setup</a>
+        <a href="/mcp/tools" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Tool reference</a>
+        <a href="/mcp/examples" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Examples</a>
+        <a href="/faq/mcp" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>MCP FAQ</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div
+    className="border-gray-100 dark:border-gray-800 text-gray-400 dark:text-gray-500"
+    style={{ marginTop: "48px", paddingTop: "20px", borderTop: "1px solid", fontFamily: "'IBM Plex Mono', ui-monospace, monospace", fontSize: "0.75rem", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px" }}
+  >
+    <span>
+      <span className="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950" style={{ borderRadius: "4px", padding: "1px 6px", fontWeight: 600 }}>V3</span>{" "}
+      is the current API version
+    </span>
+    <span>·</span>
+    <span>V2 is supported as legacy — <a href="/tutorials/v3-migration-guide" className="text-violet-600 dark:text-violet-400" style={{ textDecoration: "none" }}>migration guide</a></span>
+    <span>·</span>
+    <a href="/changelog/overview" className="text-violet-600 dark:text-violet-400" style={{ textDecoration: "none" }}>Changelog</a>
   </div>
 
 </div>

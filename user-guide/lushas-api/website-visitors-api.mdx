@@ -1,0 +1,74 @@
+---
+title: "Website Visitors API"
+description: "Learn what data the Website Visitors API returns and how to use it in your own workflows and automations."
+---
+
+Website Visitors tracks which companies are visiting your website and gives you behavioral data about those visits. Until now, this data was only available inside Lusha's platform. The API makes the same data accessible to developers and RevOps teams who want to route it directly into their own systems, automations, and workflows.
+
+This article covers what the Website Visitors API returns, who can use it, and how it fits into your existing API workflow.
+
+---
+
+## Who Can Use This
+
+The Website Visitors API is available to accounts that have:
+
+- Website Visitors already configured in their Lusha account
+- A valid Site ID
+- A paid plan
+
+<Note>
+  Starting July 20th, 2026, each company identified via the Website Visitors API costs **2 credits** per unique company per month — the same rate as Workspace and MCP access. Credits are drawn from your Website Visitors credit pool.
+</Note>
+
+---
+
+## What You Can Query
+
+Use the API to query companies that have visited your tracked domains. You can filter results by:
+
+- Intent score
+- Date range
+- Location
+- Pages visited
+
+---
+
+## Data Returned Per Company
+
+Each company in the response includes:
+
+- Number of sessions
+- Unique visitor count
+- Average session time
+- High-intent pageviews
+- Last visit date
+
+---
+
+## Batch Support
+
+You can query multiple domains in a single API call. This reduces request overhead when you are tracking more than one domain.
+
+---
+
+## How It Fits Into Your API Workflow
+
+The Website Visitors API is designed to chain naturally with other Lusha API tools. A typical workflow looks like this:
+
+1. Query Website Visitors to get a table of companies visiting your site
+2. Enrich those companies to get firmographic data
+3. Find contacts at those companies
+4. Check Signals to add more buying-intent context before outreach
+
+<Note>
+  You must have Website Visitors configured in your account before using this API. If you haven't set it up yet, contact your account admin to [implement it on your site](https://info.lusha.com/en/articles/616561-website-visits).
+</Note>
+
+---
+
+## API Reference
+
+Full endpoint documentation, request parameters, and response schemas are available at [docs.lusha.com/apis/openapi/website-visitors](https://docs.lusha.com/apis/openapi/website-visitors).
+
+**Now you're ready to plug real-time intent data directly into your workflows.**

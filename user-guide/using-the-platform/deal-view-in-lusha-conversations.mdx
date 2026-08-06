@@ -1,0 +1,43 @@
+---
+title: "Deal View in Lusha Conversations"
+description: "Understand how the Deal View link in Lusha Conversations connects your recorded meetings to Salesforce opportunities."
+---
+
+The **View deal** link in your Conversations meeting table connects each recorded meeting to its corresponding Salesforce opportunity. Instead of switching between tools to cross-reference a call and its deal, you can click **View deal** directly from the meeting row to open the linked Salesforce opportunity in a new tab.
+
+## Where to find Deal View
+
+Go to **Engagement → Conversations** (/ci/meetings). In the meetings table, look for the **View deal** link in the meeting row. If a Salesforce opportunity is matched to that meeting, the link will be active. Clicking it opens the opportunity directly in Salesforce.
+
+<Note>
+Deal View is also accessible from the Meeting Analysis page for individual meetings.
+</Note>
+
+## How meeting-to-deal matching works
+
+Lusha matches a meeting to a Salesforce opportunity based on the email addresses of the meeting participants. If participants are contacts associated with a Salesforce account that has an open opportunity, Lusha surfaces the **View deal** link for that meeting.
+
+If no match is found, the Deal View column will be empty for that meeting.
+
+## Requirements
+
+- Your [Salesforce integration](/user-guide/salesforce/salesforce-integration) must be connected and active.
+- The meeting participants must be contacts associated with a Salesforce opportunity.
+
+<Note>
+Deal View is read-only. Clicking it opens the Salesforce opportunity in a new tab — you cannot edit the opportunity from within Lusha Conversations.
+</Note>
+
+## Troubleshooting
+
+## View deal link not appearing
+
+If the **View deal** link is missing for a meeting, work through these checks:
+
+1. Confirm your Salesforce integration is connected and active in **Settings → Integrations**.
+2. Check that the meeting participants' email addresses exist as contacts in Salesforce and are associated with an account that has an open opportunity.
+3. If participants were added to Salesforce after the meeting was recorded, the match may not appear automatically. Try re-opening the meeting from your Conversations table to refresh the match.
+
+If the link still doesn't appear after these checks, contact Lusha Support.
+
+Use Deal View to move between call context and deal status without ever leaving your workflow.

@@ -15,12 +15,31 @@ Signals are real-world changes detected for contacts and companies. They are ava
 
 ## Company signals
 
-| Signal | Description |
-|---|---|
-| Funding | A new funding round was announced |
-| Headcount growth | The company's employee count grew significantly |
-| Technology adoption | The company added a new tool to its tech stack |
+| Signal | Value | Description |
+|---|---|---|
+| Website traffic increase | `websiteTrafficIncrease` | The company's website traffic increased significantly |
+| Website traffic decrease | `websiteTrafficDecrease` | The company's website traffic decreased significantly |
+| IT spend increase | `itSpendIncrease` | The company's IT spending increased |
+| IT spend decrease | `itSpendDecrease` | The company's IT spending decreased |
+| Surge in hiring | `surgeInHiring` | The company shows a surge in overall hiring activity |
+| Surge in hiring by department | `surgeInHiringByDepartment` | The company shows a surge in hiring for a specific department |
+| Surge in hiring by location | `surgeInHiringByLocation` | The company shows a surge in hiring in a specific location |
+| Headcount increase (1/3/6/12 month) | `headcountIncrease1m` / `3m` / `6m` / `12m` | The company's headcount grew over the given window |
+| Headcount decrease (1/3/6/12 month) | `headcountDecrease1m` / `3m` / `6m` / `12m` | The company's headcount shrank over the given window |
+| Risk news | `riskNews` | Security issue, lawsuit faced |
+| Commercial activity news | `commercialActivityNews` | Partnership, new customer, new vendor |
+| Corporate strategy news | `corporateStrategyNews` | M&A, facilities expansion, new location, facility closure, asset sale, lawsuit filed |
+| Financial events news | `financialEventsNews` | Funding round, asset investment, strategic investment, IPO |
+| People news | `peopleNews` | Executive hire, executive departure, executive promotion, headcount increase, headcount decrease |
+| Market intelligence news | `marketIntelligenceNews` | Event participation, recognition, competitor activity |
+| Product activity news | `productActivityNews` | Product launch, product development, product integration |
+
+<Note>
+  The seven `*News` signal types each return the same field shape: `eventType` (the specific sub-event, e.g. `"Security Issue"`), `eventCategory` (the broad grouping shown above), `eventSummary` (a short AI-generated summary), `eventEffectiveDate`, `articleTitle`, `articleSentence`, `articleUrl`, and `articlePublishedDate`.
+</Note>
+
+Company signals also support sub-filters — `newsEventTypes`, `hiringByDepartments`, and `hiringByLocations` — to narrow results to specific sub-event types or departments/locations without a separate request.
 
 ## Lookback window
 
-By default, signals are returned for the past **6 months**. Use the `signalsStartDate` parameter (`YYYY-MM-DD`) to extend or restrict the window.
+By default, signals are returned for the past **6 months**. Use the `signalsStartDate` parameter (REST API, `YYYY-MM-DD`) or `startDate` (MCP signals tools) to extend or restrict the window. `maxResultsPerSignal` caps how many results are returned per signal type per entity.

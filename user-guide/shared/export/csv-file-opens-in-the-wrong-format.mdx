@@ -1,0 +1,61 @@
+---
+title: "CSV File Opens in the Wrong Format"
+description: "Five ways to fix a CSV export from Lusha that displays incorrectly when opened in Excel."
+---
+
+When you export a CSV file from Lusha and open it in Excel, the data may appear jumbled in a single column instead of spreading across separate fields. This usually happens because Excel isn't recognizing the comma delimiter, or because of regional settings on your computer. Try the options below to fix it - re-exporting won't consume additional credits.
+
+<Note>
+Data containing special characters may not display correctly in Excel even after following these steps.
+</Note>
+
+## Option 1 — Narrow the rows
+
+1. Click the small square at the intersection of column A and row 1 to select the entire sheet.
+2. Reduce the height of row 1 to a smaller size.
+
+You can watch this video as well:
+
+## Option 2 — Change Excel settings
+
+Open the CSV file in Excel, then:
+
+1. Select all the contacts.
+2. Click **Data**.
+3. Click **Text to Columns**.
+4. Make sure **Delimited** is selected and click **Next**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/17659201/b1c8ba6c36da94724231a8eb/Screenshot+2024-07-29+at+11_39_14.png?expires=1780056000&signature=926757163b2eb652945c80993341acec83f1c39ef3b95ac77a6b0d1c6a156761&req=0dJpwFH4rDZk2hj99dpg6q2xESjk5bNFew6zgi%2FsiilU3zUdfnOLgKrsQk4m%0ABpCvFcQZGc%2FQZBolyP6FxI9S%0A" alt="" style="max-width:100%;height:auto;" />
+
+5. Check **Comma** and click **Next**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/17659554/ce6ef0d1e7b49c14f32f83fe/Screenshot+2024-07-29+at+11_46_11.png?expires=1780056000&signature=20b384e71c155118f84f895c205dc12754172a880a87715e39604db05428cbbc&req=0dJpwFH%2FqTNk2hj99dpg6utOlfum4yDA8K0RqOeCKjri1pUJ5m4WZsKKCPtR%0AvCojrnLYrBFGSsXno%2BepvBwK%0A" alt="" style="max-width:100%;height:auto;" />
+
+6. Select **General** and click **Finish**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/17659573/d20727239b1beec490da88cc/Screenshot+2024-07-29+at+11_46_19.png?expires=1780056000&signature=c9bd1331ae4af6b4ad2b050216e180183f9b552893ff3343107b17854693bbdc&req=0dJpwFH%2FqzRk2hj99dpg6vCNXNthQCXPyGt2NsHy86jOKHyS3S7lliA1wO6G%0A%2FEcEYGflIjuWcaBxZKw%2FxxyK%0A" alt="" style="max-width:100%;height:auto;" />
+
+## Option 3 - Import the file into a new sheet
+
+1. Open an empty new sheet in Excel.
+2. Click **Data**.
+3. Click **Get Data → From A File → From Text/CSV** and select the exported file.
+4. Make sure the File Origin dropdown shows **65001: Unicode (UTF-8)**.
+5. Click **Load**.
+
+<img src="https://lusha.intercom-attachments.eu/i/o/17656898/7606a8bcdeaa7045268c8949/image.png?expires=1780056000&signature=155b8e5e7141652ff9165f2a3718b34d655026b20a48ab35386bf123d17eeb2a&req=0dJpwF7ypT9k2hj99dpg6oMVAa8n5UjoZ5usFnqSK7aQXfJYpVVRuFWqBh8L%0ARD9hAkXCTRWL3aX5Zermn7Xf%0A" alt="" style="max-width:100%;height:auto;" />
+
+## Option 4 - Update the CSV delimiter in Excel
+
+In many European countries, commas are used as decimal separators, so Excel uses semicolons as the default table separator instead of commas. To fix this, go to **File → Options → Advanced**, and under *Editing options*, uncheck **Use system separators**. Set the decimal and table separators as shown in the screenshot below.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/48832851/741b5911d4863d6e82d1f737c591/csv-semicolon-delimited.png?expires=1780056000&signature=b070135394c41265a587399efeb45560deff73c14add1932db55b29d503cd2d7&req=1N1nxlryqTZk2hj99dpg6tJcKmuVQTcPuJjwoBlFEs3CP4lovA6f2lnqw%2Bch%0AQdgWj0wbHGWPX1dEkuluYGsC%0A" alt="Save Excel file as CSV semicolon delimited" style="max-width:100%;height:auto;" />
+
+## Option 5 Import the file into Google Sheets
+
+1. Open a new Google Sheets file at <https://sheets.new/>.
+2. Click **File → Open**.
+3. Choose **Upload** and select the exported file.
+4. The file should display correctly. To download it as a properly formatted CSV, click **File → Download → Comma-separated values (CSV)**.
+
+Still having trouble? Export a new file and send it to [support@lusha.com](mailto:support@lusha.com), or contact the support team via live chat from the [Lusha website](http://www.lusha.com/) or your [Lusha Dashboard](http://dashboard.lusha.com/dashboard).

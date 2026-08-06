@@ -66,6 +66,17 @@ Technologies, funding, and intent data are documented separately in [Company tec
 | `linkedinFollowers` | integer | LinkedIn follower count for the company. |
 | `emailDomain` | string | The domain used for the company's email addresses. |
 
+## Intent data
+
+Returned in the `intent` object.
+
+| Field | Type | Description |
+|---|---|---|
+| `intent.topicCount` | number | Total number of intent topics currently showing active research interest for the company. |
+| `intent.detectedTopics[].topicName` | string | The specific topic name, for example `"Sales Intelligence"`. |
+| `intent.detectedTopics[].topicScore` | number | Strength of the intent signal, from 0–100. |
+| `intent.detectedTopics[].topicTrend` | string | Trend velocity for the topic, for example `"+17"`, `"New"`, or `"-8"`. |
+
 ## See also
 
 - [Company technology fields](/data-catalog/company-technologies)

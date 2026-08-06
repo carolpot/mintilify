@@ -25,4 +25,18 @@ description: "Common questions about Lusha credits, plan limits, and billing."
   Once your credit balance is exhausted, API calls that would consume credits return `402 Insufficient credits` rather than returning data. This is separate from `429 Too Many Requests`, which signals a rate-limit issue, not a credit issue. In the Lusha MCP server, a `402` on a credit-consuming tool call surfaces purchase options (or an admin-request email) so you can top up without leaving the conversation.
 </Accordion>
 
+<Accordion title="How does credit billing work across each endpoint type?">
+  Credits are consumed per action:
+
+  - **Search (contact or company):** charged per successful result via `api_search`
+  - **Enrich contacts:** charged per revealed field (`revealEmail`, `revealPhone`) via per-datapoint pricing
+  - **Enrich companies:** charged per successful result via `reveal_company`; additional revealable fields (e.g. `employeesByDepartment`, `competitors`, `intent`) are charged separately per result
+  - **Signals:** charged per matched signal per result
+  - **Lookalikes:** charged per result returned
+  - **Tables:** creating, listing, updating, deleting tables, and managing columns is free. Adding contacts to a table is free; adding companies is charged per newly-added company. Reading rows is charged per row returned. Running an enrichment column is charged per row, per the column's credit tier
+  - **Webhooks:** charged when signals are detected and delivered; retries do not incur additional charges
+
+  Check `billing.creditsCharged` (or `contact.isCreditCharged` on single-contact responses) to see what was consumed. Use the [Account Usage endpoint](/api-reference/account/usage) to monitor your balance.
+</Accordion>
+
 </AccordionGroup>

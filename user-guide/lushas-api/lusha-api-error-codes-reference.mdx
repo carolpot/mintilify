@@ -1,0 +1,106 @@
+---
+title: "Lusha API Error Codes Reference"
+description: "A reference for common Lusha API error codes, what they mean, and how to resolve them."
+---
+
+When a Lusha API request fails, the response includes an HTTP status code and an error message. This reference covers the most common error codes, what they mean, and how to fix them.
+
+## HTTP status codes overview
+
+| Status code | Meaning | Common cause |
+| --- | --- | --- |
+| 200 | Success | Request completed successfully |
+| 400 | Bad request | Missing or invalid parameter in the request |
+| 401 | Unauthorized | Missing or invalid API key |
+| 403 | Forbidden | Your plan doesn't include API access, or the endpoint is restricted |
+| 404 | Not found | The requested resource or endpoint doesn't exist |
+| 422 | Unprocessable entity | Request is valid but the server can't process it (e.g., invalid email format) |
+| 429 | Too many requests | Rate limit exceeded |
+| 500 | Internal server error | Something went wrong on Lusha's side |
+| 503 | Service unavailable | Lusha API is temporarily down or under maintenance |
+
+## Error: 400 Bad Request
+
+Your request is missing a required parameter or contains an invalid value.
+
+- Check the API error documentation at [our developer guide](https://docs.lusha.com/apis/openapi/section/error-codes) to confirm all required parameters are included
+- Verify that parameter values are in the correct format (e.g., email addresses must be valid format, country codes must be ISO 2-letter)
+- Check the response body - it usually specifies which parameter is invalid
+
+## Error: 401 Unauthorized
+
+A **401 Unauthorized** error indicates that your request could not be authenticated. Common causes include missing or incorrect credentials, invalid API keys, or issues with OAuth tokens.
+
+- **Check Your API Key**: - Ensure you include the Authorization header in your request: Authorization: Bearer YOUR\_API\_KEY - Replace YOUR\_API\_KEY with the actual key from your Lusha account. - Example (cURL):
+
+```
+      curl -X GET "[Lusha API endpoint]" \        \
+        -H "Authorization: Bearer YOUR_API_KEY" \        \
+        -H "Content-Type: application/json"
+```
+
+1. **Verify Header Format**: - Use the Bearer scheme and include a single space before the API key. - Include Content-Type: application/json when required.
+2. **Validate Your API Key**: - Go to **Lusha Dashboard → API Settings**. - Copy your active API key and verify it hasn't been revoked or expired. - Ensure the key has the necessary permissions for the endpoint you are calling.
+3. **Check OAuth Tokens (if applicable)**: - Use a valid, non-expired access token. - If the token has expired, refresh it using your refresh token before making API calls.
+4. **Review Your Request**: - Confirm the exact request you're sending (endpoint, headers, body) and compare it against the API documentation to ensure proper authentication formatting.
+
+## Error: 403 Forbidden
+
+A **403 Forbidden** error occurs when you attempt to access an API endpoint that is not included in your subscription plan. Here's what you need to know:
+
+- **Plan-Based Access Restrictions**: The Lusha API offers different levels of access depending on your subscription plan. For example: - Self-service plans (e.g., Premium/Pro) provide access only to contact and company enrichment endpoints. - The Prospecting API and Filters API are available exclusively to Scale plan customers. These endpoints include features like /prospecting/filters/contacts/seniority. - If you are on a self-service plan, attempting to use these endpoints will result in a 403 error.
+- Some endpoints (e.g., Signals API, Lookalike API) may have additional access requirements — contact your Account Manager to confirm your entitlements
+
+**How to Resolve a 403 Error**
+
+1. **Verify Your Subscription Plan**: - Check your current plan in the Lusha Dashboard. - Confirm whether the endpoint you are trying to access is included in your plan.
+2. **Upgrade Your Plan**: - If the endpoint is not available in your current plan, consider upgrading to the Scale plan to gain access to Prospecting and Filters APIs.
+3. **Use Supported Endpoints**: - On self-service plans, ensure you are using only the enrichment endpoints for contact and company data.
+
+## Error: 422 Unprocessable Entity
+
+Your request is formatted correctly but the server can't process the specific input.
+
+- Check the response body for details on which field failed validation
+- Common causes: invalid email format, unsupported country code, empty required field
+
+## Error: 429 Too Many Requests
+
+You've exceeded your API rate limit. Limits are based on your plan and may apply per minute, per hour, or per day.
+
+- Check the `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers in API responses to monitor your usage
+- Implement exponential backoff: wait before retrying - start with 1 second, double with each retry, up to a maximum of 60 seconds
+- Learn more about rate limit in the [official API documentation](https://docs.lusha.com/apis/openapi/section/rate-limiting).
+
+<Note>
+  A 429 response does not consume a credit. Only successful data returns are charged.
+</Note>
+
+## Error: 500 Internal Server Error
+
+Something went wrong on Lusha's side.
+
+- Wait a few minutes and retry the request
+- Check [status.lusha.com](https://status.lusha.com) for any active incidents
+- If the error persists, contact Lusha Support with your request ID (included in the response headers where available)
+
+## No results returned (but status is 200)
+
+A 200 response with an empty result set means Lusha couldn't find a match for your query - not that the request failed. This is expected behavior for contacts not in Lusha's database.
+
+<Warning>
+  A minimum of 1 credit is charged per API request, even if no results are returned. A 200 with no results still counts as a request.
+</Warning>
+
+## Best Practices for Avoiding API Errors
+
+- **Understand Your Plan**: Familiarize yourself with the endpoints available in your subscription plan.
+- **Keep Credentials Secure**: Regularly update and securely store your API keys and tokens.
+- **Follow API Documentation**: Always refer to the latest Lusha API documentation for endpoint-specific requirements.
+- **Monitor API Usage**: Use the Lusha Dashboard to track your API usage and ensure compliance with your plan limits.
+
+By following these guidelines, you can minimize errors and make the most of the Lusha API.
+
+## Where to get help
+
+For full API documentation including endpoint references and example requests, visit our [error developer guide](https://docs.lusha.com/apis/openapi/section/error-codes). For account-specific issues or errors not covered here, contact **Lusha Support** using the chat icon at the buttom.

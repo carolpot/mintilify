@@ -1,0 +1,120 @@
+---
+title: "Person API V1 Deprecation - How to Adjust to the Changes"
+description: "Lusha is introducing Person API V2, bringing new features and enhanced capabilities to improve your data enrichment workflows. As part of this upgrade, Person API V1 will be deprecated to ensure a smoother, more efficient experience."
+---
+
+## Overview
+Lusha is introducing Person API V2, bringing new features and enhanced capabilities to improve your data enrichment workflows. As part of this upgrade, Person API V1 will be deprecated to ensure a smoother, more efficient experience.
+
+## Why Is Person API V1 Being Deprecated?
+
+The new version, Person API V2, offers significant improvements over the previous version, including:
+
+### Expanded Data Enrichment Options
+With Person API V2, you can now enrich contacts not only by name + company or domain, but also using emails or LinkedIn URL. This flexibility ensures that you can work more effectively with varied datasets.
+
+### Job Change Indicator
+Stay updated with job changes filter, refreshing old contact data from marketing campaigns or outdated forms.
+
+### Richer Data Fields and Metadata
+Access new company and contacts fields for deeper business insights, helping drive productivity and make more informed decisions. Person API V2 also provides detailed metadata for emails and phone numbers, including:
+- **Type** (e.g., personal or business)
+- **Confidence levels** for accuracy
+- **Do Not Call (DNC) flags** for compliance
+
+## Deprecation Notice
+
+<Warning>
+**Important**: The old Person API V1 will be deprecated by **January 14, 2025**. Please ensure to make the necessary adjustments before this date to avoid any disruptions.
+</Warning>
+
+## What Action Is Required?
+
+### 1. Change the Endpoint URL
+**(Make sure to change all calls to the new V2 endpoint.)**
+
+```
+GET https://api.lusha.com/v2/person
+```
+
+### 2. Adjust Request Parameters
+
+Person API V2 offers more input flexibility. Update your API calls to use one of the new parameter combinations (and the api_key on the header, like before):
+
+- **First name + Last name + Company name / Company domain**
+- **Email**
+- **LinkedIn URL**
+
+#### Example of V2 Request:
+
+```bash
+GET https://api.lusha.com/v2/person?firstName=Yoni&lastName=Tserruya&companyName=Lusha
+
+GET https://api.lusha.com/v2/person?firstName=Yoni&lastName=Tserruya&companyDomain=lusha.com
+
+GET https://api.lusha.com/v2/person?email=yoni@lusha.com
+
+GET https://api.lusha.com/v2/person?linkedinUrl=https://www.linkedin.com/in/yonitserruya
+
+-H api_key:API_KEY
+```
+
+### 3. Incorporate New Filtering Options
+
+Person API V2 allows filtering results by adding the `filterBy` parameter to the query:
+
+- `?filterBy=phoneNumbers` – Only return results with phone numbers
+- `?filterBy=emailAddresses` – Only return results with email addresses
+
+Update your requests if you need to apply filters.
+
+### 4. Use Refresh Job Info for Real-Time Job Updates
+
+If your application requires the latest job information, add the `refreshJobInfo=true` parameter to your requests.
+
+#### Example:
+```bash
+GET https://api.lusha.com/v2/person?email=dustin@lusha.com&refreshJobInfo=true -H api_key:API_KEY
+```
+
+### 5. Handle Updated Response Fields
+
+Review the new response structure and adjust your parsing logic to accommodate new fields such as:
+
+#### Email metadata:
+- `emailType`
+- `emailConfidence`
+
+#### Phone metadata:
+- `phoneType`
+- `doNotCall`
+
+#### Company insights:
+- `revenue`
+- `funding`
+- `intent topics`
+- And more
+
+### 6. Test the Integration with the New Version
+
+1. Ensure your code handles all response changes correctly
+2. Test all critical workflows to confirm the API calls succeed and return the expected results
+
+### 7. Deprecation Timeline Compliance
+
+1. Make sure to switch to V2 before the V1 deprecation date to avoid disruptions
+2. Monitor logs during and after the transition for potential issues
+
+## Additional Resources
+
+For more information see here the [full API documentation](https://www.lusha.com/docs/#person-api-v2)
+
+> ## Need Help?
+>
+> If you have any questions about the migration process, feel free to reach out:
+>
+> • Via live chat from the [Lusha website](http://www.lusha.com/)
+>
+> • Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
+>
+> • Via email: [support@lusha.com](mailto:support@lusha.com)

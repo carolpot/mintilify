@@ -1,0 +1,40 @@
+---
+title: "Bullhorn common errors"
+description: "How to fix the most common errors when using Lusha's Bullhorn integration, including API failures and field length errors."
+---
+
+If you run into errors when using Lusha's Bullhorn integration, this article covers the most common issues and how to resolve them.
+
+<Note>
+  Most of the issues below can only be resolved by a Bullhorn admin and a Lusha admin. In many cases, this is the same person.
+</Note>
+
+## Reaching Bullhorn API has failed
+
+This is a common error with the Bullhorn integration. It will look like this:
+
+<img src="https://downloads.intercomcdn.eu/i/o/16878556/95a8adcde47cb23152c8158a/679619d6-10c2-48a6-8a04-bafabacefbd2.png?expires=1780056000&signature=e282e751c49de79d2164784b8e0c052952f1ad4d5ba0c7089fa34f7647d11d86&req=0dNnwlD%2FqTFk2hj99dpg6h4O5xd0Mi%2FWl8oYZpF6HkdsLw%2BIMSKbLLDorsWK%0AdeVtF5n10P8IpDdH2ru4AWKW%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+To fix this:
+
+1. [Disconnect](https://dashboard.lusha.com/lusha-integrations/advancedSettings/bullhorn/settings) the integration.
+
+<img src="https://downloads.intercomcdn.eu/i/o/16878575/5f56b9836c8c183ec35c1606/541b12c0-3d80-4119-92c6-15ac16aa181a.png?expires=1780056000&signature=d04348cb8eacc06fea06e4935b4d334e2ee2bea57199774cd8f2a022847f4e6f&req=0dNnwlD%2FqzJk2hj99dpg6up6cYJgROqJcsvWK1QCA5PuUifxpN9RhW%2BCs4Fw%0A%2BySNPObrjKz4Ud%2Bhiu1lB%2BTE%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Log out of both your Lusha account and Bullhorn.
+2. Log back into both, then reconnect the integration via the [Integrations tab](https://dashboard.lusha.com/lusha-integrations).
+
+## "Property value too long. Property name: XXXX, max length XXX" error
+
+This error means a value Lusha is trying to push to Bullhorn is longer than that field allows. For example, if your Company Website URL field in Bullhorn has a 100-character limit and the URL Lusha is sending is longer, you'll see this error.
+
+<img src="https://downloads.intercomcdn.eu/i/o/16878660/c1e7f9980598a2c771556b14/Screenshot+2024-07-16+at+10_47_21.png?expires=1780056000&signature=8b56260ba3d9e552dda04b387dc1aeb98c9bee1f6a0081a7cb037d0db471fb74&req=0dNnwlD8qjdk2hj99dpg6lHCcWGrf1gSTT9y%2FfUb0KwLE41lzH24qXgLKnn5%0AfXDce%2BrTNbO8FOJ1aC1Ka6kf%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+You have two options:
+
+1. If you want to keep this field, contact your Bullhorn Administrator and ask them to [increase the character limit](https://help.bullhorn.com/bhatsTopics/s/article/ATS-Understanding-Bullhorn-Field-Edit-Types) for that field in Bullhorn.
+2. If you don't need this field, remove it from the Lusha field mapping and save your changes, then try saving the contact again.
+
+<img src="https://downloads.intercomcdn.eu/i/o/16878702/cb35b7f5cc1e214f171f2ed7/4861208d-ea89-42bb-9595-88cd4170fd9a.png?expires=1780056000&signature=d29b0182bed070e3bb56e57e9ee3aa4a74b4cf5d1d53c2f5ff3c374136ff9fbc&req=0dNnwlD9rDVk2hj99dpg6qkgOs6Af0RSvQXkaM1a9nybtPKQMhXOcDb5%2F5Gw%0Ajkv64ppmSIvA3uv3gFdYBI%2Fb%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+If the issue persists, contact Lusha Support via the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com).

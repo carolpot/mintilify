@@ -1,0 +1,151 @@
+---
+title: "Salesforce integration"
+description: "How to connect Lusha to Salesforce, configure field mapping, and set up export preferences for your team."
+---
+
+The Salesforce integration lets you push contacts revealed in Lusha directly into Salesforce as Leads, Contacts, or Accounts — with no manual data entry. This guide covers how to connect the integration, configure field mapping, and set account export preferences.
+
+<Note>
+Only Lusha Admins and Managers can configure the integration. Admins must complete the initial setup first. After that, each team member needs to connect their own Lusha account to Salesforce to enable export. You must also be a Salesforce Admin to authorise the connection.
+</Note>
+
+## Step 1: Connect Salesforce to Lusha
+
+1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/).
+2. Go to **Settings → [Integrations](https://dashboard.lusha.com/lusha-integrations)** and select **Salesforce**.
+3. Choose **Production** or **Sandbox**, then click **Connect**.
+4. Sign in to your Salesforce account when prompted. (If you're already logged in, this step is skipped.)
+5. Click **Continue to field mapping**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259752/dae444e410fa69deb7ffd616/Screen%2BShot%2B2022-11-22%2Bat%2B16_11_54.png?expires=1780056000&signature=f9ccef08f013c445b99979eb4901a4e2cfbabfdf69a0edc909d4251ab00ca1a9&req=0dZtwFH9qTVk2hj99dpg6jBeR7qTSMpBcQgqZrB0flOGt%2B%2F%2BEbeZZmRC9Yvd%0AJbLhdRI3KxQJEpKIoELyRO1A%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 2: Set up field mapping
+
+Field mapping tells Lusha which Salesforce fields to populate when you export a contact. You can map fields for three record types: **Lead**, **Contact**, and **Account**.
+
+- Each Lusha field on the left maps to a Salesforce field on the right.
+- You can change any default mapping by selecting a different Salesforce field from the dropdown.
+- Toggle on **Allow Override** if you want Lusha to update fields that already have data in Salesforce.
+
+<Note>
+When adding a new field, the Lusha field type and the Salesforce field type must match. For example, a numeric Lusha field like Number of Employees must map to a numeric Salesforce field.
+</Note>
+
+## Default field mapping
+
+**Lead**
+
+| Lusha field | Salesforce field |
+| --- | --- |
+| Email 1 | Email |
+| Phone 1 | Phone |
+| Job title | Title |
+| Company Name | Company |
+| Website | Website |
+| Last Name | Last Name |
+| First Name | First Name |
+| Predefined | Lead Source |
+
+**Contact**
+
+| Lusha field | Salesforce field |
+| --- | --- |
+| Email 1 | Email |
+| Phone 1 | Phone |
+| Job title | Title |
+| Last Name | Last Name |
+| First Name | First Name |
+| Departments | Department |
+
+**Account**
+
+| Lusha field | Salesforce field |
+| --- | --- |
+| Company Name | Name |
+| Website | Website |
+| Description | Description |
+| Number of Employees | Number of Employees |
+
+For a full table of available Lusha fields, see [Fields for field mapping and descriptions](/user-guide/integrations-basics/fields-for-field-mapping-and-descriptions).
+
+## Step 3: Add predefined value fields (optional)
+
+Predefined value fields let you automatically populate a Salesforce field with a fixed value every time a contact is exported from Lusha.
+
+1. Select a record type (Lead, Contact, or Account).
+2. Click **+ Add field** and select **Predefined Value**.
+3. Choose the Salesforce field to populate.
+4. Enter the fixed value you want applied.
+5. Click **Save changes** before switching tabs.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/48033358/ef587ea6395e9b1f9170d1b56459/Screenshot%2B2024-06-14%2Bat%2B8_25_47.png?expires=1780056000&signature=000492d337cbb76a4f949912dc462ea3d0ea90940ce6dad10df9e6a68b49b9bd&req=1N1vxlv5qT9k2hj99dpg6oMcji4zaziytgZhw7pBK%2FvgioeIZHY7UMwJ%2FRGR%0A%2F96Bl6E8ODldfer5gsPknCr8%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 4: Set up conditional field mapping (optional)
+
+Conditional mapping lets you trigger additional field updates when an email or phone field is enriched - useful for lead routing workflows.
+
+1. In Field mapping, click the **Advanced** button next to **Email 1** or **Phone 1**.
+2. Use the **Map** dropdown to define the condition and the value to set.
+3. Click **Apply**, then **Save changes** at the bottom of the page.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259883/92572d2895a912589b3bef01/Screen%2BShot%2B2022-11-21%2Bat%2B15_03_27.png?expires=1780056000&signature=85dcf7092f088beba067219bf86de9c3faa5f3814d978abf5c9b22bb9710e68c&req=0dZtwFHypDRk2hj99dpg6kqycyi2kuvXeNrxJL1WrPxGg9NY7QQLfBCNAvig%0A5mv8syp%2BHay90yxUNxQn079N%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 5: Test your mapping
+
+Before saving your configuration, click **Test Mapping** at the bottom-right of the screen. Lusha will create and immediately delete a dummy Lead, Contact, and Account in your Salesforce environment to verify that your settings are valid.
+
+If the test passes, the **Test Mapping** button turns green and you can click **Save Changes**. If it fails, Lusha will return the matching Salesforce error to help you fix the configuration.
+
+## Account export preferences
+
+(Available for Admins only)
+
+In the integration settings, you can control which Salesforce object types your team can export to. When the Account creation toggle is off, users can only export contacts to existing Salesforce accounts — they cannot create new accounts from Lusha.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259983/ae40a780d8c19fe6603104a1/Screen%2BShot%2B2022-12-05%2Bat%2B15_48_38.png?expires=1780056000&signature=08852dea2194efb55502ddf143b81021e18767585968a6acc53b11677523352e&req=0dZtwFHzpDRk2hj99dpg6u6%2BPsGSVYkRhPXShfEtdG78dqs4juK4x%2BDmu0t%2B%0AlHf%2Fehuy2b0G%2F2h%2BHCNyeUsO%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Note>
+These settings apply to all team members in your account.
+</Note>
+
+## Autocomplete
+
+The autocomplete setting matches the account name in Lusha to an existing account name in Salesforce as you type, saving time during manual exports.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260047/d48f92c8364c35cb05f5a945/Screen%2BShot%2B2022-12-06%2Bat%2B14_02_02.png?expires=1780056000&signature=b808c85636163f0f63c00043ae0b158edf4270ed5a5d3cce123ae7b70b6d21d0&req=0dZtw1j6qDBk2hj99dpg6v0ByvYQ15QdYqNd3jo89o8haVz8o4LVcO8CZGTi%0AhlOgla7uBmHnn%2F4Kgwd%2FOkHS%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Troubleshooting: Salesforce authentication issues
+
+### **My team is being logged out of Salesforce / lost Salesforce authentication**
+
+If your team members see a "reconnect to Salesforce" prompt when trying to export, or find themselves force-logged out of the integration, this is caused by an expired OAuth token. Salesforce OAuth sessions have a finite lifetime — when the token expires, Lusha loses its authorisation to push records and prompts the user to reconnect.
+
+This is a Salesforce session behaviour, not a Lusha bug. Each affected team member needs to reauthenticate individually.
+
+**To reconnect your Salesforce account:**
+
+1. Go to **Settings → Integrations → Salesforce** in your Lusha dashboard.
+2. Click **Reconnect** (or **Connect** if the integration appears disconnected).
+3. Sign in to Salesforce when prompted and confirm the permissions.
+4. You should be returned to the Lusha integration settings with the connection restored.
+
+<Note>
+Each user on your team manages their own Salesforce connection. An Admin reconnecting their account does not reconnect other team members. Each person needs to follow these steps from their own Lusha account.
+</Note>
+
+**To reduce how often this happens:** In Salesforce, go to **Setup → Session Settings** and extend the **Session Timeout** value. Longer session lifetimes mean less frequent reauthentication. Your Salesforce Admin can make this change.
+
+<Note>
+If reauthentication fails or the integration continues to disconnect frequently, contact Lusha Support via the chat icon in your dashboard and include your Salesforce org ID and the error message shown.
+</Note>
+
+### Contact imported from LinkedIn is missing fields in Salesforce
+
+If a contact's LinkedIn URL, website, country, city, industry, or annual revenue isn't populating in Salesforce, the field isn't included in your current mapping or the data wasn't available at the time of export.
+
+1. Go to **Settings → Integrations → Salesforce → Field Mapping**.
+2. Check that the missing fields are mapped. If not, click **+ Add field** and map them.
+3. Toggle on **Allow Override** for those fields if you want Lusha to update them on future exports.
+4. Click **Save changes**.
+
+You're all set — your team can now push contacts from Lusha directly into Salesforce. For a full table of error codes, see [Salesforce common errors](/user-guide/salesforce/salesforce-common-errors).

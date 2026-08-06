@@ -1,0 +1,146 @@
+---
+title: "CRM Data Enrichment"
+description: "How to set up CRM Data Enrichment workflows in Lusha to automatically update or enrich Salesforce records with current contact and company data."
+---
+
+CRM Data Enrichment automatically updates your Salesforce records with the latest contact and company information from Lusha — so your leads, contacts, and accounts stay current without manual data entry.
+
+<Note>
+  This feature is available for Lusha users with Salesforce as their CRM, on **legacy plans only**.
+</Note>
+
+## Before you start
+
+1. Connect Lusha to your Salesforce via the [Integrations](https://dashboard.lusha.com/lusha-integrations) page.
+
+2. In **Salesforce Field Mapping**, define and map the Lusha fields (emails, phone numbers) you want to push to Salesforce.
+
+3. Enable **Allow Override** so that Lusha can update fields on existing records.
+
+Go to **[Enrich → CRM Enrichment](https://dashboard.lusha.com/enrich/workflows)** to access the feature.
+
+## The CRM Data Enrichment dashboard
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325282/3b6f65e099e67f33269ebaa2146b/Screenshot+2025-05-18+at+14_45_14.png?expires=1780056000&signature=e9af42e902b5f0d5b2f9f3a6e8a9991a5fdd843f9dc54e27847c97a3166fe8d3&req=1dVsx134pDVk2hj99dpg6g2qW1OD%2FDFdj0f4aBX%2FXIMP8tpMhQ6kGoL9QBZ0%0AF1yCEioBD9ybVBwytanjeeK8%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+The dashboard shows three main elements: **Recommended Enrichments** (predefined workflow templates), **Enrichment Summary** (totals by accounts, contacts, and leads), and the **Enrichment Table** (a detailed view of current and past enrichment activity).
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325368/38efce0395adc472b7629a219b05/Screenshot+2025-05-18+at+14_48_25.png?expires=1780056000&signature=2b1376534acd0c24d3a36404eedd20209aa713e952d1d2832e197aed434d4fe4&req=1dVsx135qj9k2hj99dpg6nwFzpQPRmaza00MroYk6fhE19RCUUDNo6ZDjUpu%0AN7C1nywgfdondD%2BhCnfArxPY%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Creating a workflow
+
+Choose between two workflow types: an **Update Workflow** refreshes existing records with the latest data; an **Enrich Workflow** adds net new contacts to your accounts based on criteria you define.
+
+## Update workflow
+
+1. Select the object type: Leads, Contacts, or Accounts.
+2. Apply filters based on Salesforce fields (e.g., industry, job title, geography), or select from a Salesforce report, or choose to enrich all accounts.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325495/3da68b9d2c18aa30e4c508290302/Screenshot+2025-05-18+at+14_55_09.png?expires=1780056000&signature=6dd10567456cf1548b7ba85a77ed8c590dd07d5e6b9f1427b8985ae05c8a19b9&req=1dVsx13%2BpTJk2hj99dpg6g2BVplLwFxjjRVl8ebr6VoxBly13sFbFTXYMzWs%0ASkH858zylv3dWfMAoAEr7%2FVw%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. Choose which fields to update — emails, phone numbers, or both.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325542/cc52da949aeda5a2af4391a12c44/Screenshot+2025-05-18+at+14_57_06.png?expires=1780056000&signature=3ca7d924d9b529a83b1cfb417b975c241ef7800995b01321852042f91ffc3a28&req=1dVsx13%2FqDVk2hj99dpg6m6JyucbmQ6ATcO9WZQFjZz8H5Ie%2F42Ba%2B4t2srd%0ADH%2BELNWlgDxishK6ehTANwuW%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Note>
+  On their first workflow creation, admins can only run it once — either to CSV or to Salesforce. Subsequent workflows can be recurring. This lets you test before automating.
+</Note>
+
+4. Set export options - how often to run the workflow (daily or weekly) and a credit limit per run (optional).
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325556/2d0dd9e42a61640cc59434e4c787/Screenshot+2025-05-18+at+14_57_32.png?expires=1780056000&signature=03d3e325939e79caefcdfb8c77bd260fda857cf7f176bdd8b4fe0116027d36a0&req=1dVsx13%2FqTFk2hj99dpg6oJqO1XxeuBlsa0loG3VqLP7RgtTpA24BIrKXy26%0AJdvq7cgkMNjOZ0Di0Pxw4h%2Fl%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Enrich workflow
+
+The Enrich workflow finds and adds net new contacts to your Salesforce, aligned to accounts you already own.
+
+1. Choose target accounts - by selecting the most recent accounts, by criteria (job title, seniority, department, location), or from a Salesforce report.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325674/dca8287cf52c4248f7747552cd14/Screenshot+2025-05-18+at+15_01_40.png?expires=1780056000&signature=5fe8d8f7f9f394eaf9a486e77ecb2ca4c4645bd45191915b60e2d75262e2952d&req=1dVsx138qzNk2hj99dpg6vG%2FHL2VS9dFGLIV2%2FhdKwgNUDUhGoB8PPHarAh0%0ABh9aVpkhu7bToU%2B8qlIjETzm%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325809/b484e5781e528c39c1a529631f16/Screenshot+2025-05-18+at+15_07_27.png?expires=1780056000&signature=a6024ae2335aebd6675bdf0cec8454aae80fafef4603e9614bc545a8ba6484f2&req=1dVsx13yrD5k2hj99dpg6sMuWTsWuWRUMwgzhsZM8NnnejIHyP0a%2FClOeO1L%0AdKpcgQmxaUk3jHJBaOIiVuEA%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Note>
+  Salesforce reports with row grouping are not supported.
+</Note>
+
+2. (Optional) Add prospecting filters - job title, seniority, etc. - to define which contacts qualify for enrichment.
+
+<Note>
+  Press **Enter** after each job title you add. Using commas to separate titles will create one long value and cause an error.
+</Note>
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325763/379a9fc3df61c1265e02ac76059e/Screenshot+2025-05-18+at+15_05_10.png?expires=1780056000&signature=5e50631e692dcc3ba0c0da5de896f312013bbe9c01be6eb6f8ebd0a4053bef1e&req=1dVsx139qjRk2hj99dpg6lKeEO2Gc266Dt18kPXJJ4aR5WqjDeoiBRU%2Bd1Ud%0A6t1qh3wxygfKvKstXAYz1Q3I%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. Set export settings: export as contacts or leads, whether to save or update existing contacts, maximum new contacts per account, frequency, and a credit limit.
+
+4. Click **Done**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325772/204039aba402c40ab7f8dabe6e05/Screenshot+2025-05-18+at+15_05_29.png?expires=1780056000&signature=85db9f3cbe46b3fcc25c5ccce0f8eafd2fdc5b705f949314389f964f79ddc575&req=1dVsx139qzVk2hj99dpg6mzZzGXxVXHrF0JQztPucNgbb9sJROlL5m35l4KN%0AnUmsp%2B%2B6UCPatGsDx4PRDehD%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+At the bottom right, choose to **Enrich in CSV** (available when frequency is set to "Once" — useful for reviewing results before automating) or **Enrich my Salesforce**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259777/cdd9eb7a37e0fd3118414093/7BG9587objWU9xZ9KHoA_CJMelN7x7ADJUDv9MWbwWp1tsEKRds5ApQNDPF1XzpDUNucs1MHyIS42LsCz5FXykooV7gf7v-HLig9Z9z06ZU2rwkVWYMVncCaE0Y6wlZryBafeZhHUD-WF5syGsdP3Ws?expires=1780056000&signature=a66b38b62159b88ffa69f2ca09b061c1d28509c0d790f186448f50768fee471e&req=0dZtwFH9qzBk2hj99dpg6mKDLNYguZ%2FPlVopkKO8yeRe4Th%2FV79QaT2HZ0lu%0ARdMC3vtwxVDAqzjC%2BgpLIRJE%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Note>
+  Review the workflow summary in the right-side widget before clicking Done. Workflows cannot be edited after saving.
+</Note>
+
+## Enriching to CSV first
+
+If you want to review enriched data before pushing it to Salesforce, use the CSV option. You can compare your existing Salesforce values against Lusha's data, then decide whether to proceed.
+
+<Note>
+  If you enrich to Salesforce after reviewing a CSV, you won't be charged again for records already enriched in that CSV.
+</Note>
+
+1. Click **+ New Enrichment** to open the Enrichment editor.
+2. Set custom enrichment criteria or create rules based on Salesforce reports.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259962/9dbebc4af92c995c56309180/Screen%2BShot%2B2022-12-21%2Bat%2B15_18_06.png?expires=1780056000&signature=3579abf7c8a818acda94b64b70a21ebf6f58e85f7bf83b44a0042d9daba0e4e6&req=0dZtwFHzqjVk2hj99dpg6lvK%2BuoaoJxR7KxF5Cx3G5qIErEEm%2BCTmYjmAZ3u%0Ae9KQK3nuxWglNXc96kv5y7fK%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259994/8c795a758a80a425f5f07146/Screen%2BShot%2B2022-12-21%2Bat%2B15_19_11.png?expires=1780056000&signature=955f2245523eab1aefaa4b1c34e4001ab7839d7ac96ac1c1ebf5ba008fb3bd21&req=0dZtwFHzpTNk2hj99dpg6lYHRmte%2F%2Fj0k%2Byxpc1dfcN7XErGyA3qoB8TFaD1%0AmjMxNeMM2L8sFJkz8sJFA%2Bm6%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. Under **Meet criteria**, select **Enrich in CSV**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260020/ae080e4f3fc64f509d6e77a1/Screen%2BShot%2B2022-12-20%2Bat%2B15_38_51.png?expires=1780056000&signature=0d6c971126fe6f3fec1bd6e2273b7fabebda63aad0c4c477afcbcabd8b704029&req=0dZtw1j6rjdk2hj99dpg6nNtBxdRNtttVEt8O1WAooZkAmoURa%2F2PLIxM4sM%0ApXm%2BRfE4xcOML3cg9%2BQCVvAh%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+4. Click **Enrich**. The credit cost for this action will be shown before you confirm.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260037/58e5282884da2ab032416f17/Screen%2BShot%2B2022-12-20%2Bat%2B16_01_48.png?expires=1780056000&signature=881137191ba7e6dfd417d029b6f35d82b1bedfe41ce18830d796caab877f800e&req=0dZtw1j6rzBk2hj99dpg6ou%2FVX4UGkiNH10uxiNXsrt53PNNv93w7KR7erjI%0Ag6LhfK1PMmo2m0jfLVdWNy6Q%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+5. Admins need to approve storage of Salesforce data in Lusha's system by clicking **Apply**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/15036826/178f8f4948ab88aa93370088/image+%28110%29.png?expires=1780056000&signature=eeecee06e08e946cf27feb66e809ec36dd9021452fa230f5ad01af55576d0b58&req=0dBvxl7yrjFk2hj99dpg6vxFO1v6UezR6S3vz30Uj%2FuEVPopPap8N5UFA8wj%0AMvvvlDQ9iG%2BolaHttyKN%2FWU0%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Note>
+  Data permissions can be disabled at any time from the Settings page.
+</Note>
+
+Once complete, the enrichment status window shows: Status (active, paused, or completed), Type (Update or Enrich), Last Run / Next Run dates, and Credits Used.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260072/8ced6926a09c33072b42759f/Screen%2BShot%2B2022-12-20%2Bat%2B16_07_05.png?expires=1780056000&signature=6c65fa7be02c63a67a07aa1c1962f7bea9092c2da5753fb4bdd507adab93a36e&req=0dZtw1j6qzVk2hj99dpg6ptue8tte3V5rfjoNz%2FLPHs4YNTijYzCBa5SQBzi%0A1pWBs%2BIsTyloM%2BmXD%2BXBXkCp%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+To push the same contacts to Salesforce, click the **three dots (⋮)** next to the completed enrichment and select **Enrich my Salesforce**.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50325863/743e96c5ab0ad00a625549b61afa/Screenshot+2025-05-18+at+15_10_23.png?expires=1780056000&signature=d0acd9ca6c51d38f9ed3f8f15a32b16dc4579339244f8323079f1a155273af8f&req=1dVsx13yqjRk2hj99dpg6vT64fUC7TRyJUCQcICcSCJCeqHEqFYuMo%2BdwejI%0A4I0pglCFFqbkGJcmXy8EKXGP%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+The enriched CSV file shows indications of new data, changed data points, and any fields that couldn't be enriched.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260090/c53b2633e17e03c686f03bde/Screen%2BShot%2B2022-12-22%2Bat%2B11_50_16.png?expires=1780056000&signature=27930dd8600ee1f56595bc191c2995b66d9aaa871d34211aef95e6bc7ad3aecf&req=0dZtw1j6pTdk2hj99dpg6t1w7DpKUv3c%2BfvQGYncGq7QQUgTiZcyFgC7zJC8%0AcUZByBUqVb6v7lXjUIiJgvoy%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Potential Enrichment
+
+Potential Enrichment lets you preview how many CRM records can be enriched before running a workflow, so you can plan credit usage in advance.
+
+You'll find this column in the email you receive after enrichment completes, next to each eligible object type (Leads, Contacts, Accounts).
+
+<Note>
+  If you choose to enrich both emails and phones, there won't be a potential enrichment count — since all options are already covered.
+</Note>
+
+If you've reached your credit cap, you'll still receive a table of potential contacts with hidden data in the CSV, so you never miss which records could have been enriched.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/50326179/2266642a0540bd343e0762d33844/Screenshot+2025-05-18+at+15_24_33.png?expires=1780056000&signature=6804b87b8a4291e7d8cedac1ccd388d1a29272ec8daf8e652def9bdaecd31d6a&req=1dVsx177qz5k2hj99dpg6k90%2F3Ecx7Yxg7%2FYMAtZopVIEQL6nszEDw5DXfwv%0AtWW8kSpepP9dmhJ%2BpzllYhhy%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+For help, contact the support team via live chat from the [Lusha website](http://www.lusha.com/), your [Lusha Dashboard](http://dashboard.lusha.com/dashboard), or at [support@lusha.com](mailto:support@lusha.com).

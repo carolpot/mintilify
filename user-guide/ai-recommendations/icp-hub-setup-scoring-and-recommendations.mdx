@@ -1,0 +1,147 @@
+---
+title: "ICP Hub: Setup, Scoring, and Recommendations"
+description: "What ICP Hub is, how it works, and the key concepts behind Target Profiles, scoring, signals, and CRM integration."
+---
+
+ICP Hub is where you define who you want to reach. You create Target Profiles — configurations that describe your ideal companies and contacts — and Lusha's recommendation engine uses them to surface relevant leads for you automatically.
+
+Every day, Lusha generates two scoring tables on your Home page: top companies and top contacts. Each lead has a score based on how well it matches your ICP and how much buying activity is happening around it. The Signals column tells you exactly why each lead appeared — so you're not guessing, you're acting.
+
+The more precisely you configure your ICP, the more accurate the scoring gets. If you're an admin, you can set a shared profile so every rep on your team — including new starters — wakes up to a feed that reflects your company's ICP from day one.
+
+Available on all plans.
+
+<Note>
+ICP Hub is available within the Workspace rollout. Check with your team whether this applies to your account.
+</Note>
+
+## Key Concepts
+
+### Target Profile
+
+A Target Profile is the core configuration unit in ICP Hub. Each one combines two types of criteria:
+
+- **Account Criteria** — company-level attributes that define the types of businesses you want to reach (e.g., industry, employee headcount, HQ location, technology used).
+- **Persona Criteria** — contact-level attributes that define the right buyer or decision-maker within those companies (e.g., job title, department, seniority, contact location).
+
+You can create up to 10 Target Profiles per user. Each profile can include one set of Account Criteria and up to 4 Persona Criteria sets.
+
+### Scoring
+
+Every lead in your Home feed has a score made up of two components:
+
+- **Signal score** — how much buying activity is happening around the lead. This includes signals like a new role, promotion, hiring growth, intent, and CRM match.
+- **ICP fit score** — how closely the lead matches the Target Profile you've defined.
+
+You can add both as separate columns in the Home table to see the breakdown for each lead. The AI also factors in your search history, reveals, and CRM data if connected.
+
+### Signals Column
+
+The Signals column on your Home feed shows you exactly why each lead appeared. Signals include:
+
+- New role
+- Promotion
+- Hiring growth (high, standard, or medium)
+- Intent
+- CRM match
+- Similarity
+- Search match
+- Growth surge
+
+These are the same signals available across the Lusha platform.
+
+## Lusha Generated
+
+If you haven't configured a Target Profile yet, Lusha still generates a daily feed — based on your account history rather than a defined ICP. Leads in this state are labeled "Lusha generated" in the ICP target column.
+
+<Note>
+"Lusha generated" means your feed is running on account history, not a configured profile. It's a starting point. Once you define a Target Profile, your scoring shifts to reflect your actual targets — and you'll see the difference quickly.
+</Note>
+
+## Inclusion Rules
+
+Inclusion Rules define who should be included in your recommendations. You set Account Criteria and Persona Criteria as filters. Each filter you add acts as a **Must Include** criterion — a strict filter that excludes contacts or companies that don't match.
+
+![Inclusion Rules configuration screenshot](https://downloads.intercomcdn.eu/i/o/yu27vhse/138301699/ffe59cc71978d65c8fcfa7e0373b/e3d76ba1-1792-489b-960b-8d32fba0ad07)
+
+## Exclusion Rules
+
+Exclusion Rules define who should not appear in your recommendations. You can exclude contacts and companies based on:
+
+- Contacts already shown or saved in Lusha
+- Companies associated with contacts already revealed
+- Records already present in your connected CRM (Salesforce or HubSpot)
+
+CRM-based exclusions require an account-level connection and admin consent. See the CRM Integration section below for details.
+
+## Persona Criteria Sets
+
+One Target Profile can include multiple Persona Criteria sets — for example, one for VP of Sales and another for Head of Marketing. The recommendation engine treats these as OR logic: a contact matching any one persona is eligible.
+
+## Preview and Population Size
+
+As you configure a Target Profile, Lusha shows you a live count of how many contacts and companies match your Must Include criteria. This helps you gauge whether your targeting is too narrow or too broad before saving.
+
+<Note>
+If fewer than 100 contacts or companies match your Must Include criteria, you won't be able to save the Target Profile. Broaden your filters to continue.
+</Note>
+
+## CRM Integration in ICP Hub
+
+You can connect Salesforce or HubSpot to ICP Hub to exclude records that already exist in your CRM from your recommendations. This prevents Lusha from surfacing contacts or companies you're already working.
+
+To enable CRM-based exclusions:
+
+1. **An account Admin** must connect the CRM through ICP Hub and provide explicit consent for using CRM data in recommendations.
+2. Once consent is given, CRM-based exclusion is available to all users on the account.
+3. Individual users can then connect their own CRM account to apply personal ownership filters.
+
+<Note>
+CRM consent is an account-level setting. Only Admins can enable or revoke it. Non-admin users will see a prompt to contact their admin if consent hasn't been given yet.
+</Note>
+
+**Supported CRMs at launch:** Salesforce, HubSpot. Coming soon: Pipedrive, Zoho, Bullhorn, and Outreach. Click **Notify me** on the coming-soon CRM card inside ICP Hub to join the waittable.
+
+## Permissions
+
+By default, all users can create, edit, and manage their own Target Profiles. Admins have two additional capabilities:
+
+- **Share configurations** — Admins can share their Target Profiles with all users in the account. Shared profiles are read-only for non-admin users, but users can choose to activate only the profiles relevant to them (e.g., by segment or territory).
+- **Manage CRM consent** — Only Admins can connect a CRM to ICP Hub and enable or revoke CRM-based exclusions for the account.
+
+## How ICP Hub Fits Your Workflow
+
+ICP Hub works alongside Lusha Search — it doesn't replace it. While Search lets you prospect manually using filters, ICP Hub runs in the background and feeds the AI Recommendations engine.
+
+Your Target Profiles tell the recommendation engine who matters to you. The engine then continuously generates and refreshes recommendation tables, so relevant contacts are waiting for you when you log in.
+
+<Note>
+In the current version, Target Profiles are used exclusively by the AI recommendation engine. They do not affect your manual search results in Lusha Search.
+</Note>
+
+## Using Your Target Profiles as Search Filters
+
+Once a Target Profile is active, it automatically appears as a filter preset in the Workspace search panel — no additional setup required. This lets you apply your ICP definition directly to manual searches without rebuilding your criteria each time.
+
+In the filter panel, you'll find an ICP section with two sub-sections:
+
+- **Shared** — Target Profiles shared by an admin, visible to everyone on the account.
+- **Private** — Your own Target Profiles, visible only to you.
+
+You can select one Target Profile at a time. Selecting a profile automatically includes all its personas, but you can deselect individual personas to narrow the search. If a profile has multiple personas, selecting more than one applies OR logic — results matching any selected persona are included.
+
+**What gets applied as a filter:**
+
+Only the Must Include fields from your inclusion rules are applied as hard filters. Non-matching results are excluded from search.
+
+Intent Topics are not applied when using a Target Profile as a search filter — they act as ranking boosters in AI recommendations only and are not indexed for search filtering.
+
+Exclusion rules are not applied when using a Target Profile as a search filter — they affect AI recommendations only. You can still exclude CRM records by using the existing **Exclude from CRM** filter in the search panel alongside your ICP filter.
+
+## What Happens When You First Set Up ICP Hub
+
+If you've previously used Refine My ICP, your existing configuration has been automatically migrated to a Target Profile in ICP Hub. It's fully editable and already active.
+
+If you're new to ICP Hub, you'll see a "Lusha generated" feed right away — based on your account history. You'll be prompted to set up your first Target Profile using a simplified text-based flow, defining inclusion criteria and saving your first profile. Once it's live, your scoring shifts to reflect your defined ICP.
+
+**Ready to set up your first Target Profile?** See the "[How to Create a Target Profile](/user-guide/ai-recommendations/how-to-create-a-target-profile)" guide.

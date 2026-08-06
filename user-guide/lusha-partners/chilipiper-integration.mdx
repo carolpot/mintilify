@@ -1,0 +1,62 @@
+---
+title: "Chilipiper Integration"
+description: "How to set up the Lusha + Chili Piper integration to automatically enrich form submissions with contact and company data using just an email address."
+---
+
+Manually filling long forms slows conversions. With the Lusha + Chili Piper integration, you can enable instant enrichment of visitor data (job title, company details, and more) using just an email, while Chili Piper handles routing and scheduling — all without sacrificing form simplicity.
+
+## Prerequisites
+
+1. Active Lusha account (any plan, including Free) with a valid API key.
+2. Active Chili Piper Form Concierge plan (supports form enrichment).
+3. Admin access to both platforms.
+
+## Step-by-step setup
+
+### 1. Authenticate Lusha in Chili Piper
+
+- In Chili Piper Admin, navigate to **Enrichment Setup** or go via the **Integrations** page.
+- Choose **Lusha** as the provider and enter your API key to authenticate.
+
+### 2. Map form fields
+
+- Select form fields to enrich (e.g., Company, Job Title, Phone).
+- Map how each Lusha data point matches your form or CRM target fields.
+
+### 3. Build an enrichment waterfall (optional)
+
+- **Custom waterfalls**: Create a priority sequence — e.g., Lusha first; if no match, fallback to another provider.
+- **Prebuilt templates**: Use Chili Piper's ready-made waterfalls for speed.
+
+### 4. Publish your router
+
+- If your form router is live, Chili Piper will prompt you to copy a new JS snippet. Embed this updated snippet after your form's HTML.
+- For HubSpot forms within an iframe, add the snippet directly to the form as well.
+
+### 5. Embed the snippet
+
+- Paste the updated JS snippet into your website as instructed. This enables dynamic form behaviour — fields auto-fill after the lookup completes.
+
+## Tips
+
+| **Tip** | **Why it matters** |
+| --- | --- |
+| Use minimal form fields (e.g., email only) | Reduces friction while still capturing enriched data behind the scenes. |
+| Test fallback waterfalls | Ensures enrichment continues even if Lusha doesn't return data. |
+| Validate field mapping | Prevents mismatches or CRM errors. |
+| Re-embed snippet on updates | Ensures enrichment remains active after changes. |
+
+### Example
+
+**Before**: A form with fields for First Name + Company + Email + Phone + Title — heavy friction, high abandonment.
+
+**After**: A form with only First Name + Email visible to the visitor; Lusha fills Title, Company, and other fields via Chili Piper in the background — yielding full contact enrichment and higher conversion rates.
+
+## Summary checktable
+
+1. Log into Chili Piper → go to **Enrichment Setup / Integrations**.
+2. Authenticate Lusha using your API key.
+3. Map form fields and optionally configure waterfalls.
+4. Publish the updated router → copy the JS snippet.
+5. Embed snippet after your form's HTML (plus inside HubSpot iframe if applicable).
+6. Test form enrichment, routing, and CRM field lookups.

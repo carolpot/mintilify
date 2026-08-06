@@ -1,0 +1,110 @@
+---
+title: "How to Reorder Steps in a Sequence"
+description: "Rearrange the steps in any sequence — draft or active — without rebuilding it from scratch."
+---
+
+**Rearrange the steps in any sequence — draft or active — without rebuilding it from scratch.**
+
+You can now drag and drop steps to a new position in a sequence at any time. When you move a step, the system automatically recalculates the schedule for future emails and makes sure no email that was already sent gets resent. This article walks you through how to reorder steps and explains what happens to your contacts when you do.
+
+---
+
+## Before you start
+
+- Your sequence must have at least 2 steps.
+- You can reorder steps in both draft and active sequences.
+- Already-sent emails are never resent, regardless of the new order.
+
+---
+
+## How to reorder a sequence step
+
+1. Go to **Engage** → **Sequences** and open the sequence you want to edit.
+2. Hover over the step you want to move. A drag handle appears on the left side of the step.
+3. Click and hold the drag handle, then drag the step to its new position.
+4. Release to drop it in place.
+
+The sequence updates immediately with the new order. Future emails are rescheduled automatically based on the updated step positions.
+
+---
+
+## What happens to step timing
+
+When you move a step, it inherits the timing configuration of the position it moves into — not the timing it previously had.
+
+| New position | Timing applied |
+|---|---|
+| Position 1 | Sends immediately on activation, or after the configured activation delay |
+| Position 2 or below | Inherits the delay that belonged to that position (e.g., "2 days after previous email") |
+
+**Example — before reorder:**
+
+| Step | Trigger |
+|---|---|
+| Step 1 | Immediately on activation |
+| Step 2 | 3 days after Step 1 |
+| Step 3 | 3 days after Step 2 |
+
+**After moving Step 3 to position 1:**
+
+| New position | Trigger |
+|---|---|
+| Step 3 | Immediately on activation |
+| Step 1 | 3 days after previous step |
+| Step 2 | 3 days after previous step |
+
+---
+
+## What happens to email threading
+
+- Whichever step moves to position 1 always starts a new thread. Any "Re:" prefix in the subject line is removed automatically.
+- Steps in positions 2 and below keep their original threading behavior:
+  - If a step was configured as a reply, it becomes a reply to the new previous step.
+  - If a step was configured as a new thread, it stays a new thread.
+
+---
+
+## What happens to your contacts
+
+The system recalculates each contact's schedule individually when you reorder steps.
+
+**Already-sent emails:**
+- Are never resent.
+- Keep their original send dates.
+- Remain visible in reporting and analytics.
+
+**Future unsent emails:**
+- Are rescheduled using the new step order.
+- Keep all personalized subject lines, body content, and custom delays.
+- Respect your sending days, hours, and timezone settings.
+
+<Note>
+  If a reorder places an unsent email before a contact's last delivered email, that email is skipped. Sequences only move forward — the system will not go back to send an email that falls behind the contact's current position.
+</Note>
+
+---
+
+## Understanding the "Not Sent" status
+
+When a step is skipped due to reordering, it is assigned the status **Not Sent** in the **Emails** tab.
+
+The reason shown is: *"This email is skipped due to sequence reordering. Sending will resume from the last sent email."*
+
+To see all skipped emails, go to the **Emails** tab and filter by **Status → Not Sent**.
+
+**Can a "Not Sent" email become scheduled again?**
+
+Yes. If you reorder the sequence again and that step moves back to a position after the contact's last sent email, the status automatically changes from **Not Sent** to **Scheduled** and a new send time is assigned.
+
+---
+
+## Contact status after reordering
+
+| Condition | Contact status |
+|---|---|
+| At least one future email is still scheduled | Active |
+| No future emails remain after recalculation | Finished |
+
+---
+
+You're all set! Your sequence is updated with the new step order, and your contacts' schedules are recalculated automatically.

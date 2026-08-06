@@ -1,0 +1,88 @@
+---
+title: "Fields for field mapping and descriptions"
+description: "A full reference of all Lusha fields available for CRM field mapping, including contact, lead, company, and account fields with descriptions and data types."
+---
+
+This reference tables every field Lusha makes available for field mapping across all CRM integrations. Use it to understand what each field contains and which data type to match on the CRM side.
+
+## Contact and lead fields
+
+| **Field name** | **Description** |
+| --- | --- |
+| **Full Name (String)** | Full name of the lead/contact |
+| **First Name (String)** | First name of the lead/contact |
+| **Last Name (String)** | Last name of the lead/contact |
+| **Phone 1 / Phone 2 (String)** | Any phone number not tagged as mobile or direct |
+| **Mobile 1 / Mobile 2 (String)** | Cell phone number of the lead/contact |
+| **Other Phone 1 / Other Phone 2 (String)** | Any phone number not tagged as mobile or direct |
+| **Direct Phone 1 / Direct Phone 2 (String)** | Not mobile — most likely a direct landline |
+| **Email 1 (String)** | Primary email of the lead/contact |
+| **Email 2 (String)** | Secondary email of the lead/contact (if available) |
+| **Lusha User (String)** | The Lusha user who exported the lead/contact |
+| **Predefined Value (Any)** | A fixed value that doesn't change per export. For example, map "Lead Source" to always export as "Lusha". |
+| **Contact LinkedIn URL (String)** | LinkedIn URL of the lead/contact (when available in Lusha's database) |
+| **Contact Country (String)** | Country of the contact/lead |
+| **Contact Continent (String)** | Continent of the contact/lead |
+| **Contact Country ISO 2 (String)** | 2-letter ISO country code of the contact/lead |
+| **Contact State (String)** | State of the contact/lead (US only) |
+| **Job Title (String)** | Job title of the lead/contact |
+| **Seniority (String)** | Seniority level of the lead/contact. Note: "Non-Manager" has been added to the seniority table. If your CRM uses a restricted picktable, add "Non-Manager" to it. |
+| **Updated Date (DateTime)** | Date the contact was pushed to your CRM via Lusha. This is not a data lineage or source-level last-update timestamp — Lusha does not provide data lineage. |
+| **Do Not Call (Boolean)** | Whether the contact/lead is on a DNC table (true/false) |
+| **Contact Tags (String)** | Tags attached to the contact in Lusha. Must be mapped to a String field in your CRM. |
+| **Intent Topics (String)** | Intent topics associated with the contact |
+| **Intent Topics Count (Number)** | Number of intent topics associated with the contact |
+| **Intent Topics Average Score (Number)** | Average score of the intent topics |
+| **Intent Topics (Multipicktable)** | CRM-side picktable of intent topics matched against Lusha data |
+| **Technologies (String)** | Technologies used by the contact's company |
+| **Technologies (Multipicktable)** | CRM-side picktable of technologies matched against Lusha data |
+| **Company Name (String)** | Company name of the lead/contact |
+| **Company Revenue (String)** | Revenue of the company (when mapped as a string field on the CRM side) |
+| **Company HQ Address (String)** | HQ address of the contact's company |
+
+## Company and account fields
+
+| **Field name** | **Description** |
+| --- | --- |
+| **Company Name (String)** | Name of the company |
+| **No of Employees (Number)** | Number of employees (numeric) |
+| **No of Employees (String)** | Number of employees (string — must also be a string on the CRM side) |
+| **Website (String)** | Full website URL (e.g., [www.company.com](http://www.company.com)) |
+| **Domain (String)** | Domain only (e.g., company.com) |
+| **Description (String)** | Description of the company (when available in Lusha) |
+| **Company LinkedIn URL (String)** | LinkedIn URL of the company (when available) |
+| **Company Revenue (String)** | Revenue of the company as a string |
+| **Company Revenue (Number)** | Revenue of the company as a number |
+| **Company Founded Date (String)** | Date the company was founded |
+| **Main Industry (String)** | Primary industry of the company (must be a String field) |
+| **Sub Industries (String)** | Sub-industries of the company (must be a String field) |
+| **Specialties (String)** | Company specialties (when available) |
+| **Company Street (String)** | Street address of the company |
+| **Company City (String)** | City of the company |
+| **Company Country (String)** | Country of the company |
+| **Company Country ISO 2 (String)** | 2-letter ISO country code of the company |
+| **Company State (String)** | State of the company (US only) |
+| **Company State Code (String)** | State code of the company (US only) |
+| **Company Continent (String)** | Continent the company is based in |
+| **Company HQ Address (String)** | HQ address of the company |
+| **Company Phone (String)** | Company phone number |
+| **Company Facebook (String)** | Company Facebook page URL |
+| **Company Twitter (String)** | Company Twitter page URL |
+
+## Value mapping for picklist fields
+
+When you map **Main Industry**, **Seniority**, or **Department** to a CRM field configured as a picklist, a **Value mapping** option will appear inline in that field row. This lets you match Lusha's values to your CRM's own picklist options.
+
+If a Lusha value has no matching entry set up in value mapping, the export will fail for that contact. You must map every Lusha value your team is likely to export.
+
+**To configure value mapping:**
+
+1. In the field mapping table, find the **Main Industry**, **Seniority**, or **Department** row.
+2. Click **Value mapping** in that row (only appears when the mapped CRM field is a picklist).
+3. In the dialog, select a Lusha value on the left and your matching CRM picklist value on the right.
+4. Click **+ Add** to map additional values.
+5. Click **Apply**, then **Save changes**.
+
+<Note>
+Value mapping is only available when the CRM field is configured as a picklist.
+</Note>

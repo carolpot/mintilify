@@ -1,0 +1,72 @@
+---
+title: "Why Are My Engage Emails Going to Spam?"
+description: "Why Engage emails land in spam and how to fix each cause, from domain authentication to content issues."
+---
+
+If your Engage emails are landing in spam instead of the inbox, a few common issues are usually responsible. This guide walks through each cause and how to fix it.
+
+## Possible causes
+
+- Your sending domain hasn't been authenticated (missing SPF, DKIM, or DMARC records)
+- You're sending too many emails too quickly
+- Your email content contains spam triggers
+- Your sending account has accumulated a poor reputation
+- You're sending to contacts with invalid or low-quality email addresses
+
+## Fix 1: **Make sure your sending domain is properly authenticated**
+
+Lusha Sequences sends email through your connected Gmail or Outlook account, so your deliverability depends on how your own domain is set up, not Lusha's.
+
+Have your IT or DNS administrator confirm that your domain has the following records in place:
+
+- **SPF** — authorizes your email provider's servers to send on behalf of your domain
+- **DKIM** — adds a digital signature that receiving servers use to verify the email's integrity
+- **DMARC** — tells providers what to do when SPF or DKIM checks fail
+
+For **Google Workspace**, these are configured in the Google Admin Console under Apps → Google Workspace → Gmail → Authenticate email.
+
+For **Microsoft 365**, they're managed through your DNS provider or the Microsoft 365 Admin Center.
+
+<Note>
+Note: DNS changes can take up to 48 hours to propagate. Allow time before testing again.
+</Note>
+
+## Fix 2: Reduce your daily sending volume
+
+Sending large volumes of emails from a new or low-activity mailbox triggers spam filters. Email providers expect ramp-up over time.
+
+- Start with no more than 20–30 emails per day from a new mailbox
+- Increase volume gradually over 2–4 weeks
+- Spread sends throughout the day rather than sending in one burst
+
+For provider-specific daily limits, see the [Email Sending Limits by Provider](/user-guide/performance-and-troubleshooting/engage-sending-limits-by-email-provider) & [Email Limits Best Practices](/user-guide/performance-and-troubleshooting/email-limits-best-practices) articles.
+
+## Fix 3: Review your email content
+
+Spam filters score email content for known trigger patterns. Common causes:
+
+- **Spam trigger words** - avoid phrases like "Free", "Guaranteed", "Act now", "No obligation", "Click here"
+- **All-caps subject lines** - these are a strong spam signal
+- **Too many links** - keep links to 1–2 per email
+- **Image-heavy emails** - plain text or low-image-to-text ratio performs better in deliverability
+- **Missing unsubscribe link** - legally required in many countries and expected by spam filters
+
+## Fix 4: Clean your contact table
+
+High bounce rates damage your sender reputation quickly. Before launching a sequence:
+
+1. Use Lusha's email confidence score to filter out low-confidence addresses
+2. Remove contacts with generic mailboxes (info@, support@, contact@) — these rarely convert and often cause spam complaints
+3. Remove contacts who have previously bounced or unsubscribed
+
+## Fix 5: Warm up a new mailbox
+
+If you recently connected a new Gmail or Outlook account to Engage, it needs time to build a sending reputation. Use a mailbox warm-up tool before sending high volumes, or use an existing mailbox with a track record of regular sending.
+
+## Fix 6: Check your sender reputation
+
+You can check your domain and IP reputation using free tools like Google Postmaster Tools (for Gmail) or MX Toolbox. A poor score means past sends have been marked as spam by recipients - address the content and volume issues above before sending again.
+
+<Warning>
+**Important:** If you believe your domain has been blacklisted, contact Lusha Support immediately - continued sending from a blacklisted domain makes recovery harder.
+</Warning>

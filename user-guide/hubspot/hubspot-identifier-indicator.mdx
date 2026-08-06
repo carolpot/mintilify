@@ -1,0 +1,32 @@
+---
+title: "HubSpot identifier (indicator)"
+description: "How to enable the HubSpot identifier to see which contacts and companies already exist in your CRM before revealing them in Lusha."
+---
+
+The HubSpot identifier shows a HubSpot icon next to any contact or company in Lusha Search that already exists in your HubSpot account. This prevents you from spending credits on records you already have.
+
+<Note>
+The HubSpot indicator uses your company's HubSpot API quota, not Lusha's credits.
+</Note>
+
+## How to enable the HubSpot identifier
+
+1. Go to **[Integrations → HubSpot → Settings](https://dashboard.lusha.com/lusha-integrations/advancedSettings/hubspot/settings)**.
+2. Toggle on **Existing HubSpot indicator**.
+
+Once enabled, the HubSpot icon appears next to contacts in Search results who already exist in your CRM. For companies, the icon appears in Company Search results only.
+
+You can also toggle on **Excluding HubSpot objects**. When this is on, contacts that already exist in HubSpot will be skipped during bulk reveal actions - no credits charged for those contacts.
+
+## How to set up field mapping for the identifier
+
+1. Go to **[Integrations → HubSpot → HubSpot identifier](https://dashboard.lusha.com/lusha-integrations/advancedSettings/hubspot/settings)**.
+2. Map the fields Lusha should use to check for duplicates.
+
+The identifier checks for duplicates using these field combinations:
+
+**Companies:** Company name, *or* domain name.
+
+**Contacts:** First name + last name + company name or domain, *or* email address, *or* phone number.
+
+You're all set — the HubSpot icon will now appear in your prospecting results next to any contact that already exists in your CRM.

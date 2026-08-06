@@ -1,0 +1,73 @@
+---
+title: "Industry Taxonomy Update for Prospecting API"
+description: "How to update your Prospecting API calls and saved filters after Lusha's November 2025 industry taxonomy changes."
+---
+
+In November 2025, Lusha updated the Industry filter taxonomy to provide clearer, more standardized industry classifications. This update affects industry codes used in [Prospecting API](https://docs.lusha.com/apis/openapi/prospecting) calls and saved filters.
+
+As part of this update:
+
+- Some industries were renamed for better clarity
+- New industries were added to cover emerging sectors
+- Outdated industries were removed
+
+## Who is affected
+
+This taxonomy update is relevant if you:
+
+- Use industry filters in your [Prospecting API](https://docs.lusha.com/apis/openapi/prospecting) search requests
+- Have saved filters that include industry parameters
+- Integrate industry data into your CRM or internal systems
+- Build prospecting tables based on specific industry segments
+
+## How to update
+
+To ensure your API integration continues working correctly with the new taxonomy:
+
+1. **Review your current API calls**
+
+   - Check if you're using industry filters in your Prospecting API search requests
+   - Identify which industry codes you're currently using
+2. **Compare with the new taxonomy**
+
+   - Download the [complete table of new industry codes](https://www.lusha.com/wp-content/uploads/2025/10/New-Industries-Taxonomy-Prospecting-API.pdf)
+   - Verify whether your industry codes have been changed, removed, or added
+3. **Update your API requests**
+
+   - Replace old industry codes with the new codes in your API calls
+   - Update any saved filters that use industry parameters
+   - Test your updated requests to ensure they return expected results
+4. **Update your documentation**
+
+   - Document the new industry codes your team is using
+   - Update any internal mapping or reference tables
+
+## FAQs
+
+**What happens if I don't update my industry codes?**
+
+Your API queries may return inconsistent or incomplete results. Old industry codes may not match contacts correctly, leading to gaps in your prospecting tables.
+
+**Will my existing saved filters still work?**
+
+Saved filters using old industry codes may return different results after the update. We recommend reviewing and updating all saved filters that use industry parameters.
+
+**How do I find out which industry codes changed?**
+
+Download the complete table of new industry codes and compare it with your current codes. Industries that were renamed, added, or removed are indicated in the documentation.
+
+**Can I still use the old industry codes?**
+
+No, old industry codes that were removed or renamed will no longer return accurate results. You must update to the new codes.
+
+**Will this affect my historical data?**
+
+Historical data in your system will remain unchanged. However, new API calls will use the updated taxonomy, so you may need to update your internal mapping to maintain consistency.
+
+**How long will it take to update my integration?**
+
+The time required depends on how extensively you use industry filters. For most users, updating API calls takes 15–30 minutes.
+
+**Is there a deprecation period for old codes?**
+
+No, the change took effect on November 26th. We recommend updating your codes as soon as possible to avoid disruptions.

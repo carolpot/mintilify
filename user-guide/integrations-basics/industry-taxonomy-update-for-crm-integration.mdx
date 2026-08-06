@@ -1,0 +1,87 @@
+---
+title: "Industry Taxonomy Update for CRM Integration"
+description: "How to update your CRM integration after Lusha's November 2025 industry taxonomy changes, including picktable and field mapping updates."
+---
+
+In November 2025, Lusha updated the Industry filter taxonomy to provide clearer, more standardized industry classifications. This update affects the Industry and Sub-Industry fields in your CRM integration.
+
+As part of this update:
+
+- Some industries were renamed for better clarity
+- New industries were added to cover emerging sectors
+- Outdated industries were removed
+
+## Who is affected
+
+This taxonomy update is relevant if you:
+
+- Sync Industry or Sub-Industry fields from Lusha to your CRM
+- Use industry data for segmentation, reporting, or lead routing
+- Have automation or workflows triggered by industry values
+- Filter or search contacts based on industry in your CRM
+
+## How to update
+
+The update process depends on your CRM field type. Follow these steps:
+
+1. **Check your field mapping**
+
+   - Navigate to Lusha CRM Integration → Manage → Field Mapping
+   - Verify if you're using the Industry or Sub-Industry fields
+
+1. **Identify your CRM field type**
+
+   - In your CRM, check the field type for Industry and Sub-Industry fields
+   - Determine if each field is configured as:
+
+     - **Text/String field** — No action needed
+     - **Picktable field** — Continue to Step 3
+2. **Update picktable values (if applicable)**
+
+   - Download the complete table of new industries
+   - In your CRM, update your picktable values to match the new taxonomy
+   - Ensure both active and inactive values are updated to prevent data sync issues
+3. **Test your integration**
+
+   - Sync a few test contacts to verify data flows correctly
+   - Check that industry values appear as expected in your CRM
+
+## CRM-specific instructions
+
+- **Salesforce:** Update picktable values in Setup → Object Manager → [Object] → Fields & Relationships
+- **HubSpot:** Update dropdown options in Settings → Properties → [Industry field]
+- **Pipedrive:** Update field options in Settings → Data fields → [Industry field]
+
+## FAQs
+
+**Do I need to update my CRM if I use text/string fields?**
+
+No action is needed. Text/string fields will automatically sync with the new industry names without any configuration changes.
+
+**What happens if I don't update my picktable values?**
+
+Your CRM integration may fail to sync industry data, or new industry values may not appear in your CRM. Contacts with updated industries may show blank or error values.
+
+**How do I know if I'm using picktable or text fields?**
+
+In your CRM, navigate to your field settings. Picktable fields have a dropdown with predefined values, while text/string fields allow free-form text entry.
+
+**Can I keep both old and new picktable values temporarily?**
+
+Yes, you can add new values while keeping old ones temporarily. However, we recommend removing old values once all contacts have been migrated to avoid confusion.
+
+**Will this affect my CRM workflows or automations?**
+
+If your workflows trigger based on specific industry values, you'll need to update them to reference the new industry names.
+
+**What if I use custom industry values in my CRM?**
+
+Custom values you've added manually will remain unchanged. However, any values synced from Lusha will use the new taxonomy.
+
+**How long does it take to update picktable values?**
+
+Updating picktable values typically takes 10–15 minutes, depending on your CRM platform and the number of industries you use.
+
+**Will I lose any data during this update?**
+
+No data will be lost. However, contacts with removed or renamed industries will be updated to reflect the new taxonomy.

@@ -1,0 +1,130 @@
+---
+title: "How credits are counted"
+description: "A complete breakdown of how Lusha deducts credits across every feature — Platform, Extension, API, Workspace, CSV Enrichment, and Recommendations."
+---
+
+Every time you reveal contact information in Lusha, credits are deducted from your balance. The exact cost depends on **what data you reveal** and **which feature you use**. This article covers every credit event across all Lusha features so there are no surprises.
+
+<Warning>
+Prices are subject to change across different pricing versions, per our [Terms & Conditions](https://www.lusha.com/legal/terms_and_conditions-2/).
+</Warning>
+
+---
+
+## Complete credit cost table
+
+Credits are charged based on the type of data revealed and the feature used. Use the table below as your reference.
+
+| Feature | Action | Credits deducted |
+| --- | --- | --- |
+| **Platform & Extension** | Reveal email address | 1 credit |
+| **Platform & Extension** | Reveal phone number | 5 credits |
+| **Platform & Extension** | Reveal email + phone together | Up to 6 credits |
+| **Platform & Extension** | Re-view an already-revealed contact | 0 credits |
+| **Platform & Extension** | Search, filter, or view company info | 0 credits |
+| **API** | Reveal email (per contact) | 1 credit |
+| **API** | Reveal phone number (per contact) | 5 credits |
+| **API** | Reveal company info (full profile) | 1 credit |
+| **API** | Single API request (per result returned) | 1 credit per result |
+| **API** | Bulk API request (up to 100 contacts/companies) | 1 credit per 1–25 results |
+| **API** | API request with no results returned | 1 credit (minimum) |
+| **API — Signals** | Company Signals | 1 credit per company |
+| **API — Signals** | Contacts Signals | 1 credit per contact |
+| **Workspace** | Contact or company reveal | Same as Platform rate |
+| **Workspace** | AI chat prompts | 1 credit per 5 prompts |
+| **Workspace** | AI Data enrichment | 1 credit per cell enriched |
+| **Workspace** | Signals enrichment (signal found) | 1 credit per signal detected |
+| **Workspace** | Signals enrichment (no signal found) | 0 credits |
+| **Workspace** | CSV export | 1 credit per 25 rows |
+| **Workspace** | CRM export (push to Salesforce / HubSpot) | 1 credit per export |
+| **Workspace** | Lusha Data columns | 0 credits |
+| **Workspace** | CRM columns (live Salesforce field values) | 0 credits |
+| **CSV Enrichment** | Successfully enriched contact (matched) | Same as Platform rate |
+| **CSV Enrichment** | Unmatched row (no data found) | 0 credits |
+| **Recommendations table** | Reveal a blurred row (post-beta) | 1 credit per row |
+| **Recommendations table** | Show contact email | 1 credit |
+| **Recommendations table** | Show contact phone number | 5 credits |
+| **Recommendations table** | Browsing / filtering / viewing the table | 0 credits |
+
+<Note>
+When you click **Reveal**, Lusha shows all available data for that contact at once. This is why a single reveal can deduct more than 1 credit — you're paying for each piece of contact data surfaced, not just one click.
+</Note>
+
+---
+
+## How credits are deducted
+
+Credits are charged based on the **types of data revealed** per contact, not per contact unlock. Each data point has a separate credit cost. The same contact's data point is only ever charged once — re-querying or re-viewing a contact you've already revealed will not incur additional charges for data already surfaced.
+
+---
+
+## API-specific rules
+
+The API has a few additional rules that don't apply to the platform:
+
+* **Minimum 1 credit per request** — even if no results are returned, 1 credit is consumed.
+* **Bulk request pricing** — 1 credit covers up to 25 results. A 40-result bulk call costs 2 credits for the results, plus data point costs on top.
+* **Company info via API costs 1 credit** — company data is free throughout the platform but charged via API.
+
+<Note>
+API access requires a key available to Admins and Managers on Premium and Scale plans. For full endpoint documentation, visit [docs.lusha.com](https://docs.lusha.com).
+</Note>
+
+---
+
+## Workspace-specific rules
+
+Workspace introduces credit events beyond standard reveals:
+
+* **AI Data enrichment charges per cell** — a row with 3 AI Data columns costs 3 credits to enrich, not 1.
+* **Signals enrichment only charges for populated cells** — if no signal is detected, that cell is free.
+* **CSV export credits are separate from reveal credits** — exporting a table you've already revealed still costs 1 credit per 25 rows.
+* **Signals are table-scoped** — running a signal search for the same contact in two different Workspace tables counts as two separate charges.
+
+---
+
+## What does NOT use a credit
+
+Many actions in Lusha are completely free and do not touch your credit balance. You will **not** be charged for:
+
+* **Searching and filtering** — browsing results, applying filters, and scrolling through the prospecting platform.
+* **Viewing company information** — company names, industries, headcounts, and other firmographic data on the platform.
+* **Re-viewing a contact you've already revealed** — the credit is only charged once per contact per cycle.
+* **Saving contacts to a table** — adding a contact to a table without revealing their contact data.
+* **Workspace Lusha Data and CRM columns** — these pull from verified data and live CRM fields at no cost.
+* **Unmatched rows in CSV Enrichment** — rows Lusha cannot find a match for are always free.
+* **Browsing the Recommendations table** — you're never charged just for viewing or filtering the table.
+
+<Note>
+Credits are only ever deducted when you click **Show details** (or **Reveal**) on a contact for the first time in a billing cycle, or when performing a paid Workspace action like AI Data enrichment or CSV export.
+</Note>
+
+---
+
+## Why Analytics may show higher numbers than you expect
+
+The Analytics dashboard reflects credits at the **account level**, across all users and all channels. A few things that can cause the number to look higher than expected:
+
+* Credits used by **other users** on your account are included in the total.
+* Credits consumed via **integrations** (Salesforce, HubSpot, API, etc.) count toward the balance.
+* **Bulk reveals** deduct credits for all contacts in the selection, including those for whom only partial data was found.
+* **Workspace actions** like AI Data enrichment and CSV exports add to the total beyond reveal-only usage.
+* The **"This cycle"** view resets on your renewal date — not the calendar month — which can make the window feel shorter than expected.
+
+---
+
+## What are "conversation credits"?
+
+Conversation credits are a separate credit type available on certain plan tiers. They are used when saving contact information through specific in-platform workflows. If you see this line item in your dashboard, it counts independently from your standard prospecting credits.
+
+---
+
+## If you believe there's a discrepancy in your credit count
+
+1. Go to **Analytics → Credit Usage** and filter by user and date range.
+2. Compare the breakdown against your known reveal activity — remember to account for Workspace actions (AI Data, Signals, CSV exports) and API usage.
+3. If credits were deducted with no corresponding activity, contact Lusha Support via the chat icon in your dashboard.
+
+<Warning>
+**Important:** Credits cannot be refunded for reveals already made, even if the contact data was incomplete. If you regularly find data quality issues, let Lusha Support know — patterns are reviewed by the data team.
+</Warning>

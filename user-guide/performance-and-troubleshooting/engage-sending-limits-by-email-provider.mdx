@@ -1,0 +1,46 @@
+---
+title: "Engage Sending Limits by Email Provider"
+description: "Daily sending caps for Gmail, Google Workspace, and Outlook, plus recommended ramp-up volumes for new mailboxes."
+---
+
+Each email provider imposes daily limits on how many emails you can send from a connected account. Sending above these limits can cause emails to be deferred, bounced, or flagged as spam. Use this reference when planning your Engage sequence volume.
+
+## Daily sending limits by provider
+
+| Provider | Daily limit (standard) | Notes |
+| --- | --- | --- |
+| Gmail (free) | 500 emails/day | Includes all sent mail, not just Engage sequences |
+| Google Workspace | 2,000 emails/day | Shared across all senders in the domain |
+| Outlook / Microsoft 365 | 10,000 emails/day | Per mailbox; lower limits may apply on new accounts |
+
+<Note>
+**Note:** These are provider-imposed limits, not Lusha limits. Lusha enforces its own sending caps to protect your deliverability - see [Email Limits Best Practices](/user-guide/performance-and-troubleshooting/email-limits-best-practices) for Lusha's recommended daily sending volumes.
+</Note>
+
+## Recommended sending volumes for new mailboxes
+
+Even within your provider's limits, sending too many emails too quickly from a new or low-activity mailbox will hurt deliverability. Follow this ramp-up schedule:
+
+| Week | Recommended daily volume |
+| --- | --- |
+| Week 1 | 20–30 emails/day |
+| Week 2 | 40–60 emails/day |
+| Week 3 | 80–100 emails/day |
+| Week 4+ | Up to your provider limit |
+
+## What happens if I exceed my provider's limit?
+
+Depending on the provider:
+
+- **Gmail / Google Workspace** -= emails over the limit are deferred until the next day's quota resets. Sequences may appear paused.
+- **Outlook / Microsoft 365** - you may receive a bounce with a 550 or 421 error code. The account may be temporarily throttled.
+
+<Warning>
+**Important:** Consistently exceeding limits can result in your account being flagged or temporarily suspended by your email provider.
+</Warning>
+
+## How to check your current sending volume in Engage
+
+1. Go to **[Engage](https://dashboard.lusha.com/engage).**
+2. View the **Emails Sent** metric for today to see how many have been sent from your connected account at the top toolbar.
+3. Adjust your sequence schedule if you're approaching your provider's limit.

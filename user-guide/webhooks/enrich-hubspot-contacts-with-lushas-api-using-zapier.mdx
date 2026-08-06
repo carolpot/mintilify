@@ -1,0 +1,128 @@
+---
+title: "Enrich HubSpot contacts with Lusha's API using Zapier"
+description: "How to use Zapier and Lusha's API to automatically enrich new HubSpot contacts that are missing an email address or phone number."
+---
+
+This guide walks through a specific automation use case: whenever a new contact is created in HubSpot without an email address or phone number, Lusha automatically enriches that contact and updates the record. The setup uses Zapier to connect the two platforms.
+
+<Note>
+This feature is available on Premium and Scale plans only.
+</Note>
+
+## What you need
+
+- A paid [Zapier](https://zapier.com/) account
+- A [Lusha API key](https://dashboard.lusha.com/api) (Admins and Managers only)
+- A HubSpot account
+
+Before you start, create a test HubSpot contact with a first name, last name, and company name — but no email or phone. This contact will be used to verify that the Zap works.
+
+```
+First Name: DanielLast Name: JakarCompany: Lusha
+```
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259755/0fb9414b9fc2608fda86b99f/image.png?expires=1780056000&signature=06440c0f013f7df65bc9d81ce72377891f779185ab69ff794fe543944ec662f9&req=0dZtwFH9qTJk2hj99dpg6sXxgBK%2BrHt2m4CskRAno0dMw8wGZmnMQddpW4z%2F%0Ar%2BZ%2BTBrzjydjSJFbPyyxkESn%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+It's also recommended to associate the contact with a company in HubSpot:
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259800/2f0b1334ad0d4cda4dd27a49/image.png?expires=1780056000&signature=50e2f3983bf1c5b3fc2f465af21e69b4bfd03d69852289050b6e7eeea5f61817&req=0dZtwFHyrDdk2hj99dpg6qdRlUjsGOHss70RsiboJUxEvAo3lxqv%2FDGT1hg3%0A7tUGqZqHOowQdxkDQXky9kgW%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 1 — Create a new Zap
+
+Log in to Zapier and click **Make a Zap!** on your [account page](https://zapier.com/app/dashboard).
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259845/7d17d2221958095b3c54b789/image.png?expires=1780056000&signature=e174a860272c2013ce1e460c4d2305c4cb6f5cfc650e71d0bd0a5181308b4b53&req=0dZtwFHyqDJk2hj99dpg6sY%2FySfjFoKRU3w5pm3PA82efgQnw2h6471iu2TH%0As%2BOKUcF68fhhHa29OcrGx7vr%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 2 — Set up the trigger
+
+1. Search for **HubSpot** as the trigger app.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259897/75a224f6a29a0fddcd2ba35f/image.png?expires=1780056000&signature=4f00be46abfd7f3c3fe8c5c1c4707e9c41600548caed26c735d35f2e3dc6b9d2&req=0dZtwFHypTBk2hj99dpg6q7ZioMt53fagHr16Mzr7cx9dN5JFAngvPUNTZFA%0AbZbq8fY1QmEQyXlUkWICXvsn%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Select **New Contact** as the trigger event.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259946/3275311f1441cd5166b97a10/image.png?expires=1780056000&signature=975dd8cd9b22ea6430409428cbd53eb6e677166c87d10fa7876ca9be15851bd9&req=0dZtwFHzqDFk2hj99dpg6m6St4BnG9U%2FPyNyhebBxvjgAxy6xTEgEXSkOqBQ%0Aq8oJm2TBk%2FmuqLdpdi7568iA%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Click **Continue** and connect your HubSpot account.
+2. In **Set up trigger**, add any additional properties to retrieve (in this example, 3 additional properties were added).
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259990/bf68660a35b6811e275d5a94/image.png?expires=1780056000&signature=8caccd042f9d76bd14d9e8a3fbaf48b208534a64446a206289e20524d3c0cdd1&req=0dZtwFHzpTdk2hj99dpg6qQLZjzmtOZHLdM8keVpeTazmKGbScH87MrEzOsE%0AUoJPzRgt%2BmayiM0BU1IrHjRy%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Click **Test trigger** — your test contact should appear in the results. Click **Continue**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260019/a82dd244295cefbfb2cf0186/image.png?expires=1780056000&signature=a081d6a3abdef13ad09be5649955e12a7b499d5899ebe720a89427f7728e51fd&req=0dZtw1j6rT5k2hj99dpg6mv%2BNVkqE8hUulfVtq5qc1QQXiBARbbn8QE%2F8Krh%0ApQ2zxAAAK%2F5lXVd0MGa%2FBvxi%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 3 — Set up the filter
+
+1. Add a **Filter by Zapier** action and click **Continue**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260041/0b664ee9a67f1ca67b53529c/image.png?expires=1780056000&signature=69f4416599b0bfc7fb72b0e21b98a6545b9c9e0a9aa3f0e7522d2be66dc54887&req=0dZtw1j6qDZk2hj99dpg6sXakvbfpu%2BKYmAk99QsaUwTVre80sOFXCR8b0Jb%0Ae4hc2wzoHVMHdpiv67%2F6zTGS%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Set the filter so the Zap only continues when the contact's email fields **and** phone number fields **do not exist**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260051/473be4c530fa7338dbac1476/image.png?expires=1780056000&signature=5a282b5a201da0a0f7a3e0dbe72b9b7d4f0d9c1612393e463c57632f450f9f89&req=0dZtw1j6qTZk2hj99dpg6gTNUJiYjuP%2Fs1siphWQbm%2BGgT9LFLFvrzSFv9b9%0Akj5vpcWlgnzaoJ4yICHovDJJ%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+After clicking Continue, Zapier will confirm whether the Zap would have continued with your test contact. Since the test contact Daniel Jakar from Lusha has no email or phone, the Zap would have continued.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260066/e403baca3cd91f769703eff3/image.png?expires=1780056000&signature=a6f16c03675b1b8edb9129d877f781dc155808c3a2fadfbbc9c0745d547a6e16&req=0dZtw1j6qjFk2hj99dpg6ovUSPxBJ3zN9G0bj2ZxMpPaXRqvaG4hWOuRh2YP%0AYIvlJq62dchTXPexiP1D8Eh2%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 4 — Set up the Lookup Contact action
+
+1. Click the **+** icon to add a new action and search for **Lusha**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260079/258060d0520f6540121cf4b4/image.png?expires=1780056000&signature=106d17cece6179bc92dd11298a843c26231c7ba1db00aca6c94cecb3aeab9fc3&req=0dZtw1j6qz5k2hj99dpg6o3V7tEsJi1UZUFrxSN%2F2a4a0b%2By3%2BCxdiHE%2Fj%2Fo%0Au5%2FPZD2r5DkddN99kzuh0s3U%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Select **Lookup Contact** as the action event and click **Continue**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260088/32e39c7ebdbb31baac6a5540/image.png?expires=1780056000&signature=7eac44be9f68c78ddf77436cea8936ef84482c2854fb9683ae8e061856876f68&req=0dZtw1j6pD9k2hj99dpg6piBpgnzItjhD67Ev%2BqWdV1W7qPomOodMycg0veB%0A73q4hGBxQjB42fdUHK91QxMY%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Connect your Lusha account and enter your API key from your [Lusha API Dashboard page](https://dashboard.lusha.com/api), then click **Yes, Continue**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260093/56cfdb8fb192ae4fee2a4abd/image.png?expires=1780056000&signature=cefbf55f60a2334b221c1d7899cf9104af77db1901d5344cafd14bc38756d42d&req=0dZtw1j6pTRk2hj99dpg6qk071j4AwrTnH9eASqPDk41VuWrlLZ2417SrpXB%0An80%2FG0nw6bWjYlevTnZt2%2BB0%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260098/d2b7b6f0a64549adcf6b9767/image.png?expires=1780056000&signature=756c834ddf871364b324119a09703f6eff4cab3e02b76e0eeba096e883882897&req=0dZtw1j6pT9k2hj99dpg6siN72B7Y7NYkWuNXGetNJkbawhRLJt6GGmb72B2%0ALP9MYwIv%2BKwMvCv6bR%2F4aRL3%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. In **Set up action**, configure the Lusha Lookup Contact fields: map the HubSpot **First Name** and **Last Name** fields (separated by a space) to **Full Name**; set **Company By** to Name; map **Company** from the HubSpot dropdown; set **Property** to emails, phones, or leave as default (charges a credit when either is found); and optionally map a LinkedIn URL to improve accuracy.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260102/9089f0f830ffabc1c9118fa6/image.png?expires=1780056000&signature=f221927ae00b454f68f098a63fc0f31e3d16af76cc05a16c3cb9a1d48fb4225e&req=0dZtw1j7rDVk2hj99dpg6tI1BsQme2YxOSd4VpSrlwudeRZlJR36wBNGceZS%0AT4zlAOmW3TK1lXGq7RsQSJnJ%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Click **Test action** — you should see a "Test was successful!" message. Click the **+** to add the final action.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260106/5d39e8ccbd396f1a118c8ffb/8fa99ac1-12fa-4fca-81d4-9068401272d8?expires=1780056000&signature=abfe37c0d773d5fe1dc03d7dccefcc202f9d4c521cd7244f26f3fbdb77094de5&req=0dZtw1j7rDFk2hj99dpg6saRXU3WtGHqXLr3le%2Bv1nqd9MYJ1mJFN2jqrqJw%0AROqsns4LTWpEmlNCC3dyD77a%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Step 5 — Update the contact in HubSpot
+
+1. Choose **HubSpot** as the action app and select **Update Contact**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260110/d7d7eb90e7d4ad1ff2d27066/image.png?expires=1780056000&signature=5d8680b9693eebbfcb711c3242d5a8bad2111e9bc27b861312db88d1e6f076c3&req=0dZtw1j7rTdk2hj99dpg6ndv8JdJbtop0osf865R0jwunIMAppqgGCYQDnhj%0ARyJERWWc8iilNTSEOanv3jiT%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Click **Continue** and select your HubSpot account.
+2. In **Set up action**, map the Lusha data back to HubSpot: select the Object ID from the HubSpot trigger (click **New Contact in HubSpot** → **Show all options** → **Object ID**), then map email addresses and phone numbers from Lusha.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260116/bb40cd9afccf976bf4bab611/image.png?expires=1780056000&signature=355fc446bb4de8d9fe6eea2000efd9cb2647ebf3a2a76646feb433f8210ac41e&req=0dZtw1j7rTFk2hj99dpg6kp5ywk%2FsHIYRza3tcb4tTvo67rV3I0y4QbhFP2V%0AKm8cTGOCvLL%2FCllmT7r9%2B%2F12%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260121/38c62f6a67e5185c7b51ac61/image.png?expires=1780056000&signature=c0c62b5239f8b85d41c507b1b4512113e55b371a88ae4bb583ca362d1f9f0634&req=0dZtw1j7rjZk2hj99dpg6jqIn2N2kfwhm24nbiXPdDbJFZz8u%2B3dEN4cwk2V%0AiJZlzVhY3Xx5XEB4ZV4KiYJf%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+You can also add a custom field — for example, an **Enriched by Lusha** pick-table field (yes/no) — to tag every contact enriched this way.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260124/d3509cdb8bf65f130a3bf3fb/image.png?expires=1780056000&signature=013b4bfc3270755226507cef8515e6e014f08b49943ae2a4e42ac5e993376875&req=0dZtw1j7rjNk2hj99dpg6lcZYjjfybyWMlae6A1%2F5SlLj3yK%2B8T5HV1ajjhB%0Ag9kP%2BxlFiWzQmB0e9bcEZU1q%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Click **Continue**, then **Test** the action and **Turn on** the Zap.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260128/4ab15c964ed3750fa68b16a3/image.png?expires=1780056000&signature=64970ebd3acdbb1d8ef2f5e6c247e7798ab4495b4b969afdd3255c160ad9b3fd&req=0dZtw1j7rj9k2hj99dpg6q%2B6pr4vPyxbeAiT3xDdojxrvyWdhGo7N8fr6N9F%0AYVjzmYHp7aRAKxlbW%2FYEcUNo%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+In HubSpot you can now see the contact updated with the data Lusha found — in this case, 1 email address and 2 phone numbers.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260129/020b921aacc4f39d0dce1e6e/image.png?expires=1780056000&signature=583b99390d32b14176ad480afb18a37c9e5ccad01e1acd20fb3916e0540ee83e&req=0dZtw1j7rj5k2hj99dpg6ldmftjtNazlmjMcL3Ahxv0LL0%2B9IvJIELUFZC%2Fu%0AA9vgIRlUsgmjRy9WVj0%2B9ClB%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Viewing Zap history and API status
+
+To check the status of past Zap runs and API request codes, go to [Zapier's Zap history](https://zapier.com/app/history) and add filters like date range or specific Zap to narrow your view.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260133/f92ff2f7faf116cd28b4075d/image.png?expires=1780056000&signature=528f691478a35c578fa3311f87dcf78df833a4ab4c9b2c3065112950a3308d56&req=0dZtw1j7rzRk2hj99dpg6gImdgzrbYiDJ%2FIUvH5itYCd4Ynfse2o32hC0UNd%0A2mql9pcz%2BF%2FsFV5FXCGBEO6G%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<Tip>
+**Top play:** [Auto-enrich incomplete HubSpot contacts](https://www.lusha.com/campus/plays/auto-enrich-incomplete-hubspot-contacts/) — automatically fill in missing emails and phone numbers for new HubSpot records using Lusha.
+</Tip>
+
+For help, contact the support team at [support@lusha.com](mailto:support@lusha.com) or via the chat on the Lusha website.

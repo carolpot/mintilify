@@ -1,0 +1,81 @@
+---
+title: "MS Dynamics 365 common errors"
+description: "How to diagnose and fix the most common Microsoft Dynamics 365 integration errors in Lusha, including connection failures, internal errors, OAuth loops, and org URL issues."
+---
+
+When connecting or exporting contacts to Microsoft Dynamics 365 from Lusha, you may encounter errors related to authorisation, your organisation URL, or the OAuth flow. This article covers the most common errors and how to fix each one.
+
+<Note>
+  Connecting Lusha to Dynamics 365 requires a Dynamics 365 user with Administrator or System Customizer privileges, and a Lusha Admin account.
+</Note>
+
+## "Internal error" after completing the OAuth flow
+
+If you complete the Microsoft OAuth authorisation and then see an "Internal error" message — and the integration does not connect — this is typically caused by an expired client secret on Lusha's side or a misconfigured Azure application permission.
+
+**What to do:** This error cannot be resolved by changing your Dynamics or Lusha settings. Contact Lusha Support using the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com) and include the following:
+
+- Your Lusha account email
+- Your Dynamics 365 organisation URL (e.g. `https://orgXXXXXXXX.crm.dynamics.com`)
+- A screenshot of the error
+
+Our team will investigate and resolve it on the server side.
+
+## Cannot verify Dynamics integration / integration shows as unverified
+
+If users see an error on the CRM integration management page and cannot verify their Dynamics connection to export contacts, try the following:
+
+1. Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in your Lusha dashboard.
+2. Disconnect the Dynamics 365 integration.
+3. Reconnect and enter your Organisation URL again (see below for how to find it).
+4. Complete the Microsoft OAuth flow as a Dynamics 365 Administrator.
+5. Retry the export.
+
+If the issue affects multiple users on your account at the same time, it may be a service disruption. Contact Lusha Support with details.
+
+## Stuck in an OAuth loop (permission window opens but export does not proceed)
+
+If the "Grant permission" or "Permission Granted" window appears and then closes, but the export never starts and you return to the same screen, this means the OAuth handshake completed but the export was not triggered.
+
+To fix this:
+
+1. Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in Lusha and disconnect Dynamics 365.
+2. Return to the contact you want to export.
+3. Reconnect Dynamics 365 from the integration settings.
+4. Complete the OAuth flow and immediately retry the export.
+
+If the loop continues after reconnecting, check that your Dynamics 365 user account has the **Salesperson** or higher security role, and that it has write access to the Lead or Contact entity. Restricted users may be able to complete OAuth but fail silently when Lusha attempts to write to Dynamics.
+
+## "What do I enter in the Organisation URL field?"
+
+When connecting Lusha to Dynamics 365, you are asked to enter your Organisation URL. This is your Dynamics 365 environment's base URL.
+
+To find it:
+
+1. Log into your Dynamics 365 account.
+2. Look at the URL in your browser's address bar — it follows this format:
+   `https://orgXXXXXXXX.crm.dynamics.com`
+3. Copy that base URL (up to and including `.dynamics.com`) and paste it into Lusha.
+
+The URL varies by region. Common formats include:
+- `https://orgXXXXXXXX.crm.dynamics.com` (United States)
+- `https://orgXXXXXXXX.crm4.dynamics.com` (Europe)
+- `https://orgXXXXXXXX.crm6.dynamics.com` (Australia / Asia Pacific)
+
+Do not include any path after `.dynamics.com` — only the base URL is required.
+
+## Users cannot connect to Dynamics (intermittent or team-wide)
+
+If multiple users on your team suddenly cannot connect to Dynamics 365 and the issue was not present before, this is usually one of the following:
+
+- **Expired integration token**: disconnect and reconnect the integration as a Dynamics Administrator.
+- **Organisation URL change**: if your Dynamics environment was migrated or renamed, the stored URL in Lusha may be outdated. Update it in [Integrations](https://dashboard.lusha.com/lusha-integrations) by disconnecting and reconnecting with the new URL.
+- **Service disruption**: if reconnecting does not help and the issue affects all users simultaneously, contact Lusha Support.
+
+## Export limit for Dynamics 365
+
+Lusha supports exporting up to **25 contacts at a time** to Microsoft Dynamics 365. If you need to export more, do so in multiple batches.
+
+---
+
+If none of the above resolves your issue, contact Lusha Support using the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com).

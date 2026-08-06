@@ -1,0 +1,90 @@
+---
+title: "Pipedrive Integration"
+description: "How to connect Lusha to Pipedrive, configure field mapping, and push enriched contact and organization data to your Pipedrive workspace."
+---
+
+The Lusha–Pipedrive integration lets you push enriched contact and organization data from Lusha directly into Pipedrive, removing the need to copy and paste between platforms. Once connected, any contact you reveal in Lusha can be exported to Pipedrive with data mapped to the fields you configure.
+
+<Note>
+Editing integration settings requires Admin or Manager access in Lusha. You must also be a Pipedrive admin to activate the integration.
+</Note>
+
+## How to connect Pipedrive
+
+1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/) and click your name in the left navigation.
+2. Go to the [Integrations tab](https://dashboard.lusha.com/lusha-integrations) and select **Pipedrive**.
+3. Click **Connect** — you'll be redirected to the Pipedrive login page.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259829/49db1c3c32e70cd2c54a69ac/Screen%2BShot%2B2022-11-24%2Bat%2B15_04_52.png?expires=1780056000&signature=efa1e429fded3059c4aaa81cf96c2ff006eb3ebdaf7342cafd73760b08dd44a8&req=0dZtwFHyrj5k2hj99dpg6plWYeVMZ9uu1q3VFisf0Z2%2F4ZNxxW2vv1ORJkPm%0AAoJ0Uk2Cru%2FqdReHwv33iYPJ%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Sign in to Pipedrive if prompted, then click **Continue to field mapping**.
+2. In the Field mapping environment, you'll see two record types: **Contacts** and **Organizations**.
+3. To update existing records in your database, toggle on **Allow Override**.
+
+<Note>
+When adding a new field, the field type must match the Lusha field type. Each mapped field determines which Pipedrive field will be updated by Lusha.
+</Note>
+
+## Adding predefined value fields
+
+1. Choose the record type (Contacts or Organizations).
+2. Click **+ Add field** and select **Predefined Value**.
+3. Select a Pipedrive field from the available options.
+4. Enter the predefined value.
+5. Click **Save changes** before switching tabs.
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900751/ad64ea2f6ddb51fc18e239a9/Screenshot+2024-06-14+at+8_25_47.png?expires=1780056000&signature=05b0b0b855f8b6009e957531e16a2b93ae560e98c0b2a5a240d06aa507bd6fdd&req=0dFmxVj9qTZk2hj99dpg6pNw57TZnDRlw%2B%2FcOtyPgSA21umnf9l8gw%2B925Bx%0AAkdhicv14fSYw7%2B1C8zjJ3%2F%2F%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900752/24ae30dc696e9cde52992531/Screenshot+2024-06-14+at+8_43_40.png?expires=1780056000&signature=9683071f5b42bc19aa479af7888bb8bf69659c1cdc1e31b552f6cfc9f097195d&req=0dFmxVj9qTVk2hj99dpg6sx%2B84YwgN5JOTGV6Y0WHzHK%2B7c0mB2mQj%2FjwBiS%0AWoH4rF80q2OOWUAHhJr9inkI%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Conditional field mapping
+
+Conditional field mapping lets you set a follow-up field update whenever an email or phone field is enriched — useful for routing leads or marking contacts as enriched.
+
+1. In the Field mapping environment, click **Advanced** next to the **Emails** or **Phones** Lusha field.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259875/0b55fd78f7832b6ef04bf3fa/Screen%2BShot%2B2022-11-24%2Bat%2B15_11_25.png?expires=1780056000&signature=128271159354fe9c607dc3aa9f9f74583dc32d882ee71735414546bbb623843f&req=0dZtwFHyqzJk2hj99dpg6k%2BNJV1t4rOqCYlnTajDM6T8G%2F5WlLvWAGYSxihd%0A1lDkBJPlWVCWvHgheUgyexQO%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+1. Click the **Map** dropdown and enter a text value to define the predefined field that updates after the parent field is enriched.
+2. Click **Apply**, then **Save Changes** at the bottom of the page.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259929/93ad04e29fea11a7ec837770/Screen%2BShot%2B2022-11-24%2Bat%2B15_10_25.png?expires=1780056000&signature=5bb6825c17c7a2f132a84f548e546d77eb8a9566b4e7c224a64e1f4725c959a1&req=0dZtwFHzrj5k2hj99dpg6uhBBWiuQ%2FadX4Vb8Gu4yC4tCUQ6PVkf13eNZHl7%0AI8ZMOUXjV1tL5ZjYwRdsiwS2%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Account export preferences
+
+Admins can control which object types users can export to Pipedrive. When the toggle is off, users can only save contacts to existing Pipedrive accounts — not create new ones.
+
+<Note>
+These settings apply to all team members in your account.
+</Note>
+
+To manage export preferences, go to **Integrations → Pipedrive → [Settings tab](https://dashboard.lusha.com/lusha-integrations/advancedSettings/pipedrive/settings)**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259973/f9375ddef2e53e26d58a87a7/Screen%2BShot%2B2022-12-06%2Bat%2B11_27_42.png?expires=1780056000&signature=1cd8a2f29cd4b6df1f90d9b7a6923b92dac2d7349ef2acf21ccfb8d66c2d1316&req=0dZtwFHzqzRk2hj99dpg6k5PvK9sxn38yFkTvmD9RKqLv5Emyq4Z8usZzxYh%0AokqXVQrtKpwT69UdV8%2FrSrS%2B%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Default field mapping
+
+If you modify your field mapping and need to revert to the original settings, use the tables below as a reference.
+
+## Contact
+
+| Lusha field | Pipedrive field |
+| --- | --- |
+| Full Name | Name |
+| Emails | Email |
+| Phones | Phone |
+
+## Organization
+
+| Lusha field | Pipedrive field |
+| --- | --- |
+| Company Name | Name |
+| Company Street | Address |
+
+To learn more about field mapping values, see [Fields for field mapping and descriptions](/user-guide/integrations-basics/fields-for-field-mapping-and-descriptions).
+
+You're all set — Lusha will now push enriched contact and organization data directly into Pipedrive whenever you reveal a contact.
+
+<Tip>
+**Top play with Pipedrive + Lusha:** [Identify similar companies from Pipedrive deals](https://www.lusha.com/campus/plays/identify-similar-companies-from-pipedrive-deals/) — automatically surface lookalike accounts from your best closed-won deals.
+</Tip>

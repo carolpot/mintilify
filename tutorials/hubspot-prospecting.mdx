@@ -1,0 +1,264 @@
+---
+title: "HubSpot + Lusha Prospecting API"
+description: "Automated contact enrichment workflow that searches Lusha for target contacts and creates them directly in HubSpot on a recurring schedule."
+---
+
+**Docs reference:** [Lusha Prospecting Search & Enrich API](https://docs.lusha.com/apis/openapi/prospecting-search-and-enrich/searchprospectingcontacts)
+
+---
+
+## How It Works
+
+```
+Search contacts → Filter unrevealed → Enrich (email + phone) → Create in HubSpot → Advance page counter
+```
+
+Each run searches Lusha using your configured filters, enriches only contacts not yet revealed (`isShown: false`), creates them in HubSpot, and saves the current page so the next run picks up where it left off automatically.
+
+---
+
+## Requirements
+
+| | |
+|---|---|
+| **HubSpot Plan** | Operations Hub Professional or higher |
+| **Lusha Plan** | API access enabled |
+| **HubSpot Role** | Admin (to create private apps and workflows) |
+| **Credits per run** | 1 credit per enriched contact (up to 50 per run) |
+
+---
+
+## Setup Steps
+
+### 1. Create a HubSpot Private App
+
+1. Go to **Settings → Integrations → Private Apps → Create a private app**
+2. Name it (e.g. `Lusha Sync`)
+3. Under the **Scopes** tab add:
+   - `crm.objects.contacts.read`
+   - `crm.objects.contacts.write`
+   - `crm.objects.companies.read`
+   - `crm.objects.companies.write`
+4. Click **Create app** and copy the `pat-...` token
+
+---
+
+### 2. Create a Config Company Record
+
+1. In HubSpot CRM create a new **Company** named `Lusha Sync Config`
+2. Add a custom **Number property** called `lusha_current_page` (default value: `0`)
+3. Copy the record ID from the URL:
+   ```
+   app.hubspot.com/.../company/RECORD_ID
+   ```
+
+---
+
+### 3. Create a Workflow & Choose a Trigger
+
+1. Go to **Automations → Workflows → From scratch → Company-based**
+2. Choose a trigger — the scheduled monthly trigger is the recommended default but any of the following work:
+
+| Trigger | Use case |
+|---|---|
+| **On a schedule** (recommended) | Run automatically on a fixed cadence — daily, weekly, or monthly |
+| **Record created** | Run every time a new company is added to HubSpot |
+| **Property value changes** | Run when a specific company property changes (e.g. lifecycle stage) |
+| **Filter-based enrollment** | Run for all companies matching a saved filter (e.g. ICP = true) |
+| **Manual enrollment** | Trigger on-demand for specific accounts |
+
+3. Enroll the `Lusha Sync Config` company record (for scheduled trigger) or set your enrollment criteria
+
+<Note>
+If using a per-company trigger (e.g. record created), remove the pagination logic from the code and pass the company domain dynamically instead — see [Using HubSpot Properties in the CONFIG Block](#using-hubspot-properties-in-the-config-block) below.
+</Note>
+
+---
+
+### 4. Add a Custom Code Action
+
+1. Inside the workflow click **+ → Custom code → Node.js 20.x**
+2. In the **Secrets** section add:
+   - `api_key` → your Lusha API key
+   - `HUBSPOT_TOKEN` → your `pat-...` token from Step 1
+3. Paste the template code (`HubSpot_Lusha_Prospecting_API_template.js`) into the editor
+
+---
+
+### 5. Fill in the CONFIG Block
+
+At the top of the code update the `CONFIG` section with your values. Only `CONFIG_COMPANY_ID` and `DOMAINS` are required — all other filters are optional and can be left as `null`.
+
+```js
+CONFIG_COMPANY_ID: 'YOUR_RECORD_ID',   // from Step 2
+PAGE_SIZE: 50,                          // max 50 per run
+SENIORITY: [4],                         // see seniority reference below
+DOMAINS: ["salesforce.com", "google.com"]
+```
+
+---
+
+### 6. Set Output Fields
+
+In the custom code action scroll to **Output fields** and add:
+
+| Field | Type |
+|---|---|
+| `contacts_created` | Number |
+| `current_page` | Number |
+| `next_page` | Number |
+| `total_pages` | Number |
+
+---
+
+### 7. Test
+
+Click **Test** at the bottom of the code editor. Select any contact record when prompted (it won't be used). Check the logs for:
+
+```
+Running page: 0
+requestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+Contacts on this page: 50
+New (unrevealed) contacts: 42
+Enriched contacts: 42
+Created: 38
+Skipped - no email: 3
+Skipped - duplicate: 1
+Skipped - enrich failed: 0
+Page 0/9244 done. Next run: page 1
+```
+
+---
+
+### 8. Activate
+
+Click **Review and publish → Turn On**. The workflow runs monthly, advancing one page per run automatically. Page counter resets to `0` once all results are processed.
+
+---
+
+## Available Filters
+
+For accepted values, enums, and full schema details refer to the [Lusha Prospecting API docs](https://docs.lusha.com/apis/openapi/prospecting-search-and-enrich/searchprospectingcontacts).
+
+### Contact Filters
+
+| CONFIG key | API field | Type |
+|---|---|---|
+| `SENIORITY` | `seniority` | `number[]` |
+| `DEPARTMENTS_INCLUDE` | `departments` (include) | `string[]` |
+| `DEPARTMENTS_EXCLUDE` | `departments` (exclude) | `string[]` |
+| `EXISTING_DATA_POINTS` | `existing_data_points` | `string[]` |
+| `CONTACT_LOCATIONS` | `locations` | `object[]` — `{ continent, country, city, state, country_grouping }` |
+| `SIGNALS` | `signals` | `object` — `{ names: string[], startDate: "YYYY-MM-DD" }` |
+| `EXCLUDE_DNC` | `excludeDnc` | `boolean` |
+| `INCLUDE_PARTIAL_CONTACT` | `includePartialContact` | `boolean` |
+
+### Company Filters
+
+| CONFIG key | API field | Type |
+|---|---|---|
+| `DOMAINS` | `domains` | `string[]` |
+| `COMPANY_NAMES` | `names` | `string[]` |
+| `COMPANY_LOCATIONS` | `locations` | `object[]` — `{ country, city, state, continent }` |
+| `TECHNOLOGIES` | `technologies` | `string[]` |
+| `MAIN_INDUSTRY_IDS` | `mainIndustriesIds` | `number[]` |
+| `SUB_INDUSTRY_IDS` | `subIndustriesIds` | `number[]` |
+| `INTENT_TOPICS` | `intentTopics` | `string[]` |
+| `COMPANY_SIZES` | `sizes` | `object[]` — `[{ min, max }]` |
+| `REVENUES` | `revenues` | `object[]` — `[{ min, max }]` |
+| `SIC_CODES` | `sicCodes` | `string[]` |
+| `NAICS_CODES` | `naicsCodes` | `string[]` |
+
+---
+
+## Seniority Reference
+
+| ID | Level |
+|---|---|
+| 1 | Intern |
+| 2 | Entry |
+| 3 | Associate |
+| 4 | Senior |
+| 5 | Manager |
+| 6 | Director |
+| 7 | Vice President |
+| 8 | C-Level / Executive |
+| 9 | Partner |
+| 10 | Founder |
+
+---
+
+## Deduplication
+
+- Contacts already in HubSpot are matched by **email address** — duplicates are silently skipped (HTTP 409)
+- Contacts already revealed in Lusha (`isShown: true`) are skipped to avoid re-charging credits
+
+---
+
+## Pagination
+
+The workflow tracks progress using the `lusha_current_page` property on the config record:
+
+| Run | Page | Contacts |
+|---|---|---|
+| Month 1 | 0 | 1–50 |
+| Month 2 | 1 | 51–100 |
+| Month 3 | 2 | 101–150 |
+| ... | ... | ... |
+| Last page | n | Resets to 0 |
+
+To reset and start over, set `lusha_current_page` back to `0` on the config company record.
+
+---
+
+## Using HubSpot Properties in the CONFIG Block
+
+The CONFIG block is static by default, but you can reference **live HubSpot property values** by passing them in as input fields on the custom code action.
+
+**When is this useful?**
+- You want the `DOMAINS` list driven by company records in HubSpot rather than hardcoded
+- You want to use a contact owner, lifecycle stage, or custom field to control filter behavior per-run
+- You want different teams or accounts to trigger the workflow with their own filters
+
+### How to set it up
+
+**Step 1 — In the custom code action UI**, under **"Property to include in code"** add:
+
+| Key | Property |
+|---|---|
+| `company_domain` | Company Domain Name |
+| `target_seniority` | Your custom seniority property (if any) |
+
+**Step 2 — In the code**, read the value from `event.inputFields` and use it in CONFIG:
+
+```js
+exports.main = async (event, callback) => {
+
+  // Read HubSpot property passed in as input field
+  const domainFromRecord = event.inputFields['company_domain'];
+
+  // Override CONFIG with live HubSpot value
+  const domains = domainFromRecord
+    ? [domainFromRecord]
+    : CONFIG.DOMAINS; // fallback to static list
+
+  // Use `domains` instead of CONFIG.DOMAINS in the search body
+  ...
+};
+```
+
+### What can be passed in
+
+Only values that map directly to a **Lusha API filter** are useful here. Passing in an arbitrary HubSpot property won't do anything unless the code uses it to build the search payload.
+
+| HubSpot property | Maps to Lusha filter | Notes |
+|---|---|---|
+| Company Domain Name | `DOMAINS` | Most common — search contacts at the enrolled company |
+| Custom text (comma-separated domains) | `DOMAINS` | Split in code: `value.split(',').map(d => d.trim())` |
+| Custom number (seniority ID) | `SENIORITY` | Must match Lusha's seniority enum (1–10) |
+| Custom text (department) | `DEPARTMENTS_INCLUDE` | Must match Lusha's department naming exactly |
+| Custom text (country) | `CONTACT_LOCATIONS` | Wrap as `[{ country: value }]` in the code |
+
+<Warning>
+Input fields only support flat string/number values — no arrays or objects. Any list (e.g. multiple domains) needs to be stored as comma-separated text and split in the code.
+</Warning>

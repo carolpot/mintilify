@@ -1,0 +1,408 @@
+---
+title: "Changelog"
+description: "All notable changes to the Lusha API and MCP. We follow semantic versioning."
+---
+
+All notable changes to the Lusha API and MCP are documented here. We follow semantic versioning.
+
+<Info>
+  **Current Version: 2.7.0**
+  Status: Production · Released: August 2026 · Stability: Stable (Tables API is Beta)
+</Info>
+
+<Update label="2026-08-05" description="v2.7.0 — LinkedIn Activity Intent Signal" tags={["Signals", "Prospecting"]}>
+
+**Added**
+
+**LinkedIn Activity Intent Signal** — Added `linkedinActivityIntent` as a new company signal type, available in Company Prospecting, Company Signals Lookup, and Signal Metadata/Discovery.
+
+- `POST /v3/companies/prospecting` - `filters.companies.include.signals.types` accepts `linkedinActivityIntent` (also selectable via `allSignals`). New optional `filterByIntentCategory` array narrows results to specific Bombora intent categories; omit to match all categories
+- `POST /v3/companies/signals` - `signalTypes` accepts `linkedinActivityIntent` (also via `allSignals`). New optional `filters.include.intentCategories` array applies the same category refinement
+- Each per-company result now includes a `linkedinActivityIntent` array of LinkedIn posts, with fields for publication date, signal category, detected Bombora topics, author, mentioned contacts/companies, post URL, an AI-generated summary, and engagement counts (likes, comments, shares)
+- `GET /v3/companies/signals/types` - `linkedinActivityIntent` now included in the returned list
+- `GET /v3/companies/signals/filters` - new `intentCategories` entry added to `availableFilters`
+- `GET /v3/companies/signals/filters/intentCategories` - new filter-value endpoint returning the full list of Bombora intent categories
+
+**Notes**
+
+- Legal limit: for `linkedinActivityIntent`, `startDate` is capped to a trailing 90-day window regardless of the value passed
+- Results cap: for `linkedinActivityIntent`, `maxResultsPerSignal` is capped at 50 per company regardless of the value passed
+- `activitySummary` is AI-generated and never contains the raw post text
+- `author`, `contactsMentioned`, and `companiesMentioned` resolve to Lusha IDs where possible; unresolved people or companies return `id: null`
+- The query parameter is not supported on `GET /v3/companies/signals/filters/intentCategories`; passing one returns 400
+
+</Update>
+
+<Update label="2026-07-27" description="v2.6.0 — Waterfall Reveal for Contact Enrichment" tags={["Enrichment"]}>
+
+**Added**
+
+**Waterfall Reveal on Enrich Contacts** — Added optional `waterfallReveal` field to `POST /v3/contacts/enrich`. When Lusha's own data has no match for a field, the request falls through to your enabled third-party providers to try to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
+
+- Pass `waterfallReveal` alongside `reveal`, listing the fields (`emails`, `phones`) you want covered by the waterfall
+- `reveal` still controls which fields come back; `waterfallReveal` is the subset of those fields allowed to fall through to third-party providers
+- Requires Data Waterfall enabled on your account, with specific providers turned on, under **Account > Waterfall** in the Lusha dashboard. If waterfall is off, or no providers are enabled, `waterfallReveal` has no additional effect beyond `reveal`
+- Lusha determines the provider query order — it isn't caller-configurable
+- Use of Data Waterfall is subject to Lusha's Supplementary Terms
+
+**Notes**
+
+- Billing: A field resolved via waterfall is charged at the enabled provider's own credit rate for that field — not a flat rate. Rates vary by provider (visible under Account > Waterfall) and can be higher than a standard Lusha-only reveal
+- `waterfallReveal` is fully opt-in and backward compatible; omitting it preserves existing single-provider behavior
+
+**Removed**
+
+**Tables: Add Column endpoint pulled back** — `POST /v3/{contacts|companies}/tables/{table_id}/columns` — documented as shipped in 2.5.0, but the action is not yet functional and has been removed from both Contacts Tables and Companies Tables pending further work. Columns can still be listed, run, and removed; only adding a new column via API is unavailable for now. No changes to existing columns or table data.
+
+</Update>
+
+<Update label="2026-07-21" description="v2.5.0 — Tables API" tags={["Tables"]}>
+
+**Added**
+
+**Contacts Tables & Companies Tables APIs** — Added 24 new endpoints (12 per entity type) for creating and managing persistent tables of contacts or companies:
+
+- `POST /v3/{contacts|companies}/tables` - create a table
+- `POST /v3/{contacts|companies}/tables/list` - list tables owned by a user
+- `GET /v3/{contacts|companies}/tables/{table_id}` - get table status (metadata + entity/column counts + processing state)
+- `PATCH /v3/{contacts|companies}/tables/{table_id}` - update name, visibility, or archive state
+- `DELETE /v3/{contacts|companies}/tables/{table_id}` - permanently delete a table
+- `GET /v3/{contacts|companies}/tables/{table_id}/entities` - read a page of rows with column values and per-cell status
+- `POST /v3/{contacts|companies}/tables/{table_id}/entities` - add up to 500 entity IDs to a table
+- `DELETE /v3/{contacts|companies}/tables/{table_id}/entities` - remove entity IDs from a table
+- `GET /v3/{contacts|companies}/tables/{table_id}/columns` - list columns with aggregated row-status counts
+- `POST /v3/{contacts|companies}/tables/{table_id}/columns` - add a column (`lusha`, `crm`, `signal`, `ai`, or `score` type)
+- `DELETE /v3/{contacts|companies}/tables/{table_id}/columns/{column_id}` - remove a column
+- `POST /v3/{contacts|companies}/tables/{table_id}/columns/{column_id}/run` - run a column across some or all rows (async)
+
+Tables are two-way synced with the Workspace UI — a table created via API appears there immediately, and vice versa. Each table response includes a `workspaceUrl` deep link.
+
+**`tableId` opt-in on 4 existing endpoint pairs** — Added an optional `tableId` field to the request body of both the contacts and companies variants of:
+
+- Prospecting (`POST /v3/{contacts|companies}/prospecting`)
+- Enrich (`POST /v3/{contacts|companies}/enrich`)
+- Signals (`POST /v3/{contacts|companies}/signals`)
+- Lookalike (`POST /v3/{contacts|companies}/lookalike`)
+
+When `tableId` is passed, matching results are also saved into that table. The primary response is unchanged and always succeeds even if the table write fails; a new `tableWrite` object is added to the response confirming what happened on the table side (`added`, `alreadyPresent`, `columnsCreated`, `rowsProcessed`, `rowsCharged`, `rowsAlreadyPaidInTable`, `creditsCharged`). Not supported on the Search-only preview endpoints.
+
+**Notes**
+
+- Ownership: every table-route call requires `owner.email`, which must resolve to an existing user on the account tied to your API key. It travels in the request body (`owner: { email }`) on POST/PATCH calls, and as a `?email=` query parameter on GET/DELETE calls that carry no body
+- Entity IDs accept either the encrypted Lusha token (`v{N}.…`, as returned by Search/Enrich/Get Entities) or the legacy numeric ID — `personId` for contacts, `lushaCompanyId` for companies. An ID that is neither a valid token nor numeric returns 400. Get Entities now returns each row's `id` as the encrypted token (previously returned the raw numeric ID), closing the read/write asymmetry
+- Limits: up to 500 entity IDs per add/remove call, 50,000 entities per table, 500 tables per account
+- Billing: creating, listing, updating, and deleting tables is free, as is listing, adding, and removing columns. Adding contacts to a table is free; adding companies is charged per newly-added company (deduped, so duplicates aren't re-charged). Reading rows (`GET .../entities`) is charged per row returned. Running a column is charged per row per the column's credit tier — company-enrichment columns charge once per company per table, so re-running an already-paid company is free
+- Run Column is asynchronous — the call kicks off the run and returns immediately; poll Get Table Status for per-column row-progress and the credits actually charged
+- Adding entity IDs that can't be resolved is not an error — the call returns 200 with the unresolved IDs listed in `invalidIds`
+- Contacts tables support an optional `companyIds` field on Add Entities (index-aligned with `entityIds`) to pair each contact with its company for enrichment; not applicable to companies tables
+
+</Update>
+
+<Update label="2026-06-08" description="v2.4.0 — Decision Makers API" tags={["Decision Makers"]}>
+
+**Added**
+
+**Decision Makers API** — Added `POST /v3/contacts/decision-makers` — resolve companies to their most relevant contacts for outreach.
+
+- Supply companies by domain or Lusha company id (exactly one per entry); up to N companies per request
+- Optional `clientReferenceId` per entry is echoed back in the matching result for correlation
+- Results are grouped per company with decision makers ranked by relevance (highest first)
+- Each decision maker is returned as a free contact preview: name, title, location, LinkedIn, seniority, department, `has`, and `canReveal`
+- Pass the returned contact `id` values to Enrich Contacts (`POST /v3/contacts/enrich`) to reveal emails and phones
+- Companies that cannot be matched return a per-item `NOT_FOUND` error without failing the entire request
+
+**Notes**
+
+- Free for MVP (`creditsCharged: 0` on all responses)
+- Encrypted company IDs (`vN.…`) are supported; legacy numeric IDs are accepted during the transition window
+- Decision makers are returned as `V3ContactPreview` objects — the same shape as Search Contacts results
+
+</Update>
+
+<Update label="2026-06-02" description="v2.3.0 — Website Visitors API" tags={["Website Visitors"]}>
+
+**Added**
+
+**Website Visitors API** — Added `POST /v3/companies/website-visits` — identify and filter companies that have visited your tracked domains.
+
+- Filter by engagement score band (`cold`, `warm`, `hot`) via `filters.scoreBands`
+- Filter by session metrics: `totalSessions`, `uniqueVisitors`, `avgSessionMinutes`, `daysVisited`, `highIntentPageviews`, `daysSinceLastVisit`
+- Filter by score range via `filters.score` (min/max, 1–100)
+- Filter by geography via `filters.visitorCountries` with include and exclude arrays (ISO 3166-1 alpha-2 codes)
+- Sort results by any metric field via `sort.by` and `sort.order` (`asc` or `desc`)
+- Paginate via `pagination.limit` (max 150) and `pagination.offset`
+- Date range window cannot exceed 3 months
+
+Domains must be configured for tracking in the Lusha dashboard before use. If any requested domain is not configured, the entire request fails with 400. Each result includes a V3 company firmographic preview (same shape as Search Companies) plus behavioral visit metrics. Pass the returned company `id` to Enrich Companies for full firmographic data.
+
+**Notes**
+
+- `startDate` and `endDate` are required; the window between them must not exceed 3 months
+- Both dates must be in `YYYY-MM-DD` format
+- Each result includes `score`, `scoreBand`, `totalSessions`, `uniqueVisitors`, `avgSessionMinutes`, `daysVisited`, `highIntentPageviews`, `daysSinceLastVisit`, `lastVisit`, and `visitorCountry`
+
+</Update>
+
+<Update label="2026-03-10" description="v2.2.0 — Signal Sub-Filters, Lookalikes V3 Expansion & Doc Improvements" tags={["Signals", "Lookalikes", "Webhooks"]}>
+
+**Added**
+
+**Signal Sub-Filters for Company Bulk Enrich** — Added optional `signalsFilters` parameter to `POST /bulk/company/v2` to narrow signal results within requested signal types:
+
+- `newsEventTypes` - filter news signals by specific event types (e.g. Partnership, New Customer, Executive Hire)
+- `hiringByDepartments` - filter `surgeInHiringByDepartment` signals by department
+- `hiringByLocations` - filter `surgeInHiringByLocation` signals by country/state
+- Multi-value filters use OR logic; values are not case-sensitive
+- Sending `state` without `country` in `hiringByLocations` returns HTTP 400
+
+**Signal Sub-Filters for Company Signals API** — Added optional `filters.include` block to:
+
+- `POST /api/signals/companies`
+- `POST /api/signals/companies/search`
+
+Supports the same sub-filter options as above (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`).
+
+**Company Lookalikes V3** — Added `POST /v3/companies/lookalike` — mirrors the contact lookalikes pattern introduced in v2.1.0:
+
+- Session-based deduplication via `dedupeSessionId`
+- Seed inputs via `domains` and `linkedinUrls`
+- `exclude` parameter to suppress known accounts
+- Returns `domain`, `linkedinUrl`, `name`, `employeeCount`, `industry`, and `location` per result
+
+**Webhooks: Opt-Out Subscription Endpoint** — Added `POST /api/subscriptions/opt-out` — subscribe to real-time notifications when a contact opts out of data processing. Delivers contact identity, opt-out date, and specific data points (emails/phones) that must be removed. Supports multi-tenant setups via `partnerClientId`.
+
+**Changed**
+
+- Contact Lookalikes V3 - Result field `id` renamed to `contactId`; nested company field `id` renamed to `companyId` for clarity
+- Signals API - `maxResultsPerSignal` is now optional across all 4 signal endpoints (previously required in v2.1.0). When omitted: returns all available signals if no `startDate` is provided, or all signals from `startDate` onward if provided
+
+**Removed**
+
+**Webhooks URL Verification** — Removed the challenge/response URL verification step from webhook subscription creation. Webhook URLs are no longer verified via a GET challenge request when creating or updating subscriptions.
+
+**Notes**
+
+- Signal sub-filters reduce response size and credit usage by narrowing results within a signal type without requiring separate requests
+- `maxResultsPerSignal` remains available as an optional cap when you want to limit results per signal type
+
+</Update>
+
+<Update label="2026-02-26" description="v2.1.0 — Contact Lookalikes V3 & Signals Rate Control" tags={["Lookalikes", "Signals"]}>
+
+**Added**
+
+**Contact Lookalikes V3** — Replaced `POST /api/recommendations/contacts` with a redesigned endpoint:
+
+- `POST /v3/lookalike/contacts` - returns contact lookalikes based on seed contacts
+- Supports multiple seed identifier types: `linkedinUrls`, `emails`, `contactIds`, and `contacts` (name + company)
+- Session-based deduplication via `dedupeSessionId` — omit on first request, reuse on subsequent calls
+- Session history persists for 30 days from last activity
+- `exclude` parameter supports up to 500 contacts across all identifier types
+- Seeds require 5-100 total identifiers across all arrays
+- Returns `id`, `firstName`, `lastName`, `socialLinks`, `company`, `jobTitle`, and `location` per result
+
+**Signal Rate Control** — Added `maxResultsPerSignal` (required at time of release) to all 4 Signals API endpoints:
+
+- `POST /api/signals/contacts`
+- `POST /api/signals/contacts/search`
+- `POST /api/signals/companies`
+- `POST /api/signals/companies/search`
+
+**Changed**
+
+- Contact Lookalikes - Endpoint path changed from `/api/recommendations/contacts` to `/v3/lookalike/contacts`. Request and response schemas fully replaced — not backwards compatible.
+- Signals API - `maxResultsPerSignal` added as a required parameter. Limits the number of signal instances returned per signal type per entity, starting from `startDate`.
+
+**Notes**
+
+- The new contact lookalikes endpoint aligns with the existing company lookalikes pattern
+- `maxResultsPerSignal` helps control response size and credit consumption, especially when requesting `allSignals` over long date ranges
+
+</Update>
+
+<Update label="2026-02-18" description="v1.8.0 — Company Data Points & News Signal Expansion" tags={["Enrichment", "Signals"]}>
+
+**Added**
+
+**New Company Data Fields** — Added 7 new data points to Company API V2 (Single & Bulk) and Prospecting Company Enrich API:
+
+- `linkedinFollowers` - LinkedIn followers count
+- `emailDomain` - company email domain
+- `companyLocations` - array of all known company site locations (not just HQ), each with `city`, `continent`, `country`, `country_iso2`, `location_coordinates`, `state`, `state_code`
+- `alternativeName` - normalized alternative company name
+- `companyType` - type of company (e.g. "Private company")
+- `lushaPopularityTier` - Lusha popularity tier
+
+**New Person Data Fields** — Added LinkedIn enrichment fields to Person API V2 (Single & Bulk) and Prospecting Contact Enrich API:
+
+- `xUrl` - Twitter/X profile URL (`data.socialLinks.xUrl`)
+- `linkedinFollowersCount` - LinkedIn followers count
+- `linkedinConnectionsCount` - LinkedIn connections count
+- `linkedinCertifications` - professional certifications from LinkedIn
+- `linkedinCourses` - courses listed on LinkedIn
+- `linkedinAwards` - honors and awards from LinkedIn
+- `linkedinSkills` - skills listed on LinkedIn profile
+
+**Company Size Enhancements**
+
+- `companySize` object (Single Enrich) now returns `min`, `max`, and `employeesInLinkedin`
+- `employeesInLinkedin` added as a flat field to the bulk response
+
+**New News Event Signal Types** — Replaced the generic `newsEvent` signal with 7 granular categories, available across Signals API, Prospecting API, and Webhooks:
+
+- `riskNews` - litigations and security news
+- `commercialActivityNews` - launches, partnerships, and go-to-market activity
+- `corporateStrategyNews` - M&A, restructuring, or strategic direction changes
+- `financialEventsNews` - funding, IPOs, and financial performance events
+- `peopleNews` - hiring, layoffs, or leadership changes
+- `marketIntelligenceNews` - event participation, recognition, competitor activity
+- `productActivityNews` - product launch, development, and integration news
+
+**Changed**
+
+- Company API V2 (Single Enrich) - `companySize` now returns an object with `min`, `max`, and `employeesInLinkedin` instead of a simple range array
+- Prospecting Company Search - New news signal types now available as search filters
+- Prospecting Company Enrich - Response now includes all signal types including new news signal categories
+- Webhooks - New news signal types are now subscribable event types for company subscriptions
+
+**Notes**
+
+- `companyLocations` differs from the existing HQ location field — it returns all known company site locations
+- The new news signal types replace the previous generic `newsEvent` signal
+- All 7 news signal types share the same response schema: `companyId`, `companyName`, `domain`, `signalId`, `eventType`, `eventSummary`, `articlePublishedDate`, `articleTitle`, `articleHighlight`, `eventEffectiveDate`, `articleUrl`
+
+</Update>
+
+<Update label="2026-01-26" description="v1.7.0 — Webhooks API Release" tags={["Webhooks"]}>
+
+**Added**
+
+**New Webhooks API** — Introduced real-time event notifications for contact and company signals via webhooks.
+
+- `POST /api/subscriptions` - create webhook subscriptions (bulk, up to 25 per request) for contact and company signals
+- `GET /api/subscriptions` - list all active webhook subscriptions
+- `GET /api/subscriptions/{id}` - retrieve a specific subscription
+- `PATCH /api/subscriptions/{id}` - update subscription settings
+- `POST /api/subscriptions/delete` - delete subscriptions (bulk supported)
+- `POST /api/subscriptions/{id}/test` - test delivery with mock payload (no credits consumed)
+- `GET /api/audit-logs` - webhook delivery logs
+- `GET /api/audit-logs/stats` - delivery statistics
+- `GET /api/account/secret` - retrieve webhook secret
+- `POST /api/account/secret/regenerate` - regenerate webhook secret
+
+Features include real-time delivery, event filtering by signal type, HMAC-SHA256 signature verification, automatic retry with exponential backoff (max 3 attempts), and delivery audit logs retained for 90 days (successful) and 180 days (failed).
+
+**Notes**
+
+- Webhooks are a push-based alternative to polling the Signals API
+- Ideal for time-sensitive workflows like triggering outreach on job changes
+- Premium feature — standard credit charges apply for signal detection; retries do not incur additional charges
+
+</Update>
+
+<Update label="2025-01-05" description="v1.6.0 — Prospecting API Signal Filtering" tags={["Prospecting", "Signals"]}>
+
+**Added**
+
+**Signal Filtering for Prospecting Search** — Enhanced Prospecting APIs with signal-based filtering.
+
+- `POST /prospecting/contact/search` - can now filter contacts by `promotion`, `companyChange`, `allSignals`
+- `POST /prospecting/company/search` - can now filter companies by `headcountGrowth`, `newJobsOpen`, `newsEvent`, `allSignals`
+- `startDate` parameter added for time-based filtering
+- Search responses now include a `signalTypes` array indicating detected signals per result
+
+**Notes**
+
+- Premium feature — credits are charged for each signal type that returns results
+- Works in conjunction with the Signals API for retrieving detailed signal metadata
+
+</Update>
+
+<Update label="2025-10-15" description="v1.5.0 — Recommendations API Release" tags={["Recommendations"]}>
+
+**Added**
+
+- `POST /api/recommendations/contacts` - AI-powered recommendations for similar contacts
+- `POST /api/recommendations/companies` - AI-powered recommendations for similar companies
+
+Enables prospect expansion by surfacing net-new contacts and companies with similar attributes to your known leads. Can be used as a downstream step after enrichment, prospecting, or CRM triggers.
+
+**Notes**
+
+- These endpoints were superseded by the redesigned Lookalikes V3 endpoints in v2.1.0
+
+</Update>
+
+<Update label="2025-09-30" description="v1.4.0 — Enhanced Search Capabilities" tags={["Prospecting"]}>
+
+**Added**
+
+**New `searchText` Filter** — Free-text search capability for Prospecting APIs, available in both include and exclude sections:
+
+- `POST /prospecting/contact/search` - supports `searchText` in contacts and companies filter sections
+- `POST /prospecting/company/search` - supports `searchText` in companies filter section
+- Enables natural language queries like "finance marketing in Germany DE"
+- Searches across multiple fields simultaneously
+
+**Changed**
+
+- `ContactFilters` and `CompanyFilters` schemas updated to include optional `searchText` property
+
+</Update>
+
+<Update label="2025-09-10" description="v1.3.0 — Signals API Expansion" tags={["Signals", "Enrichment"]}>
+
+**Added**
+
+**New Signals Endpoints**
+
+- `POST /signals/contacts` - retrieve contact signals by IDs
+- `POST /signals/companies` - retrieve company signals by IDs
+- `POST /signals/contacts/search` - retrieve contact signals by identifiers (LinkedIn URL, email, or name + company/domain)
+- `POST /signals/companies/search` - retrieve company signals by identifiers (domain, company name, or ID)
+- `GET /signals/filters/:objectType` - view available signal filter types for contact or company
+
+All signal endpoints support `startDate` (optional, defaults to last 6 months).
+
+**Partial Profile Filter** — Added `partialProfile` boolean parameter to contact enrichment APIs for simplified contact profiles.
+
+**Changed**
+
+- Enrichment APIs (`v2/person` and `v2/company`, single and bulk) now always return `person_id` and `company_id` where applicable
+- Signal filters can now be used as filters in existing enrichment API calls
+
+</Update>
+
+## Format Reference
+
+```markdown
+## [Version] - YYYY-MM-DD - Title
+
+### Added
+New features and endpoints
+
+### Changed
+Updates to existing functionality
+
+### Fixed
+Bug fixes and corrections
+
+### Removed
+Deprecated features
+
+### Notes
+Additional context
+```
+
+## Notifications
+
+- **Email**: Subscribe for release notifications
+- **Support**: support@lusha.com
+
+## API Versioning
+
+| Version | Status | Support Level |
+|---|---|---|
+| 2.7.x | Current | Full support (Tables API: Beta) |
+| 2.x | Recent | Full support |
+| 1.x | Legacy | Security only |

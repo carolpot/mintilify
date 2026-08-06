@@ -1,0 +1,40 @@
+---
+title: "Salesforce identifier (indicator)"
+description: "How to enable the Salesforce identifier to see which contacts and companies already exist in your CRM before revealing them in Lusha."
+---
+
+The Salesforce indicator feature prevents you from accidentally revealing — and spending credits on - contacts that already exist in your Salesforce account. When the indicator is enabled, a Salesforce icon appears next to any contact or company in Lusha Search that already exists in your CRM.
+
+## How to enable the Salesforce indicator
+
+1. Go to **[Integrations → Salesforce → Settings](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesforce/settings)**.
+2. Toggle on **Existing Salesforce indicator**.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260011/70589fff0411a94018842f2d/Screen%2BShot%2B2022-12-06%2Bat%2B12_13_17.png?expires=1780056000&signature=4f717c51793ab0bcc5f750d38eea38232486b812bbf949eea82fc817e6454612&req=0dZtw1j6rTZk2hj99dpg6muKDWHeWqMLy5uHH2MPTDigT01VnQhE6JO7tiEW%0AwY1i4D8IOwQ5o5nVqFiswRYG%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+Once enabled, the Salesforce icon appears next to contacts in Search results who already exist in your CRM. For companies, the icon appears in Company Search results only.
+
+<Note>
+The Salesforce indicator uses your company's Salesforce API quota, not Lusha's credits.
+</Note>
+
+## How to set up field mapping for the identifier
+
+1. Go to **[Integrations → Salesforce → Salesforce identifier](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesforce/crmIdentifiers)**.
+2. Map the fields Lusha should use to check for duplicates.
+
+The identifier checks for duplicates using these field combinations:
+
+**Leads and Contacts:** Full name + company name or domain, *or* email address, *or* phone number.
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900247/d128755181618a97ff28aada/Screenshot+2024-06-14+at+8_09_49.png?expires=1780056000&signature=ad4bd8f96366f9f9b06429116bc152110cd7afd7987c91fc7c342517852c66d1&req=0dFmxVj4qDBk2hj99dpg6nOsqHNNX9WO%2FOsWK6V%2BPVkpOabBKI9ZLl1qEKdf%0AqIDW0IunV0fBRWmmRkRqJbDC%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+**Accounts:** Company name, *or* domain name.
+
+<img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/48033975/5505e0315493b14f4a0dec9aa1f2/Screenshot+2025-05-05+at+12_54_08.png?expires=1780056000&signature=93900e4b3bd4ef4b97f9b808925cef8767d6e84a55d36311249f1e2d490fd650&req=1N1vxlvzqzJk2hj99dpg6nl8QtAYnt5zOb%2FVneYNCPNk4j499tuVVDrZTkus%0AKo32lM44oy2Nq1xG64DBqjea%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## How to exclude existing Salesforce contacts from bulk reveal
+
+See [Exclude Salesforce contacts from bulk reveal](/user-guide/export/exclude-salesforce-contacts-from-bulk-reveal) to prevent already-existing contacts from being revealed and charged during bulk actions.
+
+You're all set - the Salesforce icon will now appear in your prospecting results next to any contact that already exists in your CRM.

@@ -1,0 +1,153 @@
+---
+title: "API Fundamentals"
+description: "Lusha provides a RESTful API that allows you to query a comprehensive dataset of business profiles and company information."
+---
+
+## Overview
+
+Lusha provides a RESTful API that allows you to query a comprehensive dataset of business profiles and company information. The API offers five main endpoints:
+
+1. **Person API** – Retrieve contact data for a business profile.
+2. **Company API** – Retrieve company data based on domain or company name.
+3. **Prospecting API** – Query Lusha's extensive database based on specific criteria (industry, seniority, location, etc.) to retrieve detailed contact and company information.
+4. **Signals API** - Delivers real-time buying intent and market signals directly into your workflows.
+5. **Recomendations API** - discover similar contacts and companies based on your existing data.
+
+_All API requests must be made over HTTPS (SSL), and responses are delivered in JSON format._
+
+<Tip>
+For detailed information on request parameters, response structure, and best practices, please refer to our official API documentation.
+</Tip>
+
+---
+
+## Authentication
+
+To access the Lusha API, include your API key in each request. This key is unique to your account and must be kept private.
+
+1. Visit the **API** page on your Lusha dashboard to retrieve your key.
+2. Share it only with trusted individuals - your API key grants full access to your account.
+
+<Tip>
+Only admins/managers with the API feature on their plan can view the API key page.
+</Tip>
+
+---
+
+## Rate Limiting
+
+To ensure fair usage and protect against excessive load, Lusha enforces the following rate limits:
+
+- **All endpoints above**: Up to **25 requests per second** per endpoint.
+
+---
+
+## Credit Usage
+
+The Credit Usage API lets you monitor your account's credit consumption:
+
+- Check how many credits have been used and how many remain, by credit type.
+- **Rate limit**: 5 requests per minute.
+
+---
+
+## Person API
+
+Look up detailed information about a person using identifiers such as email, LinkedIn URL, full name + company name, or company domain. You can retrieve:
+
+- Location
+- Email
+- Phone number
+- LinkedIn URL
+- …and more
+
+### Bulk Person API
+
+Process up to **100** person objects per request to reduce API calls and integrate seamlessly with large-scale workflows.
+
+---
+
+## Company API
+
+Retrieve firmographic data for a company using its domain or name. Data points include:
+
+- Industry
+- Employee count
+- Location
+- Revenue estimates
+- …and other key business details
+
+Ideal for CRM enrichment, market research, and lead qualification.
+
+### Bulk Company API
+
+Enrich multiple domains or company names in a single request to streamline high-volume workflows.
+
+---
+
+## Prospecting API
+
+Generate new leads/contacts for your CRM by applying filters that match your Ideal Customer Profile (ICP). Available filters include:
+
+- Job title
+- Seniority
+- Location
+- Industry
+- …and more
+
+### Workflow
+
+1. **Apply filters** – Select the criteria you need.
+2. **Search** – Query contacts or companies based on those filters.
+3. **Enrich** – Retrieve full details for each result using the Enrich API.
+
+For a full list of available filters and detailed stage-by-stage guidance, see our Prospecting API reference.
+
+---
+
+## Signals API
+
+Monitor real-time market changes and buying intent signals to identify high-priority prospects. The Signals API tracks:
+
+- Job changes and promotions
+- Company growth indicators
+- Technology adoption
+- Funding events
+- Leadership changes
+- …and other buying signals
+
+### Workflow
+
+1. **Configure signal types** – Select which signals to monitor.
+2. **Set target criteria** – Define your ICP for signal monitoring.
+3. **Retrieve signals** – Pull signals via API or webhook notifications.
+4. **Enrich signal data** – Use Person/Company APIs for complete profiles.
+
+---
+
+## Recommendations API
+
+Discover lookalike contacts and companies based on your existing customer data. The Recommendations API uses machine learning to identify:
+
+- Similar companies to your best customers
+- Contacts with comparable profiles to your top leads
+- Expansion opportunities within existing accounts
+- New market segments aligned with your ICP
+
+### Workflow
+
+1. **Provide seed data** – Submit existing contact or company ID's.
+2. **Receive recommendations** – Get ranked lists of similar profiles.
+3. **Enrich recommendations** – Use enrichment APIs for complete data.
+
+---
+
+## Error Handling
+
+Lusha API uses standard HTTP status codes to indicate request outcomes:
+
+- **2xx** – Success
+- **4xx** – Client error (e.g., malformed request, authentication issues)
+- **5xx** – Server error
+
+Access our API documentation for the complete list of codes and their meanings.

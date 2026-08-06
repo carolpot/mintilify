@@ -1,0 +1,141 @@
+---
+title: "Bullhorn integration"
+description: "How to connect Lusha to Bullhorn, configure field mapping, set up predefined values, and use the Bullhorn Identifier feature."
+---
+
+The Lusha integration with Bullhorn lets you map Lusha data fields directly to your Bullhorn records - so enriched contact data lands in the right place automatically, without jumping between platforms.
+
+<Note>
+  Only Admins and Managers can edit integration settings. You must be an admin in both Lusha and Bullhorn to set up the integration.
+</Note>
+
+## How to connect and configure field mapping
+
+1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/) and go to the **[Integrations tab](https://dashboard.lusha.com/lusha-integrations)**.
+2. Select **Bullhorn** from the table and click **Connect**.
+3. Sign in to Bullhorn when prompted (skipped automatically if you're already logged in).
+4. Click **Continue to field mapping**.
+5. Under Field mapping, you'll see four record types: **Leads**, **Candidates**, **Contacts**, and **Companies**. Map Lusha fields to the corresponding Bullhorn fields for each record type.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259692/4931f6de28332a7605c15301/Screen%2BShot%2B2022-11-23%2Bat%2B12_58_27.png?expires=1780056000&signature=5fe7eb87b703cf3d8526086385b3fa1f2768dd3877e96b407ba660fd6ff317de&req=0dZtwFH8pTVk2hj99dpg6vcEtklWJGmuawgiSh%2Bpl5qtgxPd0MO2rO7oXdTZ%0AGyVkYy0EESHqveQ7xucxYoFU%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+To allow Lusha to overwrite data in existing Bullhorn records, enable **Allow Override**.
+
+<Note>
+  When adding a new field, the field type in Bullhorn must match the Lusha field type. Each field can be remapped to a different Bullhorn field to control exactly where enriched data lands.
+</Note>
+
+## How to add predefined value fields
+
+1. Select a record type (Leads, Candidates, Contacts, or Companies).
+2. Click **+ Add field** and choose **Predefined Value**.
+3. Select a Bullhorn field from the available options.
+4. Enter your predefined value.
+5. Click **Save changes** before switching tabs.
+
+## Conditional field mapping
+
+Conditional field mapping lets you set secondary field values that update automatically when an email or phone field is enriched — useful for routing leads or flagging record status.
+
+1. In your Lusha account, go to **Field mapping**.
+2. Click **Advanced** next to the **Email 1** or **Phone 1** field.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259736/0487d351170a56d66e8b2921/Screen%2BShot%2B2022-11-21%2Bat%2B15_03_27.png?expires=1780056000&signature=dab46de901b7cb506b76a7efffb5c7862149441d561c8e56f6f2ae74fceec937&req=0dZtwFH9rzFk2hj99dpg6qaXg6xVRdTPD12k1WbY7oFnNJkSB5QIqFnzIGzD%0AsOig%2F79QoQI2ivnt%2F3%2FpbImC%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+3. In the **Map** dropdown, enter text to describe the value — this creates a predefined field that updates after the parent field is enriched.
+
+4. Click **Apply**, then **Save Changes** at the bottom of the page.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259773/976be1e8ddc5f397762d4c9b/Screen%2BShot%2B2022-11-22%2Bat%2B14_14_39.png?expires=1780056000&signature=4ef69044ffee3d3b4c94a5492915fde5782177ab260f347d96f08804ca98ccd7&req=0dZtwFH9qzRk2hj99dpg6lq8u3dOoDVHrFuKmffpJ8fyjIXTvtV9IvnYJaWa%0A73irksdk%2BCUfuJdgRAbaxtPu%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Account export preferences
+
+Admins can select which object types users can export to Bullhorn. When a toggle is off, users can only save to existing Bullhorn accounts — not create new ones.
+
+To manage export preferences, go to **Field mapping → [Settings tab](https://dashboard.lusha.com/lusha-integrations/advancedSettings/bullhorn/settings)** and choose the object types users can export.
+
+<Note>
+  Settings apply to all team members in your account.
+</Note>
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13259819/d15ddc57501231e78728d500/Screen%2BShot%2B2022-12-06%2Bat%2B18_13_17.png?expires=1780056000&signature=03296eee08e5dbfdf9f6ade42744a548e85fe7824bcb20aef1b8d8e5e9ae1071&req=0dZtwFHyrT5k2hj99dpg6hy0i0yZZFII49ZPeqkmU9vlli%2Bch9x9Ui93MQXC%0A7%2Becut55KRC5lPD8vkmH8syb%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Bullhorn Identifiers
+
+The Bullhorn Identifiers feature checks whether a contact, lead, or account already exists in your Bullhorn CRM before saving - preventing duplicate records and unnecessary credit spend.
+
+To set up: go to **Field mapping → [Bullhorn Identifier tab](https://dashboard.lusha.com/lusha-integrations/advancedSettings/bullhorn/crmIdentifiers)** and map the fields.
+
+<Note>
+  It's recommended to keep the default Identifier mapping as-is to ensure optimal duplicate detection.
+</Note>
+
+Identifier logic for leads, candidates, and contacts matches on: full name + company name/website, or email address. For companies: company name or website (domain URL).
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900537/787cda9d6c7c2e6d1d9d2130/Screenshot+2024-06-14+at+8_30_20.png?expires=1780056000&signature=e8f36c14cd86e10d2e01dc72b73e01ce615c694f45dd8ecec9aa34a2185a8419&req=0dFmxVj%2FrzBk2hj99dpg6qhpfU%2BvRuA%2BpPreN%2BP6%2FbziAE7P3cHHzL2bdKlf%0AN24a4EiBoK9PptJWcJBB7TEd%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900540/88c4c89c8b10acc1c3600316/Screenshot+2024-06-14+at+8_29_11.png?expires=1780056000&signature=8e4433a38354c92d0b8c4c15ba6a802bb22ffc836a2e432fb3a19678cbbf1b68&req=0dFmxVj%2FqDdk2hj99dpg6riK%2F54pDGIH%2FAN1TthujFFQkS0OZG1u4Qmuce90%0AhbqtclHkXerW68pCPOop0etl%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+<img src="https://downloads.intercomcdn.eu/i/o/14900543/e63d43e6692dedf315204504/Screenshot+2024-06-14+at+8_29_19.png?expires=1780056000&signature=29ea61487280748c48b8f5331c14a76e9d89343dccaa3ef519ed3a2bfa5345bd&req=0dFmxVj%2FqDRk2hj99dpg6iMt50lZ%2B%2Boz8wl5FPYdKoygZeop6WqTSwee3SKl%0AdVsY%2Bk2l1DDiqKmPxNtT5sIK%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Autocomplete settings
+
+When autocomplete is enabled, the account name fills in automatically based on matching records in your CRM.
+
+<img src="https://lusha-eu.intercom-attachments.eu/i/o/13260013/62f977e019ca00095d5ccd81/Screen%2BShot%2B2022-12-06%2Bat%2B14_34_05.png?expires=1780056000&signature=576684d0a90143b8eaff54f3f020ebc2c8e38e39c245f64eaa443fbfe57b2e20&req=0dZtw1j6rTRk2hj99dpg6mfwYXYrjB4ayFJYIj2lnYsZhcPFc4l1Bc1lddOr%0ARwTJkdLwAhVvr8IK3aYqsWws%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
+
+## Default field mapping
+
+If you modify your mapping and need to revert to the original settings, use the tables below.
+
+## Leads
+
+| **Lusha field** | **Bullhorn field** |
+| --- | --- |
+| Full Name | Name |
+| Email 1 | Email |
+| Phone 1 | Phone |
+| Email 2 | Email 2 |
+| Phone 2 | Phone 2 |
+| Last Name | Last Name |
+| First Name | First Name |
+| Predefined | Lead Source |
+| Job title | Occupation |
+
+## Candidates
+
+| **Lusha field** | **Bullhorn field** |
+| --- | --- |
+| Full Name | Name |
+| Email 1 | Email |
+| Phone 1 | Phone |
+| Email 2 | Email 2 |
+| Phone 2 | Phone 2 |
+| Source - Predefined | Source |
+| lastName | Last Name |
+| firstName | First Name |
+| Job title | Occupation |
+
+## Contacts
+
+| **Lusha field** | **Bullhorn field** |
+| --- | --- |
+| Email1 | Email |
+| Phone1 | Phone |
+| Job title | Title |
+| Last Name | Last Name |
+| First Name | First Name |
+| Departments | Department |
+
+## Companies
+
+| **Lusha field** | **Bullhorn field** |
+| --- | --- |
+| Company Name | Name |
+| Company Phone | Phone |
+| Website | Company URL |
+| Company Main Industry | Industry table |
+| Employees | Num Employees |
+| Description | Company Description |
+
+For a full reference of available Lusha fields, see [Fields for field mapping and descriptions](/user-guide/integrations-basics/fields-for-field-mapping-and-descriptions).

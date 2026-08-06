@@ -1,0 +1,112 @@
+---
+title: "Exporting from a Workspace Table"
+description: "How to export a Workspace table to CSV, sync contacts to your CRM, or push them into an Engage sequence — including costs and scope options."
+---
+
+Workspace tables support multiple export destinations: CSV files for offline use, direct CRM sync, and Engage sequences for outreach. This article explains each export option, what data is included, and the associated costs.
+
+<Note>
+Looking to export from a Prospecting search instead? See [Export Contacts to CSV file](/user-guide/export/export-contacts-to-csv-file).
+</Note>
+
+---
+
+## Selecting contacts for export
+
+Before exporting, select the contacts you want to act on:
+
+- **Select individual rows** — Use the checkbox on the left of each row
+- **Select via header checkbox** — Click the checkbox in the column header to open a dropdown with options: select all on page, select a custom amount, or select all matching your active filters and sort order
+- **Export all rows** — Available from the CSV export options (no selection needed)
+
+Selection is no longer capped by page size. The maximum depends on where you are working:
+
+| Context | Selection limit |
+|---|---|
+| Search / filter mode | Up to 10,000 rows for **Show** — no plan-based cap. CSV export is not available directly from search; save to a table first. |
+| Saved table | Up to 150 rows (alignment to 10,000 coming soon) |
+
+Once contacts are selected, the export buttons in the toolbar become active.
+
+---
+
+## Export Option 1: CSV
+
+To export to CSV, you must be inside a saved Workspace table. If you are in a search or filter view, save it as a table first, then follow the steps below.
+
+Click the **CSV** button in the toolbar. A dialog appears with three scope options:
+
+| Option | What it exports |
+|---|---|
+| **Selected rows only** | Only the rows you have checked |
+| **Current page** | All rows visible on the current page |
+| **All rows (including filtered)** | Every row in the table, applying any active filters |
+
+**What's included in the CSV:** The export includes every column visible in your table at the time of export — including all Lusha data and any enrichment data (AI Data, Signals, CRM fields) for which data has been run. Columns you have hidden from view will not be included.
+
+**Adjusting page size before exporting:** If you want to export a "current page" of a specific size, change your Rows per page setting first (25, 50, 75, or 150) using the dropdown at the bottom of the table.
+
+**Shown vs. unshown contacts:** The export dialog also lets you choose whether to include contacts whose details are still masked (unshown). If you include unshown contacts, you will be charged credits to reveal them during the export.
+
+**Cost:** 1 credit per 25 rows exported
+
+**Legacy export format:** If you need the simplified export format from classic Lusha tables (fewer columns), click the **three dots (⋮)** next to the table name and select the legacy export option.
+
+---
+
+## Export Option 2: CRM sync
+
+To push contacts directly to your connected CRM:
+
+1. Select the contacts you want to sync
+2. Click the **CRM** button in the toolbar
+3. Select the CRM you want to export to. Connected integrations appear at the top of the list under **Connected**; other available ones are shown below under **Not Connected**.
+4. Lusha syncs the selected records to the chosen CRM account
+
+Lusha maps contact fields to your CRM objects automatically based on your integration settings. For Salesforce, contacts are pushed as Contact or Lead records depending on your configuration. Read more in the [Salesforce Integration article](https://info.lusha.com/en/articles/163953-salesforce-integration).
+
+**Cost:** 1 credit per export.
+
+---
+
+## Export Option 3: Sequences (Engage)
+
+To push contacts directly into an Engage email sequence:
+
+1. Select the contacts you want to enroll
+2. Click the **Sequence** button in the toolbar
+3. A sidebar opens — select the active sequence you want to add them to
+4. Confirm the selection
+
+The contacts will appear in that sequence in Engage, ready for outreach.
+
+**Requirement:** You must have at least one active Engage sequence set up before using this option.
+
+---
+
+## What is included in the Workspace table export
+
+- **All visible columns:** Every column currently showing on your screen is exported, including any enrichment data.
+- **Advanced data points:** AI Data, Signals, and CRM column values are fully included.
+- **Tags:** Supported and included in both CSV and CRM exports.
+- **Modern format:** Files export in the new default format (though you can still access the legacy format via the **⋮** menu).
+
+<Warning>
+You cannot export directly from a Workspace search or filter view. CSV export, CRM sync, and Sequence export are only available from saved Workspace tables. If you have run a search or applied filters and want to export the results, save them as a table first, then export from there. You also cannot export the "All Contacts" table.
+</Warning>
+
+---
+
+## FAQs
+
+**Can I export company data from a company table?**
+
+Yes. Select company rows and use the CSV export. Company tables export the company-level data columns visible in your table.
+
+**What happens to hidden enrichment columns?**
+
+Columns you have removed from your table view will not appear in the CSV export. Make sure all columns you want to export are visible before downloading.
+
+**Is there a row limit for CSV exports?**
+
+There is no hard limit on rows per export, but very large exports (thousands of rows) may take a moment to generate.

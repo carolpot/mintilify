@@ -1,0 +1,83 @@
+---
+title: "Tables API"
+description: "Create and manage persistent tables of contacts and companies programmatically using the Lusha Tables API."
+---
+
+The Lusha Tables API lets you create and manage persistent tables of contacts and companies directly from your own systems. If you use the Lusha Workspace UI, MCP server, or any other Lusha surface — they all read and write the same underlying data, so changes made through the API are reflected everywhere.
+
+## What the Tables API does
+
+Tables are structured, configurable sets of contacts or companies. Through the API you can:
+
+- **Create and manage tables** — create, list, rename, archive, change visibility, or delete tables
+- **Manage entities** — add or remove contacts or companies (rows) from a table, or read the full list
+- **Run columns** — list available columns, remove columns, or trigger a column to populate across all rows in a table
+- **Persist search results automatically** — pass a `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to save those results into a table without a separate step
+
+## Contacts Tables vs. Companies Tables
+
+There are two separate table types, each with its own set of endpoints:
+
+| Table type | Tag in API docs | What it stores |
+|---|---|---|
+| Contacts Tables | `Contacts Tables` | Individual contacts with enrichment, Signals, and contact-level data |
+| Companies Tables | `Companies Tables` | Company records with firmographics, tech stack, Signals, and company-level data |
+
+Both types support the same table, entity, and column operations.
+
+## Authentication and ownership
+
+All Tables API calls require a valid API key passed as an `api_key` header.
+
+Every call must also include an `owner.email` value — the email of a user on your Lusha account — to identify who owns the table. This is required when authenticating with an API key.
+
+- For `POST` and `PATCH` calls: pass `owner` as a body field — `{ "owner": { "email": "you@company.com" } }`
+- For `GET` and `DELETE` calls (no body): pass `?email=you@company.com` as a query parameter
+
+💡 **Note:** OAuth and token-based callers are already identified by their token, so `owner.email` is optional for those authentication methods.
+
+## Limits
+
+| Limit | Value |
+|---|---|
+| Entities per add/remove call | Up to 500 |
+| Entities per table | Max 50,000 |
+| Tables per account | Max 500 |
+| Page range | 0–100 |
+| Default page size | 100 |
+
+## Credit usage
+
+Adding contacts or companies to a table is free. Credits are only used when you trigger enrichment or data columns to run across a table's rows.
+
+## Error codes
+
+Tables API errors use a different response shape than other Lusha API endpoints:
+
+```json
+{ "message": "...", "code": <status> }
+```
+
+Common Tables-specific error codes:
+
+| Code | Status | Meaning |
+|---|---|---|
+| `TABLE_NOT_FOUND` | 404 | The `table_id` doesn't exist or isn't accessible to this account |
+| `COLUMN_NOT_FOUND` | 404 | The `column_id` doesn't exist on the given table |
+| `TABLE_NAME_CONFLICT` | 409 | A table with this name already exists |
+
+For the full list of Lusha API error codes, see the [Error Codes Reference](/user-guide/lushas-api/lusha-api-error-codes-reference).
+
+## Where to find the full reference
+
+The complete endpoint reference — including request/response schemas and example calls — is in the API docs:
+
+- [Contacts Tables →](https://docs.lusha.com/api-reference/v3#tag/Contacts-Tables)
+- [Companies Tables →](https://docs.lusha.com/api-reference/v3#tag/Companies-Tables)
+
+## Related articles
+
+- [All about Lusha's API](/user-guide/lushas-api/all-there-is-to-know-about-lushas-api)
+- [Signals API](/user-guide/lushas-api/signals-api)
+- [Lookalike API](/user-guide/lushas-api/lookalike-api)
+- [Error Codes Reference](/user-guide/lushas-api/lusha-api-error-codes-reference)

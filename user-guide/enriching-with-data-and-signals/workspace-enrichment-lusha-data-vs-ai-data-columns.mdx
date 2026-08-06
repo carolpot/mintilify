@@ -1,0 +1,77 @@
+---
+title: "Workspace Enrichment: Lusha Data vs. AI Data Columns"
+description: "How to add Lusha data, AI data, signal, and CRM columns to a saved Workspace table, and when to run each column type."
+---
+
+Once you've saved a Workspace table, you can deepen your understanding of each contact or company by adding data columns. Lusha offers three types of columns today: Lusha database data and AI data (both under the **Enrich** tab), real-time signals, and CRM fields. This article explains each type, how to add them, and what to expect.
+
+## **How to add a column**
+
+1. Open any saved Workspace table
+2. Click **Add enrichment** in the table toolbar
+3. The column library opens with three tabs: **Enrich**, **Signals**, and **CRM**
+4. In the **Enrich** tab, a **Suggested columns** section appears at the top — the highest-usage Contact or Company fields for quick access — followed by an **AI data** section, then the full list of Lusha Data fields grouped by category (e.g. Contact Fields, Company Fields > Basic info)
+5. Click a suggested column to add it instantly, search for a specific field, or browse by category
+6. Click any column name to add it to your table
+7. Columns that don't consume credits (Lusha Data fields and CRM fields) now run automatically the moment you add them — data populates without a manual run. Columns that consume credits (AI data and Signals) appear empty — click **Run column** to fill them with live data
+
+Free data points are marked with a **Free** tag in the column library, so you can spot them at a glance.
+
+You can also click the **+** icon directly next to any existing column header to add a new column in that position.
+
+## **Tab 1: Enrich (Lusha Data)**
+
+These columns pull from Lusha's verified B2B database and populate instantly without consuming enrichment credits. They include standard contact and company fields:
+
+**Contact fields:** Name, job title, seniority, department, work email, mobile, phone, direct phone, LinkedIn URL
+
+**Company fields:** Company name, website, industry, sub-industry, company size (headcount), revenue range, founding year, headquarters location, country, company domains, company technologies, employees on LinkedIn, email domain, max revenue
+
+Use these columns to complete any fields missing from your initial search results.
+
+### AI data
+
+Within the **Enrich** tab, an **AI data** section sits above the Lusha Data fields. Each AI column runs on a dedicated AI prompt to generate its data — these go beyond Lusha's database and use real-time web crawling to provide strategic context about a company. When you click **Run column**, Lusha's AI performs a fresh web search to populate the data, so results are current, not cached.
+
+Available AI columns (selectable on Companies or Contacts tables):
+
+- Product and Industry Insights
+- Recent Executive Changes
+- SaaS or non-SaaS
+- Customer Reviews Sentiment
+- Open Jobs Summary
+- Company Street Name
+
+**Cost:** These are credit-charging data points — 1 credit is deducted per row populated.
+
+## **Tab 2: Signals**
+
+Signals add real-time behavioral intelligence to your table based on what companies and contacts are actively doing. Signals track what a company is currently doing — making them ideal for timing your outreach.
+
+Cost: 1 credit is charged per successful signal detected (for either a contact or a company). If no signal is found, the cell remains empty, and no credits are deducted.
+
+Please note that signals are **table-specific**. If the same contact is saved in two different tables and you run a signal search in both, you will be charged twice.
+
+Signals are covered in detail in [Workspace Signals: Tracking Buying Intent and Contact Changes](/user-guide/enriching-with-data-and-signals/workspace-signals-tracking-buying-intent-and-contact-changes).
+
+## **Tab 3: CRM**
+
+CRM columns let you pull live field values from your connected Salesforce account directly into your table. You can add fields from Contact, Lead, or Account objects.
+
+**Cost:** Free — CRM columns do not consume credits
+
+CRM columns now run automatically as soon as you add them, pulling live data from Salesforce without a manual run. Use CRM columns to see things like "Last Activity Date," "Deal Stage," or "Owner" alongside your Lusha prospecting data in the same view.
+
+## **Running columns**
+
+Lusha Data and CRM columns (both free) auto-run the moment you add them. For AI data and Signals columns, which consume credits, the cells will display **"Click to run"**. You have three options when you click **Run column**:
+
+- **Run for all rows** — populates the column for every row in your table (most comprehensive, uses the most credits for paid columns)
+- **Run for first 25 rows** — a cost-effective way to test the column before running at scale
+- **Add columns only** — adds the column to your view without running the data immediately; you can run individual rows on demand by clicking "Click to run" on specific cells
+
+## **Tips**
+
+- Run your highest-priority rows first (first 25) to validate quality before running across the full table
+- CRM columns are free — use them liberally to cross-reference your Lusha data with existing CRM records
+- Enrichment data added to columns is included when you export the table to CSV
