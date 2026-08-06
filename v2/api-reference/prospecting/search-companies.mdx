@@ -5,7 +5,7 @@ description: "Search Lusha's B2B company database using firmographic filters: in
 openapi: "post /prospecting/company/search"
 ---
 
-<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/company/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/company/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
 Use this endpoint to find companies in Lusha's database that match your target account criteria. Supply firmographic filters such as industry, employee size, revenue range, technologies in use, and more to build a focused account list. The response includes company IDs you then pass to the [Enrich Companies](/v2/api-reference/prospecting/enrich-companies) endpoint to retrieve full firmographic profiles. This is **step 2** of the three-step prospecting flow.
 

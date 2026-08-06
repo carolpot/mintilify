@@ -5,7 +5,7 @@ description: "Search Lusha's contact database using ICP filters like job title, 
 openapi: "post /prospecting/contact/search"
 ---
 
-<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/contact/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/contact/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
 Use this endpoint to query Lusha's contact database with filters aligned to your Ideal Customer Profile. You get back a list of matching contacts with IDs you then pass to the [Enrich Contacts](/v2/api-reference/prospecting/enrich-contacts) endpoint to retrieve full details. This is **step 2** of the three-step prospecting flow.
 

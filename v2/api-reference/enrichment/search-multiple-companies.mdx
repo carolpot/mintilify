@@ -5,7 +5,7 @@ description: "Enrich up to 100 companies in a single request with firmographics,
 openapi: "post /bulk/company/v2"
 ---
 
-<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /bulk/company/v2 contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /bulk/company/v2 contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
 Use this endpoint to enrich multiple company records in a single request. Submit a list of up to 100 companies identified by domain, name, or Lusha company ID, and receive firmographic data for each one. This endpoint also supports `signalsFilters` for narrowing signal results by event type, department, or location — functionality that is not available on the single-company endpoint.
 

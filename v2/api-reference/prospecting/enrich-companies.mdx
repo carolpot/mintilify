@@ -5,7 +5,7 @@ description: "Retrieve full company profiles from prospecting search results. Re
 openapi: "post /prospecting/company/enrich"
 ---
 
-<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/enrich) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/company/enrich contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/enrich) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/company/enrich contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
 After searching for companies with [POST /prospecting/company/search](/v2/api-reference/prospecting/search-companies), use this endpoint to retrieve complete firmographic profiles for up to 100 companies at once. The response includes headcount, revenue ranges, technologies, funding history, intent signals, location details, and more. This is **step 3** of the three-step prospecting flow.
 

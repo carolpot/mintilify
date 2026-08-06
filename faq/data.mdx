@@ -27,7 +27,7 @@ description: "Common questions about Lusha's data sources, coverage, accuracy, a
   - Single-contact enrichment endpoints use a `partialProfile: true` parameter.
   - The prospecting search-and-enrich endpoint uses `includePartialContact: true` in the request body.
 
-  <!-- VERIFY: hands-on testing against a v3 search-and-enrich payload found contacts were silently dropped unless `options.includePartialProfiles` was set — a third naming variant not found in openapi.json. The exact parameter name and nesting differ across API versions/endpoints in the current spec. Confirm the authoritative name per endpoint with Engineering (this matches the Migration Plan's own flagged task to audit the OpenAPI spec) before treating this answer as final. -->
+  {/* VERIFY: hands-on testing against a v3 search-and-enrich payload found contacts were silently dropped unless `options.includePartialProfiles` was set — a third naming variant not found in openapi.json. The exact parameter name and nesting differ across API versions/endpoints in the current spec. Confirm the authoritative name per endpoint with Engineering (this matches the Migration Plan's own flagged task to audit the OpenAPI spec) before treating this answer as final. */}
 </Accordion>
 
 <Accordion title="What does GDPR mean for the data returned?">

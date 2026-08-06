@@ -5,7 +5,7 @@ description: "Look up a company by domain, name, or companyId to retrieve firmog
 openapi: "get /v2/company"
 ---
 
-<!-- VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the v2 GET /v2/company contract the Mintlify playground binds to. Kept v2 here since that's what actually executes; revisit once openapi.json adds v3 paths. -->
+{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the v2 GET /v2/company contract the Mintlify playground binds to. Kept v2 here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
 Use this endpoint to enrich a single company record in real time. Provide a domain name, company name, or Lusha company ID to retrieve firmographic data including employee count, revenue range, funding history, location, technologies, and intent signals.
 
@@ -223,7 +223,7 @@ You must supply at least one of: `domain`, `company`, or `companyId`.
     <ResponseField name="industryPrimaryGroupDetails" type="object">
       Industry classification codes.
 
-      <!-- VERIFY: openapi.json is internally inconsistent here — the CompanySic/CompanyNaics schemas declare properties named `sicCodes`/`naicsCodes` (number) but list `sic`/`naics` as the required field names, and the spec's own /bulk/company/v2 example payload uses `sic`/`naics`. Documented as `sic`/`naics` below to match the example and required list; a human should confirm against a live response. -->
+      {/* VERIFY: openapi.json is internally inconsistent here — the CompanySic/CompanyNaics schemas declare properties named `sicCodes`/`naicsCodes` (number) but list `sic`/`naics` as the required field names, and the spec's own /bulk/company/v2 example payload uses `sic`/`naics`. Documented as `sic`/`naics` below to match the example and required list; a human should confirm against a live response. */}
       <Expandable title="properties">
         <ResponseField name="sicCodes" type="object[]">
           SIC code entries.
