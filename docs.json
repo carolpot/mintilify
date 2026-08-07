@@ -7,7 +7,7 @@
     "light": "#863fff",
     "dark": "#be97ff"
   },
-  "favicon": "https://media.brand.dev/7d0f1b56-a288-4914-af30-aefaa00e11e9.png",
+  "favicon": "/favicon.png",
   "logo": {
     "light": "https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg",
     "dark": "https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg"
@@ -44,6 +44,610 @@
       {
         "tab": "Home",
         "href": "/"
+      },
+      {
+        "tab": "Lusha Data",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "data-catalog/overview"
+            ]
+          },
+          {
+            "group": "Contact Data",
+            "pages": [
+              "data-catalog/contact-identity",
+              "data-catalog/contact-emails",
+              "data-catalog/contact-phones",
+              "data-catalog/contact-employment"
+            ]
+          },
+          {
+            "group": "Company Data",
+            "pages": [
+              "data-catalog/company-firmographics",
+              "data-catalog/company-technologies",
+              "data-catalog/company-funding"
+            ]
+          },
+          {
+            "group": "Signals",
+            "pages": [
+              "data-catalog/signal-types"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Docs",
+        "versions": [
+          {
+            "version": "V3",
+            "tag": "Latest",
+            "default": true,
+            "openapi": "openapi.json",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "api-reference/overview"
+                ],
+                "icon": "compass"
+              },
+              {
+                "group": "Resources",
+                "icon": "book",
+                "pages": [
+                  {
+                    "group": "Getting Started",
+                    "root": "introduction",
+                    "pages": [
+                      {
+                        "group": "Overview",
+                        "pages": [
+                          "authentication",
+                          "rate-limiting",
+                          "error-codes"
+                        ]
+                      },
+                      {
+                        "group": "Credits & Plans",
+                        "pages": [
+                          "credits/overview",
+                          "credits/costs",
+                          "credits/unified-credits"
+                        ]
+                      },
+                      {
+                        "group": "Search & Enrich",
+                        "pages": [
+                          "enrichment/overview",
+                          "enrichment/search-contacts",
+                          "enrichment/enrich-contacts",
+                          "enrichment/search-and-enrich-contacts",
+                          "enrichment/search-companies",
+                          "enrichment/enrich-companies",
+                          "enrichment/search-and-enrich-companies"
+                        ]
+                      },
+                      {
+                        "group": "Prospecting",
+                        "pages": [
+                          "prospecting/overview",
+                          "prospecting/search-contacts",
+                          "prospecting/search-companies"
+                        ]
+                      },
+                      {
+                        "group": "Signals",
+                        "pages": [
+                          "signals/overview",
+                          "signals/contact-signals",
+                          "signals/company-signals"
+                        ]
+                      },
+                      {
+                        "group": "Decision Makers",
+                        "pages": [
+                          "decision-makers/overview"
+                        ]
+                      },
+                      {
+                        "group": "Website Visits",
+                        "pages": [
+                          "website-visits/overview"
+                        ]
+                      },
+                      {
+                        "group": "Webhooks",
+                        "pages": [
+                          "webhooks/overview",
+                          "webhooks/manage-subscriptions",
+                          "webhooks/security",
+                          "webhooks/audit-logs"
+                        ]
+                      },
+                      {
+                        "group": "Lookalikes",
+                        "pages": [
+                          "lookalikes/overview",
+                          "lookalikes/contact-lookalikes",
+                          "lookalikes/company-lookalikes"
+                        ]
+                      },
+                      {
+                        "group": "Filters Reference",
+                        "pages": [
+                          "filters/contact-filters",
+                          "filters/company-filters"
+                        ]
+                      },
+                      {
+                        "group": "Account",
+                        "pages": [
+                          "account/usage"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Tutorials",
+                    "pages": [
+                      {
+                        "group": "Getting Started",
+                        "pages": [
+                          "tutorials/api_fundamentals",
+                          "tutorials/postman-environment-guide",
+                          "tutorials/person-api-v1-deprecation",
+                          "tutorials/v3-migration-guide"
+                        ]
+                      },
+                      {
+                        "group": "CRM Tutorials",
+                        "pages": [
+                          "tutorials/hubspot",
+                          "tutorials/hubspot-prospecting",
+                          "tutorials/salesforce-contact",
+                          "tutorials/salesforce-company",
+                          "tutorials/zoho"
+                        ]
+                      },
+                      {
+                        "group": "Spreadsheet Tutorials",
+                        "pages": [
+                          "tutorials/sheets-contact",
+                          "tutorials/sheets-company",
+                          "tutorials/sheets-prospecting-contacts",
+                          "tutorials/sheets-prospecting-company"
+                        ]
+                      },
+                      {
+                        "group": "Automation Platforms",
+                        "pages": [
+                          "tutorials/albato",
+                          "tutorials/make",
+                          "tutorials/n8n",
+                          "tutorials/pipedream",
+                          "tutorials/workato1",
+                          "tutorials/workato2",
+                          "tutorials/zapier",
+                          "tutorials/clay-data",
+                          "tutorials/clay-lookalikes",
+                          "tutorials/clay-signals",
+                          "tutorials/clay-workflow"
+                        ]
+                      },
+                      {
+                        "group": "Signals & Recommendations",
+                        "pages": [
+                          "tutorials/signals",
+                          "tutorials/recommendations"
+                        ]
+                      },
+                      {
+                        "group": "Tables",
+                        "pages": [
+                          "tutorials/tables"
+                        ],
+                        "icon": "table"
+                      }
+                    ],
+                    "root": "tutorials/index"
+                  },
+                  {
+                    "group": "FAQ",
+                    "pages": [
+                      {
+                        "group": "API & Integration",
+                        "pages": [
+                          "faq/api"
+                        ]
+                      },
+                      {
+                        "group": "Data & Coverage",
+                        "pages": [
+                          "faq/data"
+                        ]
+                      },
+                      {
+                        "group": "Credits & Billing",
+                        "pages": [
+                          "faq/billing"
+                        ]
+                      },
+                      {
+                        "group": "MCP",
+                        "pages": [
+                          "faq/mcp"
+                        ]
+                      }
+                    ],
+                    "root": "faq/overview"
+                  },
+                  "playground",
+                  "changelog/overview"
+                ]
+              },
+              {
+                "group": "Endpoints",
+                "icon": "server",
+                "pages": [
+                  {
+                    "group": "Search",
+                    "pages": [
+                      "POST /v3/contacts/search",
+                      "POST /v3/companies/search"
+                    ],
+                    "icon": "magnifying-glass"
+                  },
+                  {
+                    "group": "Enrich",
+                    "pages": [
+                      "POST /v3/contacts/enrich",
+                      "POST /v3/companies/enrich"
+                    ],
+                    "icon": "address-book"
+                  },
+                  {
+                    "group": "Search & Enrich",
+                    "pages": [
+                      "POST /v3/contacts/search-and-enrich",
+                      "POST /v3/companies/search-and-enrich"
+                    ],
+                    "icon": "wand-magic-sparkles"
+                  },
+                  {
+                    "group": "Prospecting",
+                    "pages": [
+                      "POST /v3/contacts/prospecting",
+                      "POST /v3/companies/prospecting"
+                    ],
+                    "icon": "magnifying-glass"
+                  },
+                  {
+                    "group": "Tables",
+                    "pages": [
+                      {
+                        "group": "Contact Tables",
+                        "pages": [
+                          "POST /v3/contacts/tables",
+                          "POST /v3/contacts/tables/list",
+                          "GET /v3/contacts/tables/{table_id}",
+                          "PATCH /v3/contacts/tables/{table_id}",
+                          "DELETE /v3/contacts/tables/{table_id}",
+                          "GET /v3/contacts/tables/{table_id}/entities",
+                          "POST /v3/contacts/tables/{table_id}/entities",
+                          "DELETE /v3/contacts/tables/{table_id}/entities",
+                          "GET /v3/contacts/tables/{table_id}/columns",
+                          "DELETE /v3/contacts/tables/{table_id}/columns/{column_id}",
+                          "POST /v3/contacts/tables/{table_id}/columns/{column_id}/run"
+                        ],
+                        "icon": "address-book"
+                      },
+                      {
+                        "group": "Company Tables",
+                        "pages": [
+                          "POST /v3/companies/tables",
+                          "POST /v3/companies/tables/list",
+                          "GET /v3/companies/tables/{table_id}",
+                          "PATCH /v3/companies/tables/{table_id}",
+                          "DELETE /v3/companies/tables/{table_id}",
+                          "GET /v3/companies/tables/{table_id}/entities",
+                          "POST /v3/companies/tables/{table_id}/entities",
+                          "DELETE /v3/companies/tables/{table_id}/entities",
+                          "GET /v3/companies/tables/{table_id}/columns",
+                          "DELETE /v3/companies/tables/{table_id}/columns/{column_id}",
+                          "POST /v3/companies/tables/{table_id}/columns/{column_id}/run"
+                        ],
+                        "icon": "building"
+                      }
+                    ],
+                    "icon": "table"
+                  },
+                  {
+                    "group": "Filters",
+                    "pages": [
+                      "GET /v3/contacts/prospecting/filters",
+                      "GET /v3/contacts/prospecting/filters/{filterType}",
+                      "GET /v3/companies/prospecting/filters",
+                      "GET /v3/companies/prospecting/filters/{filterType}"
+                    ],
+                    "icon": "filter"
+                  },
+                  {
+                    "group": "Lookalikes",
+                    "pages": [
+                      "POST /v3/contacts/lookalike",
+                      "POST /v3/companies/lookalike"
+                    ],
+                    "icon": "users"
+                  },
+                  {
+                    "group": "Signals",
+                    "pages": [
+                      "POST /v3/contacts/signals",
+                      "GET /v3/contacts/signals/types",
+                      "POST /v3/companies/signals",
+                      "GET /v3/companies/signals/filters",
+                      "GET /v3/companies/signals/filters/{filterType}",
+                      "GET /v3/companies/signals/types"
+                    ],
+                    "icon": "bolt"
+                  },
+                  {
+                    "group": "Decision Makers",
+                    "pages": [
+                      "POST /v3/contacts/decision-makers"
+                    ],
+                    "icon": "user-tie"
+                  },
+                  {
+                    "group": "Website Visits",
+                    "pages": [
+                      "POST /v3/companies/website-visits"
+                    ],
+                    "icon": "globe"
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "POST /api/subscriptions",
+                      "GET /api/subscriptions",
+                      "GET /api/subscriptions/{id}",
+                      "PATCH /api/subscriptions/{id}",
+                      "POST /api/subscriptions/delete",
+                      "POST /api/subscriptions/{id}/test",
+                      "POST /api/subscriptions/opt-out",
+                      "GET /api/audit-logs",
+                      "GET /api/audit-logs/stats",
+                      "GET /api/account/secret",
+                      "POST /api/account/secret/regenerate"
+                    ],
+                    "icon": "webhook"
+                  },
+                  {
+                    "group": "Account",
+                    "pages": [
+                      "GET /v3/account/usage"
+                    ],
+                    "icon": "chart-bar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "version": "V2 (Legacy)",
+            "tag": "Deprecated",
+            "openapi": "v2/openapi.json",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "v2/introduction",
+                  "v2/authentication",
+                  "v2/rate-limiting",
+                  "v2/error-codes",
+                  "v2/api-reference/overview"
+                ],
+                "icon": "compass"
+              },
+              {
+                "group": "Credits & Plans",
+                "pages": [
+                  "v2/credits/overview",
+                  "v2/credits/costs",
+                  "v2/credits/unified-credits"
+                ],
+                "icon": "credit-card"
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  {
+                    "group": "Enrichment",
+                    "pages": [
+                      "v2/enrichment/overview",
+                      "v2/enrichment/single-contact",
+                      "v2/enrichment/single-company",
+                      "v2/enrichment/bulk-contacts",
+                      "v2/enrichment/bulk-companies"
+                    ],
+                    "icon": "address-book"
+                  },
+                  {
+                    "group": "Prospecting",
+                    "pages": [
+                      "v2/prospecting/overview",
+                      "v2/prospecting/search-contacts",
+                      "v2/prospecting/enrich-contacts",
+                      "v2/prospecting/search-companies",
+                      "v2/prospecting/enrich-companies"
+                    ],
+                    "icon": "magnifying-glass"
+                  },
+                  {
+                    "group": "Filters",
+                    "pages": [
+                      "v2/filters/contact-filters",
+                      "v2/filters/company-filters"
+                    ],
+                    "icon": "filter"
+                  },
+                  {
+                    "group": "Lookalikes",
+                    "pages": [
+                      "v2/lookalikes/overview",
+                      "v2/lookalikes/contact-lookalikes",
+                      "v2/lookalikes/company-lookalikes"
+                    ],
+                    "icon": "users"
+                  },
+                  {
+                    "group": "Signals",
+                    "pages": [
+                      "v2/signals/overview",
+                      "v2/signals/contact-signals",
+                      "v2/signals/company-signals"
+                    ],
+                    "icon": "bolt"
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "v2/webhooks/overview",
+                      "v2/webhooks/manage-subscriptions",
+                      "v2/webhooks/security",
+                      "v2/webhooks/audit-logs"
+                    ],
+                    "icon": "webhook"
+                  }
+                ],
+                "icon": "book-open"
+              },
+              {
+                "group": "Endpoints",
+                "icon": "server",
+                "pages": [
+                  {
+                    "group": "Enrichment",
+                    "pages": [
+                      "GET /v2/person",
+                      "POST /v2/person",
+                      "GET /v2/company",
+                      "POST /bulk/company/v2"
+                    ],
+                    "icon": "address-book"
+                  },
+                  {
+                    "group": "Prospecting",
+                    "pages": [
+                      "POST /prospecting/contact/search",
+                      "POST /prospecting/contact/enrich",
+                      "POST /prospecting/company/search",
+                      "POST /prospecting/company/enrich"
+                    ],
+                    "icon": "magnifying-glass"
+                  },
+                  {
+                    "group": "Filters",
+                    "pages": [
+                      {
+                        "group": "Contact Filters",
+                        "pages": [
+                          "GET /prospecting/filters/contacts/all_countries",
+                          "GET /prospecting/filters/contacts/departments",
+                          "GET /prospecting/filters/contacts/existing_data_points",
+                          "POST /prospecting/filters/contacts/locations",
+                          "GET /prospecting/filters/contacts/seniority"
+                        ],
+                        "icon": "user-check"
+                      },
+                      {
+                        "group": "Company Filters",
+                        "pages": [
+                          "GET /prospecting/filters/companies/industries_labels",
+                          "GET /prospecting/filters/companies/intent_topics",
+                          "POST /prospecting/filters/companies/locations",
+                          "GET /prospecting/filters/companies/naics",
+                          "POST /prospecting/filters/companies/names",
+                          "GET /prospecting/filters/companies/revenues",
+                          "GET /prospecting/filters/companies/sics",
+                          "GET /prospecting/filters/companies/sizes",
+                          "POST /prospecting/filters/companies/technologies"
+                        ],
+                        "icon": "building"
+                      }
+                    ],
+                    "icon": "filter"
+                  },
+                  {
+                    "group": "Lookalikes",
+                    "pages": [
+                      "POST /v3/lookalike/contacts",
+                      "POST /v3/lookalike/companies"
+                    ],
+                    "icon": "users"
+                  },
+                  {
+                    "group": "Signals",
+                    "pages": [
+                      "POST /api/signals/contacts",
+                      "POST /api/signals/contacts/search",
+                      "POST /api/signals/companies",
+                      "POST /api/signals/companies/search",
+                      "GET /api/signals/filters/{objectType}"
+                    ],
+                    "icon": "bolt"
+                  },
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "POST /api/subscriptions",
+                      "GET /api/subscriptions",
+                      "GET /api/subscriptions/{id}",
+                      "PATCH /api/subscriptions/{id}",
+                      "POST /api/subscriptions/delete",
+                      "POST /api/subscriptions/{id}/test",
+                      "GET /api/audit-logs",
+                      "GET /api/audit-logs/stats",
+                      "GET /api/account/secret",
+                      "POST /api/account/secret/regenerate"
+                    ],
+                    "icon": "webhook"
+                  },
+                  {
+                    "group": "Account",
+                    "pages": [
+                      "GET /account/usage"
+                    ],
+                    "icon": "chart-bar"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "MCP Docs",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "mcp/overview",
+              "mcp/setup"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "mcp/tools",
+              "mcp/examples"
+            ]
+          }
+        ]
       },
       {
         "tab": "User Guide",
@@ -623,610 +1227,6 @@
                   }
                 ]
               }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API docs",
-        "versions": [
-          {
-            "version": "V3",
-            "tag": "Latest",
-            "default": true,
-            "openapi": "openapi.json",
-            "groups": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "api-reference/overview"
-                ],
-                "icon": "compass"
-              },
-              {
-                "group": "Resources",
-                "icon": "book",
-                "pages": [
-                  {
-                    "group": "Getting Started",
-                    "root": "introduction",
-                    "pages": [
-                      {
-                        "group": "Overview",
-                        "pages": [
-                          "authentication",
-                          "rate-limiting",
-                          "error-codes"
-                        ]
-                      },
-                      {
-                        "group": "Credits & Plans",
-                        "pages": [
-                          "credits/overview",
-                          "credits/costs",
-                          "credits/unified-credits"
-                        ]
-                      },
-                      {
-                        "group": "Search & Enrich",
-                        "pages": [
-                          "enrichment/overview",
-                          "enrichment/search-contacts",
-                          "enrichment/enrich-contacts",
-                          "enrichment/search-and-enrich-contacts",
-                          "enrichment/search-companies",
-                          "enrichment/enrich-companies",
-                          "enrichment/search-and-enrich-companies"
-                        ]
-                      },
-                      {
-                        "group": "Prospecting",
-                        "pages": [
-                          "prospecting/overview",
-                          "prospecting/search-contacts",
-                          "prospecting/search-companies"
-                        ]
-                      },
-                      {
-                        "group": "Signals",
-                        "pages": [
-                          "signals/overview",
-                          "signals/contact-signals",
-                          "signals/company-signals"
-                        ]
-                      },
-                      {
-                        "group": "Decision Makers",
-                        "pages": [
-                          "decision-makers/overview"
-                        ]
-                      },
-                      {
-                        "group": "Website Visits",
-                        "pages": [
-                          "website-visits/overview"
-                        ]
-                      },
-                      {
-                        "group": "Webhooks",
-                        "pages": [
-                          "webhooks/overview",
-                          "webhooks/manage-subscriptions",
-                          "webhooks/security",
-                          "webhooks/audit-logs"
-                        ]
-                      },
-                      {
-                        "group": "Lookalikes",
-                        "pages": [
-                          "lookalikes/overview",
-                          "lookalikes/contact-lookalikes",
-                          "lookalikes/company-lookalikes"
-                        ]
-                      },
-                      {
-                        "group": "Filters Reference",
-                        "pages": [
-                          "filters/contact-filters",
-                          "filters/company-filters"
-                        ]
-                      },
-                      {
-                        "group": "Account",
-                        "pages": [
-                          "account/usage"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Tutorials",
-                    "pages": [
-                      {
-                        "group": "Getting Started",
-                        "pages": [
-                          "tutorials/api_fundamentals",
-                          "tutorials/postman-environment-guide",
-                          "tutorials/person-api-v1-deprecation",
-                          "tutorials/v3-migration-guide"
-                        ]
-                      },
-                      {
-                        "group": "CRM Tutorials",
-                        "pages": [
-                          "tutorials/hubspot",
-                          "tutorials/hubspot-prospecting",
-                          "tutorials/salesforce-contact",
-                          "tutorials/salesforce-company",
-                          "tutorials/zoho"
-                        ]
-                      },
-                      {
-                        "group": "Spreadsheet Tutorials",
-                        "pages": [
-                          "tutorials/sheets-contact",
-                          "tutorials/sheets-company",
-                          "tutorials/sheets-prospecting-contacts",
-                          "tutorials/sheets-prospecting-company"
-                        ]
-                      },
-                      {
-                        "group": "Automation Platforms",
-                        "pages": [
-                          "tutorials/albato",
-                          "tutorials/make",
-                          "tutorials/n8n",
-                          "tutorials/pipedream",
-                          "tutorials/workato1",
-                          "tutorials/workato2",
-                          "tutorials/zapier",
-                          "tutorials/clay-data",
-                          "tutorials/clay-lookalikes",
-                          "tutorials/clay-signals",
-                          "tutorials/clay-workflow"
-                        ]
-                      },
-                      {
-                        "group": "Signals & Recommendations",
-                        "pages": [
-                          "tutorials/signals",
-                          "tutorials/recommendations"
-                        ]
-                      },
-                      {
-                        "group": "Tables",
-                        "pages": [
-                          "tutorials/tables"
-                        ],
-                        "icon": "table"
-                      }
-                    ],
-                    "root": "tutorials/index"
-                  },
-                  {
-                    "group": "FAQ",
-                    "pages": [
-                      {
-                        "group": "API & Integration",
-                        "pages": [
-                          "faq/api"
-                        ]
-                      },
-                      {
-                        "group": "Data & Coverage",
-                        "pages": [
-                          "faq/data"
-                        ]
-                      },
-                      {
-                        "group": "Credits & Billing",
-                        "pages": [
-                          "faq/billing"
-                        ]
-                      },
-                      {
-                        "group": "MCP",
-                        "pages": [
-                          "faq/mcp"
-                        ]
-                      }
-                    ],
-                    "root": "faq/overview"
-                  },
-                  "playground",
-                  "changelog/overview"
-                ]
-              },
-              {
-                "group": "Endpoints",
-                "icon": "server",
-                "pages": [
-                  {
-                    "group": "Search",
-                    "pages": [
-                      "POST /v3/contacts/search",
-                      "POST /v3/companies/search"
-                    ],
-                    "icon": "magnifying-glass"
-                  },
-                  {
-                    "group": "Enrich",
-                    "pages": [
-                      "POST /v3/contacts/enrich",
-                      "POST /v3/companies/enrich"
-                    ],
-                    "icon": "address-book"
-                  },
-                  {
-                    "group": "Search & Enrich",
-                    "pages": [
-                      "POST /v3/contacts/search-and-enrich",
-                      "POST /v3/companies/search-and-enrich"
-                    ],
-                    "icon": "wand-magic-sparkles"
-                  },
-                  {
-                    "group": "Prospecting",
-                    "pages": [
-                      "POST /v3/contacts/prospecting",
-                      "POST /v3/companies/prospecting"
-                    ],
-                    "icon": "magnifying-glass"
-                  },
-                  {
-                    "group": "Tables",
-                    "pages": [
-                      {
-                        "group": "Contact Tables",
-                        "pages": [
-                          "POST /v3/contacts/tables",
-                          "POST /v3/contacts/tables/list",
-                          "GET /v3/contacts/tables/{table_id}",
-                          "PATCH /v3/contacts/tables/{table_id}",
-                          "DELETE /v3/contacts/tables/{table_id}",
-                          "GET /v3/contacts/tables/{table_id}/entities",
-                          "POST /v3/contacts/tables/{table_id}/entities",
-                          "DELETE /v3/contacts/tables/{table_id}/entities",
-                          "GET /v3/contacts/tables/{table_id}/columns",
-                          "DELETE /v3/contacts/tables/{table_id}/columns/{column_id}",
-                          "POST /v3/contacts/tables/{table_id}/columns/{column_id}/run"
-                        ],
-                        "icon": "address-book"
-                      },
-                      {
-                        "group": "Company Tables",
-                        "pages": [
-                          "POST /v3/companies/tables",
-                          "POST /v3/companies/tables/list",
-                          "GET /v3/companies/tables/{table_id}",
-                          "PATCH /v3/companies/tables/{table_id}",
-                          "DELETE /v3/companies/tables/{table_id}",
-                          "GET /v3/companies/tables/{table_id}/entities",
-                          "POST /v3/companies/tables/{table_id}/entities",
-                          "DELETE /v3/companies/tables/{table_id}/entities",
-                          "GET /v3/companies/tables/{table_id}/columns",
-                          "DELETE /v3/companies/tables/{table_id}/columns/{column_id}",
-                          "POST /v3/companies/tables/{table_id}/columns/{column_id}/run"
-                        ],
-                        "icon": "building"
-                      }
-                    ],
-                    "icon": "table"
-                  },
-                  {
-                    "group": "Filters",
-                    "pages": [
-                      "GET /v3/contacts/prospecting/filters",
-                      "GET /v3/contacts/prospecting/filters/{filterType}",
-                      "GET /v3/companies/prospecting/filters",
-                      "GET /v3/companies/prospecting/filters/{filterType}"
-                    ],
-                    "icon": "filter"
-                  },
-                  {
-                    "group": "Lookalikes",
-                    "pages": [
-                      "POST /v3/contacts/lookalike",
-                      "POST /v3/companies/lookalike"
-                    ],
-                    "icon": "users"
-                  },
-                  {
-                    "group": "Signals",
-                    "pages": [
-                      "POST /v3/contacts/signals",
-                      "GET /v3/contacts/signals/types",
-                      "POST /v3/companies/signals",
-                      "GET /v3/companies/signals/filters",
-                      "GET /v3/companies/signals/filters/{filterType}",
-                      "GET /v3/companies/signals/types"
-                    ],
-                    "icon": "bolt"
-                  },
-                  {
-                    "group": "Decision Makers",
-                    "pages": [
-                      "POST /v3/contacts/decision-makers"
-                    ],
-                    "icon": "user-tie"
-                  },
-                  {
-                    "group": "Website Visits",
-                    "pages": [
-                      "POST /v3/companies/website-visits"
-                    ],
-                    "icon": "globe"
-                  },
-                  {
-                    "group": "Webhooks",
-                    "pages": [
-                      "POST /api/subscriptions",
-                      "GET /api/subscriptions",
-                      "GET /api/subscriptions/{id}",
-                      "PATCH /api/subscriptions/{id}",
-                      "POST /api/subscriptions/delete",
-                      "POST /api/subscriptions/{id}/test",
-                      "POST /api/subscriptions/opt-out",
-                      "GET /api/audit-logs",
-                      "GET /api/audit-logs/stats",
-                      "GET /api/account/secret",
-                      "POST /api/account/secret/regenerate"
-                    ],
-                    "icon": "webhook"
-                  },
-                  {
-                    "group": "Account",
-                    "pages": [
-                      "GET /v3/account/usage"
-                    ],
-                    "icon": "chart-bar"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "version": "V2 (Legacy)",
-            "tag": "Deprecated",
-            "openapi": "v2/openapi.json",
-            "groups": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "v2/introduction",
-                  "v2/authentication",
-                  "v2/rate-limiting",
-                  "v2/error-codes",
-                  "v2/api-reference/overview"
-                ],
-                "icon": "compass"
-              },
-              {
-                "group": "Credits & Plans",
-                "pages": [
-                  "v2/credits/overview",
-                  "v2/credits/costs",
-                  "v2/credits/unified-credits"
-                ],
-                "icon": "credit-card"
-              },
-              {
-                "group": "Guides",
-                "pages": [
-                  {
-                    "group": "Enrichment",
-                    "pages": [
-                      "v2/enrichment/overview",
-                      "v2/enrichment/single-contact",
-                      "v2/enrichment/single-company",
-                      "v2/enrichment/bulk-contacts",
-                      "v2/enrichment/bulk-companies"
-                    ],
-                    "icon": "address-book"
-                  },
-                  {
-                    "group": "Prospecting",
-                    "pages": [
-                      "v2/prospecting/overview",
-                      "v2/prospecting/search-contacts",
-                      "v2/prospecting/enrich-contacts",
-                      "v2/prospecting/search-companies",
-                      "v2/prospecting/enrich-companies"
-                    ],
-                    "icon": "magnifying-glass"
-                  },
-                  {
-                    "group": "Filters",
-                    "pages": [
-                      "v2/filters/contact-filters",
-                      "v2/filters/company-filters"
-                    ],
-                    "icon": "filter"
-                  },
-                  {
-                    "group": "Lookalikes",
-                    "pages": [
-                      "v2/lookalikes/overview",
-                      "v2/lookalikes/contact-lookalikes",
-                      "v2/lookalikes/company-lookalikes"
-                    ],
-                    "icon": "users"
-                  },
-                  {
-                    "group": "Signals",
-                    "pages": [
-                      "v2/signals/overview",
-                      "v2/signals/contact-signals",
-                      "v2/signals/company-signals"
-                    ],
-                    "icon": "bolt"
-                  },
-                  {
-                    "group": "Webhooks",
-                    "pages": [
-                      "v2/webhooks/overview",
-                      "v2/webhooks/manage-subscriptions",
-                      "v2/webhooks/security",
-                      "v2/webhooks/audit-logs"
-                    ],
-                    "icon": "webhook"
-                  }
-                ],
-                "icon": "book-open"
-              },
-              {
-                "group": "Endpoints",
-                "icon": "server",
-                "pages": [
-                  {
-                    "group": "Enrichment",
-                    "pages": [
-                      "GET /v2/person",
-                      "POST /v2/person",
-                      "GET /v2/company",
-                      "POST /bulk/company/v2"
-                    ],
-                    "icon": "address-book"
-                  },
-                  {
-                    "group": "Prospecting",
-                    "pages": [
-                      "POST /prospecting/contact/search",
-                      "POST /prospecting/contact/enrich",
-                      "POST /prospecting/company/search",
-                      "POST /prospecting/company/enrich"
-                    ],
-                    "icon": "magnifying-glass"
-                  },
-                  {
-                    "group": "Filters",
-                    "pages": [
-                      {
-                        "group": "Contact Filters",
-                        "pages": [
-                          "GET /prospecting/filters/contacts/all_countries",
-                          "GET /prospecting/filters/contacts/departments",
-                          "GET /prospecting/filters/contacts/existing_data_points",
-                          "POST /prospecting/filters/contacts/locations",
-                          "GET /prospecting/filters/contacts/seniority"
-                        ],
-                        "icon": "user-check"
-                      },
-                      {
-                        "group": "Company Filters",
-                        "pages": [
-                          "GET /prospecting/filters/companies/industries_labels",
-                          "GET /prospecting/filters/companies/intent_topics",
-                          "POST /prospecting/filters/companies/locations",
-                          "GET /prospecting/filters/companies/naics",
-                          "POST /prospecting/filters/companies/names",
-                          "GET /prospecting/filters/companies/revenues",
-                          "GET /prospecting/filters/companies/sics",
-                          "GET /prospecting/filters/companies/sizes",
-                          "POST /prospecting/filters/companies/technologies"
-                        ],
-                        "icon": "building"
-                      }
-                    ],
-                    "icon": "filter"
-                  },
-                  {
-                    "group": "Lookalikes",
-                    "pages": [
-                      "POST /v3/lookalike/contacts",
-                      "POST /v3/lookalike/companies"
-                    ],
-                    "icon": "users"
-                  },
-                  {
-                    "group": "Signals",
-                    "pages": [
-                      "POST /api/signals/contacts",
-                      "POST /api/signals/contacts/search",
-                      "POST /api/signals/companies",
-                      "POST /api/signals/companies/search",
-                      "GET /api/signals/filters/{objectType}"
-                    ],
-                    "icon": "bolt"
-                  },
-                  {
-                    "group": "Webhooks",
-                    "pages": [
-                      "POST /api/subscriptions",
-                      "GET /api/subscriptions",
-                      "GET /api/subscriptions/{id}",
-                      "PATCH /api/subscriptions/{id}",
-                      "POST /api/subscriptions/delete",
-                      "POST /api/subscriptions/{id}/test",
-                      "GET /api/audit-logs",
-                      "GET /api/audit-logs/stats",
-                      "GET /api/account/secret",
-                      "POST /api/account/secret/regenerate"
-                    ],
-                    "icon": "webhook"
-                  },
-                  {
-                    "group": "Account",
-                    "pages": [
-                      "GET /account/usage"
-                    ],
-                    "icon": "chart-bar"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Data Catalog",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "data-catalog/overview"
-            ]
-          },
-          {
-            "group": "Contact Data",
-            "pages": [
-              "data-catalog/contact-identity",
-              "data-catalog/contact-emails",
-              "data-catalog/contact-phones",
-              "data-catalog/contact-employment"
-            ]
-          },
-          {
-            "group": "Company Data",
-            "pages": [
-              "data-catalog/company-firmographics",
-              "data-catalog/company-technologies",
-              "data-catalog/company-funding"
-            ]
-          },
-          {
-            "group": "Signals",
-            "pages": [
-              "data-catalog/signal-types"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "MCP",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "mcp/overview",
-              "mcp/setup"
-            ]
-          },
-          {
-            "group": "Reference",
-            "pages": [
-              "mcp/tools",
-              "mcp/examples"
             ]
           }
         ]
