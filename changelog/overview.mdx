@@ -37,18 +37,18 @@ All notable changes to the Lusha API and MCP are documented here. We follow sema
 
 **Added**
 
-**Waterfall Reveal on Enrich Contacts** — Added optional `waterfallReveal` field to `POST /v3/contacts/enrich`. When Lusha's own data has no match for a field, the request falls through to your enabled third-party providers to try to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
+**Waterfall Reveal on Enrich Contacts** — Added optional `waterfallEnabled` field to `POST /v3/contacts/enrich`. When Lusha's own data has no match for a field, the request falls through to your enabled third-party providers to try to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
 
-- Pass `waterfallReveal` alongside `reveal`, listing the fields (`emails`, `phones`) you want covered by the waterfall
-- `reveal` still controls which fields come back; `waterfallReveal` is the subset of those fields allowed to fall through to third-party providers
-- Requires Data Waterfall enabled on your account, with specific providers turned on, under **Account > Waterfall** in the Lusha dashboard. If waterfall is off, or no providers are enabled, `waterfallReveal` has no additional effect beyond `reveal`
-- Lusha determines the provider query order — it isn't caller-configurable
+- If Data Waterfall is enabled on your account, with specific providers turned on under **Account > Waterfall**, the waterfall runs automatically on every Enrich Contacts call — no need to pass anything to trigger it
+- Pass `waterfallEnabled: false` to opt a specific call out
+- `reveal` still controls which fields come back; `waterfallEnabled` only controls whether the fallback runs for this call at all
+- Provider order isn't configurable — Lusha manages that internally
 - Use of Data Waterfall is subject to Lusha's Supplementary Terms
 
 **Notes**
 
 - Billing: A field resolved via waterfall is charged at the enabled provider's own credit rate for that field — not a flat rate. Rates vary by provider (visible under Account > Waterfall) and can be higher than a standard Lusha-only reveal
-- `waterfallReveal` is fully opt-in and backward compatible; omitting it preserves existing single-provider behavior
+- `waterfallEnabled` defaults to `true` once Data Waterfall is turned on for your account; it's backward compatible — accounts without Data Waterfall enabled see no change in behavior
 
 **Removed**
 

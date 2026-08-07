@@ -412,7 +412,7 @@
           },
           {
             "version": "V2 (Legacy)",
-            "tag": "Deprecated",
+            "tag": "Soon to be deprecated",
             "openapi": "v2/openapi.json",
             "groups": [
               {

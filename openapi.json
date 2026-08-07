@@ -10,7 +10,7 @@
       "name": "Proprietary",
       "url": "https://lusha.com/legal/terms"
     },
-    "description": "<blockquote class=\"callout\">\n\n **This is the Lusha API V3 documentation.** \n \n V3 introduces a new search-then-enrich pattern, bulk operations, AI-powered lookalikes, and richer filter capabilities. All endpoints are under `https://api.lusha.com/v3/`.\n\n  For more information on V3, refer to the [Migration Guide](/tutorials/v3-migration-guide).\n\n</blockquote>\n\n  --- \n\nLusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. Built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.\n\nUse the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.\n\n> All API requests must be made over **HTTPS**. All responses are returned in **JSON** format.\n\n--- \n## Available Endpoints\n\n| Category | Description |\n|---|---|\n| [**Search**](#tag/Search) | Find contacts or companies using known identifiers |\n| [**Enrich**](#tag/Enrich) | Retrieve full profile data for contacts or companies by ID |\n| [**Search & Enrich**](#tag/Search-and-Enrich) | Find and retrieve full contact or company data in a single call |\n| [**Prospecting**](#tag/Prospecting) | Filter-based search across contacts and companies |\n| [**Lookalikes**](#tag/Lookalikes) | AI-powered recommendations for similar contacts and companies |\n| [**Contacts Tables**](#tag/Contacts-Tables) | Persist, organize, and enrich contacts in reusable tables |\n| [**Companies Tables**](#tag/Companies-Tables) | Persist, organize, and enrich companies in reusable tables |\n| [**Signals**](#tag/Signals) | Real-world activity data for contacts and companies |\n| [**Decision Makers**](#tag/Decision-Makers) | Find the most relevant decision makers across your target accounts |\n| [**Website Visitors**](#tag/Website-Visits) | Companies ranked by website-visit signals for your tracked domains |\n| [**Filters**](#tag/Filters) | Discover valid filter values for prospecting |\n| [**Webhooks**](#tag/Webhooks) | Real-time signal notifications via HTTP callbacks |\n| [**Account**](#tag/Account) | Usage, credits, rate limits, and pricing |\n\n<blockquote class=\"callout\">\n\n **`BETA` Waterfall Reveal for Contact Enrichment.**\n\n Enrich Contacts now supports `waterfallReveal`. Fall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts. This feature is currently in limited beta and isn't available to all accounts yet. **Contact [support@lusha.com](mailto:support@lusha.com)** to request access. [See Enrich Contacts](#operation/enrichContacts).\n\n</blockquote>\n\n---\n\n## Data Source and Privacy\n\n**Lusha is a search platform.** The data provided is not created or directly managed by Lusha. It is sourced from publicly available information and trusted business partners.\n\nFor more details on how we collect and handle data, see our [Privacy Policy](https://lusha.com/legal/privacy-notice/).\n\n---\n\n## Authentication\n\nAll API requests require an **API key** linked to your Lusha account and plan. Pass your key in the `api_key` request header on every call.\n\n> Generate and manage your API key in the [Lusha dashboard](https://dashboard.lusha.com/enrich/api).\n\nStore your API key securely and use it only in **server-side environments**.\n\n---\n\n## Rate Limiting\n\nLusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan.\n\nRate limits for the **Credit Usage API** differ from standard endpoint limits.\n\n> **Note:** To check your current plan's limits, visit the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.\n\n**Rate Limit Response Headers**\n\n| Header | Description |\n|--------|-------------|\n| `x-rate-limit-daily` | Total requests allowed per day |\n| `x-daily-requests-left` | Requests remaining in your daily quota |\n| `x-daily-usage` | Requests made in the current daily period |\n| `x-rate-limit-hourly` | Total requests allowed per hour |\n| `x-hourly-requests-left` | Requests remaining in your hourly quota |\n| `x-hourly-usage` | Requests made in the current hourly period |\n| `x-rate-limit-minute` | Total requests allowed per minute |\n| `x-minute-requests-left` | Requests remaining in the current minute window |\n| `x-minute-usage` | Requests made in the current minute window |\n\n---\n## Error Codes\n\nLusha uses standard HTTP status codes to indicate the result of each request.\n\n| Code | Name | Description |\n|------|------|-------------|\n| `200` | OK | Request was successful |\n| `400` | Bad Request | Request is malformed or missing required fields |\n| `401` | Unauthorized | API key is missing or invalid |\n| `402` | Payment Required | Insufficient credits or payment needed |\n| `403` | Forbidden | Account is inactive. Contact support@lusha.com |\n| `404` | Not Found | Endpoint or resource does not exist |\n| `429` | Too Many Requests | Rate limit or daily quota exceeded |\n| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |\n| `499` | Client Closed Request | Request timed out before completing |\n| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |\n\n**Error Response Format**\n\n```json\n{\n  \"statusCode\": 400,\n  \"message\": \"Invalid request parameters\"\n}\n```\n\n**Tables-specific error codes**\n\n| Code | Status | Meaning |\n|---|---|---|\n| `TABLE_NOT_FOUND` | 404 | The `table_id` does not exist or is not accessible to this account |\n| `COLUMN_NOT_FOUND` | 404 | The `column_id` does not exist on the given table |\n| `TABLE_NAME_CONFLICT` | 409 | A table with this name already exists |\n\nTables error bodies use the shape `{ \"message\": \"...\", \"code\": <status>, ... }` rather than the `statusCode`/`errors` shape used elsewhere in this doc.\n\n**Limits:** up to 500 entity IDs per add/remove call · max 50,000 entities per table · max 500 tables per account · `page` 0–100 · `size` default 100.\n\n**Tips for Handling Errors**\n\n- Verify your API key is correct and active\n- Read the `message` field for specific troubleshooting details\n- For `429` errors, wait before retrying\n- For `5XX` errors, use exponential backoff before retrying\n",
+    "description": "<blockquote class=\"callout\">\n\n **This is the Lusha API V3 documentation.** \n \n V3 introduces a new search-then-enrich pattern, bulk operations, AI-powered lookalikes, and richer filter capabilities. All endpoints are under `https://api.lusha.com/v3/`.\n\n  For more information on V3, refer to the [Migration Guide](/tutorials/v3-migration-guide).\n\n</blockquote>\n\n  --- \n\nLusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. Built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.\n\nUse the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.\n\n> All API requests must be made over **HTTPS**. All responses are returned in **JSON** format.\n\n--- \n## Available Endpoints\n\n| Category | Description |\n|---|---|\n| [**Search**](#tag/Search) | Find contacts or companies using known identifiers |\n| [**Enrich**](#tag/Enrich) | Retrieve full profile data for contacts or companies by ID |\n| [**Search & Enrich**](#tag/Search-and-Enrich) | Find and retrieve full contact or company data in a single call |\n| [**Prospecting**](#tag/Prospecting) | Filter-based search across contacts and companies |\n| [**Lookalikes**](#tag/Lookalikes) | AI-powered recommendations for similar contacts and companies |\n| [**Contacts Tables**](#tag/Contacts-Tables) | Persist, organize, and enrich contacts in reusable tables |\n| [**Companies Tables**](#tag/Companies-Tables) | Persist, organize, and enrich companies in reusable tables |\n| [**Signals**](#tag/Signals) | Real-world activity data for contacts and companies |\n| [**Decision Makers**](#tag/Decision-Makers) | Find the most relevant decision makers across your target accounts |\n| [**Website Visitors**](#tag/Website-Visits) | Companies ranked by website-visit signals for your tracked domains |\n| [**Filters**](#tag/Filters) | Discover valid filter values for prospecting |\n| [**Webhooks**](#tag/Webhooks) | Real-time signal notifications via HTTP callbacks |\n| [**Account**](#tag/Account) | Usage, credits, rate limits, and pricing |\n\n<blockquote class=\"callout\">\n\n **`BETA` Waterfall Reveal for Contact Enrichment.**\n\n Enrich Contacts now supports `waterfallEnabled`. Fall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts. On by default once your account has it turned on - pass `waterfallEnabled: false` to opt a specific call out. This feature is currently in limited beta and isn't available to all accounts yet. **Contact [support@lusha.com](mailto:support@lusha.com)** to request access. [See Enrich Contacts](#operation/enrichContacts).\n\n</blockquote>\n\n---\n\n## Data Source and Privacy\n\n**Lusha is a search platform.** The data provided is not created or directly managed by Lusha. It is sourced from publicly available information and trusted business partners.\n\nFor more details on how we collect and handle data, see our [Privacy Policy](https://lusha.com/legal/privacy-notice/).\n\n---\n\n## Authentication\n\nAll API requests require an **API key** linked to your Lusha account and plan. Pass your key in the `api_key` request header on every call.\n\n> Generate and manage your API key in the [Lusha dashboard](https://dashboard.lusha.com/enrich/api).\n\nStore your API key securely and use it only in **server-side environments**.\n\n---\n\n## Rate Limiting\n\nLusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan.\n\nRate limits for the **Credit Usage API** differ from standard endpoint limits.\n\n> **Note:** To check your current plan's limits, visit the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.\n\n**Rate Limit Response Headers**\n\n| Header | Description |\n|--------|-------------|\n| `x-rate-limit-daily` | Total requests allowed per day |\n| `x-daily-requests-left` | Requests remaining in your daily quota |\n| `x-daily-usage` | Requests made in the current daily period |\n| `x-rate-limit-hourly` | Total requests allowed per hour |\n| `x-hourly-requests-left` | Requests remaining in your hourly quota |\n| `x-hourly-usage` | Requests made in the current hourly period |\n| `x-rate-limit-minute` | Total requests allowed per minute |\n| `x-minute-requests-left` | Requests remaining in the current minute window |\n| `x-minute-usage` | Requests made in the current minute window |\n\n---\n## Error Codes\n\nLusha uses standard HTTP status codes to indicate the result of each request.\n\n| Code | Name | Description |\n|------|------|-------------|\n| `200` | OK | Request was successful |\n| `400` | Bad Request | Request is malformed or missing required fields |\n| `401` | Unauthorized | API key is missing or invalid |\n| `402` | Payment Required | Insufficient credits or payment needed |\n| `403` | Forbidden | Account is inactive. Contact support@lusha.com |\n| `404` | Not Found | Endpoint or resource does not exist |\n| `429` | Too Many Requests | Rate limit or daily quota exceeded |\n| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |\n| `499` | Client Closed Request | Request timed out before completing |\n| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |\n\n**Error Response Format**\n\n```json\n{\n  \"statusCode\": 400,\n  \"message\": \"Invalid request parameters\"\n}\n```\n\n**Tables-specific error codes**\n\n| Code | Status | Meaning |\n|---|---|---|\n| `TABLE_NOT_FOUND` | 404 | The `table_id` does not exist or is not accessible to this account |\n| `COLUMN_NOT_FOUND` | 404 | The `column_id` does not exist on the given table |\n| `TABLE_NAME_CONFLICT` | 409 | A table with this name already exists |\n\nTables error bodies use the shape `{ \"message\": \"...\", \"code\": <status>, ... }` rather than the `statusCode`/`errors` shape used elsewhere in this doc.\n\n**Limits:** up to 500 entity IDs per add/remove call \u00b7 max 50,000 entities per table \u00b7 max 500 tables per account \u00b7 `page` 0\u2013100 \u00b7 `size` default 100.\n\n**Tips for Handling Errors**\n\n- Verify your API key is correct and active\n- Read the `message` field for specific troubleshooting details\n- For `429` errors, wait before retrying\n- For `5XX` errors, use exponential backoff before retrying\n",
     "contact": {
       "name": "Lusha Support",
       "url": "https://api.lusha.com",
@@ -46,7 +46,7 @@
     },
     {
       "name": "Search & Enrich",
-      "description": "**Search & Enrich APIs:** Find and retrieve full contact or company data in a single call.\n\nCombines Search and Enrich into one request. Provide identifiers and control what gets revealed via the `reveal` field.\n\n> **Billing:** Two charges apply — one for the search (`api_search`) and one per revealed field.\n",
+      "description": "**Search & Enrich APIs:** Find and retrieve full contact or company data in a single call.\n\nCombines Search and Enrich into one request. Provide identifiers and control what gets revealed via the `reveal` field.\n\n> **Billing:** Two charges apply \u2014 one for the search (`api_search`) and one per revealed field.\n",
       "x-tag-expanded": true
     },
     {
@@ -61,12 +61,12 @@
     },
     {
       "name": "Contacts Tables",
-      "description": "**Contacts Tables API:** Create and manage persistent tables of contacts inside Lusha.\n\nTables are spreadsheets with configurable columns — default Lusha fields, enrichment data, Signals, AI insights, premium data points, CRM fields, and custom fields. Populate a table directly through the endpoints below, or pass `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to persist those results automatically.\n\nEvery surface that touches table data — this API, MCP, and the Workspace UI — reads and writes the same underlying data. Changes made through one surface are reflected on the others.\n\n**Working with tables:**\n- **Tables** — create, list, get status, update (rename/archive/visibility), delete\n- **Entities** — add, remove, or read the rows in a table\n- **Columns** — list, remove, or run a column across a table's rows\n\n**Owner resolution:** `owner.email` resolves to a user on your account and determines table ownership. **Required on every call when authenticating with an API key** — omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token. Sent in the body as `owner: { email }` on `POST`/`PATCH` calls (and on `DELETE .../entities`, which carries a body); sent as a `?email=` query parameter on other `GET`/`DELETE` calls, which have no body.\n\n**Billing:**\n- Adding contacts to a table is free.\n- Reading entities (`GET .../entities`) charges per row returned.\n- Create / List / Get / Update / Delete / List Columns / Remove Column / Remove Entities are free.\n- Running a column charges per row per the column's tier (contact enrichment per row with data; signal/AI/score per row per run).\n- Non-public-API-plan accounts always resolve to `0` credits charged.\n\n**Limits:** up to 500 entity IDs per add/remove call · max 50,000 entities per table · max 500 tables per account.\n\nSee also: [Companies Tables](#tag/Companies-Tables).\n",
+      "description": "**Contacts Tables API:** Create and manage persistent tables of contacts inside Lusha.\n\nTables are spreadsheets with configurable columns \u2014 default Lusha fields, enrichment data, Signals, AI insights, premium data points, CRM fields, and custom fields. Populate a table directly through the endpoints below, or pass `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to persist those results automatically.\n\nEvery surface that touches table data \u2014 this API, MCP, and the Workspace UI \u2014 reads and writes the same underlying data. Changes made through one surface are reflected on the others.\n\n**Working with tables:**\n- **Tables** \u2014 create, list, get status, update (rename/archive/visibility), delete\n- **Entities** \u2014 add, remove, or read the rows in a table\n- **Columns** \u2014 list, remove, or run a column across a table's rows\n\n**Owner resolution:** `owner.email` resolves to a user on your account and determines table ownership. **Required on every call when authenticating with an API key** \u2014 omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token. Sent in the body as `owner: { email }` on `POST`/`PATCH` calls (and on `DELETE .../entities`, which carries a body); sent as a `?email=` query parameter on other `GET`/`DELETE` calls, which have no body.\n\n**Billing:**\n- Adding contacts to a table is free.\n- Reading entities (`GET .../entities`) charges per row returned.\n- Create / List / Get / Update / Delete / List Columns / Remove Column / Remove Entities are free.\n- Running a column charges per row per the column's tier (contact enrichment per row with data; signal/AI/score per row per run).\n- Non-public-API-plan accounts always resolve to `0` credits charged.\n\n**Limits:** up to 500 entity IDs per add/remove call \u00b7 max 50,000 entities per table \u00b7 max 500 tables per account.\n\nSee also: [Companies Tables](#tag/Companies-Tables).\n",
       "x-tag-expanded": true
     },
     {
       "name": "Companies Tables",
-      "description": "**Companies Tables API:** Create and manage persistent tables of companies inside Lusha.\n\nTables are spreadsheets with configurable columns — default Lusha fields, enrichment data, Signals, AI insights, premium data points, CRM fields, and custom fields. Populate a table directly through the endpoints below, or pass `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to persist those results automatically.\n\nEvery surface that touches table data — this API, MCP, and the Workspace UI — reads and writes the same underlying data. Changes made through one surface are reflected on the others.\n\n**Working with tables:**\n- **Tables** — create, list, get status, update (rename/archive/visibility), delete\n- **Entities** — add, remove, or read the rows in a table\n- **Columns** — list, remove, or run a column across a table's rows\n\n**Owner resolution:** `owner.email` resolves to a user on your account and determines table ownership. **Required on every call when authenticating with an API key** — omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token. Sent in the body as `owner: { email }` on `POST`/`PATCH` calls (and on `DELETE .../entities`, which carries a body); sent as a `?email=` query parameter on other `GET`/`DELETE` calls, which have no body.\n\n**Billing:**\n- Adding companies to a table charges `reveal_company` per **newly added** company, deduped so duplicates and already-present companies aren't charged again.\n- Reading entities (`GET .../entities`) charges per row returned.\n- Create / List / Get / Update / Delete / List Columns / Remove Column / Remove Entities are free.\n- Running a column charges per row per the column's tier (company enrichment once per company per table — re-runs on an already-paid company are free; signal/AI/score per row per run).\n- Non-public-API-plan accounts always resolve to `0` credits charged.\n\n**Limits:** up to 500 entity IDs per add/remove call · max 50,000 entities per table · max 500 tables per account.\n\nSee also: [Contacts Tables](#tag/Contacts-Tables).\n",
+      "description": "**Companies Tables API:** Create and manage persistent tables of companies inside Lusha.\n\nTables are spreadsheets with configurable columns \u2014 default Lusha fields, enrichment data, Signals, AI insights, premium data points, CRM fields, and custom fields. Populate a table directly through the endpoints below, or pass `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to persist those results automatically.\n\nEvery surface that touches table data \u2014 this API, MCP, and the Workspace UI \u2014 reads and writes the same underlying data. Changes made through one surface are reflected on the others.\n\n**Working with tables:**\n- **Tables** \u2014 create, list, get status, update (rename/archive/visibility), delete\n- **Entities** \u2014 add, remove, or read the rows in a table\n- **Columns** \u2014 list, remove, or run a column across a table's rows\n\n**Owner resolution:** `owner.email` resolves to a user on your account and determines table ownership. **Required on every call when authenticating with an API key** \u2014 omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token. Sent in the body as `owner: { email }` on `POST`/`PATCH` calls (and on `DELETE .../entities`, which carries a body); sent as a `?email=` query parameter on other `GET`/`DELETE` calls, which have no body.\n\n**Billing:**\n- Adding companies to a table charges `reveal_company` per **newly added** company, deduped so duplicates and already-present companies aren't charged again.\n- Reading entities (`GET .../entities`) charges per row returned.\n- Create / List / Get / Update / Delete / List Columns / Remove Column / Remove Entities are free.\n- Running a column charges per row per the column's tier (company enrichment once per company per table \u2014 re-runs on an already-paid company are free; signal/AI/score per row per run).\n- Non-public-API-plan accounts always resolve to `0` credits charged.\n\n**Limits:** up to 500 entity IDs per add/remove call \u00b7 max 50,000 entities per table \u00b7 max 500 tables per account.\n\nSee also: [Contacts Tables](#tag/Contacts-Tables).\n",
       "x-tag-expanded": true
     },
     {
@@ -76,7 +76,7 @@
     },
     {
       "name": "Decision Makers",
-      "description": "Supply companies by domain or Lusha ID and get back the most relevant decision makers per company, ranked by fit. Results are free contact previews — pass the returned id values to Enrich Contacts to reveal emails and phones. \n",
+      "description": "Supply companies by domain or Lusha ID and get back the most relevant decision makers per company, ranked by fit. Results are free contact previews \u2014 pass the returned id values to Enrich Contacts to reveal emails and phones. \n",
       "x-tag-expanded": true
     },
     {
@@ -108,7 +108,7 @@
         ],
         "summary": "Search Contacts",
         "operationId": "searchContacts",
-        "description": "Look up contacts by identifier. Returns a non-PII preview of each profile — no emails or phone numbers.\n\n**Accepted identifiers (one required per contact):**\n- Lusha contact `id`\n- `linkedinUrl`\n- `email`\n- `firstName` + `lastName` + `companyName` or `companyDomain`\n\nUp to 100 contacts per request. Each result includes:\n- `has` — data points available on this profile\n- `canReveal` — what you can unlock via Enrich Contacts, and the credit cost\n\nPass a `signals` filter to narrow results to contacts with recent activity (e.g. promotion, job change).\n\n> **Billing:** Charged per successful result via the `api_search` action.\n",
+        "description": "Look up contacts by identifier. Returns a non-PII preview of each profile \u2014 no emails or phone numbers.\n\n**Accepted identifiers (one required per contact):**\n- Lusha contact `id`\n- `linkedinUrl`\n- `email`\n- `firstName` + `lastName` + `companyName` or `companyDomain`\n\nUp to 100 contacts per request. Each result includes:\n- `has` \u2014 data points available on this profile\n- `canReveal` \u2014 what you can unlock via Enrich Contacts, and the credit cost\n\nPass a `signals` filter to narrow results to contacts with recent activity (e.g. promotion, job change).\n\n> **Billing:** Charged per successful result via the `api_search` action.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -317,7 +317,7 @@
         ],
         "summary": "Enrich Contacts",
         "operationId": "enrichContacts",
-        "description": "Reveal full contact data for contacts you've already found via Search Contacts.\n\nPass up to 100 contact `ids` (from the search response). Use the `reveal` field to control what gets unlocked:\n- `emails` — work and personal email addresses\n- `phones` — mobile and direct phone numbers\n- Omit `reveal` to get both by default\n\n---\n\n###   **BETA** Waterfall Reveal\nFall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts.\n\nPass `waterfallReveal` with the fields (`emails`, `phones`) you want covered by the waterfall, alongside `reveal`:\n\n```json\n        \"reveal\": [\"emails\", \"phones\"],\n        \"waterfallReveal\": [\"emails\", \"phones\"]\n```\n\n- `reveal` controls **which fields** come back.\n- `waterfallReveal` is the subset of those fields allowed to fall through to third-party providers.\n- Requires **Data Waterfall** enabled on your account, with specific providers turned on, under **Account > Waterfall**. If waterfall is off or no providers are enabled, `waterfallReveal` has no additional effect beyond `reveal`.\n- Use of Data Waterfall is subject to Lusha's Supplementary Terms.\n- **This feature is in limited beta and not yet available on all accounts.** Contact **support@lusha.com** to request access.\n\n---\n> **Tip:** If `canReveal.credits` is `0` in the search response, that data has already been revealed for your account — re-enriching it is free.\n\n> **Billing:** Charged per revealed field (email or phone) via per-datapoint pricing.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Work email / Phone columns. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Reveal full contact data for contacts you've already found via Search Contacts.\n\nPass up to 100 contact `ids` (from the search response). Use the `reveal` field to control what gets unlocked:\n- `emails` \u2014 work and personal email addresses\n- `phones` \u2014 mobile and direct phone numbers\n- Omit `reveal` to get both by default\n\n---\n\n###   **BETA** Waterfall Reveal\nFall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts.\n\nIf **Data Waterfall** is enabled on your account, with specific providers turned on under **Account > Waterfall**, the waterfall runs automatically on every Enrich Contacts call - you don't need to pass anything to trigger it.\n\nPass `waterfallEnabled: false` to opt a specific call out:\n\n```json\n        \"reveal\": [\"emails\", \"phones\"],\n        \"waterfallEnabled\": false\n```\n\n- `reveal` controls **which fields** come back.\n- `waterfallEnabled` controls whether the waterfall runs for this call at all. Defaults to `true` whenever Data Waterfall is enabled on your account; pass `false` to disable it just for this call.\n- Provider order isn't configurable - Lusha manages that internally.\n- If Data Waterfall is off or no providers are enabled on your account, `waterfallEnabled` has no effect either way.\n- **This feature is in limited beta and not yet available on all accounts.** Contact **support@lusha.com** to request access.\n\n---\n> **Tip:** If `canReveal.credits` is `0` in the search response, that data has already been revealed for your account \u2014 re-enriching it is free.\n\n> **Billing:** Charged per revealed field (email or phone) via per-datapoint pricing.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Work email / Phone columns. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -327,7 +327,7 @@
               },
               "examples": {
                 "standard": {
-                  "summary": "Standard reveal",
+                  "summary": "Standard reveal (waterfall runs automatically if enabled on your account)",
                   "value": {
                     "ids": [
                       "4389064654",
@@ -339,8 +339,8 @@
                     ]
                   }
                 },
-                "waterfall": {
-                  "summary": "Waterfall reveal (new)",
+                "waterfallDisabled": {
+                  "summary": "Opt this call out of the waterfall",
                   "value": {
                     "ids": [
                       "4389064654",
@@ -350,10 +350,7 @@
                       "emails",
                       "phones"
                     ],
-                    "waterfallReveal": [
-                      "emails",
-                      "phones"
-                    ]
+                    "waterfallEnabled": false
                   }
                 }
               }
@@ -450,7 +447,7 @@
         ],
         "summary": "Search and Enrich Contacts",
         "operationId": "searchAndEnrichContacts",
-        "description": "Find contacts and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide contact identifiers the same way you would for Search Contacts. Use the `reveal` field to control what gets unlocked (`emails`, `phones`, or both).\n\nUp to 100 contacts per request.\n\n> **Billing:** Two charges apply — one for the search (`api_search`) and one per revealed field. The `billing.creditsCharged` in the response reflects the total.\n",
+        "description": "Find contacts and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide contact identifiers the same way you would for Search Contacts. Use the `reveal` field to control what gets unlocked (`emails`, `phones`, or both).\n\nUp to 100 contacts per request.\n\n> **Billing:** Two charges apply \u2014 one for the search (`api_search`) and one per revealed field. The `billing.creditsCharged` in the response reflects the total.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -795,7 +792,7 @@
                       "alternativeDomains": [
                         "lusha.com"
                       ],
-                      "description": "Lusha is the leader in Sales Streaming – a new sales paradigm that streams top leads straight to salespeople and handles all the outreach, so they can escape the lead grind and just sell.",
+                      "description": "Lusha is the leader in Sales Streaming \u2013 a new sales paradigm that streams top leads straight to salespeople and handles all the outreach, so they can escape the lead grind and just sell.",
                       "companyType": "Private Company",
                       "yearFounded": 2016,
                       "employeeCount": {
@@ -1057,7 +1054,7 @@
                       "alternativeDomains": [
                         "salesforce.com"
                       ],
-                      "description": "We're the #1 AI CRM—where humans with agents drive customer success together with AI, data, and Customer 360 apps on one platform.",
+                      "description": "We're the #1 AI CRM\u2014where humans with agents drive customer success together with AI, data, and Customer 360 apps on one platform.",
                       "companyType": "Public Company",
                       "employeeCount": {
                         "exact": 88711,
@@ -1289,7 +1286,7 @@
         ],
         "summary": "Search and Enrich Companies",
         "operationId": "searchAndEnrichCompanies",
-        "description": "Find companies and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide company identifiers the same way you would for Search Companies. Up to 100 companies per request.\n\n> **Billing:** Same as Enrich Companies — charged per successful result via the `reveal_company` action.\n",
+        "description": "Find companies and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide company identifiers the same way you would for Search Companies. Up to 100 companies per request.\n\n> **Billing:** Same as Enrich Companies \u2014 charged per successful result via the `reveal_company` action.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1335,7 +1332,7 @@
                       "alternativeDomains": [
                         "lusha.com"
                       ],
-                      "description": "Lusha is the leader in Sales Streaming – a new sales paradigm that streams top leads straight to salespeople and handles all the outreach, so they can escape the lead grind and just sell.",
+                      "description": "Lusha is the leader in Sales Streaming \u2013 a new sales paradigm that streams top leads straight to salespeople and handles all the outreach, so they can escape the lead grind and just sell.",
                       "companyType": "Private Company",
                       "yearFounded": 2016,
                       "employeeCount": {
@@ -1446,7 +1443,7 @@
                       "alternativeDomains": [
                         "salesforce.com"
                       ],
-                      "description": "We're the #1 AI CRM—where humans with agents drive customer success together with AI, data, and Customer 360 apps on one platform.",
+                      "description": "We're the #1 AI CRM\u2014where humans with agents drive customer success together with AI, data, and Customer 360 apps on one platform.",
                       "companyType": "Public Company",
                       "employeeCount": {
                         "exact": 88711,
@@ -1573,7 +1570,7 @@
         ],
         "summary": "Prospecting Contacts",
         "operationId": "prospectingContacts",
-        "description": "Search for contacts that match your Ideal Customer Profile using rich filter criteria.\n\n**Filter by contact attributes:**\n- Job title, seniority, department\n- Location (city, state, country, continent)\n- Existing data points (e.g. only contacts with a known work email)\n- Signal activity (promotion, job change)\n\n**Filter by company attributes:**\n- Size, revenue, industry, technologies\n- Location, intent topics, funding\n\nResults are paginated up to 50,000 total (1,000 pages × 50 results). Use the returned contact `id` values with Enrich Contacts to reveal emails and phones.\n\n> **Billing:** Charged per result via `api_search`. If signals are requested, an additional charge applies per matched signal per result.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. This is additive — the primary response is unchanged, and a `tableWrite` object is added showing what happened on the table side. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Search for contacts that match your Ideal Customer Profile using rich filter criteria.\n\n**Filter by contact attributes:**\n- Job title, seniority, department\n- Location (city, state, country, continent)\n- Existing data points (e.g. only contacts with a known work email)\n- Signal activity (promotion, job change)\n\n**Filter by company attributes:**\n- Size, revenue, industry, technologies\n- Location, intent topics, funding\n\nResults are paginated up to 50,000 total (1,000 pages \u00d7 50 results). Use the returned contact `id` values with Enrich Contacts to reveal emails and phones.\n\n> **Billing:** Charged per result via `api_search`. If signals are requested, an additional charge applies per matched signal per result.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. This is additive \u2014 the primary response is unchanged, and a `tableWrite` object is added showing what happened on the table side. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1710,7 +1707,7 @@
         ],
         "summary": "Prospecting Companies",
         "operationId": "prospectingCompanies",
-        "description": "Search for companies that match your target market using rich filter criteria.\n\n**Filter by:**\n- Size, revenue range, industry, sub-industry\n- Technologies in use\n- Locations (HQ country, state, city)\n- SIC and NAICS codes\n- Buyer intent topics\n- Signal activity (headcount changes, hiring surges, news events)\n\nResults are paginated up to 50,000 total. Use the returned company `id` values with Enrich Companies to get full firmographic data.\n\n> **Billing:** Charged per result via `api_search`. If signals are requested, an additional charge applies per matched signal per result.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. This is additive — the primary response is unchanged, and a `tableWrite` object is added showing what happened on the table side. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Search for companies that match your target market using rich filter criteria.\n\n**Filter by:**\n- Size, revenue range, industry, sub-industry\n- Technologies in use\n- Locations (HQ country, state, city)\n- SIC and NAICS codes\n- Buyer intent topics\n- Signal activity (headcount changes, hiring surges, news events)\n\nResults are paginated up to 50,000 total. Use the returned company `id` values with Enrich Companies to get full firmographic data.\n\n> **Billing:** Charged per result via `api_search`. If signals are requested, an additional charge applies per matched signal per result.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. This is additive \u2014 the primary response is unchanged, and a `tableWrite` object is added showing what happened on the table side. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1871,7 +1868,7 @@
         ],
         "summary": "Contact Lookalikes",
         "operationId": "getContactLookalikes",
-        "description": "Find contacts similar to a set of seed contacts using AI-powered recommendations.\n\nProvide 5-100 seed contacts via LinkedIn URLs, emails, Lusha IDs, or name + company. The API returns contacts who share similar roles, seniority, and company profiles.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` — the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific contacts (e.g. existing customers).\n\nResults are lightweight previews. Use Enrich Contacts with the returned `id` to get emails and phones.\n\n> **Billing:** Charged per result via the `lookalikeContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Find contacts similar to a set of seed contacts using AI-powered recommendations.\n\nProvide 5-100 seed contacts via LinkedIn URLs, emails, Lusha IDs, or name + company. The API returns contacts who share similar roles, seniority, and company profiles.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` \u2014 the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific contacts (e.g. existing customers).\n\nResults are lightweight previews. Use Enrich Contacts with the returned `id` to get emails and phones.\n\n> **Billing:** Charged per result via the `lookalikeContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1979,7 +1976,7 @@
         ],
         "summary": "Company Lookalikes",
         "operationId": "getCompanyLookalikes",
-        "description": "Find companies similar to a set of seed companies using AI-powered recommendations.\n\nProvide 5-100 seed companies via domains or LinkedIn URLs. The API returns companies with similar size, industry, and profile.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` — the server generates one and returns it. Pass it on every subsequent request to get more results without repeating companies already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific companies (e.g. existing customers or competitors).\n\nResults are lightweight previews. Use Enrich Companies with the returned `id` to get full firmographic data.\n\n> **Billing:** Charged per result via the `lookalikeCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Find companies similar to a set of seed companies using AI-powered recommendations.\n\nProvide 5-100 seed companies via domains or LinkedIn URLs. The API returns companies with similar size, industry, and profile.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` \u2014 the server generates one and returns it. Pass it on every subsequent request to get more results without repeating companies already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific companies (e.g. existing customers or competitors).\n\nResults are lightweight previews. Use Enrich Companies with the returned `id` to get full firmographic data.\n\n> **Billing:** Charged per result via the `lookalikeCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -2226,7 +2223,7 @@
         ],
         "summary": "Update Contacts Table",
         "operationId": "updateContactsTable",
-        "description": "Rename a table, change its visibility, or reassign its owner. All fields except `owner` are optional — send only what changes.\n\n> **Billing:** Free.\n",
+        "description": "Rename a table, change its visibility, or reassign its owner. All fields except `owner` are optional \u2014 send only what changes.\n\n> **Billing:** Free.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -2383,7 +2380,7 @@
         ],
         "summary": "Add Entities to Contacts Table",
         "operationId": "addContactsTableEntities",
-        "description": "Add up to 500 contact IDs to an existing table. `entityIds` accepts either the encrypted Lusha token (`v{N}.…`, as returned by Search/Enrich/Get Entities) or the legacy numeric `personId` — an ID that's neither returns `400`. Already-present IDs are reported as `alreadyPresent` and not re-added; unresolvable IDs are not an error, they come back in `invalidIds` with a `200`.\n\nOptionally pass `companyIds` — one `lushaCompanyId` per contact, index-aligned with `entityIds` — to help pair company-level enrichment to the right company for each contact.\n\n> **Billing:** Free.\n",
+        "description": "Add up to 500 contact IDs to an existing table. `entityIds` accepts either the encrypted Lusha token (`v{N}.\u2026`, as returned by Search/Enrich/Get Entities) or the legacy numeric `personId` \u2014 an ID that's neither returns `400`. Already-present IDs are reported as `alreadyPresent` and not re-added; unresolvable IDs are not an error, they come back in `invalidIds` with a `200`.\n\nOptionally pass `companyIds` \u2014 one `lushaCompanyId` per contact, index-aligned with `entityIds` \u2014 to help pair company-level enrichment to the right company for each contact.\n\n> **Billing:** Free.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -2595,7 +2592,7 @@
         ],
         "summary": "Run Column on Contacts Table",
         "operationId": "runContactsTableColumn",
-        "description": "Populate or refresh a column's data for some or all rows in the table. This is **asynchronous** — the call returns immediately with `status: \"processing\"`; poll Get Contacts Table for `isProcessing` and per-column row-status counts to know when it's done, then read the values via Get Contacts Table Entities.\n\n**`runScope` values:**\n- `all` — every row, including already-processed ones (re-runs / refreshes). Most expensive.\n- `missing` — only rows that have never been run for this column. Cheapest, safe to call repeatedly.\n- `specific` — only the `entityIds` you pass. Also how you implement \"run for this page\" — fetch the page via Get Contacts Table Entities, then pass those IDs here.\n\n> **Billing:** Charged per row processed, per the column's credit tier. Re-running with `all` charges again for rows that already have data.\n",
+        "description": "Populate or refresh a column's data for some or all rows in the table. This is **asynchronous** \u2014 the call returns immediately with `status: \"processing\"`; poll Get Contacts Table for `isProcessing` and per-column row-status counts to know when it's done, then read the values via Get Contacts Table Entities.\n\n**`runScope` values:**\n- `all` \u2014 every row, including already-processed ones (re-runs / refreshes). Most expensive.\n- `missing` \u2014 only rows that have never been run for this column. Cheapest, safe to call repeatedly.\n- `specific` \u2014 only the `entityIds` you pass. Also how you implement \"run for this page\" \u2014 fetch the page via Get Contacts Table Entities, then pass those IDs here.\n\n> **Billing:** Charged per row processed, per the column's credit tier. Re-running with `all` charges again for rows that already have data.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -2794,7 +2791,7 @@
         ],
         "summary": "Update Companies Table",
         "operationId": "updateCompaniesTable",
-        "description": "Rename a table, change its visibility, or reassign its owner. All fields except `owner` are optional — send only what changes.\n\n> **Billing:** Free.\n",
+        "description": "Rename a table, change its visibility, or reassign its owner. All fields except `owner` are optional \u2014 send only what changes.\n\n> **Billing:** Free.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -2951,7 +2948,7 @@
         ],
         "summary": "Add Entities to Companies Table",
         "operationId": "addCompaniesTableEntities",
-        "description": "Add up to 500 company IDs to an existing table. `entityIds` accepts either the encrypted Lusha token (`v{N}.…`, as returned by Search/Enrich/Get Entities) or the legacy numeric `lushaCompanyId` — an ID that's neither returns `400`. Already-present IDs are reported as `alreadyPresent` and not re-added; unresolvable IDs are not an error, they come back in `invalidIds` with a `200`.\n\n> **Billing:** Charges `reveal_company` per newly-added company, deduped via row-count delta — duplicates and already-present companies aren't charged again.\n",
+        "description": "Add up to 500 company IDs to an existing table. `entityIds` accepts either the encrypted Lusha token (`v{N}.\u2026`, as returned by Search/Enrich/Get Entities) or the legacy numeric `lushaCompanyId` \u2014 an ID that's neither returns `400`. Already-present IDs are reported as `alreadyPresent` and not re-added; unresolvable IDs are not an error, they come back in `invalidIds` with a `200`.\n\n> **Billing:** Charges `reveal_company` per newly-added company, deduped via row-count delta \u2014 duplicates and already-present companies aren't charged again.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -3156,7 +3153,7 @@
         ],
         "summary": "Run Column on Companies Table",
         "operationId": "runCompaniesTableColumn",
-        "description": "Populate or refresh a column's data for some or all rows in the table. This is **asynchronous** — the call returns immediately with `status: \"processing\"`; poll Get Companies Table for `isProcessing` and per-column row-status counts to know when it's done, then read the values via Get Companies Table Entities.\n\n**`runScope` values:**\n- `all` — every row, including already-processed ones (re-runs / refreshes). Most expensive.\n- `missing` — only rows that have never been run for this column. Cheapest, safe to call repeatedly.\n- `specific` — only the `entityIds` you pass. Also how you implement \"run for this page\" — fetch the page via Get Companies Table Entities, then pass those IDs here.\n\n> **Billing:** Charged per row processed, per the column's credit tier. Company enrichment charges once per company per table — re-runs on an already-paid company in the same table are free.\n",
+        "description": "Populate or refresh a column's data for some or all rows in the table. This is **asynchronous** \u2014 the call returns immediately with `status: \"processing\"`; poll Get Companies Table for `isProcessing` and per-column row-status counts to know when it's done, then read the values via Get Companies Table Entities.\n\n**`runScope` values:**\n- `all` \u2014 every row, including already-processed ones (re-runs / refreshes). Most expensive.\n- `missing` \u2014 only rows that have never been run for this column. Cheapest, safe to call repeatedly.\n- `specific` \u2014 only the `entityIds` you pass. Also how you implement \"run for this page\" \u2014 fetch the page via Get Companies Table Entities, then pass those IDs here.\n\n> **Billing:** Charged per row processed, per the column's credit tier. Company enrichment charges once per company per table \u2014 re-runs on an already-paid company in the same table are free.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -3214,7 +3211,7 @@
         ],
         "summary": "Contact Signals",
         "operationId": "getContactSignals",
-        "description": "Retrieve signal events for a list of contacts — job changes and promotions.\n\nPass up to 100 contact `ids`. Use `signalTypes` to specify which events to return (`promotion`, `companyChange`, or `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Signals column. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Retrieve signal events for a list of contacts \u2014 job changes and promotions.\n\nPass up to 100 contact `ids`. Use `signalTypes` to specify which events to return (`promotion`, `companyChange`, or `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Signals column. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3293,7 +3290,7 @@
         ],
         "summary": "Company Signals",
         "operationId": "getCompanySignals",
-        "description": "Retrieve signal events for a list of companies — hiring activity, headcount changes, web traffic, IT spend, and news.\n\nPass up to 100 company `ids`. Use `signalTypes` to specify which signals to return (or use `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these companies to an existing table and populate the Signals column. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Retrieve signal events for a list of companies \u2014 hiring activity, headcount changes, web traffic, IT spend, and news.\n\nPass up to 100 company `ids`. Use `signalTypes` to specify which signals to return (or use `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these companies to an existing table and populate the Signals column. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3546,7 +3543,7 @@
           }
         ],
         "operationId": "getDecisionMakers",
-        "description": "Resolve each supplied company to a Lusha company ID, rank the most relevant decision makers per company using the buying-committee-ranker model, and return them grouped per company.\n\nResults are free previews — name, title, company, location, LinkedIn, seniority, and department — with `has` and `canReveal` fields. Reveal emails and phones separately via Enrich Contacts.\n\n**Accepted company identifiers (exactly one required per entry):**\n- `domain` — resolved to a Lusha company ID server-side\n- `id` — encrypted Lusha company ID (`vN.…`); legacy numeric IDs accepted during transition\n",
+        "description": "Resolve each supplied company to a Lusha company ID, rank the most relevant decision makers per company using the buying-committee-ranker model, and return them grouped per company.\n\nResults are free previews \u2014 name, title, company, location, LinkedIn, seniority, and department \u2014 with `has` and `canReveal` fields. Reveal emails and phones separately via Enrich Contacts.\n\n**Accepted company identifiers (exactly one required per entry):**\n- `domain` \u2014 resolved to a Lusha company ID server-side\n- `id` \u2014 encrypted Lusha company ID (`vN.\u2026`); legacy numeric IDs accepted during transition\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3674,7 +3671,7 @@
           }
         ],
         "operationId": "getWebsiteVisits",
-        "description": "Returns companies ranked by website-visit signals for your tracked domains and date range.\n\nDomains must be configured for tracking in the Lusha dashboard — they are resolved to site IDs server-side. Each result combines a V3 company firmographic preview (same shape as Search Companies) with behavioral visit metrics.\n\n**Notes:**\n- Date range must be ≤ 3 months\n- If any requested domain is not configured for tracking, the entire request fails with `400`\n- `limit` accepts 1–150\n",
+        "description": "Returns companies ranked by website-visit signals for your tracked domains and date range.\n\nDomains must be configured for tracking in the Lusha dashboard \u2014 they are resolved to site IDs server-side. Each result combines a V3 company firmographic preview (same shape as Search Companies) with behavioral visit metrics.\n\n**Notes:**\n- Date range must be \u2264 3 months\n- If any requested domain is not configured for tracking, the entire request fails with `400`\n- `limit` accepts 1\u2013150\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -4027,7 +4024,7 @@
           "Webhooks"
         ],
         "summary": "Create Subscription",
-        "description": "Creates one or more webhook subscriptions for real-time signal notifications.\n\n**Delivery & Reliability:**\n- Webhooks are delivered with automatic retry on failures\n- Maximum 3 retry attempts with exponential backoff\n- Subscriptions auto-disable after max retries exceeded\n- All deliveries are logged in audit logs\n\n> **Note:** Your webhook endpoint must respond with a proper acknowledgment. \n See Client Response Format below for details.\n\n> **Limit:** Maximum 25 subscriptions per request\n\n*Endpoint*: **(POST) https://api.lusha.com/api/subscriptions**\n\n---\n\n### Webhook Payload You'll Receive\n When a signal is triggered, this payload is sent to your webhook URL:\n```json\n    {\n      \"id\": \"f3b87e05-0402-4f3e-8e26-6a38fd0ad62c\",\n      \"type\": \"promotion\",\n      \"entityType\": \"contact\",\n      \"entityId\": \"4158887495\",\n      \"subscriptionId\": \"507f1f77bcf86cd799439011\",\n      \"data\": {\n        \"personId\": 4158887495,\n        \"currentCompanyId\": 40823133,\n        \"currentCompanyName\": \"OMG Hospitality Group LLC\",\n        \"currentDomain\": \"omghospitalitygroup.com\",\n        \"currentTitle\": \"Bartender\",\n        \"currentDepartments\": [\n          { \"id\": 7, \"value\": \"Other\" }\n        ],\n        \"previousCompanyName\": \"First Watch Restaurants\",\n        \"previousDomain\": \"firstwatch.com\",\n        \"signalDate\": \"2025-07-01\"\n      },\n      \"timestamp\": \"2026-01-14T16:16:35.841Z\",\n      \"billing\": {\n        \"creditsCharged\": 1\n      }\n    }\n    ```\n            **Example — Company News Signal:**\n    ```json\n            {\n              \"id\": \"a7c92f14-1234-4b3e-9d22-8b4fe1d0bc45\",\n              \"type\": \"commercialActivityNews\",\n              \"entityType\": \"company\",\n              \"entityId\": \"33222678\",\n              \"subscriptionId\": \"507f1f77bcf86cd799439011\",\n              \"data\": {\n                \"companyId\": \"33222678\",\n                \"companyName\": \"Lusha\",\n                \"domain\": \"lusha.com\",\n                \"signalId\": \"1503910\",\n                \"eventType\": \"partnership\",\n                \"eventSummary\": \"Lusha announced a strategic partnership with Salesforce.\",\n                \"articlePublishedDate\": \"2025-06-15\",\n                \"articleTitle\": \"Lusha Partners with Salesforce\",\n                \"articleHighlight\": \"The partnership enables Salesforce users to access Lusha data directly within their CRM.\",\n                \"eventEffectiveDate\": \"2025-06-10\",\n                \"articleUrl\": \"https://example.com/lusha-salesforce-partnership\"\n              },\n              \"timestamp\": \"2026-01-14T16:16:35.841Z\",\n              \"billing\": {\n                \"creditsCharged\": 1\n              }\n            }\n          ```\n\n      **Headers Included:**\n\n      | Header | Description |\n      |--------|-------------|\n      | `X-Lusha-Signature` | HMAC-SHA256 signature for verification |\n      | `X-Lusha-Timestamp` | Unix timestamp of the request |\n      | `Content-Type` | application/json |\n      | `User-Agent` | Lusha-Webhooks/1.0 |\n\n\n---\n⚠️ **Important:** Ensure your account has a webhook secret before creating subscriptions.\nCreate one via the [Regenerate Account Secret](#operation/regenerateAccountSecret) endpoint.\n\n---\n\n### Client Response Format (Required)\n\nWhen your webhook endpoint receives a delivery, it **must** acknowledge receipt with this response:\n\n  **Required Response:**\n  ````json\n  {\n    \"received\": true,\n    \"timestamp\": \"2026-02-05T10:30:45.123Z\",\n    \"webhookId\": \"f3b87e05-0402-4f3e-8e26-6a38fd0ad62c\"\n  }\n  ````\n\n<details>\n<summary><strong>Response Requirements</strong></summary>\n\n  | Requirement | Value |\n  |-------------|-------|\n  | **HTTP Status** | `201 Created` (recommended) or any `2xx` status |\n  | **Content-Type** | `application/json` |\n  | **Response Time** | Within 10 seconds |\n</details>\n\n\n<details>\n<summary><strong>Field Descriptions & Implementation Guide</strong></summary>\n\n  **Field Descriptions:**\n  * `received` (boolean, required): Confirmation flag - must be `true`\n  * `timestamp` (string, required): ISO 8601 timestamp of receipt\n  * `webhookId` (string, required): Echo the `id` from webhook payload\n\n  **Implementation Example:**\n  ```javascript\n  app.post('/webhook', async (req, res) => {\n    // 1. Verify signature\n    if (!verifyWebhookSignature(req)) {\n      return res.status(401).json({ error: 'Invalid signature' });\n    }\n    \n    // 2. Queue for async processing\n    await queueWebhook(req.body);\n    \n    // 3. Acknowledge immediately\n    res.status(201).json({\n      received: true,\n      timestamp: new Date().toISOString(),\n      webhookId: req.body.id\n    });\n    ```\n\n  **Important Notes:**\n  * Return acknowledgment **before** heavy processing\n  * Non-2xx responses trigger retry mechanism\n  * After 3 failed retries, subscription is disabled\n\n  </details>\n\n----\n",
+        "description": "Creates one or more webhook subscriptions for real-time signal notifications.\n\n**Delivery & Reliability:**\n- Webhooks are delivered with automatic retry on failures\n- Maximum 3 retry attempts with exponential backoff\n- Subscriptions auto-disable after max retries exceeded\n- All deliveries are logged in audit logs\n\n> **Note:** Your webhook endpoint must respond with a proper acknowledgment. \n See Client Response Format below for details.\n\n> **Limit:** Maximum 25 subscriptions per request\n\n*Endpoint*: **(POST) https://api.lusha.com/api/subscriptions**\n\n---\n\n### Webhook Payload You'll Receive\n When a signal is triggered, this payload is sent to your webhook URL:\n```json\n    {\n      \"id\": \"f3b87e05-0402-4f3e-8e26-6a38fd0ad62c\",\n      \"type\": \"promotion\",\n      \"entityType\": \"contact\",\n      \"entityId\": \"4158887495\",\n      \"subscriptionId\": \"507f1f77bcf86cd799439011\",\n      \"data\": {\n        \"personId\": 4158887495,\n        \"currentCompanyId\": 40823133,\n        \"currentCompanyName\": \"OMG Hospitality Group LLC\",\n        \"currentDomain\": \"omghospitalitygroup.com\",\n        \"currentTitle\": \"Bartender\",\n        \"currentDepartments\": [\n          { \"id\": 7, \"value\": \"Other\" }\n        ],\n        \"previousCompanyName\": \"First Watch Restaurants\",\n        \"previousDomain\": \"firstwatch.com\",\n        \"signalDate\": \"2025-07-01\"\n      },\n      \"timestamp\": \"2026-01-14T16:16:35.841Z\",\n      \"billing\": {\n        \"creditsCharged\": 1\n      }\n    }\n    ```\n            **Example \u2014 Company News Signal:**\n    ```json\n            {\n              \"id\": \"a7c92f14-1234-4b3e-9d22-8b4fe1d0bc45\",\n              \"type\": \"commercialActivityNews\",\n              \"entityType\": \"company\",\n              \"entityId\": \"33222678\",\n              \"subscriptionId\": \"507f1f77bcf86cd799439011\",\n              \"data\": {\n                \"companyId\": \"33222678\",\n                \"companyName\": \"Lusha\",\n                \"domain\": \"lusha.com\",\n                \"signalId\": \"1503910\",\n                \"eventType\": \"partnership\",\n                \"eventSummary\": \"Lusha announced a strategic partnership with Salesforce.\",\n                \"articlePublishedDate\": \"2025-06-15\",\n                \"articleTitle\": \"Lusha Partners with Salesforce\",\n                \"articleHighlight\": \"The partnership enables Salesforce users to access Lusha data directly within their CRM.\",\n                \"eventEffectiveDate\": \"2025-06-10\",\n                \"articleUrl\": \"https://example.com/lusha-salesforce-partnership\"\n              },\n              \"timestamp\": \"2026-01-14T16:16:35.841Z\",\n              \"billing\": {\n                \"creditsCharged\": 1\n              }\n            }\n          ```\n\n      **Headers Included:**\n\n      | Header | Description |\n      |--------|-------------|\n      | `X-Lusha-Signature` | HMAC-SHA256 signature for verification |\n      | `X-Lusha-Timestamp` | Unix timestamp of the request |\n      | `Content-Type` | application/json |\n      | `User-Agent` | Lusha-Webhooks/1.0 |\n\n\n---\n\u26a0\ufe0f **Important:** Ensure your account has a webhook secret before creating subscriptions.\nCreate one via the [Regenerate Account Secret](#operation/regenerateAccountSecret) endpoint.\n\n---\n\n### Client Response Format (Required)\n\nWhen your webhook endpoint receives a delivery, it **must** acknowledge receipt with this response:\n\n  **Required Response:**\n  ````json\n  {\n    \"received\": true,\n    \"timestamp\": \"2026-02-05T10:30:45.123Z\",\n    \"webhookId\": \"f3b87e05-0402-4f3e-8e26-6a38fd0ad62c\"\n  }\n  ````\n\n<details>\n<summary><strong>Response Requirements</strong></summary>\n\n  | Requirement | Value |\n  |-------------|-------|\n  | **HTTP Status** | `201 Created` (recommended) or any `2xx` status |\n  | **Content-Type** | `application/json` |\n  | **Response Time** | Within 10 seconds |\n</details>\n\n\n<details>\n<summary><strong>Field Descriptions & Implementation Guide</strong></summary>\n\n  **Field Descriptions:**\n  * `received` (boolean, required): Confirmation flag - must be `true`\n  * `timestamp` (string, required): ISO 8601 timestamp of receipt\n  * `webhookId` (string, required): Echo the `id` from webhook payload\n\n  **Implementation Example:**\n  ```javascript\n  app.post('/webhook', async (req, res) => {\n    // 1. Verify signature\n    if (!verifyWebhookSignature(req)) {\n      return res.status(401).json({ error: 'Invalid signature' });\n    }\n    \n    // 2. Queue for async processing\n    await queueWebhook(req.body);\n    \n    // 3. Acknowledge immediately\n    res.status(201).json({\n      received: true,\n      timestamp: new Date().toISOString(),\n      webhookId: req.body.id\n    });\n    ```\n\n  **Important Notes:**\n  * Return acknowledgment **before** heavy processing\n  * Non-2xx responses trigger retry mechanism\n  * After 3 failed retries, subscription is disabled\n\n  </details>\n\n----\n",
         "operationId": "createSubscription",
         "requestBody": {
           "required": true,
@@ -4959,7 +4956,7 @@
         ],
         "summary": "Get Account Usage",
         "operationId": "getAccountUsage",
-        "description": "Returns a full snapshot of your account status:\n- **Credits** — total, used, and remaining for the current billing cycle\n- **Rate limits** — current usage and reset times for daily, hourly, and per-minute windows\n- **Plan** — your current plan category and renewal dates\n- **Pricing** — credit cost per action type across all public API endpoints\n\n> **Rate limit:** This endpoint is limited to 5 requests per minute.\n",
+        "description": "Returns a full snapshot of your account status:\n- **Credits** \u2014 total, used, and remaining for the current billing cycle\n- **Rate limits** \u2014 current usage and reset times for daily, hourly, and per-minute windows\n- **Plan** \u2014 your current plan category and renewal dates\n- **Pricing** \u2014 credit cost per action type across all public API endpoints\n\n> **Rate limit:** This endpoint is limited to 5 requests per minute.\n",
         "responses": {
           "200": {
             "description": "Successfully retrieved account usage",
@@ -5447,7 +5444,7 @@
       },
       "TableOwner": {
         "type": "object",
-        "description": "Identifies the user acting on the table, and resolves to a user on your account. Required on every table-route call when authenticating with an API key (there is no signed-in user) — omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token; still accepted if you want to act on behalf of another owner.\n",
+        "description": "Identifies the user acting on the table, and resolves to a user on your account. Required on every table-route call when authenticating with an API key (there is no signed-in user) \u2014 omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token; still accepted if you want to act on behalf of another owner.\n",
         "properties": {
           "email": {
             "type": "string",
@@ -5466,7 +5463,7 @@
           "no_data",
           "failed"
         ],
-        "description": "Current state of a single cell's data. `no_data` means the run succeeded but found nothing — distinct from `failed`, which means the run itself errored.\n"
+        "description": "Current state of a single cell's data. `no_data` means the run succeeded but found nothing \u2014 distinct from `failed`, which means the run itself errored.\n"
       },
       "RunScope": {
         "type": "string",
@@ -5558,7 +5555,7 @@
       },
       "TableMetadata": {
         "type": "object",
-        "description": "TableDto — static metadata for a table.",
+        "description": "TableDto \u2014 static metadata for a table.",
         "properties": {
           "tableId": {
             "type": "string",
@@ -5627,7 +5624,7 @@
       },
       "TableStatusData": {
         "type": "object",
-        "description": "Response payload for Get Table — TableDto fields plus live entity/column counts.",
+        "description": "Response payload for Get Table \u2014 TableDto fields plus live entity/column counts.",
         "allOf": [
           {
             "$ref": "#/components/schemas/TableMetadata"
@@ -5705,7 +5702,7 @@
         "required": [
           "owner"
         ],
-        "description": "`name`, `visibility`, and `archived` are all optional — send any subset; omitted fields stay unchanged. Sending none of them is a no-op. A partial update re-reads the persisted table first, so fields you don't send are never clobbered.\n",
+        "description": "`name`, `visibility`, and `archived` are all optional \u2014 send any subset; omitted fields stay unchanged. Sending none of them is a no-op. A partial update re-reads the persisted table first, so fields you don't send are never clobbered.\n",
         "properties": {
           "name": {
             "type": "string",
@@ -5750,7 +5747,7 @@
           },
           "name": {
             "type": "string",
-            "description": "Optional filter — matches tables whose name contains this text.",
+            "description": "Optional filter \u2014 matches tables whose name contains this text.",
             "example": "Q3"
           },
           "status": {
@@ -5793,7 +5790,7 @@
               "type": "string"
             },
             "maxItems": 500,
-            "description": "Lusha IDs as strings — `personId` for contacts, `lushaCompanyId` for companies. Accepts either the encrypted token (`v{N}.…`, as returned by Search/Enrich/Get Entities) or the legacy numeric ID. An ID that is neither a valid token nor numeric returns `400`.\n",
+            "description": "Lusha IDs as strings \u2014 `personId` for contacts, `lushaCompanyId` for companies. Accepts either the encrypted token (`v{N}.\u2026`, as returned by Search/Enrich/Get Entities) or the legacy numeric ID. An ID that is neither a valid token nor numeric returns `400`.\n",
             "example": [
               "10042854",
               "10042855",
@@ -5833,7 +5830,7 @@
               },
               "invalidIds": {
                 "type": "array",
-                "description": "IDs that couldn't be resolved. Not an error — the call still returns `200`.",
+                "description": "IDs that couldn't be resolved. Not an error \u2014 the call still returns `200`.",
                 "items": {
                   "type": "string"
                 },
@@ -5861,7 +5858,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Accepts either the encrypted token (`v{N}.…`, as returned by Get Entities) or the legacy numeric ID. Unresolved IDs are echoed back in `invalidIds` in the exact form you sent them.\n",
+            "description": "Accepts either the encrypted token (`v{N}.\u2026`, as returned by Get Entities) or the legacy numeric ID. Unresolved IDs are echoed back in `invalidIds` in the exact form you sent them.\n",
             "example": [
               "10042851",
               "10042852"
@@ -5898,7 +5895,7 @@
       },
       "EntityColumnValue": {
         "type": "object",
-        "description": "One column's value on a single row, as returned by Get Entities. This shape is a passthrough from the underlying Workspace service — the fields shown here (`id`, `name`, `type`, `sourceType`, `value`, `status`) are representative, not an exhaustive schema.\n",
+        "description": "One column's value on a single row, as returned by Get Entities. This shape is a passthrough from the underlying Workspace service \u2014 the fields shown here (`id`, `name`, `type`, `sourceType`, `value`, `status`) are representative, not an exhaustive schema.\n",
         "properties": {
           "id": {
             "type": "string",
@@ -5928,7 +5925,7 @@
       },
       "TableEntity": {
         "type": "object",
-        "description": "A single row. `id` is the **encrypted** Lusha ID (`v{N}.…`) — `personId` for contacts, `lushaCompanyId` for companies — in the same format used across V3, so it round-trips directly into Add Entities, Remove Entities, and Enrich. Internal fields (`accountId`, `companyLid`, `lushaCompanyId`, `personId`, `companyDetails`) are not returned. Remaining per-row fields under `columns` are owned by the Workspace service; this shape is representative, not an exhaustive schema.\n",
+        "description": "A single row. `id` is the **encrypted** Lusha ID (`v{N}.\u2026`) \u2014 `personId` for contacts, `lushaCompanyId` for companies \u2014 in the same format used across V3, so it round-trips directly into Add Entities, Remove Entities, and Enrich. Internal fields (`accountId`, `companyLid`, `lushaCompanyId`, `personId`, `companyDetails`) are not returned. Remaining per-row fields under `columns` are owned by the Workspace service; this shape is representative, not an exhaustive schema.\n",
         "properties": {
           "id": {
             "type": "string",
@@ -5962,7 +5959,7 @@
       },
       "ColumnSummary": {
         "type": "object",
-        "description": "ColumnDto — a column's definition plus aggregated per-cell status counts.",
+        "description": "ColumnDto \u2014 a column's definition plus aggregated per-cell status counts.",
         "properties": {
           "columnId": {
             "type": "string",
@@ -6020,7 +6017,7 @@
       },
       "ColumnsListResponse": {
         "type": "object",
-        "description": "Response for List Columns — `data` is a bare array of ColumnDto.",
+        "description": "Response for List Columns \u2014 `data` is a bare array of ColumnDto.",
         "properties": {
           "data": {
             "type": "array",
@@ -6136,7 +6133,7 @@
       },
       "ColumnsRunResponse": {
         "type": "object",
-        "description": "Run is asynchronous — this response confirms the run was accepted. Poll Get Table for per-column row-status counts to know when it's finished.\n",
+        "description": "Run is asynchronous \u2014 this response confirms the run was accepted. Poll Get Table for per-column row-status counts to know when it's finished.\n",
         "properties": {
           "data": {
             "type": "object",
@@ -6629,7 +6626,7 @@
           },
           "id": {
             "type": "string",
-            "description": "Encrypted Lusha company ID (`vN.…`); legacy numeric IDs accepted. Mutually exclusive with `domain`.",
+            "description": "Encrypted Lusha company ID (`vN.\u2026`); legacy numeric IDs accepted. Mutually exclusive with `domain`.",
             "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
           },
           "clientReferenceId": {
@@ -6651,7 +6648,7 @@
               "$ref": "#/components/schemas/DecisionMakersCompanyInput"
             },
             "minItems": 1,
-            "description": "1–N companies. Each entry must contain exactly one of `domain` or `id`."
+            "description": "1\u2013N companies. Each entry must contain exactly one of `domain` or `id`."
           },
           "pagination": {
             "type": "object",
@@ -6798,7 +6795,7 @@
                 "$ref": "#/components/schemas/WebsiteVisitsIntRange"
               }
             ],
-            "description": "Score range (1–100)."
+            "description": "Score range (1\u2013100)."
           },
           "totalSessions": {
             "$ref": "#/components/schemas/WebsiteVisitsIntRange"
@@ -6850,7 +6847,7 @@
           "endDate": {
             "type": "string",
             "format": "date",
-            "description": "Window end date (YYYY-MM-DD). Range must be ≤ 3 months.",
+            "description": "Window end date (YYYY-MM-DD). Range must be \u2264 3 months.",
             "example": "2026-03-18"
           },
           "pagination": {
@@ -6907,7 +6904,7 @@
             "properties": {
               "score": {
                 "type": "number",
-                "description": "Display score (0–100).",
+                "description": "Display score (0\u2013100).",
                 "example": 87
               },
               "scoreBand": {
@@ -8998,20 +8995,11 @@
               "phones"
             ]
           },
-          "waterfallReveal": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "emails",
-                "phones"
-              ]
-            },
-            "description": "`BETA` The subset of the `reveal` fields allowed to fall through to your\nenabled third-party providers when Lusha's own data has no match. `reveal` still\ncontrols *which* fields are returned - `waterfallReveal` only controls which of\nthose fields are eligible for the waterfall. Provider order isn't configurable -\nLusha manages that internally. Requires Data Waterfall enabled on your account\n(Account > Waterfall). Currently limited-availability; contact support@lusha.com\n",
-            "example": [
-              "emails",
-              "phones"
-            ]
+          "waterfallEnabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "`BETA` Whether this call is allowed to fall through to your enabled\nthird-party providers when Lusha's own data has no match, for the fields\nrequested via `reveal`. Defaults to `true` whenever Data Waterfall is\nenabled on your account (Account > Waterfall) - pass `false` to opt this\nspecific call out. Has no effect if Data Waterfall or no providers are\nenabled on your account. Provider order isn't configurable - Lusha manages\nthat internally. Currently limited-availability; contact support@lusha.com\n",
+            "example": false
           },
           "tableId": {
             "type": "string",
@@ -9163,7 +9151,7 @@
                 "intent"
               ]
             },
-            "description": "Additional data fields to reveal. Each field is charged separately per result.\n- `employeesByDepartment` — breakdown of employees by department\n- `employeesByLocation` — breakdown of employees by country/state\n- `employeesBySeniority` — breakdown of employees by seniority level\n- `competitors` — list of competitor company IDs\n- `intent` — buyer intent topics\n",
+            "description": "Additional data fields to reveal. Each field is charged separately per result.\n- `employeesByDepartment` \u2014 breakdown of employees by department\n- `employeesByLocation` \u2014 breakdown of employees by country/state\n- `employeesBySeniority` \u2014 breakdown of employees by seniority level\n- `competitors` \u2014 list of competitor company IDs\n- `intent` \u2014 buyer intent topics\n",
             "example": [
               "employeesByDepartment",
               "employeesByLocation",

@@ -51,13 +51,14 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 </Accordion>
 
 <Accordion title="What is Waterfall Reveal, and how does it work?">
-  Waterfall Reveal is an opt-in enhancement to Enrich Contacts. When Lusha's own data has no match for a field, it falls through to your enabled third-party providers to try to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
+  Waterfall Reveal is an enhancement to Enrich Contacts. When Lusha's own data has no match for a field, it falls through to your enabled third-party providers to try to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
 
-  To use it:
+  How it works:
 
-  - Pass `waterfallReveal` alongside `reveal`, listing the fields (`emails`, `phones`) you want covered by the waterfall.
-  - `reveal` still controls which fields come back; `waterfallReveal` is the subset of those fields allowed to fall through to third-party providers.
-  - Requires Data Waterfall enabled on your account, with specific providers turned on, under **Account > Waterfall** in the Lusha dashboard. If waterfall is off, or no providers are enabled, `waterfallReveal` has no additional effect beyond `reveal`.
+  - If Data Waterfall is enabled on your account, with specific providers turned on under **Account > Waterfall** in the Lusha dashboard, the waterfall runs automatically on every Enrich Contacts call — you don't need to pass anything to trigger it.
+  - Pass `waterfallEnabled: false` to opt a specific call out.
+  - `reveal` still controls which fields come back; `waterfallEnabled` only controls whether the fallback runs for this call at all.
+  - If Data Waterfall is off, or no providers are enabled, `waterfallEnabled` has no effect either way.
   - Lusha determines the provider query order — it isn't caller-configurable.
   - Use of Data Waterfall is subject to Lusha's Supplementary Terms.
 
@@ -65,7 +66,7 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
   {
     "ids": ["4389064654", "4389064624"],
     "reveal": ["emails", "phones"],
-    "waterfallReveal": ["emails", "phones"]
+    "waterfallEnabled": false
   }
   ```
 </Accordion>

@@ -40,7 +40,7 @@ The Lusha API gives you programmatic access to one of the world's largest B2B co
 The API is built around a small set of core data types — **contacts**, **companies**, **signals**, and **lookalikes** — accessed through a consistent set of patterns: search, enrich, search-and-enrich, and filter-based prospecting. Two additional building blocks sit alongside these:
 
 - **Tables** — persistent, configurable lists of contacts or companies. Save results into a table directly from Enrich, Prospecting, Signals, or Lookalikes calls by passing a `tableId`, or manage tables and their rows/columns through dedicated endpoints. Tables are shared with the Workspace UI. See the [Tables API guide](/user-guide/lushas-api/tables-api).
-- **Waterfall Reveal** — an opt-in enhancement to contact enrichment. When Lusha's own data has no match for a field, pass `waterfallReveal` alongside `reveal` to fall through to your enabled third-party providers instead of returning an empty field. Requires Data Waterfall enabled under **Account > Waterfall** in the dashboard.
+- **Waterfall Reveal** — an enhancement to contact enrichment. When Lusha's own data has no match for a field, it automatically falls through to your enabled third-party providers instead of returning an empty field. Runs automatically once Data Waterfall is enabled under **Account > Waterfall** in the dashboard — pass `waterfallEnabled: false` on a specific call to opt it out.
 
 ## Base URL
 
