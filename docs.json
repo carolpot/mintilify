@@ -9,8 +9,8 @@
   },
   "favicon": "/favicon.png",
   "logo": {
-    "light": "https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg",
-    "dark": "https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg"
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
   },
   "navbar": {
     "primary": {
