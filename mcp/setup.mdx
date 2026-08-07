@@ -5,8 +5,14 @@ description: "Connect the Lusha MCP server to Claude, ChatGPT, Codex, VS Code, C
 
 The Lusha MCP server is hosted at `https://mcp.lusha.com`. Connect to it in one of two ways:
 
-- **OAuth** — for Claude, ChatGPT, and Codex. You authenticate through the client's own connector directory; no API key handling required on your side.
-- **API key** — for VS Code (GitHub Copilot), Cursor, Gemini CLI, n8n, and any other MCP client. You pass your Lusha API key as an `x-api-key` header (or via an environment variable, depending on the client).
+<CardGroup cols={2}>
+  <Card title="OAuth" icon="key">
+    For **Claude**, **ChatGPT**, and **Codex**. You authenticate through the client's own connector directory — no API key handling required on your side.
+  </Card>
+  <Card title="API key" icon="lock">
+    For **VS Code** (GitHub Copilot), **Cursor**, **Gemini CLI**, **n8n**, and any other MCP client. You pass your Lusha API key as an `x-api-key` header (or via an environment variable, depending on the client).
+  </Card>
+</CardGroup>
 
 <Tip>
   **Starter prompt included.** Every new Lusha MCP connection ships with a ready-to-use starter prompt on the client's consent screen — copy it in one click to run a real first query (find a person, verify they still work there, and pull their title and verified contact details) as soon as you connect. This applies across every MCP client listed below, not just Claude.
@@ -17,29 +23,40 @@ The Lusha MCP server is hosted at `https://mcp.lusha.com`. Connect to it in one 
 - A Lusha API key for the API-key connection method — generate one in the Lusha dashboard under **API → Manage API Keys**, or go directly to the [API keys page](https://dashboard.lusha.com/enrich/api)
 - Any plan that includes API access can use the MCP server — it draws from the same credit pool as the REST API
 
-## Claude
+## Connect your client
+
+Pick your client below for the exact steps.
+
+<Tabs>
+
+<Tab title="Claude">
+**Method:** OAuth
 
 1. Go to `claude.ai/directory/connectors/lusha`
 2. Click **Add to Claude**
 3. Complete the OAuth authentication flow
 4. Confirm the Lusha tools appear in the tools menu of your conversation
+</Tab>
 
-## ChatGPT
+<Tab title="ChatGPT">
+**Method:** OAuth
 
 1. Go to `chatgpt.com/apps?q=lusha`
 2. Click **Connect**
 3. Complete the OAuth authentication flow
 4. Verify the Lusha tools appear in the tools menu
+</Tab>
 
-## Codex
+<Tab title="Codex">
+**Method:** OAuth
 
 1. Search for "Lusha" in the plugin directory
 2. Click **Connect** and complete the OAuth flow
 3. Lusha tools become available automatically in conversations
+</Tab>
 
-## VS Code (GitHub Copilot)
-
-Requires VS Code 1.99 or higher.
+<Tab title="VS Code">
+**Method:** API key · Requires VS Code 1.99 or higher
 
 **Settings UI:**
 
@@ -67,8 +84,10 @@ Requires VS Code 1.99 or higher.
 ```
 
 Enable **Agent mode** in GitHub Copilot Chat, then turn on the Lusha tools from the Tools menu.
+</Tab>
 
-## Cursor
+<Tab title="Cursor">
+**Method:** API key
 
 Edit `~/.cursor/mcp.json` (Mac/Linux) or `%APPDATA%\Cursor\mcp.json` (Windows):
 
@@ -86,8 +105,10 @@ Edit `~/.cursor/mcp.json` (Mac/Linux) or `%APPDATA%\Cursor\mcp.json` (Windows):
 ```
 
 Restart Cursor — the Lusha tools become available automatically.
+</Tab>
 
-## Gemini CLI
+<Tab title="Gemini CLI">
+**Method:** API key
 
 **Extension install (recommended):**
 
@@ -131,18 +152,20 @@ If you installed via the extension, you also get slash commands:
 
 - `/lusha:prospect` — run a prospecting search
 - `/lusha:enrich` — enrich a contact or company
+</Tab>
 
-## n8n
-
-Requires n8n 1.88.0 or later.
+<Tab title="n8n">
+**Method:** API key · Requires n8n 1.88.0 or later
 
 1. Add an **MCP Client Tool** node
 2. Set **Connection Type** to **HTTP Streamable**
 3. Set **URL** to `https://mcp.lusha.com`
 4. Set **Authentication** to **Header Auth**, with header `x-api-key` set to your Lusha API key
 5. Select the Lusha tools you want and connect the node to your AI Agent node
+</Tab>
 
-## Other MCP clients
+<Tab title="Other clients">
+**Method:** API key
 
 For any other MCP-compatible client, connect with:
 
@@ -150,6 +173,9 @@ For any other MCP-compatible client, connect with:
 URL: https://mcp.lusha.com
 Header: x-api-key: YOUR_LUSHA_API_KEY
 ```
+</Tab>
+
+</Tabs>
 
 <Note>
   Some Lusha MCP tools — the recommendations tools — are only available over an OAuth connection (Claude, ChatGPT, Codex). API-key sessions receive a `403` if they call those tools. See [available tools](/mcp/tools) for details.

@@ -9,15 +9,16 @@ The Lusha MCP server exposes over 20 tools. Most map closely to the underlying L
   Tool names and behavior can change as Lusha ships new capabilities. Ask your MCP client to list its available Lusha tools for the exact, current set.
 </Note>
 
-## Known contacts and companies
+<AccordionGroup>
 
+<Accordion title="Known contacts and companies (2)">
 | Tool | What it does |
 |---|---|
 | `contacts_search` | Look up 1–25 known contacts by Lusha ID, name + company, LinkedIn URL, or email. |
 | `companies_search` | Look up 1–25 known companies by name, domain, or FQDN. |
+</Accordion>
 
-## Prospecting
-
+<Accordion title="Prospecting (6)">
 | Tool | What it does |
 |---|---|
 | `prospecting_contact_search` | Find contacts by job title, seniority, department, location, and company-level filters. |
@@ -26,22 +27,22 @@ The Lusha MCP server exposes over 20 tools. Most map closely to the underlying L
 | `prospecting_company_search` | Find companies by industry, size, revenue, technology, founded year, and location filters. |
 | `prospecting_company_filters` | Look up valid values (industries, sizes, revenues, technologies, and more) before calling `prospecting_company_search`. |
 | `prospecting_company_enrich` | Reveal detailed firmographic data for companies already returned by a search. |
+</Accordion>
 
-## Decision makers
-
+<Accordion title="Decision makers (1)">
 | Tool | What it does |
 |---|---|
 | `decision_makers_search` | Rank the buying-committee contacts at up to 20 companies (by domain or Lusha company ID). |
+</Accordion>
 
-## Lookalikes
-
+<Accordion title="Lookalikes (2)">
 | Tool | What it does |
 |---|---|
 | `lookalike_contacts` | Find contacts similar to 5–100 seed contacts. |
 | `lookalike_companies` | Find companies similar to 5–100 seed companies. |
+</Accordion>
 
-## Signals
-
+<Accordion title="Signals (6)">
 | Tool | What it does |
 |---|---|
 | `signals_contacts_search` | Resolve contacts by LinkedIn URL, email, or name + company, and return recent promotion / company-change signals. |
@@ -52,15 +53,15 @@ The Lusha MCP server exposes over 20 tools. Most map closely to the underlying L
 | `signals_company_filters` | List company signal types and the values for sub-filters like news event types or hiring departments. |
 
 Signal lookback defaults to 6 months and 10 results per signal type unless you specify otherwise.
+</Accordion>
 
-## Website visits
-
+<Accordion title="Website visits (1)">
 | Tool | What it does |
 |---|---|
 | `website_visits_search` | Rank companies that visited your tracked websites, by engagement score (cold/warm/hot), sessions, and geography. Lookback defaults to 30 days and cannot exceed 3 months. |
+</Accordion>
 
-## Recommendations
-
+<Accordion title="Recommendations (5) — OAuth only">
 <Note>
   Recommendation tools are OAuth-only. API-key connections (Cursor, VS Code, Gemini CLI, n8n) get a `403` if they call these.
 </Note>
@@ -73,16 +74,17 @@ Signal lookback defaults to 6 months and 10 results per signal type unless you s
 | `recommendations_companies_filters` | List the target ICPs and signal types accepted by `recommendations_companies`. |
 | `recommendations_status` | Check whether a user's recommendations are `none`, `computing`, or `done`. |
 
-<Note>
-  Results are drawn from the authenticated user's own Target Profiles (plus any shared account-level profiles) — user and account IDs are inferred from the session, never passed as inputs. If you haven't set up a Target Profile in ICP Hub yet, you'll be nudged to do so with each recommendations request. Recommendations refresh daily and recalculate within minutes of a Target Profile change.
-</Note>
+Results are drawn from the authenticated user's own Target Profiles (plus any shared account-level profiles) — user and account IDs are inferred from the session, never passed as inputs. If you haven't set up a Target Profile in ICP Hub yet, you'll be nudged to do so with each recommendations request. Recommendations refresh daily and recalculate within minutes of a Target Profile change.
+</Accordion>
 
-## Account
-
+<Accordion title="Account (2)">
 | Tool | What it does |
 |---|---|
 | `account_usage` | Check credit balance, rate-limit headroom, plan, and per-action credit pricing. Doesn't consume credits. |
 | `purchase_options` | View credit packages available for in-chat purchase, or (for non-admins) get an email template to request more credits from an account admin. |
+</Accordion>
+
+</AccordionGroup>
 
 ## Credits and rate limits
 

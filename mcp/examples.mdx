@@ -3,59 +3,68 @@ title: "MCP prompt examples"
 description: "Example prompts for common Lusha tasks using any MCP-compatible AI client."
 ---
 
-These prompts work in Claude, ChatGPT, Cursor, VS Code, Gemini CLI, or any other client with the Lusha MCP server connected.
+These prompts work in Claude, ChatGPT, Cursor, VS Code, Gemini CLI, or any other client with the Lusha MCP server connected. Copy one, paste it into your client, and swap in your own details.
 
-## Enrich a contact
+<CardGroup cols={2}>
 
+<Card title="Enrich a contact" icon="address-book">
 ```
-Enrich the contact jane.doe@acme.com and tell me their current job title,
-direct phone number, and LinkedIn URL.
+Enrich the contact jane.doe@acme.com and tell me their
+current job title, direct phone number, and LinkedIn URL.
 ```
+</Card>
 
-## Find a specific person
-
+<Card title="Find a specific person" icon="magnifying-glass">
 ```
 Find the VP of Engineering at Stripe.
 ```
+</Card>
 
-## Build a prospect list
-
+<Card title="Build a prospect list" icon="table">
 ```
 Find 20 Series B SaaS companies in New York hiring in sales.
 ```
 
 ```
-Find 25 VP of Sales contacts at B2B SaaS companies with 50-200 employees
-in the United States. Return their names, companies, and LinkedIn URLs.
+Find 25 VP of Sales contacts at B2B SaaS companies with
+50-200 employees in the United States. Return their names,
+companies, and LinkedIn URLs.
 ```
+</Card>
 
-## Find decision makers
-
+<Card title="Find decision makers" icon="user-tie">
 ```
-I have a list of target accounts: stripe.com, notion.so, and figma.com.
-Find the decision makers I should reach out to at each one.
+I have a list of target accounts: stripe.com, notion.so,
+and figma.com. Find the decision makers I should reach out
+to at each one.
 ```
+</Card>
 
-## Detect job changes and other signals
-
+<Card title="Detect job changes and signals" icon="bolt">
 ```
-Check whether the contact at linkedin.com/in/example-profile has changed
-jobs or been promoted in the last 3 months, and summarize any signals.
+Check whether the contact at linkedin.com/in/example-profile
+has changed jobs or been promoted in the last 3 months, and
+summarize any signals.
 ```
+</Card>
 
-## Find lookalike companies
-
+<Card title="Find lookalike companies" icon="users">
 ```
-I have a company called Lusha (lusha.com). Find 10 similar companies -
-same size, same industry, same geography - and return their names and domains.
+I have a company called Lusha (lusha.com). Find 10 similar
+companies - same size, same industry, same geography - and
+return their names and domains.
 ```
+</Card>
 
-## Check your account
-
+<Card title="Check your account" icon="chart-bar">
 ```
-What's my current Lusha credit balance, and how close am I to my rate limit?
+What's my current Lusha credit balance, and how close am
+I to my rate limit?
 ```
+</Card>
 
-<Note>
+</CardGroup>
+
+<Info>
   If you also have another MCP server configured in the same client (for example, a CRM connector), you can chain tools across servers in a single prompt — for example, enriching a contact with Lusha and then asking the client to create the record in your CRM. Whether that works end-to-end depends on the other server's own tools, not on Lusha's.
-</Note>
+</Info>

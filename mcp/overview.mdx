@@ -9,6 +9,28 @@ The **Lusha MCP server** implements the [Model Context Protocol](https://modelco
   The Lusha MCP server has moved beyond its original beta. Some connection details below (client list, exact tool set) can change as Lusha adds tools — always check the tools menu in your client for the current list.
 </Note>
 
+<div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", margin: "32px 0" }}>
+
+  <div>
+    <div style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1, marginBottom: "5px" }}>20+</div>
+    <div className="text-violet-600 dark:text-violet-400" style={{ fontSize: "1rem", fontWeight: 700, letterSpacing: "0.06em", marginBottom: "8px" }}>MCP tools</div>
+    <div className="text-gray-700 dark:text-gray-300" style={{ fontSize: "0.95rem", lineHeight: 1.5 }}>Enrichment, prospecting, signals, lookalikes, decision makers, and account tools.</div>
+  </div>
+
+  <div>
+    <div style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1, marginBottom: "5px" }}>7</div>
+    <div className="text-violet-600 dark:text-violet-400" style={{ fontSize: "1rem", fontWeight: 700, letterSpacing: "0.06em", marginBottom: "8px" }}>Supported clients</div>
+    <div className="text-gray-700 dark:text-gray-300" style={{ fontSize: "0.95rem", lineHeight: 1.5 }}>Claude, ChatGPT, Codex, VS Code, Cursor, Gemini CLI, and n8n — plus any other MCP client.</div>
+  </div>
+
+  <div>
+    <div style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1, marginBottom: "5px" }}>2</div>
+    <div className="text-violet-600 dark:text-violet-400" style={{ fontSize: "1rem", fontWeight: 700, letterSpacing: "0.06em", marginBottom: "8px" }}>Auth methods</div>
+    <div className="text-gray-700 dark:text-gray-300" style={{ fontSize: "0.95rem", lineHeight: 1.5 }}>OAuth for chat clients, API key header for everything else.</div>
+  </div>
+
+</div>
+
 ## What you can do with Lusha MCP
 
 - Ask an AI assistant to "enrich this contact" and get back verified emails and phone numbers
@@ -21,20 +43,39 @@ The **Lusha MCP server** implements the [Model Context Protocol](https://modelco
 
 ## How it works
 
-```
-Your AI client (Claude, ChatGPT, Cursor, VS Code, Gemini CLI, n8n…)
-        ↓  MCP tool call
-Lusha MCP server (https://mcp.lusha.com)
-        ↓  authenticated Lusha API call
-Lusha API  →  enriched data
-        ↑
-returned to your AI client
-```
+<div style={{ display: "flex", alignItems: "center", gap: "0", margin: "24px 0", flexWrap: "wrap" }}>
+
+  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "10px", padding: "16px 18px", minWidth: "180px", flex: "1" }}>
+    <div className="text-gray-400 dark:text-gray-500" style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "6px" }}>Your AI client</div>
+    <div className="text-gray-900 dark:text-gray-100" style={{ fontSize: "0.9rem", fontWeight: 600 }}>Claude, ChatGPT, Cursor, VS Code, Gemini CLI, n8n…</div>
+  </div>
+
+  <div className="text-violet-600 dark:text-violet-400" style={{ padding: "0 14px", fontSize: "1.3rem", fontWeight: 700 }}>→</div>
+
+  <div className="bg-violet-50 dark:bg-violet-950 border border-violet-200 dark:border-violet-800" style={{ borderRadius: "10px", padding: "16px 18px", minWidth: "180px", flex: "1" }}>
+    <div className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "6px" }}>Lusha MCP server</div>
+    <div className="text-gray-900 dark:text-gray-100" style={{ fontSize: "0.9rem", fontWeight: 600 }}>mcp.lusha.com — translates tool calls into API requests</div>
+  </div>
+
+  <div className="text-violet-600 dark:text-violet-400" style={{ padding: "0 14px", fontSize: "1.3rem", fontWeight: 700 }}>→</div>
+
+  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "10px", padding: "16px 18px", minWidth: "180px", flex: "1" }}>
+    <div className="text-gray-400 dark:text-gray-500" style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "6px" }}>Lusha API</div>
+    <div className="text-gray-900 dark:text-gray-100" style={{ fontSize: "0.9rem", fontWeight: 600 }}>Enriched data returned to your client</div>
+  </div>
+
+</div>
 
 The MCP server translates natural-language tool calls into authenticated Lusha API requests and returns structured results that the AI can reason over or pass downstream. Two connection methods are supported:
 
-- **OAuth** — for Claude, ChatGPT, and Codex, where you connect your Lusha account through the client's connector directory
-- **API key** — for VS Code (GitHub Copilot), Cursor, Gemini CLI, n8n, and any other MCP client, using an `x-api-key` header against `https://mcp.lusha.com`
+<CardGroup cols={2}>
+  <Card title="OAuth" icon="key">
+    For **Claude**, **ChatGPT**, and **Codex** — connect your Lusha account through the client's own connector directory. No API key handling required on your side.
+  </Card>
+  <Card title="API key" icon="lock">
+    For **VS Code** (GitHub Copilot), **Cursor**, **Gemini CLI**, **n8n**, and any other MCP client — pass your key via an `x-api-key` header.
+  </Card>
+</CardGroup>
 
 MCP tool calls use the same Lusha API key and credit pool as the REST API — see [MCP setup](/mcp/setup) for connecting each client.
 
