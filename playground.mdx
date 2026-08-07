@@ -1,0 +1,55 @@
+---
+title: "API Playground"
+description: "Test Lusha API endpoints directly in your browser, or import the Postman workspace for a standalone client."
+---
+
+Every endpoint in the [API reference](/api-reference/overview) has a live "Try it" panel built into the page — you can send real requests and see real responses without writing any code.
+
+## Use the in-browser playground
+
+<Steps>
+  <Step title="Get your API key">
+    Grab it from the [Lusha API dashboard](https://dashboard.lusha.com/enrich/api) if you don't have one yet. See [authentication](/authentication) for details.
+  </Step>
+  <Step title="Open an endpoint page">
+    Go to any page under [API docs](/api-reference/overview) and look for the panel on the right side of the page (or below the content on mobile).
+  </Step>
+  <Step title="Enter your API key and parameters">
+    Paste your key into the `api_key` field, fill in the request fields, and click **Send**.
+  </Step>
+  <Step title="Read the response">
+    The panel shows the actual status code and response body returned by the API — the same thing your code would receive.
+  </Step>
+</Steps>
+
+<Info>
+  Requests sent from the playground consume credits and count against your rate limits just like any other request — it's calling the real API, not a mock.
+</Info>
+
+## Quick start: try these first
+
+<CardGroup cols={2}>
+  <Card title="Search and Enrich Contacts" icon="address-book" href="/api-reference/search-and-enrich/search-and-enrich-contacts">
+    The fastest way to see a full enrichment response in one call.
+  </Card>
+
+  <Card title="Search and Enrich Companies" icon="building" href="/api-reference/search-and-enrich/search-and-enrich-companies">
+    Same pattern, for company records.
+  </Card>
+
+  <Card title="Account Usage" icon="chart-bar" href="/api-reference/account/usage">
+    Check your credit balance and rate limit status — useful as a first call to confirm your key works.
+  </Card>
+
+  <Card title="Search Contacts" icon="magnifying-glass" href="/api-reference/search/search-contacts">
+    Preview a match and its credit cost before revealing any data.
+  </Card>
+</CardGroup>
+
+## Prefer a standalone client?
+
+Import the [Lusha Postman Workspace](https://www.postman.com/lushateam/workspace/lusha-s-api/collection/28683568-fc849873-9ae1-47dd-8159-0d4deda04750) — every endpoint is pre-configured with example requests. Add your API key as a collection variable once and it's picked up automatically across the whole collection.
+
+<Info>
+  There's no official Lusha SDK. Every request the playground or Postman sends is plain HTTP — you can copy the generated code sample (curl, Python, JavaScript, Java, or Go) straight into your own project.
+</Info>

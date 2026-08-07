@@ -46,98 +46,6 @@
         "href": "/"
       },
       {
-        "tab": "Get Started",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "introduction",
-              "authentication",
-              "rate-limiting",
-              "error-codes"
-            ]
-          },
-          {
-            "group": "Credits & Plans",
-            "pages": [
-              "credits/overview",
-              "credits/costs",
-              "credits/unified-credits"
-            ]
-          },
-          {
-            "group": "Search & Enrich",
-            "pages": [
-              "enrichment/overview",
-              "enrichment/search-contacts",
-              "enrichment/enrich-contacts",
-              "enrichment/search-and-enrich-contacts",
-              "enrichment/search-companies",
-              "enrichment/enrich-companies",
-              "enrichment/search-and-enrich-companies"
-            ]
-          },
-          {
-            "group": "Prospecting",
-            "pages": [
-              "prospecting/overview",
-              "prospecting/search-contacts",
-              "prospecting/search-companies"
-            ]
-          },
-          {
-            "group": "Signals",
-            "pages": [
-              "signals/overview",
-              "signals/contact-signals",
-              "signals/company-signals"
-            ]
-          },
-          {
-            "group": "Decision Makers",
-            "pages": [
-              "decision-makers/overview"
-            ]
-          },
-          {
-            "group": "Website Visits",
-            "pages": [
-              "website-visits/overview"
-            ]
-          },
-          {
-            "group": "Webhooks",
-            "pages": [
-              "webhooks/overview",
-              "webhooks/manage-subscriptions",
-              "webhooks/security",
-              "webhooks/audit-logs"
-            ]
-          },
-          {
-            "group": "Lookalikes",
-            "pages": [
-              "lookalikes/overview",
-              "lookalikes/contact-lookalikes",
-              "lookalikes/company-lookalikes"
-            ]
-          },
-          {
-            "group": "Filters Reference",
-            "pages": [
-              "filters/contact-filters",
-              "filters/company-filters"
-            ]
-          },
-          {
-            "group": "Account",
-            "pages": [
-              "account/usage"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "User Guide",
         "dropdowns": [
           {
@@ -740,6 +648,98 @@
                 "icon": "book",
                 "pages": [
                   {
+                    "group": "Getting Started",
+                    "root": "introduction",
+                    "pages": [
+                      {
+                        "group": "Overview",
+                        "pages": [
+                          "authentication",
+                          "rate-limiting",
+                          "error-codes"
+                        ]
+                      },
+                      {
+                        "group": "Credits & Plans",
+                        "pages": [
+                          "credits/overview",
+                          "credits/costs",
+                          "credits/unified-credits"
+                        ]
+                      },
+                      {
+                        "group": "Search & Enrich",
+                        "pages": [
+                          "enrichment/overview",
+                          "enrichment/search-contacts",
+                          "enrichment/enrich-contacts",
+                          "enrichment/search-and-enrich-contacts",
+                          "enrichment/search-companies",
+                          "enrichment/enrich-companies",
+                          "enrichment/search-and-enrich-companies"
+                        ]
+                      },
+                      {
+                        "group": "Prospecting",
+                        "pages": [
+                          "prospecting/overview",
+                          "prospecting/search-contacts",
+                          "prospecting/search-companies"
+                        ]
+                      },
+                      {
+                        "group": "Signals",
+                        "pages": [
+                          "signals/overview",
+                          "signals/contact-signals",
+                          "signals/company-signals"
+                        ]
+                      },
+                      {
+                        "group": "Decision Makers",
+                        "pages": [
+                          "decision-makers/overview"
+                        ]
+                      },
+                      {
+                        "group": "Website Visits",
+                        "pages": [
+                          "website-visits/overview"
+                        ]
+                      },
+                      {
+                        "group": "Webhooks",
+                        "pages": [
+                          "webhooks/overview",
+                          "webhooks/manage-subscriptions",
+                          "webhooks/security",
+                          "webhooks/audit-logs"
+                        ]
+                      },
+                      {
+                        "group": "Lookalikes",
+                        "pages": [
+                          "lookalikes/overview",
+                          "lookalikes/contact-lookalikes",
+                          "lookalikes/company-lookalikes"
+                        ]
+                      },
+                      {
+                        "group": "Filters Reference",
+                        "pages": [
+                          "filters/contact-filters",
+                          "filters/company-filters"
+                        ]
+                      },
+                      {
+                        "group": "Account",
+                        "pages": [
+                          "account/usage"
+                        ]
+                      }
+                    ]
+                  },
+                  {
                     "group": "Tutorials",
                     "pages": [
                       {
@@ -832,7 +832,9 @@
                       }
                     ],
                     "root": "faq/overview"
-                  }
+                  },
+                  "playground",
+                  "changelog/overview"
                 ]
               },
               {
