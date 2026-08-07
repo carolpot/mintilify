@@ -13,13 +13,6 @@
     "dark": "https://media.brand.dev/6d14f9ac-0aac-4c32-9a4a-8f5d6dc13543.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Home",
-        "href": "/",
-        "icon": "house"
-      }
-    ],
     "primary": {
       "type": "button",
       "label": "Contact Sales",
@@ -32,7 +25,13 @@
       "display": "auth"
     },
     "examples": {
-      "languages": ["curl", "python", "javascript", "java", "go"]
+      "languages": [
+        "curl",
+        "python",
+        "javascript",
+        "java",
+        "go"
+      ]
     }
   },
   "feedback": {
@@ -42,6 +41,11 @@
   },
   "navigation": {
     "tabs": [
+      {
+        "tab": "Home",
+        "icon": "house",
+        "href": "/"
+      },
       {
         "tab": "Get Started",
         "groups": [
@@ -733,95 +737,102 @@
                 "icon": "compass"
               },
               {
-                "group": "Tutorials",
+                "group": "Resources",
+                "icon": "book",
                 "pages": [
+                  "introduction",
                   {
-                    "group": "Getting Started",
+                    "group": "Tutorials",
                     "pages": [
-                      "tutorials/index",
-                      "tutorials/api_fundamentals",
-                      "tutorials/postman-environment-guide",
-                      "tutorials/person-api-v1-deprecation",
-                      "tutorials/v3-migration-guide"
-                    ]
-                  },
-                  {
-                    "group": "CRM Tutorials",
-                    "pages": [
-                      "tutorials/hubspot",
-                      "tutorials/hubspot-prospecting",
-                      "tutorials/salesforce-contact",
-                      "tutorials/salesforce-company",
-                      "tutorials/zoho"
-                    ]
-                  },
-                  {
-                    "group": "Spreadsheet Tutorials",
-                    "pages": [
-                      "tutorials/sheets-contact",
-                      "tutorials/sheets-company",
-                      "tutorials/sheets-prospecting-contacts",
-                      "tutorials/sheets-prospecting-company"
-                    ]
-                  },
-                  {
-                    "group": "Automation Platforms",
-                    "pages": [
-                      "tutorials/albato",
-                      "tutorials/make",
-                      "tutorials/n8n",
-                      "tutorials/pipedream",
-                      "tutorials/workato1",
-                      "tutorials/workato2",
-                      "tutorials/zapier",
-                      "tutorials/clay-data",
-                      "tutorials/clay-lookalikes",
-                      "tutorials/clay-signals",
-                      "tutorials/clay-workflow"
-                    ]
-                  },
-                  {
-                    "group": "Signals & Recommendations",
-                    "pages": [
-                      "tutorials/signals",
-                      "tutorials/recommendations"
-                    ]
-                  },
-                  {
-                    "group": "Tables",
-                    "pages": [
-                      "tutorials/tables"
+                      {
+                        "group": "Getting Started",
+                        "pages": [
+                          "tutorials/index",
+                          "tutorials/api_fundamentals",
+                          "tutorials/postman-environment-guide",
+                          "tutorials/person-api-v1-deprecation",
+                          "tutorials/v3-migration-guide"
+                        ]
+                      },
+                      {
+                        "group": "CRM Tutorials",
+                        "pages": [
+                          "tutorials/hubspot",
+                          "tutorials/hubspot-prospecting",
+                          "tutorials/salesforce-contact",
+                          "tutorials/salesforce-company",
+                          "tutorials/zoho"
+                        ]
+                      },
+                      {
+                        "group": "Spreadsheet Tutorials",
+                        "pages": [
+                          "tutorials/sheets-contact",
+                          "tutorials/sheets-company",
+                          "tutorials/sheets-prospecting-contacts",
+                          "tutorials/sheets-prospecting-company"
+                        ]
+                      },
+                      {
+                        "group": "Automation Platforms",
+                        "pages": [
+                          "tutorials/albato",
+                          "tutorials/make",
+                          "tutorials/n8n",
+                          "tutorials/pipedream",
+                          "tutorials/workato1",
+                          "tutorials/workato2",
+                          "tutorials/zapier",
+                          "tutorials/clay-data",
+                          "tutorials/clay-lookalikes",
+                          "tutorials/clay-signals",
+                          "tutorials/clay-workflow"
+                        ]
+                      },
+                      {
+                        "group": "Signals & Recommendations",
+                        "pages": [
+                          "tutorials/signals",
+                          "tutorials/recommendations"
+                        ]
+                      },
+                      {
+                        "group": "Tables",
+                        "pages": [
+                          "tutorials/tables"
+                        ],
+                        "icon": "table"
+                      }
                     ],
-                    "icon": "table"
-                  }
-                ],
-                "icon": "graduation-cap"
-              },
-              {
-                "group": "FAQ",
-                "pages": [
-                  {
-                    "group": "API & Integration",
-                    "pages": [
-                      "faq/api"
-                    ]
+                    "icon": "graduation-cap"
                   },
                   {
-                    "group": "Data & Coverage",
+                    "group": "FAQ",
                     "pages": [
-                      "faq/data"
-                    ]
-                  },
-                  {
-                    "group": "Credits & Billing",
-                    "pages": [
-                      "faq/billing"
-                    ]
-                  },
-                  {
-                    "group": "MCP",
-                    "pages": [
-                      "faq/mcp"
+                      {
+                        "group": "API & Integration",
+                        "pages": [
+                          "faq/api"
+                        ]
+                      },
+                      {
+                        "group": "Data & Coverage",
+                        "pages": [
+                          "faq/data"
+                        ]
+                      },
+                      {
+                        "group": "Credits & Billing",
+                        "pages": [
+                          "faq/billing"
+                        ]
+                      },
+                      {
+                        "group": "MCP",
+                        "pages": [
+                          "faq/mcp"
+                        ]
+                      }
                     ]
                   }
                 ]
