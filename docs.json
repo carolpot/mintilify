@@ -47,36 +47,9 @@
       },
       {
         "tab": "Lusha Data",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "data-catalog/overview"
-            ]
-          },
-          {
-            "group": "Contact Data",
-            "pages": [
-              "data-catalog/contact-identity",
-              "data-catalog/contact-emails",
-              "data-catalog/contact-phones",
-              "data-catalog/contact-employment"
-            ]
-          },
-          {
-            "group": "Company Data",
-            "pages": [
-              "data-catalog/company-firmographics",
-              "data-catalog/company-technologies",
-              "data-catalog/company-funding"
-            ]
-          },
-          {
-            "group": "Signals",
-            "pages": [
-              "data-catalog/signal-types"
-            ]
-          }
+        "pages": [
+          "data-catalog/search-layer",
+          "data-catalog/deep-intelligence"
         ]
       },
       {

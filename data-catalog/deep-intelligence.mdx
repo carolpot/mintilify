@@ -1,0 +1,68 @@
+---
+title: "Deep Intelligence"
+description: "AI-driven recommendation engines and predictive scoring models available through the Lusha API — coverage, endpoints, and platform availability."
+---
+
+Deep Intelligence pairs your data with AI to deliver recommendations and predictive scores tailored to your ICP. Three recommendation engines and two predictive models, all available through the V3 API.
+
+## Recommendation engines
+
+<CardGroup cols={1}>
+
+<Card title="Recommendations">
+  AI-driven contact and company recommendations tailored to your ICP. Refreshes as your usage patterns evolve — the more you engage, the sharper the recommendations get.
+
+  **Global coverage:** 86% — records we can recommend with high confidence based on your seed list and recent engagement signals.
+
+  **Endpoints:** `POST /v3/contacts/lookalike` · `POST /v3/companies/lookalike`
+</Card>
+
+<Card title="ICP Hub">
+  Ideal Customer Profile matching and scoring hub. Consolidates fit signals into a single workspace and ranks accounts by likelihood-to-buy so reps work the right list first.
+
+  **Global coverage:** 82% — accounts where we have enough firmographic and contact data to score against your ICP criteria.
+</Card>
+
+<Card title="Lookalikes">
+  AI-powered discovery of contacts and companies similar to your best existing customers. Returns paginated results that can be piped directly into Enrich for full data.
+
+  **Global coverage:** 88% — records where similarity matching returns at least 100 high-confidence matches against your seed.
+
+  **Endpoints:** `POST /v3/contacts/lookalike` · `POST /v3/companies/lookalike`
+</Card>
+
+</CardGroup>
+
+## Predictive models
+
+<CardGroup cols={1}>
+
+<Card title="Website Visitors">
+  Intent signal derived from website visit activity matched to known companies in our identity graph. Surface accounts showing interest before they fill out a form.
+
+  **Global coverage:** 74% — visitor-to-company resolution rate from anonymous web traffic on enrolled domains.
+
+  **Endpoints:** `POST /v3/companies/website-visits` <span style={{ background: "#FEF3E0", color: "#92400E", borderRadius: "5px", padding: "2px 8px", fontSize: "0.72rem", fontWeight: 600, marginLeft: "6px" }}>BETA</span>
+</Card>
+
+<Card title="Predictive Scoring (TOF/MOF)">
+  Top-of-funnel and mid-of-funnel likelihood-to-convert scores based on historical conversion patterns from the Lusha network and your own pipeline data.
+
+  **Global coverage:** 68% — records where we have enough conversion signal to assign a confident TOF or MOF score.
+</Card>
+
+</CardGroup>
+
+## Platform availability
+
+| Feature | API | MCP | WS Enrich | WS Search |
+|---|---|---|---|---|
+| Recommendations | Live | Live | Live | N/A |
+| ICP Hub | Planned | Planned | Live | Planned |
+| Lookalikes | Live | Live | Live | Planned |
+| Website Visitors | Live | Live | Live | Planned |
+| Predictive Scoring (TOF/MOF) | Planned | Planned | Live | Not implemented |
+
+<Info>
+  All endpoints are under `https://api.lusha.com` and require an `api_key` header. See [authentication](/introduction).
+</Info>
