@@ -1,152 +1,142 @@
 ---
-title: "Lusha API Command Center"
-description: "Your gateway to seamless data enrichment and automation mastery — pick a tutorial below and unlock the full potential of Lusha's API ecosystem."
+title: "Tutorials"
+description: "Step-by-step guides for integrating the Lusha API with CRMs, spreadsheets, and automation platforms."
 ---
 
-<div align="center">
+Practical, end-to-end walkthroughs for common integrations. Pick a category below.
 
-*Your gateway to seamless data enrichment and automation mastery*
+## Getting Started
 
-**Ready to supercharge your workflows? Pick your adventure below and unlock the full potential of Lusha's API ecosystem.**
-
-</div>
-
----
-
-## Quick Start Zone
-
-<CardGroup cols={3}>
+<CardGroup cols={2}>
   <Card title="API Fundamentals" icon="book" href="/tutorials/api_fundamentals">
-    **Start here!** Master Lusha's RESTful architecture, authentication flows, and pro-level best practices in one comprehensive guide.
+    Authentication, request structure, and best practices — start here if you're new to the API.
   </Card>
 
-  <Card title="Postman Playground" icon="postman" href="/tutorials/postman-environment-guide">
-    **Test instantly!** Fire up our pre-configured Postman workspace and start experimenting with live endpoints in under 5 minutes.
+  <Card title="Postman Environment Guide" icon="paper-plane" href="/tutorials/postman-environment-guide">
+    Import the Lusha Postman workspace and start testing endpoints in minutes.
   </Card>
 
+  <Card title="V3 Migration Guide" icon="arrow-right-arrow-left" href="/tutorials/v3-migration-guide">
+    What changed between V2 and V3, and how to move an existing integration over.
+  </Card>
+
+  <Card title="Person API V1 Deprecation" icon="triangle-exclamation" href="/tutorials/person-api-v1-deprecation">
+    If you're still on the V1 Person API, what's changing and by when.
+  </Card>
+</CardGroup>
+
+## CRM Tutorials
+
+<CardGroup cols={2}>
+  <Card title="HubSpot" icon="hubspot" href="/tutorials/hubspot">
+    Auto-populate contact fields using HubSpot workflows and webhooks.
+  </Card>
+
+  <Card title="HubSpot Prospecting" icon="magnifying-glass" href="/tutorials/hubspot-prospecting">
+    Surface new prospects into HubSpot using the Prospecting API.
+  </Card>
+
+  <Card title="Salesforce: Enrich Contacts" icon="salesforce" href="/tutorials/salesforce-contact">
+    Auto-enrich new Leads and Contacts the moment they enter Salesforce.
+  </Card>
+
+  <Card title="Salesforce: Enrich Companies" icon="building" href="/tutorials/salesforce-company">
+    Add firmographic and competitive data to your Account records.
+  </Card>
+
+  <Card title="Zoho CRM" icon="puzzle-piece" href="/tutorials/zoho">
+    Configure webhooks that fill in missing contact fields automatically.
+  </Card>
+</CardGroup>
+
+## Spreadsheet Tutorials
+
+<CardGroup cols={2}>
+  <Card title="Google Sheets: Enrich Companies" icon="table-cells" href="/tutorials/sheets-company">
+    Turn a list of company domains into firmographic data inside a spreadsheet.
+  </Card>
+
+  <Card title="Google Sheets: Enrich Contacts" icon="table-cells" href="/tutorials/sheets-contact">
+    Turn basic contact info into full profiles with no code required.
+  </Card>
+
+  <Card title="Google Sheets: Prospect Contacts" icon="table-cells" href="/tutorials/sheets-prospecting-contacts">
+    Search for new contacts matching your ICP directly from a sheet.
+  </Card>
+
+  <Card title="Google Sheets: Prospect Companies" icon="table-cells" href="/tutorials/sheets-prospecting-company">
+    Filter for target companies and pull them into a sheet for enrichment.
+  </Card>
+</CardGroup>
+
+## Automation Platforms
+
+<CardGroup cols={2}>
+  <Card title="Zapier" icon="bolt" href="/tutorials/zapier">
+    Build Zaps that enrich contacts and companies automatically as they flow through your systems.
+  </Card>
+
+  <Card title="Workato: Enrich Contacts & Companies" icon="gears" href="/tutorials/workato1">
+    Configure recipes to enrich and sync contact and company data.
+  </Card>
+
+  <Card title="Workato: Prospecting Workflow" icon="diagram-project" href="/tutorials/workato2">
+    Search and enrich contacts using the Prospecting API inside Workato.
+  </Card>
+
+  <Card title="Make" icon="sliders" href="/tutorials/make">
+    Automate lead enrichment and company profiling with Make scenarios.
+  </Card>
+
+  <Card title="Pipedream" icon="code" href="/tutorials/pipedream">
+    Build custom workflows with prebuilt actions for enrichment and search.
+  </Card>
+
+  <Card title="n8n" icon="diagram-project" href="/tutorials/n8n">
+    Connect Lusha to 400+ apps using n8n's visual workflow builder.
+  </Card>
+
+  <Card title="Albato" icon="link" href="/tutorials/albato">
+    Enrich contacts and companies inside Albato automation flows.
+  </Card>
+
+  <Card title="Clay: Data Enrichment" icon="database" href="/tutorials/clay-data">
+    Add verified contact and firmographic data to a Clay table.
+  </Card>
+
+  <Card title="Clay: Lookalikes" icon="users" href="/tutorials/clay-lookalikes">
+    Generate lists of contacts or companies that match your closed-won accounts.
+  </Card>
+
+  <Card title="Clay: Signals" icon="bolt" href="/tutorials/clay-signals">
+    Surface hiring spikes, funding rounds, and traffic changes to prioritize accounts.
+  </Card>
+
+  <Card title="Clay: Suggested Workflows" icon="layer-group" href="/tutorials/clay-workflow">
+    Combine enrichment and signals to build account scoring and timing models.
+  </Card>
+</CardGroup>
+
+## Signals & Recommendations
+
+<CardGroup cols={2}>
   <Card title="Signals API" icon="bolt" href="/tutorials/signals">
-    **Real-time intent signals.** Surface job changes, promotions, and hiring spikes right inside your workflows.
+    Surface job changes, promotions, and hiring spikes inside your workflows.
   </Card>
 
   <Card title="Recommendations API" icon="lightbulb" href="/tutorials/recommendations">
-    **Find your next best prospects.** Get lookalike contacts or companies based on your best-fit customers.
+    Find lookalike contacts and companies based on your best-fit customers.
   </Card>
+</CardGroup>
 
+## Tables
+
+<CardGroup cols={2}>
   <Card title="Tables API" icon="table" href="/tutorials/tables">
-    **Persist your results.** Create and manage Workspace tables programmatically - search, enrich, and run columns without ever leaving the API.
+    Create and manage Workspace tables programmatically — search, enrich, and run columns without leaving the API.
   </Card>
 </CardGroup>
 
----
-
-## Connectors
-
-<CardGroup cols={2}>
-  <Card title="Zapier Automation" icon="bolt" href="/tutorials/zapier">
-    **Set & forget:** Build intelligent Zaps that automatically enrich contacts and companies as they flow through your systems.
-  </Card>
-
-  <Card title="Workato Enrich Contacts & Companies" icon="gears" href="/tutorials/workato1">
-    **Enterprise-grade:** Configure sophisticated workflows to enrich, and sync contact and company data.
-  </Card>
-
-  <Card title="Workato Prospecting Workflow" icon="diagram-project" href="/tutorials/workato2">
-    **Real-time magic:** Search and enrich contacts using Lusha's Prospecting API.
-  </Card>
-
-  <Card title="Make Automation" icon="sliders" href="/tutorials/make">
-    **Seamless workflows:** Automate lead enrichment and company profiling with powerful Make scenarios. Perfect for CRM integration.
-  </Card>
-
-  <Card title="Pipedream Integration" icon="code" href="/tutorials/pipedream">
-    **Developer-friendly:** Build custom workflows with 6 powerful actions - from contact enrichment to company search and profiling.
-  </Card>
-
-  <Card title="n8n Connector" icon="diagram-project" href="/tutorials/n8n">
-    **Open-source powerhouse:** Create powerful workflows using n8n's visual builder or custom code. Connect to 400+ apps with self-hosting option for complete data control.
-  </Card>
-
-  <Card title="Albato Connector" icon="link" href="/tutorials/albato">
-    **Connect everything:** Enrich contacts and companies automatically inside your Albato automation flows, with ready-to-run Plays to get started fast.
-  </Card>
-</CardGroup>
-
----
-
-## Clay Integration
-
-<CardGroup cols={2}>
-  <Card title="Data Enrichment" icon="database" href="/tutorials/clay-data">
-    **Enrich at scale:** Add verified contact details, firmographics, and growth signals to any Clay table by mapping a LinkedIn URL, email, or company domain.
-  </Card>
-
-  <Card title="Company & People Lookalikes" icon="users" href="/tutorials/clay-lookalikes">
-    **Clone your best customers:** Generate lists of up to 5,000 companies or contacts that match your closed-won accounts - no manual prospecting required.
-  </Card>
-
-  <Card title="Signals: High-Intent Accounts" icon="bolt" href="/tutorials/clay-signals">
-    **Real-time buying triggers:** Surface hiring spikes, funding rounds, and web traffic changes to prioritise accounts that are in motion and ready to engage.
-  </Card>
-
-  <Card title="Suggested Workflow Combinations" icon="layer-group" href="/tutorials/clay-workflow">
-    **Layer for impact:** Combine enrichments and signals to build account scoring models, identify warm accounts, and time outreach with precision.
-  </Card>
-</CardGroup>
-
----
-
-## CRM Superpowers
-
-<CardGroup cols={3}>
-  <Card title="HubSpot Enhancement" icon="hubspot" href="/tutorials/hubspot">
-    **Workflow wizardry:** Auto-populate contact fields using HubSpot workflows + custom webhooks for seamless data flow.
-  </Card>
-
-  <Card title="Salesforce: Contact Enrich" icon="salesforce" href="/tutorials/salesforce-contact">
-    **Contact data automation:** Build smart triggers that auto-enrich new Leads and Contacts the moment they enter your system.
-  </Card>
-
-  <Card title="Salesforce: Company Enrich" icon="building" href="/tutorials/salesforce-company">
-    **Account intelligence:** Transform your Account records with rich company data and competitive insights.
-  </Card>
-
-  <Card title="Zoho CRM Magic" icon="puzzle-piece" href="/tutorials/zoho">
-    **Smart webhooks:** Configure intelligent data flows that fill missing contact fields automatically.
-  </Card>
-</CardGroup>
-
----
-
-## Spreadsheet Automation
-
-<CardGroup cols={2}>
-  <Card title="Google Sheets: Company Enrich" icon="table-cells" href="/tutorials/sheets-company">
-    **Domain to data:** Transform company domains into rich business intelligence right inside your spreadsheets.
-  </Card>
-
-  <Card title="Google Sheets: Contact Enrich" icon="table-cells" href="/tutorials/sheets-contact">
-    **Instant enrichment:** Turn basic contact info into comprehensive profiles with zero coding required.
-  </Card>
-
-  <Card title="Google Sheets: Prospecting Contacts" icon="table-cells" href="/tutorials/sheets-prospecting-contacts">
-    **Search & Enrich:** Find new contacts that fit your ICP criteria.
-  </Card>
-
-  <Card title="Google Sheets: Prospecting Companies" icon="table-cells" href="/tutorials/sheets-prospecting-company">
-    **Search & Enrich:** Use filters to search for your ideal companies to enrich your database.
-  </Card>
-</CardGroup>
-
----
-
-<div align="center">
-
-## Need Help?
-
-**Can't find what you're looking for?**
-
-Full API Documentation • Q&A • [Support](mailto:support@lusha.com)
-
----
-
-</div>
+<Info>
+  Can't find what you're looking for? See the full [API reference](/api-reference/overview), the [FAQ](/faq/overview), or email [support@lusha.com](mailto:support@lusha.com).
+</Info>

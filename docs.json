@@ -43,7 +43,6 @@
     "tabs": [
       {
         "tab": "Home",
-        "icon": "house",
         "href": "/"
       },
       {
@@ -740,14 +739,12 @@
                 "group": "Resources",
                 "icon": "book",
                 "pages": [
-                  "introduction",
                   {
                     "group": "Tutorials",
                     "pages": [
                       {
                         "group": "Getting Started",
                         "pages": [
-                          "tutorials/index",
                           "tutorials/api_fundamentals",
                           "tutorials/postman-environment-guide",
                           "tutorials/person-api-v1-deprecation",
@@ -804,7 +801,7 @@
                         "icon": "table"
                       }
                     ],
-                    "icon": "graduation-cap"
+                    "root": "tutorials/index"
                   },
                   {
                     "group": "FAQ",
@@ -833,7 +830,8 @@
                           "faq/mcp"
                         ]
                       }
-                    ]
+                    ],
+                    "root": "faq/overview"
                   }
                 ]
               },
