@@ -30,6 +30,7 @@ The `errors` array is most commonly populated on `400` and `403` responses, wher
 | `402` Payment Required | Insufficient credits. | Your account has run out of credits, or otherwise requires payment before the request can be completed. Check your balance with the [account usage endpoint](/credits/overview). |
 | `403` Forbidden | Access denied. | Your account is inactive, or the request uses a feature your plan doesn't include — for example, `revealEmails`/`revealPhones` outside the Unified Credits plan (see below), or `excludeDnc` filtering outside a plan that supports it. |
 | `404` Not Found | The resource does not exist. | The endpoint path is incorrect or the requested record is not in Lusha's database. |
+| `409` Conflict | The request conflicts with existing state. | For example, creating a Table with a name that already exists on your account. See the [Tables API](/user-guide/lushas-api/tables-api). |
 | `412` Precondition Failed | The request body has invalid syntax. | For example, a full name field that doesn't contain a valid first and last name. |
 | `429` Too Many Requests | Rate limit exceeded. | You exceeded a per-second, per-minute, hourly, or daily quota, or a trial account limit. See [rate limits](/rate-limiting). |
 | `451` Unavailable for Legal Reasons | Legal or compliance restriction. | The requested contact data cannot be returned due to a GDPR or other legal/regulatory requirement. |
