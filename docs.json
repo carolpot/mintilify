@@ -12,6 +12,10 @@
     "light": "/logo-light.svg",
     "dark": "/logo-dark.svg"
   },
+  "contextual": {
+    "options": ["copy", "assistant", "chatgpt", "claude"],
+    "display": "header"
+  },
   "navbar": {
     "primary": {
       "type": "button",
