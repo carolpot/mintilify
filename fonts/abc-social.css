@@ -36,3 +36,15 @@ body, p, li, td, th, input, button, select, textarea {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'ABC Social', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
+
+/* Sticky sidebar dropdown selector */
+[class*="DropdownButton"],
+[class*="dropdown-button"],
+[class*="SidebarDropdown"] > button,
+[data-testid="sidebar-dropdown-button"],
+nav [class*="dropdown"] > button:first-child {
+  position: sticky !important;
+  top: 0;
+  z-index: 10;
+  background: inherit;
+}
