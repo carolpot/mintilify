@@ -107,8 +107,13 @@ mode: "custom"
 
   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "18px" }}>
 
+    {/* API & Developers */}
     <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "12px", padding: "22px 20px" }}>
-      <div className="bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400" style={{ width: "32px", height: "32px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", marginBottom: "12px" }}>◆</div>
+      <div className="bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400" style={{ width: "40px", height: "40px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "14px" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+        </svg>
+      </div>
       <h3 className="text-gray-900 dark:text-gray-100" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "1rem", fontWeight: 600, margin: "0 0 6px" }}>API &amp; Developers</h3>
       <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>REST API reference, authentication, rate limits, and the Tables API.</p>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -116,39 +121,55 @@ mode: "custom"
         <a href="/authentication" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Authentication</a>
         <a href="/enrichment/search-and-enrich-contacts" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Search &amp; Enrich API</a>
         <a href="/prospecting/overview" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Prospecting API</a>
-        <a href="/user-guide/lushas-api/tables-api" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Tables API</a>
+        <a href="/tutorials/index" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Tutorials</a>
         <a href="/error-codes" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Error codes</a>
       </div>
     </div>
 
+    {/* User Guide */}
     <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "12px", padding: "22px 20px" }}>
-      <div className="bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" style={{ width: "32px", height: "32px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", marginBottom: "12px" }}>▤</div>
+      <div className="bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" style={{ width: "40px", height: "40px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "14px" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+      </div>
       <h3 className="text-gray-900 dark:text-gray-100" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "1rem", fontWeight: 600, margin: "0 0 6px" }}>User Guide</h3>
       <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>Platform features, browser extensions, and CRM integrations.</p>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        <a href="/user-guide/overview" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Platform overview</a>
-        <a href="/user-guide/chrome-extension" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Chrome extension</a>
-        <a href="/user-guide/salesforce" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Salesforce integration</a>
-        <a href="/user-guide/hubspot" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>HubSpot integration</a>
-        <a href="/user-guide/team-management" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Team management</a>
-        <a href="/user-guide/billing-and-plans" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Billing &amp; plans</a>
+        <a href="/user-guide/getting-started/introduction-to-lusha" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Getting started</a>
+        <a href="/user-guide/building-your-workspace-tables/how-to-use-the-ai-chat-to-build-a-table" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Workspace &amp; tables</a>
+        <a href="/user-guide/integrations-basics/available-crm-integrations" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>CRM integrations</a>
+        <a href="/user-guide/extension/getting-started-with-lushas-extension" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Lusha extension</a>
+        <a href="/user-guide/team-management/user-roles-and-permissions" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Team &amp; admin</a>
+        <a href="/user-guide/billing-and-payments/billing-faq" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Billing &amp; plans</a>
       </div>
     </div>
 
+    {/* Data & Reference */}
     <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "12px", padding: "22px 20px" }}>
-      <div className="bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400" style={{ width: "32px", height: "32px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", marginBottom: "12px" }}>◈</div>
+      <div className="bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400" style={{ width: "40px", height: "40px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "14px" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+        </svg>
+      </div>
       <h3 className="text-gray-900 dark:text-gray-100" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "1rem", fontWeight: 600, margin: "0 0 6px" }}>Data &amp; Reference</h3>
-      <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>Field definitions, coverage, signal types, and MCP tools.</p>
+      <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>Field definitions, coverage, signal types, and data freshness.</p>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <a href="/data-catalog/search-layer" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Search Layer (data catalog)</a>
         <a href="/data-catalog/deep-intelligence" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Deep Intelligence</a>
-        <a href="/tutorials/index" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Tutorials</a>
-        <a href="/faq/api" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>FAQ</a>
+        <a href="/signals/overview" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Signals overview</a>
+        <a href="/filters/contact-filters" className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.825rem", fontWeight: 500, textDecoration: "none" }}>Filters reference</a>
       </div>
     </div>
 
+    {/* MCP & AI Agents */}
     <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700" style={{ borderRadius: "12px", padding: "22px 20px" }}>
-      <div className="bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" style={{ width: "32px", height: "32px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", marginBottom: "12px" }}>✦</div>
+      <div className="bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400" style={{ width: "40px", height: "40px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "14px" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+          <path d="M20 3v4M22 5h-4M4 17v2M5 18H3"/>
+        </svg>
+      </div>
       <h3 className="text-gray-900 dark:text-gray-100" style={{ fontFamily: "'Space Grotesk', ui-sans-serif, system-ui, sans-serif", fontSize: "1rem", fontWeight: 600, margin: "0 0 6px" }}>MCP &amp; AI Agents</h3>
       <p className="text-gray-500 dark:text-gray-400" style={{ fontSize: "0.825rem", lineHeight: 1.55, margin: "0 0 16px" }}>Connect Lusha to Claude, Cursor, and any MCP-compatible client.</p>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>

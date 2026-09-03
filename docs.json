@@ -51,9 +51,135 @@
       },
       {
         "tab": "Lusha Data",
-        "pages": [
-          "data-catalog/search-layer",
-          "data-catalog/deep-intelligence"
+        "groups": [
+          {
+            "group": "Data Catalog",
+            "icon": "database",
+            "pages": [
+              "data-catalog/search-layer",
+              "data-catalog/deep-intelligence"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "User Guide",
+        "groups": [
+          {
+            "group": "Overview",
+            "icon": "house",
+            "pages": ["user-guide/index"]
+          },
+          {
+            "group": "Getting Started",
+            "icon": "rocket",
+            "pages": [
+              "user-guide/getting-started/introduction-to-lusha",
+              "user-guide/getting-started/lushas-key-features-at-a-glance",
+              "user-guide/getting-started/how-credits-work-in-lusha",
+              "user-guide/getting-started/how-to-contact-lusha-support"
+            ]
+          },
+          {
+            "group": "Workspace & Tables",
+            "icon": "table",
+            "pages": [
+              "user-guide/building-your-workspace-tables/how-to-use-the-ai-chat-to-build-a-table",
+              "user-guide/building-your-workspace-tables/using-workspace-filters-contact-and-company-filter-panel",
+              "user-guide/building-your-workspace-tables/how-to-build-your-first-api-request-using-tables",
+              "user-guide/managing-and-exporting-data/exporting-from-a-workspace-table",
+              "user-guide/managing-and-exporting-data/adding-contacts-to-an-existing-workspace-table"
+            ]
+          },
+          {
+            "group": "Prospecting & Lists",
+            "icon": "magnifying-glass",
+            "pages": [
+              "user-guide/shared/filters/filters-breakdown-how-to-reach-your-icp",
+              "user-guide/add-contacts/how-to-add-contacts-to-a-sequence",
+              "user-guide/event-based-recommendations/activity-based-recommendations",
+              "user-guide/enriching-with-data-and-signals/workspace-signals-tracking-buying-intent-and-contact-changes",
+              "user-guide/enriching-with-data-and-signals/workspace-enrichment-lusha-data-vs-ai-data-columns"
+            ]
+          },
+          {
+            "group": "Data Enrichment",
+            "icon": "wand-magic-sparkles",
+            "pages": [
+              "user-guide/csv-enrichment/csv-enrichment",
+              "user-guide/csv-enrichment/csv-enrichment-how-matching-and-match-rates-work",
+              "user-guide/sales-navigator-bulk-enrichment/bulk-enrichment-over-linkedin-sales-navigator"
+            ]
+          },
+          {
+            "group": "CRM Integrations",
+            "icon": "puzzle-piece",
+            "pages": [
+              "user-guide/integrations-basics/available-crm-integrations",
+              "user-guide/salesforce/salesforce-integration",
+              "user-guide/hubspot/hubspot-integration",
+              "user-guide/dynamics/ms-dynamics-field-mapping",
+              "user-guide/pipedrive/pipedrive-integration",
+              "user-guide/salesloft/salesloft-integration",
+              "user-guide/bullhorn/bullhorn-integration",
+              "user-guide/outreach/outreach-integration"
+            ]
+          },
+          {
+            "group": "Automation & Webhooks",
+            "icon": "bolt",
+            "pages": [
+              "user-guide/automations-connectors/lusha-connectors-centralized-automation-hub",
+              "user-guide/webhooks/how-to-set-up-webhooks-in-lusha"
+            ]
+          },
+          {
+            "group": "Lusha Products",
+            "icon": "grid-2",
+            "pages": [
+              "user-guide/extension/getting-started-with-lushas-extension",
+              "user-guide/lusha-everywhere/what-is-lusha-everywhere",
+              "user-guide/getting-started-with-engage/what-is-lusha-engage",
+              "user-guide/getting-started-with-conversations/lusha-conversations-overview",
+              "user-guide/ai-recommendations/how-ai-recommendations-work",
+              "user-guide/mcp/lusha-model-context-protocol-mcp-server"
+            ]
+          },
+          {
+            "group": "Team & Administration",
+            "icon": "users",
+            "pages": [
+              "user-guide/team-management/user-roles-and-permissions",
+              "user-guide/manage-your-users/how-to-invite-a-user-to-your-plan",
+              "user-guide/manage-your-team-capabilities/how-to-change-roles-within-your-account",
+              "user-guide/usage-analytics/understanding-the-analytics-dashboard"
+            ]
+          },
+          {
+            "group": "Billing & Account",
+            "icon": "receipt",
+            "pages": [
+              "user-guide/billing-and-payments/billing-faq",
+              "user-guide/plans-and-upgrades/how-to-upgrade-your-plan"
+            ]
+          },
+          {
+            "group": "Privacy & Security",
+            "icon": "shield-halved",
+            "pages": [
+              "user-guide/security/lusha-security-overview",
+              "user-guide/privacy-and-compliance/how-can-i-ensure-compliance-with-privacy-laws-when-using-lushas-data-for-b2b-out",
+              "user-guide/trust-and-compliance/lusha-conversations-data-security-and-compliance"
+            ]
+          },
+          {
+            "group": "Help & Troubleshooting",
+            "icon": "circle-question",
+            "pages": [
+              "user-guide/performance-and-troubleshooting/email-limits-best-practices",
+              "user-guide/getting-started/feature-requests"
+            ]
+          }
         ]
       },
       {
