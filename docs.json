@@ -8,6 +8,9 @@
     "dark": "#be97ff"
   },
   "favicon": "/favicon.png",
+  "custom": {
+    "stylesheets": ["/fonts/abc-social.css"]
+  },
   "logo": {
     "light": "/logo-light.svg",
     "dark": "/logo-dark.svg"
