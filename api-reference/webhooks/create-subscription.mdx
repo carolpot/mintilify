@@ -8,7 +8,7 @@ openapi: "post /api/subscriptions"
 Send a single request to subscribe one or more contacts or companies to real-time signal notifications. Each subscription links an entity to a webhook URL and the set of signal types you want to receive. Lusha delivers a signed JSON payload to your endpoint whenever a matching signal fires.
 
 <Warning>
-  Your account must have a webhook secret before deliveries can be received. Generate one by calling `POST /api/account/secret/regenerate` and store it securely — it is shown only once.
+  Your account must have a webhook secret before deliveries can be received. Generate one by calling `POST /api/account/secret/regenerate` and store it securely - it is shown only once.
 </Warning>
 
 **Endpoint:** `POST https://api.lusha.com/api/subscriptions`
@@ -32,7 +32,7 @@ Send a single request to subscribe one or more contacts or companies to real-tim
     </ParamField>
 
     <ParamField body="defaults.signalTypes" type="string[]">
-      Default signal type keys for all subscriptions in the request. Available signals depend on entity type — see [Contact Signal Types](/api-reference/signals/contact-signal-types) or [Company Signal Types](/api-reference/signals/company-signal-types) for the full list. Can be overridden per subscription item.
+      Default signal type keys for all subscriptions in the request. Available signals depend on entity type - see [Contact Signal Types](/api-reference/signals/contact-signal-types) or [Company Signal Types](/api-reference/signals/company-signal-types) for the full list. Can be overridden per subscription item.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -134,7 +134,7 @@ curl --request POST \
 </ResponseField>
 
 <ResponseField name="results" type="object[]">
-  One entry per item in the request `subscriptions` array, in the same order. Each entry has `index` and `success`, plus either a `subscription` object (on success) or an `error` object with `code` and `message` (on failure) — for example a `DUPLICATE_SUBSCRIPTION` error if the entity is already subscribed.
+  One entry per item in the request `subscriptions` array, in the same order. Each entry has `index` and `success`, plus either a `subscription` object (on success) or an `error` object with `code` and `message` (on failure) - for example a `DUPLICATE_SUBSCRIPTION` error if the entity is already subscribed.
 </ResponseField>
 
 <Note>

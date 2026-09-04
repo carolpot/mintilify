@@ -10,7 +10,7 @@ Webhook subscriptions tell Lusha which entities to watch and where to send notif
 
 <Steps>
   <Step title="Generate your account secret">
-    Call `POST /api/account/secret/regenerate` to create your account-level webhook secret. Store it securely — it is displayed only once and is required to verify every incoming delivery.
+    Call `POST /api/account/secret/regenerate` to create your account-level webhook secret. Store it securely - it is displayed only once and is required to verify every incoming delivery.
 
     ```bash
     POST https://api.lusha.com/api/account/secret/regenerate
@@ -182,7 +182,7 @@ Returns a single webhook subscription by its ID.
 
 **`PATCH /api/subscriptions/{id}`**
 
-Updates an existing subscription. All fields are optional — include only the fields you want to change.
+Updates an existing subscription. All fields are optional - include only the fields you want to change.
 
 ### Reactivating a disabled subscription
 
@@ -197,7 +197,7 @@ If a subscription was disabled after exhausting retries, set `isActive: true` to
 Set `regenerateSecret: true` in the request body to rotate your webhook secret. Keep in mind:
 
 - The new secret **affects all subscriptions** for your account
-- The secret is **shown only once** in the response — store it immediately
+- The secret is **shown only once** in the response - store it immediately
 - The old secret is **immediately invalidated**
 
 ---
@@ -233,8 +233,8 @@ Choose a test mode using the `mode` query parameter, based on what you want to v
 
 | Mode | What it tests |
 |------|---------------|
-| `direct` | HTTP reachability only — validates that your URL responds correctly |
-| `kafka` | Fanout handler only — validates message processing without a full delivery |
+| `direct` | HTTP reachability only - validates that your URL responds correctly |
+| `kafka` | Fanout handler only - validates message processing without a full delivery |
 | `full` | Complete end-to-end delivery pipeline (default) |
 
 Test payloads use mock data and do not trigger credit charges.

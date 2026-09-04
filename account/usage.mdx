@@ -1,7 +1,7 @@
 ---
 title: "Monitor account usage with GET /v3/account/usage"
 sidebarTitle: "Usage"
-description: "Get a full snapshot of your account: credit balance, rate limits, plan details, and per-action credit pricing — all in a single call."
+description: "Get a full snapshot of your account: credit balance, rate limits, plan details, and per-action credit pricing - all in a single call."
 ---
 
 The account usage endpoint gives you a real-time view of your entire account status in one call: your credit balance, your rate-limit usage across every time window, your plan details, and the current credit price of every billable action. Use it to stay ahead of plan limits, reconcile billing, and drive alerting in production pipelines.
@@ -9,7 +9,7 @@ The account usage endpoint gives you a real-time view of your entire account sta
 **Endpoint:** `GET https://api.lusha.com/v3/account/usage`
 
 <Warning>
-  This endpoint has its own rate limit — **5 requests per minute** — lower than most other V3 endpoints. Do not poll it on every API call; fetch it on a schedule or before starting a large batch job.
+  This endpoint has its own rate limit - **5 requests per minute** - lower than most other V3 endpoints. Do not poll it on every API call; fetch it on a schedule or before starting a large batch job.
 </Warning>
 
 ## Example request
@@ -71,7 +71,7 @@ The response has four top-level sections:
 | `credits` | Your account-wide credit balance: `total`, `used`, and `remaining` for the current period. |
 | `rateLimits` | Your usage against the `daily`, `hourly`, and `minute` rate-limit windows. Any window can be `null` if it doesn't apply to your plan. Each populated window reports `limit`, `used`, `remaining`, and `resetsAt`. |
 | `plan` | Your plan `category`, `renewalType`, and the `startDate`/`endDate` of the current term. |
-| `pricing` | A map of billing action name to `{ credits, perQuantity }` — the current credit cost of every billable action on your plan (for example, `api_search`, `reveal_company`, lookalikes, signals, and per-data-point contact enrichment). |
+| `pricing` | A map of billing action name to `{ credits, perQuantity }` - the current credit cost of every billable action on your plan (for example, `api_search`, `reveal_company`, lookalikes, signals, and per-data-point contact enrichment). |
 
 <Note>
   This is a significant shape change from the pre-V3 endpoint, which returned only a flat `usage` object keyed by credit type. If you have code that reads `response.usage.bulkCredits`, update it to read `response.credits`, `response.rateLimits`, `response.plan`, and `response.pricing` instead.
@@ -79,11 +79,11 @@ The response has four top-level sections:
 
 ## Use cases
 
-- **Monitor consumption** — track `credits.used` over time to understand which workflows burn through credits fastest.
-- **Avoid plan limit interruptions** — check `credits.remaining` before starting a large prospecting or enrichment job, and split or defer the job if it's running low.
-- **Track rate-limit headroom** — check `rateLimits` before a batch run instead of guessing, or in addition to reading the `x-rate-limit-*` response headers documented in [Rate Limiting](/rate-limiting).
-- **Support billing reconciliation** — pull `plan` and `pricing` at the end of a billing period to cross-check against your invoice.
-- **Price out a workflow before running it** — look up the relevant key in `pricing` to estimate the credit cost of a batch job before you run it.
+- **Monitor consumption** - track `credits.used` over time to understand which workflows burn through credits fastest.
+- **Avoid plan limit interruptions** - check `credits.remaining` before starting a large prospecting or enrichment job, and split or defer the job if it's running low.
+- **Track rate-limit headroom** - check `rateLimits` before a batch run instead of guessing, or in addition to reading the `x-rate-limit-*` response headers documented in [Rate Limiting](/rate-limiting).
+- **Support billing reconciliation** - pull `plan` and `pricing` at the end of a billing period to cross-check against your invoice.
+- **Price out a workflow before running it** - look up the relevant key in `pricing` to estimate the credit cost of a batch job before you run it.
 
 ## Recommendations for production use
 

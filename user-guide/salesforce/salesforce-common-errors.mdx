@@ -17,7 +17,7 @@ To fix this:
 
 1. Ask your Salesforce Admin to increase the daily API limit. They can also adjust it in Lusha via **Settings → Integrations → Salesforce → [API request limit](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesforce/dataEnrichment)**.
 2. After changing the limit, disconnect and reconnect the Lusha–Salesforce integration for the update to take effect.
-3. Alternatively, wait 24 hours — the API limit resets daily.
+3. Alternatively, wait 24 hours - the API limit resets daily.
 
 ## Lead assignment rules issue
 
@@ -32,7 +32,7 @@ To fix this, your Salesforce Admin needs to add a new rule to bypass the existin
 
 ## Bad value for restricted picktable field
 
-This error means the value Lusha is trying to push to a restricted picktable field in Salesforce doesn't match any of the allowed values in that table. This often comes down to case sensitivity or small differences in how values are written — for example, Lusha sends "Russia" but Salesforce expects "Russian Federation".
+This error means the value Lusha is trying to push to a restricted picktable field in Salesforce doesn't match any of the allowed values in that table. This often comes down to case sensitivity or small differences in how values are written - for example, Lusha sends "Russia" but Salesforce expects "Russian Federation".
 
 To fix this, update your Lusha field mapping so the value matches exactly what's configured in the Salesforce picktable.
 
@@ -88,9 +88,9 @@ This error means the Salesforce user who owns the existing record has been deact
 
 To fix this, create a new Salesforce user and reassign records from deactivated owners, or enable the **Update Records with Inactive Owners** permission as described above.
 
-## Salesforce session keeps expiring — users are being logged out
+## Salesforce session keeps expiring - users are being logged out
 
-Lusha's Salesforce integration uses an OAuth connection. If your Salesforce org has a short session timeout policy, that policy can also apply to the OAuth token — causing the integration to lose its connection and silently log users out. This is not a Lusha bug; it's a Salesforce org configuration issue.
+Lusha's Salesforce integration uses an OAuth connection. If your Salesforce org has a short session timeout policy, that policy can also apply to the OAuth token - causing the integration to lose its connection and silently log users out. This is not a Lusha bug; it's a Salesforce org configuration issue.
 
 Users experiencing this typically see one or more of the following:
 
@@ -104,7 +104,7 @@ A Salesforce Admin needs to set the OAuth session policy for the Lusha connected
 
 1. In Salesforce Setup, go to **Apps → Connected Apps → Manage Connected Apps**.
 2. Find **Lusha** (or **Lusha Push to Salesforce**) and click **Edit Policies**.
-3. Under **Session Policies**, set **Timeout Value** to **24 hours** — or the longest value your organisation's policy permits.
+3. Under **Session Policies**, set **Timeout Value** to **24 hours** - or the longest value your organisation's policy permits.
 4. Save the changes.
 
 <Warning>
@@ -115,6 +115,6 @@ If your Salesforce org enforces a session timeout at the profile or org level th
 
 1. Go to **[Integrations](https://dashboard.lusha.com/lusha-integrations)** in your Lusha dashboard.
 2. Click **Connect** next to Salesforce and complete the OAuth flow.
-3. Your field mapping and settings are preserved — no reconfiguration is needed after reconnecting.
+3. Your field mapping and settings are preserved - no reconfiguration is needed after reconnecting.
 
 If none of the above resolves your issue, contact Lusha Support using the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com).

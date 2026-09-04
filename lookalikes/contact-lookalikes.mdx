@@ -24,7 +24,7 @@ Each entry in `seeds.contacts` needs `firstName`, `lastName`, and at least one o
 The endpoint uses a `dedupeSessionId` to track which contacts have already been returned. Follow this pattern to retrieve more results across multiple calls.
 
 <Steps>
-  <Step title="First call — no dedupeSessionId">
+  <Step title="First call - no dedupeSessionId">
     Send your seed contacts without a `dedupeSessionId`. The server creates a new session and returns the first batch of lookalikes along with a `dedupeSessionId` you will use in the next call.
 
     ```json
@@ -35,7 +35,7 @@ The endpoint uses a `dedupeSessionId` to track which contacts have already been 
     }
     ```
   </Step>
-  <Step title="Subsequent calls — pass the session ID">
+  <Step title="Subsequent calls - pass the session ID">
     Include the `dedupeSessionId` returned in the previous response. The server skips contacts it has already returned for this session.
 
     ```json
@@ -130,13 +130,13 @@ curl --request POST \
 }
 ```
 
-The response always includes `dedupeSessionId` and `meta.hasMore` — carry `dedupeSessionId` forward and check `hasMore` to decide whether to keep paging.
+The response always includes `dedupeSessionId` and `meta.hasMore` - carry `dedupeSessionId` forward and check `hasMore` to decide whether to keep paging.
 
 Results are lightweight previews (name, current company, job title, location). Pipe each `id` into [Enrich Contacts](/api-reference/enrich/enrich-contacts) to retrieve emails and phone numbers.
 
 ## Excluding specific contacts
 
-Pass an `exclude` object — shaped like `seeds` — to filter out contacts you already own or do not want to see, regardless of session state. The server applies your exclusions on top of session-level deduplication on every call.
+Pass an `exclude` object - shaped like `seeds` - to filter out contacts you already own or do not want to see, regardless of session state. The server applies your exclusions on top of session-level deduplication on every call.
 
 ```json
 {
@@ -152,8 +152,8 @@ Pass an `exclude` object — shaped like `seeds` — to filter out contacts you 
 
 ## Use cases
 
-- **Expand total addressable market** — start from your top-performing contacts and discover similarly qualified prospects you have not yet reached.
-- **Fill pipeline gaps** — when a segment goes cold, use lookalikes to quickly identify new prospects with a comparable profile.
+- **Expand total addressable market** - start from your top-performing contacts and discover similarly qualified prospects you have not yet reached.
+- **Fill pipeline gaps** - when a segment goes cold, use lookalikes to quickly identify new prospects with a comparable profile.
 
 <Tip>
   Seed the endpoint with your closed-won contacts for the best match quality. The more specific and consistent the seed set, the more relevant the lookalike results.

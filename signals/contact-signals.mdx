@@ -4,7 +4,7 @@ sidebarTitle: "Contact Signals"
 description: "Fetch job-change and promotion signals for up to 100 contacts per request using their Lusha contact IDs."
 ---
 
-Contact signals tell you when someone in your pipeline or CRM has changed jobs or received a promotion. One endpoint takes up to 100 Lusha contact IDs and the signal types you want, and returns everything that matched — no separate lookup or search step.
+Contact signals tell you when someone in your pipeline or CRM has changed jobs or received a promotion. One endpoint takes up to 100 Lusha contact IDs and the signal types you want, and returns everything that matched - no separate lookup or search step.
 
 <Note>
   Signals are charged per matched signal per result. Request only the signal types you need.
@@ -69,7 +69,7 @@ Send 1–100 Lusha contact IDs per request along with the `signalTypes` you want
 }
 ```
 
-Matched events for each requested signal type appear directly on the result under that type's key (`promotion`, `companyChange`) — there's no wrapper object to unpack.
+Matched events for each requested signal type appear directly on the result under that type's key (`promotion`, `companyChange`) - there's no wrapper object to unpack.
 
 ## If you don't have contact IDs yet
 
@@ -86,6 +86,6 @@ Contact Signals only accepts Lusha contact IDs. If you're starting from a Linked
 
 ## Related pages
 
-- [Signals overview](/signals/overview) — the consolidated signals model, credits, and delivery options
-- [Company signals](/signals/company-signals) — retrieve signals for companies
-- [API reference: Contact Signals](/api-reference/signals/contact-signals) — full request/response schema
+- [Signals overview](/signals/overview) - the consolidated signals model, credits, and delivery options
+- [Company signals](/signals/company-signals) - retrieve signals for companies
+- [API reference: Contact Signals](/api-reference/signals/contact-signals) - full request/response schema

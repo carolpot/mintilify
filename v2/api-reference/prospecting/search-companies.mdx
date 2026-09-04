@@ -1,11 +1,11 @@
 ---
-title: "POST /prospecting/company/search — Search companies"
+title: "POST /prospecting/company/search - Search companies"
 sidebarTitle: "POST /prospecting/company/search"
 description: "Search Lusha's B2B company database using firmographic filters: industry, size, revenue, location, technologies, intent topics, and buying signals."
 openapi: "post /prospecting/company/search"
 ---
 
-{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/company/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
+{/* VERIFY: live site and openapi.json disagree here - docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/companies/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/company/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
 Use this endpoint to find companies in Lusha's database that match your target account criteria. Supply firmographic filters such as industry, employee size, revenue range, technologies in use, and more to build a focused account list. The response includes company IDs you then pass to the [Enrich Companies](/v2/api-reference/prospecting/enrich-companies) endpoint to retrieve full firmographic profiles. This is **step 2** of the three-step prospecting flow.
 
@@ -75,8 +75,8 @@ POST https://api.lusha.com/prospecting/company/search
           Office location filters based on all known company locations (not just HQ), as reported by LinkedIn.
 
           Each object may include:
-          - `country` (string) — required
-          - `state` (string) — optional
+          - `country` (string) - required
+          - `state` (string) - optional
 
           Example: `[{ "country": "United States", "state": "California" }, { "country": "Germany" }]`
         </ParamField>
@@ -211,7 +211,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="requestId" type="string">
   Unique ID for this search. Pass this to the Enrich Companies endpoint as `requestId`.
@@ -301,10 +301,10 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Validation failed — check your request body for missing or invalid fields. |
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `429` | Too many requests — you have exceeded the rate limit. |
-| `500` | Internal server error — retry with exponential backoff. |
+| `400` | Validation failed - check your request body for missing or invalid fields. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `429` | Too many requests - you have exceeded the rate limit. |
+| `500` | Internal server error - retry with exponential backoff. |
 
 <ResponseExample>
 

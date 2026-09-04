@@ -19,9 +19,9 @@ Lusha Sequences sends email through your connected Gmail or Outlook account, so 
 
 Have your IT or DNS administrator confirm that your domain has the following records in place:
 
-- **SPF** — authorizes your email provider's servers to send on behalf of your domain
-- **DKIM** — adds a digital signature that receiving servers use to verify the email's integrity
-- **DMARC** — tells providers what to do when SPF or DKIM checks fail
+- **SPF** - authorizes your email provider's servers to send on behalf of your domain
+- **DKIM** - adds a digital signature that receiving servers use to verify the email's integrity
+- **DMARC** - tells providers what to do when SPF or DKIM checks fail
 
 For **Google Workspace**, these are configured in the Google Admin Console under Apps → Google Workspace → Gmail → Authenticate email.
 
@@ -56,7 +56,7 @@ Spam filters score email content for known trigger patterns. Common causes:
 High bounce rates damage your sender reputation quickly. Before launching a sequence:
 
 1. Use Lusha's email confidence score to filter out low-confidence addresses
-2. Remove contacts with generic mailboxes (info@, support@, contact@) — these rarely convert and often cause spam complaints
+2. Remove contacts with generic mailboxes (info@, support@, contact@) - these rarely convert and often cause spam complaints
 3. Remove contacts who have previously bounced or unsubscribed
 
 ## Fix 5: Warm up a new mailbox

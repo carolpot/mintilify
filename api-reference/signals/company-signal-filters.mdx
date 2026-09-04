@@ -5,7 +5,7 @@ description: "Returns all available filter types for company signals and whether
 openapi: "get /v3/companies/signals/filters"
 ---
 
-This is the discovery endpoint for company signal filters. Call it first to learn which filter types exist and whether each one needs a `query` string — then call [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) with a specific `filterType` to retrieve the actual values.
+This is the discovery endpoint for company signal filters. Call it first to learn which filter types exist and whether each one needs a `query` string - then call [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) with a specific `filterType` to retrieve the actual values.
 
 ## Endpoint
 
@@ -31,7 +31,7 @@ curl --request GET \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="availableFilters" type="object[]">
   One entry per available filter type.
@@ -61,7 +61,7 @@ curl --request GET \
 </ResponseExample>
 
 <Info>
-  `hiringByLocations` requires a `query` of 2–256 characters — it's a text-search filter rather than a fixed list. `newsEventTypes` and `hiringByDepartments` return their full value list without a query.
+  `hiringByLocations` requires a `query` of 2–256 characters - it's a text-search filter rather than a fixed list. `newsEventTypes` and `hiringByDepartments` return their full value list without a query.
 </Info>
 
 ---
@@ -70,11 +70,11 @@ curl --request GET \
 
 | Status | Meaning |
 |--------|---------|
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `403` | Forbidden — account inactive or V3 access not enabled. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `403` | Forbidden - account inactive or V3 access not enabled. |
 
 ## Related pages
 
-- [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) — retrieve the value list for a specific filter type
-- [Get Company Signal Types](/api-reference/signals/company-signal-types) — the full list of `signalTypes` these filter categories relate to
-- [Company Signals](/api-reference/signals/company-signals) — retrieve signal events for specific companies
+- [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) - retrieve the value list for a specific filter type
+- [Get Company Signal Types](/api-reference/signals/company-signal-types) - the full list of `signalTypes` these filter categories relate to
+- [Company Signals](/api-reference/signals/company-signals) - retrieve signal events for specific companies

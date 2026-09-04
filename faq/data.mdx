@@ -10,11 +10,11 @@ description: "Common questions about Lusha's data sources, coverage, accuracy, a
 </Accordion>
 
 <Accordion title="How much data does Lusha cover?">
-  Lusha's data catalog spans roughly 290 million contacts and 29 million companies, across around 98 verified contact and company fields — split between "Data Points" (static verified attributes, such as job title, industry, or revenue) and "Signals" (real-time events, such as hiring surges, role changes, or funding news).
+  Lusha's data catalog spans roughly 290 million contacts and 29 million companies, across around 98 verified contact and company fields - split between "Data Points" (static verified attributes, such as job title, industry, or revenue) and "Signals" (real-time events, such as hiring surges, role changes, or funding news).
 </Accordion>
 
 <Accordion title="How fresh is the data?">
-  Most Data Points refresh on a regular cadence (commonly weekly). Signal-driven fields — like a contact's current job — update as soon as the underlying signal (a job change, a company change) is detected. The `updateDate` field on any record shows when it was last verified. Signal lookback defaults to 6 months, configurable via `signalsStartDate` (REST API) or `startDate` (MCP signals tools).
+  Most Data Points refresh on a regular cadence (commonly weekly). Signal-driven fields - like a contact's current job - update as soon as the underlying signal (a job change, a company change) is detected. The `updateDate` field on any record shows when it was last verified. Signal lookback defaults to 6 months, configurable via `signalsStartDate` (REST API) or `startDate` (MCP signals tools).
 </Accordion>
 
 <Accordion title="What happens when a contact is not found?">
@@ -22,12 +22,12 @@ description: "Common questions about Lusha's data sources, coverage, accuracy, a
 </Accordion>
 
 <Accordion title="What is a partial profile?">
-  A partial profile is a contact record that exists in Lusha's database but has incomplete data — still potentially useful as a prospect. How you opt in depends on the endpoint:
+  A partial profile is a contact record that exists in Lusha's database but has incomplete data - still potentially useful as a prospect. How you opt in depends on the endpoint:
 
   - Single-contact enrichment endpoints use a `partialProfile: true` parameter.
   - The prospecting search-and-enrich endpoint uses `includePartialContact: true` in the request body.
 
-  {/* VERIFY: hands-on testing against a v3 search-and-enrich payload found contacts were silently dropped unless `options.includePartialProfiles` was set — a third naming variant not found in openapi.json. The exact parameter name and nesting differ across API versions/endpoints in the current spec. Confirm the authoritative name per endpoint with Engineering (this matches the Migration Plan's own flagged task to audit the OpenAPI spec) before treating this answer as final. */}
+  {/* VERIFY: hands-on testing against a v3 search-and-enrich payload found contacts were silently dropped unless `options.includePartialProfiles` was set - a third naming variant not found in openapi.json. The exact parameter name and nesting differ across API versions/endpoints in the current spec. Confirm the authoritative name per endpoint with Engineering (this matches the Migration Plan's own flagged task to audit the OpenAPI spec) before treating this answer as final. */}
 </Accordion>
 
 <Accordion title="What does GDPR mean for the data returned?">
@@ -39,14 +39,14 @@ description: "Common questions about Lusha's data sources, coverage, accuracy, a
 </Accordion>
 
 <Accordion title="What is Waterfall Reveal, and how does it help with data coverage?">
-  Waterfall Reveal is an enhancement to Enrich Contacts. When Lusha's own data has no match for a field, it falls through to your enabled third-party providers to try to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
+  Waterfall Reveal is an enhancement to Enrich Contacts. When Lusha's own data has no match for a field, it falls through to your enabled third-party providers to try to fill the gap - extra reach on hard-to-match contacts, on top of standard enrichment.
 
   How it works:
-  - If Data Waterfall is enabled on your account, with specific providers turned on under **Account > Waterfall** in the Lusha dashboard, the waterfall runs automatically on every Enrich Contacts call — you don't need to pass anything to trigger it.
+  - If Data Waterfall is enabled on your account, with specific providers turned on under **Account > Waterfall** in the Lusha dashboard, the waterfall runs automatically on every Enrich Contacts call - you don't need to pass anything to trigger it.
   - Pass `waterfallEnabled: false` to opt a specific call out.
   - `reveal` still controls **which fields** come back; `waterfallEnabled` only controls whether the fallback runs for this call at all.
-  - **Requires Data Waterfall enabled on your account** — if it's off, or no providers are enabled, `waterfallEnabled` has no effect either way.
-  - Lusha determines the provider query order — it isn't caller-configurable.
+  - **Requires Data Waterfall enabled on your account** - if it's off, or no providers are enabled, `waterfallEnabled` has no effect either way.
+  - Lusha determines the provider query order - it isn't caller-configurable.
   - Use of Data Waterfall is subject to Lusha's Supplementary Terms.
 
   ```json

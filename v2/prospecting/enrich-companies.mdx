@@ -1,7 +1,7 @@
 ---
 title: "Enrich prospecting companies with full company data"
 sidebarTitle: "Enrich Companies"
-description: "Turn company IDs from a prospecting search into full records — firmographics, headcount, revenue, technologies, locations, and more."
+description: "Turn company IDs from a prospecting search into full records - firmographics, headcount, revenue, technologies, locations, and more."
 ---
 
 `POST https://api.lusha.com/prospecting/company/enrich` is step 3 of the 3-step company prospecting flow. You pass the `requestId` returned by [Search Companies](/v2/prospecting/search-companies) along with the company `id` values you want to enrich, and receive back complete company records with firmographics, headcount, revenue estimates, technology stack, and signal data. Credits are charged at this step for each company successfully enriched.
@@ -98,7 +98,7 @@ curl --request POST \
 | `companyLocations` | All known office locations, not just HQ |
 | `technologies` | Technologies detected in use |
 | `funding` / `intent` | Funding history and buyer intent data |
-| `surgeInHiring`, `headcountIncrease1m`, `websiteTrafficIncrease`, etc. | Signal fields — present only for companies matching a requested signal type |
+| `surgeInHiring`, `headcountIncrease1m`, `websiteTrafficIncrease`, etc. | Signal fields - present only for companies matching a requested signal type |
 
 See the [full API reference](/v2/api-reference/prospecting/enrich-companies) for the complete response schema, including all available signal fields.
 

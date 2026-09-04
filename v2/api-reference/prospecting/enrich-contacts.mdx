@@ -1,13 +1,13 @@
 ---
-title: "POST /prospecting/contact/enrich — Enrich contacts"
+title: "POST /prospecting/contact/enrich - Enrich contacts"
 sidebarTitle: "POST /prospecting/contact/enrich"
 description: "Get full contact details including emails and phone numbers for contacts found in prospecting search. Step 3 of the prospecting flow."
 openapi: "post /prospecting/contact/enrich"
 ---
 
-{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/enrich) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/contact/enrich contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
+{/* VERIFY: live site and openapi.json disagree here - docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/enrich) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/contact/enrich contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
-After searching for contacts with [POST /prospecting/contact/search](/v2/api-reference/prospecting/search-contacts), use this endpoint to retrieve complete contact profiles — including email addresses, phone numbers, location, seniority, and company details — for up to 100 contacts per request. This is **step 3** of the three-step prospecting flow.
+After searching for contacts with [POST /prospecting/contact/search](/v2/api-reference/prospecting/search-contacts), use this endpoint to retrieve complete contact profiles - including email addresses, phone numbers, location, seniority, and company details - for up to 100 contacts per request. This is **step 3** of the three-step prospecting flow.
 
 <Warning>
   **Unified Credits plan required for selective reveal**
@@ -81,7 +81,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="requestId" type="string">
   The `requestId` that was used in the request.
@@ -206,11 +206,11 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Validation failed — check that `requestId` and `contactIds` are present and valid. |
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `403` | Forbidden — `revealEmails` or `revealPhones` requires the Unified Credits plan. |
-| `429` | Too many requests — you have exceeded the rate limit. |
-| `500` | Internal server error — retry with exponential backoff. |
+| `400` | Validation failed - check that `requestId` and `contactIds` are present and valid. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `403` | Forbidden - `revealEmails` or `revealPhones` requires the Unified Credits plan. |
+| `429` | Too many requests - you have exceeded the rate limit. |
+| `500` | Internal server error - retry with exponential backoff. |
 
 <ResponseExample>
 

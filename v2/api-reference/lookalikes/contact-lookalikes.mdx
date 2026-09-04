@@ -1,5 +1,5 @@
 ---
-title: "POST /v3/lookalike/contacts — Find similar contacts"
+title: "POST /v3/lookalike/contacts - Find similar contacts"
 sidebarTitle: "POST /v3/lookalike/contacts"
 description: "Discover lookalike contacts based on seed contact profiles. Use dedupeSessionId for paginated results without duplicates across multiple calls."
 openapi: "post /v3/lookalike/contacts"
@@ -121,7 +121,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="dedupeSessionId" type="string">
   Server-generated session ID to use for subsequent "get more" requests. `null` when there are no results on the first request.
@@ -213,7 +213,7 @@ curl --request POST \
 | `401` | Missing or invalid API key |
 | `402` | Insufficient credits |
 | `403` | Account inactive or feature not available on your plan |
-| `410` | `dedupeSessionId` is invalid or expired — start a new run by omitting it |
+| `410` | `dedupeSessionId` is invalid or expired - start a new run by omitting it |
 | `500` | Internal server error |
 
 ```json 410
@@ -224,5 +224,5 @@ curl --request POST \
 ```
 
 <Tip>
-  Combine lookalikes with the Enrichment API to get full contact details — including emails and phone numbers — for the returned contacts.
+  Combine lookalikes with the Enrichment API to get full contact details - including emails and phone numbers - for the returned contacts.
 </Tip>

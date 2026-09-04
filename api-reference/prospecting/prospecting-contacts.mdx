@@ -1,13 +1,13 @@
 ---
 title: "Prospecting Contacts"
 sidebarTitle: "Prospecting Contacts"
-description: "Search Lusha's contact database with rich ICP filters across contact and company attributes. Returns paginated, lightweight previews — enrich the returned IDs to reveal emails and phones."
+description: "Search Lusha's contact database with rich ICP filters across contact and company attributes. Returns paginated, lightweight previews - enrich the returned IDs to reveal emails and phones."
 openapi: "post /v3/contacts/prospecting"
 ---
 
 Prospecting Contacts searches Lusha's contact database for people who match your Ideal Customer Profile. Filter on contact attributes (title, seniority, department, location, existing data points, signals) and on attributes of the contact's current company (size, revenue, industry, technologies, intent) in a single request.
 
-The response is a page of lightweight contact **previews** — not full records. Each preview includes an `id`. Pass that `id` to [Enrich Contacts](/api-reference/enrich/enrich-contacts) to reveal emails, phone numbers, and the rest of the contact's data.
+The response is a page of lightweight contact **previews** - not full records. Each preview includes an `id`. Pass that `id` to [Enrich Contacts](/api-reference/enrich/enrich-contacts) to reveal emails, phone numbers, and the rest of the contact's data.
 
 <Info>
   **Prospect, then enrich**
@@ -153,7 +153,7 @@ Results are paginated up to 50,000 total (1,000 pages × 50 results per page).
         </ParamField>
 
         <ParamField body="filters.companies.include.technologiesCondition" type="string">
-          `"or"` or `"and"` — how the `technologies` list is combined.
+          `"or"` or `"and"` - how the `technologies` list is combined.
         </ParamField>
 
         <ParamField body="filters.companies.include.industriesLabels" type="string[]">
@@ -173,7 +173,7 @@ Results are paginated up to 50,000 total (1,000 pages × 50 results per page).
         </ParamField>
 
         <ParamField body="filters.companies.include.intentTopicsCondition" type="string">
-          `"or"` or `"and"` — how the `intentTopics` list is combined.
+          `"or"` or `"and"` - how the `intentTopics` list is combined.
         </ParamField>
 
         <ParamField body="filters.companies.include.topicCountThreshold" type="object[]">
@@ -320,7 +320,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="requestId" type="string">
   Unique ID for this search.
@@ -393,11 +393,11 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input data. |
-| `401` | Unauthorized — invalid or missing API key. |
-| `402` | Payment required — insufficient credits. |
-| `403` | Forbidden — account inactive, or V3 access not enabled. |
-| `429` | Too many requests — rate limit exceeded. |
+| `400` | Bad request - invalid input data. |
+| `401` | Unauthorized - invalid or missing API key. |
+| `402` | Payment required - insufficient credits. |
+| `403` | Forbidden - account inactive, or V3 access not enabled. |
+| `429` | Too many requests - rate limit exceeded. |
 
 <ResponseExample>
 

@@ -1,11 +1,11 @@
 ---
-title: "GET /v2/person — Enrich a single contact"
+title: "GET /v2/person - Enrich a single contact"
 sidebarTitle: "GET /v2/person"
 description: "Enrich one contact in real time using name, email, LinkedIn URL, or personId. Returns verified emails, phone numbers, job title, location, and LinkedIn data."
 openapi: "get /v2/person"
 ---
 
-{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the v2 GET /v2/person contract the Mintlify playground binds to. Kept v2 here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
+{/* VERIFY: live site and openapi.json disagree here - docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/search-and-enrich) as current, with v2 sunsetting Nov 18, 2026, but openapi.json only defines the v2 GET /v2/person contract the Mintlify playground binds to. Kept v2 here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
 Use this endpoint to enrich a single contact record in real time. You can look up a contact by email address, LinkedIn URL, Lusha person ID, or a combination of first name, last name, and company. The response includes contact details such as phone numbers, email addresses, job title, location, and optional signals data.
 
@@ -128,7 +128,7 @@ You must supply at least one of the following combinations:
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="contact" type="object" required>
   The enriched contact result.
@@ -187,7 +187,7 @@ You must supply at least one of the following combinations:
           Example: `Dustin Moskovitz`
         </ResponseField>
         <ResponseField name="emails" type="string[]">
-          Simple array of email addresses. **Deprecated** — use `emailAddresses` instead.
+          Simple array of email addresses. **Deprecated** - use `emailAddresses` instead.
 
           Example: `["john.doe@example.com"]`
         </ResponseField>
@@ -223,7 +223,7 @@ You must supply at least one of the following combinations:
           </Expandable>
         </ResponseField>
         <ResponseField name="phones" type="string">
-          Simple array of phone numbers. **Deprecated** — use `phoneNumbers` instead.
+          Simple array of phone numbers. **Deprecated** - use `phoneNumbers` instead.
 
           Example: `+1 555-123-4567`
         </ResponseField>
@@ -658,11 +658,11 @@ You must supply at least one of the following combinations:
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — missing or invalid parameters |
-| `401` | Unauthorized — invalid or missing API key |
-| `403` | Forbidden — plan restriction or access denied |
-| `404` | Not found — contact does not exist |
-| `429` | Too many requests — rate limit exceeded |
+| `400` | Bad request - missing or invalid parameters |
+| `401` | Unauthorized - invalid or missing API key |
+| `403` | Forbidden - plan restriction or access denied |
+| `404` | Not found - contact does not exist |
+| `429` | Too many requests - rate limit exceeded |
 | `451` | Unavailable for legal reasons |
 | `500` | Internal server error |
 

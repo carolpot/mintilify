@@ -4,15 +4,15 @@ sidebarTitle: "Overview"
 description: "Add missing emails, phone numbers, and firmographics to existing contact and company records in real time or in bulk using the Lusha Enrichment API."
 ---
 
-{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide positions v3 (POST /v3/contacts/search-and-enrich, POST /v3/companies/search-and-enrich) as the current enrichment API, with the v2 endpoints documented below sunsetting Nov 18, 2026. openapi.json in this repo only defines the v2 paths, so this page (and its child pages) intentionally still document v2. Revisit once openapi.json is updated with v3 paths. */}
+{/* VERIFY: live site and openapi.json disagree here - docs.lusha.com/tutorials/v3-migration-guide positions v3 (POST /v3/contacts/search-and-enrich, POST /v3/companies/search-and-enrich) as the current enrichment API, with the v2 endpoints documented below sunsetting Nov 18, 2026. openapi.json in this repo only defines the v2 paths, so this page (and its child pages) intentionally still document v2. Revisit once openapi.json is updated with v3 paths. */}
 
 Enrichment is the process of adding missing or updated data to existing contact or company records. Use the Lusha Enrichment API to fill gaps in your CRM, sharpen outbound targeting, and keep records current as people change roles and companies evolve.
 
 ## What you can do with enrichment
 
-- **Complete CRM records** — fill in missing emails, phone numbers, job titles, and company firmographics.
-- **Improve outbound accuracy** — reduce bounce rates and wrong-number calls by working with verified, up-to-date contact details.
-- **Keep records current** — re-enrich existing records on a schedule to catch role changes, company moves, and updated contact information.
+- **Complete CRM records** - fill in missing emails, phone numbers, job titles, and company firmographics.
+- **Improve outbound accuracy** - reduce bounce rates and wrong-number calls by working with verified, up-to-date contact details.
+- **Keep records current** - re-enrich existing records on a schedule to catch role changes, company moves, and updated contact information.
 
 ## Real-time vs. bulk enrichment
 
@@ -20,8 +20,8 @@ Lusha offers two modes depending on your workflow:
 
 | Mode | When to use |
 |------|-------------|
-| **Real-time (GET)** | Enrich a single contact or company on demand — for example, when a new lead enters your CRM. |
-| **Bulk (POST)** | Enrich up to 100 records in one request — for example, during a nightly CRM refresh job. |
+| **Real-time (GET)** | Enrich a single contact or company on demand - for example, when a new lead enters your CRM. |
+| **Bulk (POST)** | Enrich up to 100 records in one request - for example, during a nightly CRM refresh job. |
 
 ## Contact enrichment
 

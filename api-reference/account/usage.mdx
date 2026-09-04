@@ -8,7 +8,7 @@ openapi: "get /v3/account/usage"
 Returns a full snapshot of your account status: credits (total, used, and remaining), rate limits (daily, hourly, and minute usage and reset times), your plan's category and renewal dates, and per-action credit pricing.
 
 <Warning>
-  This endpoint has its own rate limit — **5 requests per minute** — lower than most other V3 endpoints. Poll it on a schedule (for example, once at the start of a batch job) rather than before every API call.
+  This endpoint has its own rate limit - **5 requests per minute** - lower than most other V3 endpoints. Poll it on a schedule (for example, once at the start of a batch job) rather than before every API call.
 </Warning>
 
 ## Endpoint
@@ -70,7 +70,7 @@ This endpoint takes no query parameters or request body.
 </ResponseField>
 
 <ResponseField name="pricing" type="object">
-  A map of billing action names to their credit cost. Keys correspond to the actions referenced throughout the V3 API — for example `api_search` (prospecting and search), `reveal_company` (company enrich), `lookalikeContact` / `lookalikeCompany` (lookalikes), and `showSignalsContact` / `showSignalsCompany` (signals) — plus per-data-point keys used for contact enrichment.
+  A map of billing action names to their credit cost. Keys correspond to the actions referenced throughout the V3 API - for example `api_search` (prospecting and search), `reveal_company` (company enrich), `lookalikeContact` / `lookalikeCompany` (lookalikes), and `showSignalsContact` / `showSignalsCompany` (signals) - plus per-data-point keys used for contact enrichment.
 
   <Expandable title="each entry">
     <ResponseField name="credits" type="number">Credits charged per `perQuantity` units. Example: `1`</ResponseField>
@@ -78,7 +78,7 @@ This endpoint takes no query parameters or request body.
   </Expandable>
 
   <Info>
-    The exact set of keys and their values depend on your plan — call this endpoint to see the current catalog for your account rather than hardcoding action names.
+    The exact set of keys and their values depend on your plan - call this endpoint to see the current catalog for your account rather than hardcoding action names.
   </Info>
 </ResponseField>
 
@@ -86,10 +86,10 @@ This endpoint takes no query parameters or request body.
 
 | Status | Meaning |
 |--------|---------|
-| `401` | Unauthorized — invalid or missing API key |
-| `403` | Forbidden — account inactive or V3 access not enabled |
-| `429` | Too many requests — rate limit exceeded (max 5 req/min) |
-| `500` | Internal server error — retry with exponential backoff |
+| `401` | Unauthorized - invalid or missing API key |
+| `403` | Forbidden - account inactive or V3 access not enabled |
+| `429` | Too many requests - rate limit exceeded (max 5 req/min) |
+| `500` | Internal server error - retry with exponential backoff |
 
 ## Example
 

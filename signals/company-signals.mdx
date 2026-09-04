@@ -4,7 +4,7 @@ sidebarTitle: "Company Signals"
 description: "Fetch hiring surges, headcount trends, website traffic changes, and news events for up to 100 companies per request using their Lusha company IDs."
 ---
 
-Company signals give you visibility into what's happening inside your target accounts — hiring surges, headcount changes, shifts in website traffic and IT spend, and news events across seven categories. One endpoint takes up to 100 Lusha company IDs and the signal types you want, and returns everything that matched — no separate lookup or search step.
+Company signals give you visibility into what's happening inside your target accounts - hiring surges, headcount changes, shifts in website traffic and IT spend, and news events across seven categories. One endpoint takes up to 100 Lusha company IDs and the signal types you want, and returns everything that matched - no separate lookup or search step.
 
 <Note>
   Signals are charged per matched signal per result. Request only the signal types you need.
@@ -113,14 +113,14 @@ Every result carries `id`, `companyName`, and `domain`. Whichever signal types y
 
 ## Explore the news, department, and location taxonomy
 
-Two reference endpoints let you explore what values exist for the news, department, and location dimensions behind company signals — useful for populating a picker UI or validating input before you build automations around specific categories.
+Two reference endpoints let you explore what values exist for the news, department, and location dimensions behind company signals - useful for populating a picker UI or validating input before you build automations around specific categories.
 
 <Steps>
   <Step title="List available filter types">
-    Call [Get Company Signal Filters](/api-reference/signals/company-signal-filters) — `GET /v3/companies/signals/filters` — to see the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) and whether each requires a search `query`.
+    Call [Get Company Signal Filters](/api-reference/signals/company-signal-filters) - `GET /v3/companies/signals/filters` - to see the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) and whether each requires a search `query`.
   </Step>
   <Step title="Fetch values for a specific filter type">
-    Call [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) — `GET /v3/companies/signals/filters/{filterType}` — for the values themselves. `hiringByLocations` requires a `query` (2–256 characters); the other two don't.
+    Call [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) - `GET /v3/companies/signals/filters/{filterType}` - for the values themselves. `hiringByLocations` requires a `query` (2–256 characters); the other two don't.
   </Step>
 </Steps>
 
@@ -139,6 +139,6 @@ Company Signals only accepts Lusha company IDs. If you're starting from a compan
 
 ## Related pages
 
-- [Signals overview](/signals/overview) — the consolidated signals model, credits, and delivery options
-- [Contact signals](/signals/contact-signals) — retrieve job change and promotion signals for contacts
-- [API reference: Company Signals](/api-reference/signals/company-signals) — full request/response schema
+- [Signals overview](/signals/overview) - the consolidated signals model, credits, and delivery options
+- [Contact signals](/signals/contact-signals) - retrieve job change and promotion signals for contacts
+- [API reference: Company Signals](/api-reference/signals/company-signals) - full request/response schema

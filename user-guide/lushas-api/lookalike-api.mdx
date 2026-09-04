@@ -3,7 +3,7 @@ title: "Lookalike API"
 description: "How to use the Lusha Lookalike API to generate similar contact and company tables from your best-performing customers at scale."
 ---
 
-Lusha's Lookalike API (previously called Recommendations) finds contacts and companies that match the profile of people or accounts you already know. You send it a set of existing contacts or companies, and it returns recommended matches by role, seniority, company type, and more — without manual table building.
+Lusha's Lookalike API (previously called Recommendations) finds contacts and companies that match the profile of people or accounts you already know. You send it a set of existing contacts or companies, and it returns recommended matches by role, seniority, company type, and more - without manual table building.
 
 It works with no-code tools like Make, Zapier, or n8n, and fits directly into any workflow that already uses Lusha enrichment.
 
@@ -32,14 +32,14 @@ Send your top customer companies as seeds and get back a lookalike account table
 
 ## How Lookalike Works
 
-You provide a set of "seed" contacts or companies — people or accounts you already know perform well. The API returns a table of recommended matches that share similar characteristics.
+You provide a set of "seed" contacts or companies - people or accounts you already know perform well. The API returns a table of recommended matches that share similar characteristics.
 
 You can fetch additional pages of results from the same query using the `requestId` returned in the initial response, without starting a new search.
 
 There are two types of lookalike:
 
-- **Contact Lookalike** — finds contacts similar to your seed contacts, matched by role, seniority, and company profile.
-- **Company Lookalike** — finds companies similar to your seed accounts, matched by firmographics and characteristics.
+- **Contact Lookalike** - finds contacts similar to your seed contacts, matched by role, seniority, and company profile.
+- **Company Lookalike** - finds companies similar to your seed accounts, matched by firmographics and characteristics.
 
 You can also exclude contacts or companies you've already engaged, so results stay fresh and relevant.
 
@@ -64,7 +64,7 @@ Use the `requestId` returned in the initial response as part of your next reques
 Yes. Both the contact and company endpoints accept an `exclude` table, so you can filter out existing customers or previously contacted prospects.
 
 **Q: Is this the same as the Recommendations feature?**
-Yes. Lookalike was previously called Recommendations — it's the same feature under a new name.
+Yes. Lookalike was previously called Recommendations - it's the same feature under a new name.
 
 **Q: Where can I find the full API reference?**
 The complete endpoint documentation is at [docs.lusha.com/apis/openapi/lookalikes](https://docs.lusha.com/apis/openapi/lookalikes).

@@ -5,7 +5,7 @@ description: "Find up to 100 companies by identifier and reveal their full firmo
 openapi: "post /v3/companies/search-and-enrich"
 ---
 
-Use this endpoint to find companies and reveal their full data in one request — it combines [Search Companies](/api-reference/search/search-companies) and [Enrich Companies](/api-reference/enrich/enrich-companies) into a single call. Provide identifiers the same way you would for Search Companies.
+Use this endpoint to find companies and reveal their full data in one request - it combines [Search Companies](/api-reference/search/search-companies) and [Enrich Companies](/api-reference/enrich/enrich-companies) into a single call. Provide identifiers the same way you would for Search Companies.
 
 <Tip>
   If you need to inspect what's revealable and its credit cost before committing to a reveal, call [Search Companies](/api-reference/search/search-companies) first, then [Enrich Companies](/api-reference/enrich/enrich-companies) separately. Use this combined endpoint when you already know you want the full profile.
@@ -58,7 +58,7 @@ Each company in the `companies` array needs **at least one** of the following:
 </ParamField>
 
 <Info>
-  Unlike Search and Enrich Contacts, this endpoint doesn't take a `reveal` field — every matched company returns full firmographics automatically.
+  Unlike Search and Enrich Contacts, this endpoint doesn't take a `reveal` field - every matched company returns full firmographics automatically.
 </Info>
 
 ## Response
@@ -108,18 +108,18 @@ Each company in the `companies` array needs **at least one** of the following:
 </ResponseField>
 
 <Info>
-  **Billing:** Same as Enrich Companies — charged per successful result via the `reveal_company` action.
+  **Billing:** Same as Enrich Companies - charged per successful result via the `reveal_company` action.
 </Info>
 
 ## Error codes
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input data |
-| `401` | Unauthorized — invalid or missing API key |
-| `402` | Payment required — insufficient credits |
-| `403` | Forbidden — account inactive or V3 access not enabled |
-| `429` | Too many requests — rate limit exceeded |
+| `400` | Bad request - invalid input data |
+| `401` | Unauthorized - invalid or missing API key |
+| `402` | Payment required - insufficient credits |
+| `403` | Forbidden - account inactive or V3 access not enabled |
+| `429` | Too many requests - rate limit exceeded |
 
 ## Example
 

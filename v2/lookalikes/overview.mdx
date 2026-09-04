@@ -4,12 +4,12 @@ sidebarTitle: "Overview"
 description: "Use AI-powered similarity search to find new prospects that match your best contacts and accounts based on seed data you already own."
 ---
 
-The Lookalikes API uses AI to surface new prospects that closely resemble contacts or companies you already know. Feed it a set of seed records — people or accounts you consider high-quality — and it returns ranked candidates with similar roles, seniority levels, firmographics, and industry patterns. This lets you expand your pipeline without rebuilding your ideal customer profile from scratch.
+The Lookalikes API uses AI to surface new prospects that closely resemble contacts or companies you already know. Feed it a set of seed records - people or accounts you consider high-quality - and it returns ranked candidates with similar roles, seniority levels, firmographics, and industry patterns. This lets you expand your pipeline without rebuilding your ideal customer profile from scratch.
 
 ## What lookalikes do
 
-- **Contact lookalikes** — Given seed contacts identified by LinkedIn URL, email, Lusha contact ID, or name plus company, the API returns new contacts who share comparable job functions, seniority, and industry characteristics.
-- **Company lookalikes** — Given seed companies identified by domain or LinkedIn company URL, the API returns companies with similar firmographics such as employee count, industry, and geography.
+- **Contact lookalikes** - Given seed contacts identified by LinkedIn URL, email, Lusha contact ID, or name plus company, the API returns new contacts who share comparable job functions, seniority, and industry characteristics.
+- **Company lookalikes** - Given seed companies identified by domain or LinkedIn company URL, the API returns companies with similar firmographics such as employee count, industry, and geography.
 
 Both endpoints use the same deduplication mechanism, so you can paginate through results across multiple calls without receiving the same record twice.
 
@@ -18,10 +18,10 @@ Both endpoints use the same deduplication mechanism, so you can paginate through
 Each lookalike run is tracked with a `dedupeSessionId`. The server uses this ID to remember which results it has already returned for a given seed set, so subsequent "get more" calls skip over contacts or companies you have already seen.
 
 <Steps>
-  <Step title="First request — start a new session">
+  <Step title="First request - start a new session">
     Omit `dedupeSessionId` entirely. The server generates a new session, returns the first page of results, and includes the `dedupeSessionId` in the response body.
   </Step>
-  <Step title="Subsequent requests — fetch more without duplicates">
+  <Step title="Subsequent requests - fetch more without duplicates">
     Pass the `dedupeSessionId` from the previous response back in the next request body. The server deduplicates all results it has returned so far for that session and returns only new candidates.
   </Step>
 </Steps>

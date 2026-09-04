@@ -7,7 +7,7 @@ description: "Discover contact filter types and retrieve their valid values with
 Before building a [Prospecting Contacts](/api-reference/prospecting/prospecting-contacts) request, use the Filters API to retrieve the exact values Lusha accepts. Passing unrecognized values causes searches to return no results, so fetching valid options first is the recommended approach.
 
 <Info>
-  **V3 change:** contact filters are no longer one endpoint per filter type. V3 collapses discovery and lookup into two generic endpoints — the same two endpoints work for every filter type; the `filterType` you pass tells the API which dimension you want.
+  **V3 change:** contact filters are no longer one endpoint per filter type. V3 collapses discovery and lookup into two generic endpoints - the same two endpoints work for every filter type; the `filterType` you pass tells the API which dimension you want.
 </Info>
 
 ## The two-step pattern
@@ -74,13 +74,13 @@ Before building a [Prospecting Contacts](/api-reference/prospecting/prospecting-
 
 | Filter type | Query required? | Search request field |
 |---|---|---|
-| `departments` | No — returns the full list | `filters.contacts.include.departments` |
-| `seniority` | No — returns the full list | `filters.contacts.include.seniorityIds` |
-| `existingDataPoints` | No — returns the full list | `filters.contacts.include.existingDataPoints` |
-| `countries` | No — returns the full list | `filters.contacts.include.countries` |
-| `locations` | **Yes** — pass `query` (2–256 chars) | `filters.contacts.include.locations` |
+| `departments` | No - returns the full list | `filters.contacts.include.departments` |
+| `seniority` | No - returns the full list | `filters.contacts.include.seniorityIds` |
+| `existingDataPoints` | No - returns the full list | `filters.contacts.include.existingDataPoints` |
+| `countries` | No - returns the full list | `filters.contacts.include.countries` |
+| `locations` | **Yes** - pass `query` (2–256 chars) | `filters.contacts.include.locations` |
 
-`departments`, `seniority`, `existingDataPoints`, and `countries` return their entire value set in one call — there's nothing to search for. `locations` is the exception: because the location taxonomy is too large to return in full, you search it with a free-text `query` (for example, `"San Francisco"`) and get back matching location objects.
+`departments`, `seniority`, `existingDataPoints`, and `countries` return their entire value set in one call - there's nothing to search for. `locations` is the exception: because the location taxonomy is too large to return in full, you search it with a free-text `query` (for example, `"San Francisco"`) and get back matching location objects.
 
 <Tip>
   `departments`, `seniority`, `existingDataPoints`, and `countries` rarely change. Cache their values instead of calling the discovery or values endpoints before every search.

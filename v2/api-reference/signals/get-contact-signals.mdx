@@ -1,11 +1,11 @@
 ---
-title: "POST /api/signals/contacts — Get contact signals by ID"
+title: "POST /api/signals/contacts - Get contact signals by ID"
 sidebarTitle: "POST /api/signals/contacts"
 description: "Retrieve signal data for up to 100 contacts by their Lusha IDs. Returns promotion and job-change signals from the last 6 months by default."
 openapi: "post /api/signals/contacts"
 ---
 
-Use this endpoint when you already have Lusha contact IDs and want to retrieve signal data for those contacts in bulk — up to 100 per request. The default time window is the last 6 months; use `startDate` to look further back. Each signal type you request counts toward your credit usage.
+Use this endpoint when you already have Lusha contact IDs and want to retrieve signal data for those contacts in bulk - up to 100 per request. The default time window is the last 6 months; use `startDate` to look further back. Each signal type you request counts toward your credit usage.
 
 <Info>
   If you don't have contact IDs yet, use [POST /api/signals/contacts/search](/v2/api-reference/signals/search-contact-signals) to identify contacts by LinkedIn URL, email, or name and retrieve their signals in a single request.
@@ -80,7 +80,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="contacts" type="object">
   A map of contact IDs to their signal data. Each key is a string representation of a contact ID.
@@ -104,10 +104,10 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Validation failed — check that `contactIds` and `signals` are present and valid. |
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `403` | Forbidden — your plan does not include signals access. |
-| `429` | Too many requests — you have exceeded the rate limit. |
+| `400` | Validation failed - check that `contactIds` and `signals` are present and valid. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `403` | Forbidden - your plan does not include signals access. |
+| `429` | Too many requests - you have exceeded the rate limit. |
 
 <ResponseExample>
 

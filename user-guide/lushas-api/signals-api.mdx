@@ -3,14 +3,14 @@ title: "Signals API"
 description: "A guide to every signal available in Lusha, who they're for, and how credits are charged."
 ---
 
-Lusha Signals are real-time intelligence events that surface meaningful changes happening to your contacts and target accounts. Instead of manually monitoring your CRM for stale data or researching accounts one by one, Signals alert you the moment something relevant happens — a contact changes jobs, a company raises funding, a key hire is made, or a target account shows signs of growth or risk.
+Lusha Signals are real-time intelligence events that surface meaningful changes happening to your contacts and target accounts. Instead of manually monitoring your CRM for stale data or researching accounts one by one, Signals alert you the moment something relevant happens - a contact changes jobs, a company raises funding, a key hire is made, or a target account shows signs of growth or risk.
 
 ## Who Are Signals For?
 
 Signals are most useful for:
 
 - **Sales teams** who want to be notified when a champion changes jobs, gets promoted, or moves to a new company.
-- **RevOps and marketing teams** who want to trigger automated workflows based on account-level events — funding rounds, new locations, hiring surges, or tech spend changes.
+- **RevOps and marketing teams** who want to trigger automated workflows based on account-level events - funding rounds, new locations, hiring surges, or tech spend changes.
 - **Customer success teams** tracking churn risk signals such as headcount decline, IT spend decrease, or key executive departures.
 
 ---
@@ -23,10 +23,10 @@ For example, a **Surge in Hiring** in a specific department often signals a new 
 
 Common use cases:
 
-- **Re-engage past buyers who changed companies** — monitor job change signals for past buyers and trigger personalized outreach when they land at new companies.
-- **Time outreach around career milestones** — catch decision-makers during their onboarding period when they're most open to evaluating new solutions.
-- **Spot companies in expansion mode** — identify accounts with growing budgets and route high-growth companies to sales before competitors do.
-- **Build early warning systems for churn risk** — alert CSMs when decision-makers at customer accounts change jobs, enabling proactive intervention before renewals are at risk.
+- **Re-engage past buyers who changed companies** - monitor job change signals for past buyers and trigger personalized outreach when they land at new companies.
+- **Time outreach around career milestones** - catch decision-makers during their onboarding period when they're most open to evaluating new solutions.
+- **Spot companies in expansion mode** - identify accounts with growing budgets and route high-growth companies to sales before competitors do.
+- **Build early warning systems for churn risk** - alert CSMs when decision-makers at customer accounts change jobs, enabling proactive intervention before renewals are at risk.
 
 ---
 
@@ -59,7 +59,7 @@ Contact signals track changes happening to individual people.
 
 ### Growth Signals
 
-Growth signals track positive momentum at the company level — hiring, headcount expansion, traffic, and spend increases.
+Growth signals track positive momentum at the company level - hiring, headcount expansion, traffic, and spend increases.
 
 | **Signal** | **Cadence** | **What it tells you** |
 |------------|-------------|----------------------|
@@ -90,14 +90,14 @@ Intent signals indicate that a company is actively researching topics relevant t
 
 ### Social Signals
 
-Social signals surface buying intent from what a company's employees are actually posting on LinkedIn — a timely, authentic read on what they care about before they ever talk to a vendor.
+Social signals surface buying intent from what a company's employees are actually posting on LinkedIn - a timely, authentic read on what they care about before they ever talk to a vendor.
 
 | **Signal** | **Cadence** | **What it tells you** |
 |------------|-------------|----------------------|
-| LinkedIn Activity Intent | Weekly | A company's employees are posting LinkedIn content that maps to a Bombora intent category — Lusha's first Social Signal. Refine results by intent category; the post author and any people or companies mentioned are included as contact-level metadata. |
+| LinkedIn Activity Intent | Weekly | A company's employees are posting LinkedIn content that maps to a Bombora intent category - Lusha's first Social Signal. Refine results by intent category; the post author and any people or companies mentioned are included as contact-level metadata. |
 
 <Note>
-  LinkedIn Activity Intent is company-level only — for legal reasons, the author of a matching post is surfaced as metadata on the signal, not as a separately billed contact signal. Results are limited to a trailing 90-day window and capped at 50 posts per company, regardless of the `startDate` or `maxResultsPerSignal` values passed.
+  LinkedIn Activity Intent is company-level only - for legal reasons, the author of a matching post is surfaced as metadata on the signal, not as a separately billed contact signal. Results are limited to a trailing 90-day window and capped at 50 posts per company, regardless of the `startDate` or `maxResultsPerSignal` values passed.
 </Note>
 
 ---
@@ -135,9 +135,9 @@ Risk signals flag negative trends at the account level. Most useful for customer
 
 Credits are charged when signal data is successfully returned.
 
-- **Contact signals** — credits are charged per contact per signal type returned.
-- **Company signals** — credits are charged per company per signal type returned.
-- **Webhooks** — credits are charged when a signal is detected and delivered; retries do not incur additional charges.
+- **Contact signals** - credits are charged per contact per signal type returned.
+- **Company signals** - credits are charged per company per signal type returned.
+- **Webhooks** - credits are charged when a signal is detected and delivered; retries do not incur additional charges.
 
 <Note>
   Every API response includes a `creditCharged` field showing exactly how many credits were consumed by that request.
@@ -148,16 +148,16 @@ Credits are charged when signal data is successfully returned.
 ## FAQs
 
 **Q: How are Signals different from regular enrichment or intent data?**
-Unlike static enrichment or intent inferred from online behavior, Signals surface real, verified business changes — like a contact being promoted or a company posting new jobs. They provide timely, actionable triggers that directly inform outreach and pipeline decisions.
+Unlike static enrichment or intent inferred from online behavior, Signals surface real, verified business changes - like a contact being promoted or a company posting new jobs. They provide timely, actionable triggers that directly inform outreach and pipeline decisions.
 
 **Q: How accurate is the data?**
 Signals are powered by Lusha's verified, structured data. They're refreshed on the cadences tableed above and validated through multiple sources.
 
 **Q: Do I need a developer to use Signals?**
-No. Lusha Signals work with no-code tools like Make, Zapier, or n8n — no developer resources needed for most workflows.
+No. Lusha Signals work with no-code tools like Make, Zapier, or n8n - no developer resources needed for most workflows.
 
 **Q: What if I'm already using another enrichment tool?**
-Signals go beyond static enrichment — they surface real-time buying signals that enrich your CRM with actionable, time-based triggers, helping you catch timely opportunities other tools may miss.
+Signals go beyond static enrichment - they surface real-time buying signals that enrich your CRM with actionable, time-based triggers, helping you catch timely opportunities other tools may miss.
 
 **Q: Are Signals GDPR compliant?**
 Yes. Signals are built with GDPR compliance in mind, using scoped, secure data access. Contact-level signals are tied to publicly available career updates only.

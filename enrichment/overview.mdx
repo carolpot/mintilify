@@ -1,19 +1,19 @@
 ---
 title: "Enrich contacts and companies with Lusha"
 sidebarTitle: "Overview"
-description: "Find contacts and companies by identifier, then reveal their full data — or do both in a single call with Search and Enrich."
+description: "Find contacts and companies by identifier, then reveal their full data - or do both in a single call with Search and Enrich."
 ---
 
-Lusha's V3 API replaces the old single-record and bulk-record split with one pattern: **search, then enrich** — for up to 100 contacts or companies per call, every time.
+Lusha's V3 API replaces the old single-record and bulk-record split with one pattern: **search, then enrich** - for up to 100 contacts or companies per call, every time.
 
 ## How it works
 
 Every V3 flow starts the same way, whether you're looking up one contact or a hundred:
 
-1. **Search** — send an array of identifiers (IDs, LinkedIn URLs, emails, or name-and-company combinations for contacts; IDs, names, or domains for companies). Get back a non-PII preview of each match, plus a `canReveal` list showing what you can unlock and its credit cost.
-2. **Enrich** — pass the Lusha `id` values from your search results to reveal full data: emails and phones for contacts, firmographics and employee breakdowns for companies.
+1. **Search** - send an array of identifiers (IDs, LinkedIn URLs, emails, or name-and-company combinations for contacts; IDs, names, or domains for companies). Get back a non-PII preview of each match, plus a `canReveal` list showing what you can unlock and its credit cost.
+2. **Enrich** - pass the Lusha `id` values from your search results to reveal full data: emails and phones for contacts, firmographics and employee breakdowns for companies.
 
-If you already know you want the full profile, skip the two-step flow and call **Search and Enrich** instead — it runs both steps in one request.
+If you already know you want the full profile, skip the two-step flow and call **Search and Enrich** instead - it runs both steps in one request.
 
 <Info>
   There's no more single-vs-bulk distinction. Every Search, Enrich, and Search and Enrich endpoint accepts an array of up to 100 items in one call, whether you're enriching one record or a hundred.
@@ -50,7 +50,7 @@ If you already know you want the full profile, skip the two-step flow and call *
 ## Choosing search-then-enrich vs. search and enrich
 
 <Tip>
-  Use the two-step flow when you want to inspect `canReveal` and its credit cost before spending credits — for example, when a human reviews matches before you enrich them. Use Search and Enrich when you already trust the match criteria and want the full record in one round trip, such as a CRM sync job.
+  Use the two-step flow when you want to inspect `canReveal` and its credit cost before spending credits - for example, when a human reviews matches before you enrich them. Use Search and Enrich when you already trust the match criteria and want the full record in one round trip, such as a CRM sync job.
 </Tip>
 
 Both paths bill the same way: search is charged per successful result via the `api_search` action, and revealing contact data is charged per revealed field (email or phone). Company enrichment is charged per successful result via the `reveal_company` action. Search and Enrich simply combines both charges into one request.

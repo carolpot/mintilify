@@ -7,7 +7,7 @@ description: "Discover company filter types and retrieve their valid values with
 Before building a [Prospecting Companies](/api-reference/prospecting/prospecting-companies) request, use the Filters API to retrieve the exact values Lusha accepts. Passing values outside the API's taxonomy causes searches to return no results, so fetching valid options first ensures your queries work as expected.
 
 <Info>
-  **V3 change:** company filters are no longer one endpoint per filter type (names, sizes, revenues, SIC codes, and so on). V3 collapses discovery and lookup into two generic endpoints — the same two endpoints work for every filter type; the `filterType` you pass tells the API which dimension you want.
+  **V3 change:** company filters are no longer one endpoint per filter type (names, sizes, revenues, SIC codes, and so on). V3 collapses discovery and lookup into two generic endpoints - the same two endpoints work for every filter type; the `filterType` you pass tells the API which dimension you want.
 </Info>
 
 ## The two-step pattern
@@ -80,15 +80,15 @@ Before building a [Prospecting Companies](/api-reference/prospecting/prospecting
 
 | Filter type | Query required? | Search request field |
 |---|---|---|
-| `sizes` | No — returns the full list | `filters.companies.include.sizes` |
-| `revenues` | No — returns the full list | `filters.companies.include.revenues` |
-| `sics` | No — returns the full list | `filters.companies.include.sicCodes` |
-| `naics` | No — returns the full list | `filters.companies.include.naicsCodes` |
-| `intentTopics` | No — returns the full list | `filters.companies.include.intentTopics` |
-| `industriesLabels` | No — returns the full list | `filters.companies.include.industriesLabels` |
-| `names` | **Yes** — pass `query` (2–256 chars) | `filters.companies.include.names` |
-| `technologies` | **Yes** — pass `query` (2–256 chars) | `filters.companies.include.technologies` |
-| `locations` | **Yes** — pass `query` (2–256 chars) | `filters.companies.include.locations` |
+| `sizes` | No - returns the full list | `filters.companies.include.sizes` |
+| `revenues` | No - returns the full list | `filters.companies.include.revenues` |
+| `sics` | No - returns the full list | `filters.companies.include.sicCodes` |
+| `naics` | No - returns the full list | `filters.companies.include.naicsCodes` |
+| `intentTopics` | No - returns the full list | `filters.companies.include.intentTopics` |
+| `industriesLabels` | No - returns the full list | `filters.companies.include.industriesLabels` |
+| `names` | **Yes** - pass `query` (2–256 chars) | `filters.companies.include.names` |
+| `technologies` | **Yes** - pass `query` (2–256 chars) | `filters.companies.include.technologies` |
+| `locations` | **Yes** - pass `query` (2–256 chars) | `filters.companies.include.locations` |
 
 `sizes`, `revenues`, `sics`, `naics`, `intentTopics`, and `industriesLabels` return their entire value set in one call. `names`, `technologies`, and `locations` are too large to enumerate, so you search them with a free-text `query` (for example, `"Salesforce"` or `"Austin"`) and get back matching values.
 

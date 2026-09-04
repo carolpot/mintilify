@@ -4,7 +4,7 @@ sidebarTitle: "Search and Enrich Contacts"
 description: "Find up to 100 contacts by identifier and reveal their emails and phone numbers in a single call."
 ---
 
-Search and Enrich Contacts combines [Search Contacts](/enrichment/search-contacts) and [Enrich Contacts](/enrichment/enrich-contacts) into one request. Send the same identifiers you'd use for Search Contacts, and get back fully enriched profiles — no intermediate step to inspect matches and pass `id` values around.
+Search and Enrich Contacts combines [Search Contacts](/enrichment/search-contacts) and [Enrich Contacts](/enrichment/enrich-contacts) into one request. Send the same identifiers you'd use for Search Contacts, and get back fully enriched profiles - no intermediate step to inspect matches and pass `id` values around.
 
 <Info>
   This is a single endpoint for one contact or a hundred. Send an array of 1 to 100 contacts in one call.
@@ -12,9 +12,9 @@ Search and Enrich Contacts combines [Search Contacts](/enrichment/search-contact
 
 ## When to use this instead of the two-step flow
 
-Use Search and Enrich Contacts when you already trust your match criteria and want the full record in one round trip — for example, syncing a CRM import where every row already has an email or LinkedIn URL you're confident in.
+Use Search and Enrich Contacts when you already trust your match criteria and want the full record in one round trip - for example, syncing a CRM import where every row already has an email or LinkedIn URL you're confident in.
 
-Use the two-step [Search](/enrichment/search-contacts) → [Enrich](/enrichment/enrich-contacts) flow instead when you want to inspect `canReveal` and its credit cost before spending credits — for example, when a rep reviews a match before you enrich it.
+Use the two-step [Search](/enrichment/search-contacts) → [Enrich](/enrichment/enrich-contacts) flow instead when you want to inspect `canReveal` and its credit cost before spending credits - for example, when a rep reviews a match before you enrich it.
 
 ## Identifiers you can search by
 
@@ -29,8 +29,8 @@ Provide **one** of the following for each contact:
 
 Use the `reveal` field to control what gets unlocked for each matched contact:
 
-- `emails` — work and personal email addresses
-- `phones` — mobile and direct phone numbers
+- `emails` - work and personal email addresses
+- `phones` - mobile and direct phone numbers
 
 Omit `reveal` entirely to get both by default.
 
@@ -42,6 +42,6 @@ Two charges apply per successful contact: one for the search, via the `api_searc
 
 ## Related
 
-- [Search Contacts](/enrichment/search-contacts) and [Enrich Contacts](/enrichment/enrich-contacts) — the two-step equivalent, useful when you want to review matches before revealing.
+- [Search Contacts](/enrichment/search-contacts) and [Enrich Contacts](/enrichment/enrich-contacts) - the two-step equivalent, useful when you want to review matches before revealing.
 
 For full request and response field details, see the [Search and Enrich Contacts API reference](/api-reference/search-and-enrich/search-and-enrich-contacts).

@@ -1,11 +1,11 @@
 ---
-title: "POST /api/signals/contacts/search — Search contact signals"
+title: "POST /api/signals/contacts/search - Search contact signals"
 sidebarTitle: "POST /api/signals/contacts/search"
 description: "Search and enrich contact signals in one request using LinkedIn URL, email, or name and company as identifiers. Returns contact data plus signals."
 openapi: "post /api/signals/contacts/search"
 ---
 
-Use this endpoint to identify contacts and retrieve their signal data in a single request — without needing a Lusha contact ID upfront. You supply one or more identifying attributes per contact (LinkedIn URL, email address, or full name with company), and the API matches them to Lusha's database and returns both the contact profile and their signals.
+Use this endpoint to identify contacts and retrieve their signal data in a single request - without needing a Lusha contact ID upfront. You supply one or more identifying attributes per contact (LinkedIn URL, email address, or full name with company), and the API matches them to Lusha's database and returns both the contact profile and their signals.
 
 <Info>
   If you already have Lusha contact IDs, use [POST /api/signals/contacts](/v2/api-reference/signals/get-contact-signals) instead for a simpler bulk lookup.
@@ -143,7 +143,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="contacts" type="object">
   A map of caller-assigned IDs (from `contacts[].id` in the request) to contact signal data. Each value includes the matched `personId` plus one array per requested signal type (for example `promotion`, `companyChange`).
@@ -167,10 +167,10 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Validation failed — check that `contacts` and `signals` are present and valid. |
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `403` | Forbidden — your plan does not include signals access. |
-| `429` | Too many requests — you have exceeded the rate limit. |
+| `400` | Validation failed - check that `contacts` and `signals` are present and valid. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `403` | Forbidden - your plan does not include signals access. |
+| `429` | Too many requests - you have exceeded the rate limit. |
 
 <ResponseExample>
 

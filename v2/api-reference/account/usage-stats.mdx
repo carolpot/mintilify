@@ -1,18 +1,18 @@
 ---
-title: "GET /account/usage — API credit usage statistics"
+title: "GET /account/usage - API credit usage statistics"
 sidebarTitle: "GET /account/usage"
 description: "Retrieve current API credit usage including total allotment, credits used, and credits remaining. This endpoint is rate limited to 5 requests per minute."
 openapi: "get /account/usage"
 ---
 
-The `GET /account/usage` endpoint returns your current credit balance — how many credits you've used, how many remain, and your total allotment. Use this to monitor consumption, avoid hitting plan limits, and support billing reconciliation.
+The `GET /account/usage` endpoint returns your current credit balance - how many credits you've used, how many remain, and your total allotment. Use this to monitor consumption, avoid hitting plan limits, and support billing reconciliation.
 
 **Endpoint:** `GET https://api.lusha.com/account/usage`
 
 **Authentication:** `api_key` header required
 
 <Note>
-  This endpoint has a specific rate limit of **5 requests per minute** — lower than other Lusha API endpoints. Do not poll it more frequently than needed.
+  This endpoint has a specific rate limit of **5 requests per minute** - lower than other Lusha API endpoints. Do not poll it more frequently than needed.
 </Note>
 
 ## Request

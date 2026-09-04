@@ -9,10 +9,10 @@ openapi: "post /v3/companies/website-visits"
   **Beta.** This endpoint's request and response shape may change before general availability.
 </Warning>
 
-Returns companies ranked by website-visit behavior for the tracked domains and date range you supply. Each result combines a V3 company firmographic preview — the same shape [Search Companies](/enrichment/search-companies) returns — with behavioral visit metrics: engagement score, sessions, unique visitors, and more.
+Returns companies ranked by website-visit behavior for the tracked domains and date range you supply. Each result combines a V3 company firmographic preview - the same shape [Search Companies](/enrichment/search-companies) returns - with behavioral visit metrics: engagement score, sessions, unique visitors, and more.
 
 <Warning>
-  Domains must already be configured for tracking in the [Lusha dashboard](https://dashboard.lusha.com) — they're resolved to site IDs server-side. If any requested domain isn't configured for tracking, the entire request fails with `400`.
+  Domains must already be configured for tracking in the [Lusha dashboard](https://dashboard.lusha.com) - they're resolved to site IDs server-side. If any requested domain isn't configured for tracking, the entire request fails with `400`.
 </Warning>
 
 ## Endpoint
@@ -162,7 +162,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="requestId" type="string">
   UUID identifying this request.
@@ -287,12 +287,12 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input, a domain isn't configured for tracking, or the date range exceeds 3 months. |
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `402` | Payment required — insufficient credits. |
-| `403` | Forbidden — account inactive or V3 access not enabled. |
-| `429` | Too many requests — you have exceeded the rate limit. |
+| `400` | Bad request - invalid input, a domain isn't configured for tracking, or the date range exceeds 3 months. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `402` | Payment required - insufficient credits. |
+| `403` | Forbidden - account inactive or V3 access not enabled. |
+| `429` | Too many requests - you have exceeded the rate limit. |
 
 ## Related pages
 
-- [Website Visits overview](/website-visits/overview) — domain-tracking setup and the 3-month range limit
+- [Website Visits overview](/website-visits/overview) - domain-tracking setup and the 3-month range limit

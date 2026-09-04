@@ -4,10 +4,10 @@ sidebarTitle: "Search Contacts"
 description: "Find up to 100 contacts per call by ID, LinkedIn URL, email, or name and company, and see what you can reveal about each match."
 ---
 
-Search Contacts looks up contacts by identifier and returns a non-PII preview of each match — no emails or phone numbers yet. Use it as the first step before revealing full data with [Enrich Contacts](/enrichment/enrich-contacts), or when you only need firmographic and job-title context without spending reveal credits.
+Search Contacts looks up contacts by identifier and returns a non-PII preview of each match - no emails or phone numbers yet. Use it as the first step before revealing full data with [Enrich Contacts](/enrichment/enrich-contacts), or when you only need firmographic and job-title context without spending reveal credits.
 
 <Info>
-  This is a single endpoint for one contact or a hundred — there's no separate "single" and "bulk" version. Send an array with 1 to 100 contacts in one call.
+  This is a single endpoint for one contact or a hundred - there's no separate "single" and "bulk" version. Send an array with 1 to 100 contacts in one call.
 </Info>
 
 ## Identifiers you can search by
@@ -27,9 +27,9 @@ Provide **one** of the following for each contact in your request:
 
 Each result includes:
 
-- **Preview data** — name, job title, seniority, department, company, location, and LinkedIn URL, when available.
-- **`has`** — the data points already present on this profile.
-- **`canReveal`** — which fields (`emails`, `phones`) you can unlock via [Enrich Contacts](/enrichment/enrich-contacts), and the credit cost for each. A cost of `0` means you've already revealed that field for this account.
+- **Preview data** - name, job title, seniority, department, company, location, and LinkedIn URL, when available.
+- **`has`** - the data points already present on this profile.
+- **`canReveal`** - which fields (`emails`, `phones`) you can unlock via [Enrich Contacts](/enrichment/enrich-contacts), and the credit cost for each. A cost of `0` means you've already revealed that field for this account.
 
 If a contact can't be found, the result contains an `error` with a code of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, or `ENRICH_FAILED` instead of profile data.
 
@@ -43,6 +43,6 @@ Search Contacts is charged per successful result via the `api_search` action. Lo
 
 ## Next step
 
-Once you have contact `id` values from your search results, pass them to [Enrich Contacts](/enrichment/enrich-contacts) to reveal emails and phones — or use [Search and Enrich Contacts](/enrichment/search-and-enrich-contacts) to do both in one call next time.
+Once you have contact `id` values from your search results, pass them to [Enrich Contacts](/enrichment/enrich-contacts) to reveal emails and phones - or use [Search and Enrich Contacts](/enrichment/search-and-enrich-contacts) to do both in one call next time.
 
 For full request and response field details, see the [Search Contacts API reference](/api-reference/search/search-contacts).

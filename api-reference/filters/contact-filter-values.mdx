@@ -46,11 +46,11 @@ GET https://api.lusha.com/v3/contacts/prospecting/filters/{filterType}
 <ResponseField name="values" type="any">
   The valid values for the requested `filterType`. The shape depends on which filter type you requested:
 
-  - **`departments`** — an array of department name strings, for example `["Sales", "Engineering"]`
-  - **`existingDataPoints`** — an array of data point strings, for example `["work_email", "work_phone"]`
-  - **`countries`** — an array of country code strings, for example `["US", "CA"]`
-  - **`seniority`** — an array of `{ id, name }` objects; pass the `id` values in `seniorityIds`
-  - **`locations`** — an array of location objects with `city`, `state`, `country`, `continent`, and `countryGrouping`, matching the shape used in search requests
+  - **`departments`** - an array of department name strings, for example `["Sales", "Engineering"]`
+  - **`existingDataPoints`** - an array of data point strings, for example `["work_email", "work_phone"]`
+  - **`countries`** - an array of country code strings, for example `["US", "CA"]`
+  - **`seniority`** - an array of `{ id, name }` objects; pass the `id` values in `seniorityIds`
+  - **`locations`** - an array of location objects with `city`, `state`, `country`, `continent`, and `countryGrouping`, matching the shape used in search requests
 
   <Info>
     The OpenAPI schema declares `values` as an open-ended field since its shape varies by filter type. Treat the examples above as representative, not a fixed contract.
@@ -61,10 +61,10 @@ GET https://api.lusha.com/v3/contacts/prospecting/filters/{filterType}
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid `filterType`, or missing/too-short `query` for a filter type that requires one |
-| `401` | Unauthorized — invalid or missing API key |
-| `403` | Forbidden — account inactive or V3 access not enabled |
-| `429` | Too many requests — rate limit exceeded |
+| `400` | Bad request - invalid `filterType`, or missing/too-short `query` for a filter type that requires one |
+| `401` | Unauthorized - invalid or missing API key |
+| `403` | Forbidden - account inactive or V3 access not enabled |
+| `429` | Too many requests - rate limit exceeded |
 
 ## Examples
 
@@ -84,7 +84,7 @@ curl --request GET \
 
 </CodeGroup>
 
-```json Example response — seniority
+```json Example response - seniority
 {
   "values": [
     { "id": 4, "name": "Director" },
@@ -93,7 +93,7 @@ curl --request GET \
 }
 ```
 
-```json Example response — locations
+```json Example response - locations
 {
   "values": [
     {
@@ -108,5 +108,5 @@ curl --request GET \
 ```
 
 <Tip>
-  Filter types with `requiresQuery: false` (`departments`, `seniority`, `existingDataPoints`, `countries`) rarely change — cache their values instead of calling this endpoint before every search.
+  Filter types with `requiresQuery: false` (`departments`, `seniority`, `existingDataPoints`, `countries`) rarely change - cache their values instead of calling this endpoint before every search.
 </Tip>

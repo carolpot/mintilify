@@ -12,17 +12,17 @@ Enrich Companies reveals full firmographic data for companies you've already fou
 
 ## What you get by default
 
-Every enriched company includes firmographics — description, company type, year founded, employee count, industry and sub-industry, SIC and NAICS codes, HQ and additional locations, social links, revenue range, funding history, technologies, and business model.
+Every enriched company includes firmographics - description, company type, year founded, employee count, industry and sub-industry, SIC and NAICS codes, HQ and additional locations, social links, revenue range, funding history, technologies, and business model.
 
 ## What you can add with `reveal`
 
 Pass any of these to add deeper breakdowns to the response:
 
-- `employeesByDepartment` — headcount by department
-- `employeesByLocation` — headcount by country and state
-- `employeesBySeniority` — headcount by seniority level
-- `competitors` — companies Lusha identifies as competitors
-- `intent` — buyer intent topics
+- `employeesByDepartment` - headcount by department
+- `employeesByLocation` - headcount by country and state
+- `employeesBySeniority` - headcount by seniority level
+- `competitors` - companies Lusha identifies as competitors
+- `intent` - buyer intent topics
 
 <Tip>
   Check each company's `canReveal` array from your Search Companies response before enriching to confirm the credit cost.
@@ -32,11 +32,11 @@ If enrichment fails for a company `id`, the result contains an `error` with a co
 
 ## Billing
 
-Enrich Companies is charged per successful result via the `reveal_company` action — one charge per company, regardless of how many `reveal` fields you request for it.
+Enrich Companies is charged per successful result via the `reveal_company` action - one charge per company, regardless of how many `reveal` fields you request for it.
 
 ## Related
 
-- [Search Companies](/enrichment/search-companies) — find the `id` values to pass here.
-- [Search and Enrich Companies](/enrichment/search-and-enrich-companies) — find and reveal in a single call.
+- [Search Companies](/enrichment/search-companies) - find the `id` values to pass here.
+- [Search and Enrich Companies](/enrichment/search-and-enrich-companies) - find and reveal in a single call.
 
 For full request and response field details, see the [Enrich Companies API reference](/api-reference/enrich/enrich-companies).

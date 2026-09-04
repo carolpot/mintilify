@@ -4,10 +4,10 @@ sidebarTitle: "Search Companies"
 description: "Find up to 100 companies per call by ID, name, or domain, and see what you can reveal about each match."
 ---
 
-Search Companies looks up companies by identifier and returns a preview of each match. Use it as the first step before revealing full firmographics with [Enrich Companies](/enrichment/enrich-companies), or when you only need a lightweight profile — headcount range, industry, and location — without spending reveal credits.
+Search Companies looks up companies by identifier and returns a preview of each match. Use it as the first step before revealing full firmographics with [Enrich Companies](/enrichment/enrich-companies), or when you only need a lightweight profile - headcount range, industry, and location - without spending reveal credits.
 
 <Info>
-  This is a single endpoint for one company or a hundred — there's no separate "single" and "bulk" version. Send an array with 1 to 100 companies in one call.
+  This is a single endpoint for one company or a hundred - there's no separate "single" and "bulk" version. Send an array with 1 to 100 companies in one call.
 </Info>
 
 ## Identifiers you can search by
@@ -26,15 +26,15 @@ Provide **at least one** of the following for each company in your request:
 
 Each result includes:
 
-- **Preview data** — name, domain, employee count range, industry, location, and LinkedIn URL, when available.
-- **`has`** — the data points already present on this profile.
-- **`canReveal`** — which fields you can unlock via [Enrich Companies](/enrichment/enrich-companies), and the credit cost for each. A cost of `0` means you've already revealed that field for this account.
+- **Preview data** - name, domain, employee count range, industry, location, and LinkedIn URL, when available.
+- **`has`** - the data points already present on this profile.
+- **`canReveal`** - which fields you can unlock via [Enrich Companies](/enrichment/enrich-companies), and the credit cost for each. A cost of `0` means you've already revealed that field for this account.
 
 If a company can't be found, the result contains an `error` with a code of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, or `ENRICH_FAILED` instead of profile data.
 
 ## Filtering by recent activity
 
-Pass a `signals` filter to narrow your results to companies with recent activity — headcount changes, hiring surges, website traffic shifts, IT spend changes, or news events. Matching results include a `signalTypes` array showing which signal fired.
+Pass a `signals` filter to narrow your results to companies with recent activity - headcount changes, hiring surges, website traffic shifts, IT spend changes, or news events. Matching results include a `signalTypes` array showing which signal fired.
 
 ## Billing
 
@@ -42,6 +42,6 @@ Search Companies is charged per successful result via the `api_search` action. L
 
 ## Next step
 
-Once you have company `id` values from your search results, pass them to [Enrich Companies](/enrichment/enrich-companies) to reveal full firmographics — or use [Search and Enrich Companies](/enrichment/search-and-enrich-companies) to do both in one call next time.
+Once you have company `id` values from your search results, pass them to [Enrich Companies](/enrichment/enrich-companies) to reveal full firmographics - or use [Search and Enrich Companies](/enrichment/search-and-enrich-companies) to do both in one call next time.
 
 For full request and response field details, see the [Search Companies API reference](/api-reference/search/search-companies).

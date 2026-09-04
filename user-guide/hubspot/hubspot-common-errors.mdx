@@ -11,9 +11,9 @@ Most of these issues can only be resolved by a HubSpot Super Admin and a Lusha A
 
 ## "X was not one of the allowed options"
 
-This error occurs when a predefined value in your Lusha field mapping doesn't match the exact internal value configured in HubSpot's picktable — often due to case sensitivity.
+This error occurs when a predefined value in your Lusha field mapping doesn't match the exact internal value configured in HubSpot's picktable - often due to case sensitivity.
 
-To fix this, check the field's internal value in HubSpot — the label and the value may differ. For example, the label may show "In Progress" while the actual value is "IN\_PROGRESS". Update your Lusha field mapping to use the exact internal value.
+To fix this, check the field's internal value in HubSpot - the label and the value may differ. For example, the label may show "In Progress" while the actual value is "IN\_PROGRESS". Update your Lusha field mapping to use the exact internal value.
 
 ## Unable to connect Lusha and HubSpot
 
@@ -31,7 +31,7 @@ API tokens expire periodically. To fix this:
 
 ## Duplicate property value
 
-This error occurs when a field (like Contact Owner) has been added to your Lusha field mapping even though HubSpot populates it automatically during export — resulting in a duplicate value.
+This error occurs when a field (like Contact Owner) has been added to your Lusha field mapping even though HubSpot populates it automatically during export - resulting in a duplicate value.
 
 To fix this, remove the duplicate field from your Lusha field mapping.
 
@@ -73,7 +73,7 @@ The phone number format exported by Lusha reflects our database structure and ca
 
 ## Contacts are being saved as duplicates in HubSpot
 
-When Lusha pushes a contact to HubSpot, HubSpot uses the **email address** as its primary deduplication key. If a contact with that email already exists in HubSpot, it updates the existing record rather than creating a new one — but only if the email field is included in your Lusha field mapping.
+When Lusha pushes a contact to HubSpot, HubSpot uses the **email address** as its primary deduplication key. If a contact with that email already exists in HubSpot, it updates the existing record rather than creating a new one - but only if the email field is included in your Lusha field mapping.
 
 If contacts are appearing as duplicates, work through these checks in order:
 

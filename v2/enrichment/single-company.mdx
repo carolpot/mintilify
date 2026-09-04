@@ -18,9 +18,9 @@ GET https://api.lusha.com/v2/company
 
 You must provide **at least one** of the following:
 
-- `domain` — the company's web domain (recommended for highest match accuracy)
-- `company` — the company name
-- `companyId` — the Lusha company identifier
+- `domain` - the company's web domain (recommended for highest match accuracy)
+- `company` - the company name
+- `companyId` - the Lusha company identifier
 
 <Note>
   Signal sub-filters (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) are **not** supported on this endpoint. To filter signal results, use [`POST /bulk/company/v2`](/v2/enrichment/bulk-companies) with the `signalsFilters` parameter instead.

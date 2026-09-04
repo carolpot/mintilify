@@ -18,7 +18,7 @@ GET https://api.lusha.com/v2/person
 
 You must provide **at least one** of the following combinations:
 
-- `personId` — the Lusha person identifier (most direct lookup)
+- `personId` - the Lusha person identifier (most direct lookup)
 - `email`
 - `linkedinUrl`
 - `firstName` **and** `lastName` **and** (`companyName` **or** `companyDomain`)
@@ -115,7 +115,7 @@ A successful `200` response returns a `contact` object with the following key fi
 | `contact.data.socialLinks.linkedin` | string | LinkedIn profile URL. |
 | `contact.data.jobStartDate` | string | Start date at current position (`YYYY-MM-DD`). |
 | `contact.data.updateDate` | string | Date the Lusha record was last updated. |
-| `contact.data.company` | object | The contact's current company — name, `fqdn`, location, size, industry, and more. Nested here rather than returned separately, unlike the bulk endpoint. |
+| `contact.data.company` | object | The contact's current company - name, `fqdn`, location, size, industry, and more. Nested here rather than returned separately, unlike the bulk endpoint. |
 | `contact.error` | object \| null | `null` on success. Otherwise contains `code`, `name`, and `message`. |
 
 <Note>

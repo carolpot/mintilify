@@ -1,5 +1,5 @@
 ---
-title: "GET /api/signals/filters/{objectType} — Signal options"
+title: "GET /api/signals/filters/{objectType} - Signal options"
 sidebarTitle: "GET /api/signals/filters/{objectType}"
 description: "Retrieve available signal types for contacts or companies. Returns valid values for allSignals, promotion, companyChange, and company-level signals."
 openapi: "get /api/signals/filters/{objectType}"
@@ -83,7 +83,7 @@ GET https://api.lusha.com/api/signals/filters/company
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="objectType" type="string">
   The entity type from the request. Example: `"contact"` or `"company"`
@@ -117,8 +117,8 @@ GET https://api.lusha.com/api/signals/filters/company
 
 | Status | Meaning |
 |--------|---------|
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `403` | Forbidden — your plan does not include signals access. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `403` | Forbidden - your plan does not include signals access. |
 
 ---
 

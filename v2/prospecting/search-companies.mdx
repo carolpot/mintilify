@@ -1,16 +1,16 @@
 ---
 title: "Search prospecting companies by firmographic filters"
 sidebarTitle: "Search Companies"
-description: "Query Lusha's company database using firmographic filters — industry, size, revenue, location, technologies, and more — to get matching company IDs."
+description: "Query Lusha's company database using firmographic filters - industry, size, revenue, location, technologies, and more - to get matching company IDs."
 ---
 
-`POST https://api.lusha.com/prospecting/company/search` is step 2 of the 3-step company prospecting flow. You pass firmographic filters that describe your target account profile and receive back a paginated list of matching companies, each with an `id`. No credits are consumed at this step — credits are charged when you enrich the results in [step 3](/v2/prospecting/enrich-companies).
+`POST https://api.lusha.com/prospecting/company/search` is step 2 of the 3-step company prospecting flow. You pass firmographic filters that describe your target account profile and receive back a paginated list of matching companies, each with an `id`. No credits are consumed at this step - credits are charged when you enrich the results in [step 3](/v2/prospecting/enrich-companies).
 
 Before building your request, use the [Company Filters](/v2/filters/company-filters) endpoints to look up valid values for each field.
 
 ## Request body
 
-Send a JSON body with a `filters.companies` object. All filter fields are optional — include only the ones relevant to your target accounts.
+Send a JSON body with a `filters.companies` object. All filter fields are optional - include only the ones relevant to your target accounts.
 
 ```json
 {
@@ -35,17 +35,17 @@ Send a JSON body with a `filters.companies` object. All filter fields are option
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `filters.companies.include.names` | string[] | Company names to include — use [POST /prospecting/filters/companies/names](/v2/filters/company-filters) |
-| `filters.companies.include.mainIndustriesIds` / `subIndustriesIds` | number[] | Industry IDs — use [GET /prospecting/filters/companies/industries_labels](/v2/filters/company-filters) |
-| `filters.companies.include.sizes` | object[] | Employee count ranges as `{ "min": ..., "max": ... }` — use [GET /prospecting/filters/companies/sizes](/v2/filters/company-filters) |
-| `filters.companies.include.revenues` | object[] | Revenue ranges as `{ "min": ..., "max": ... }` — use [GET /prospecting/filters/companies/revenues](/v2/filters/company-filters) |
-| `filters.companies.include.locations` | object[] | HQ location filters — use [POST /prospecting/filters/companies/locations](/v2/filters/company-filters) |
+| `filters.companies.include.names` | string[] | Company names to include - use [POST /prospecting/filters/companies/names](/v2/filters/company-filters) |
+| `filters.companies.include.mainIndustriesIds` / `subIndustriesIds` | number[] | Industry IDs - use [GET /prospecting/filters/companies/industries_labels](/v2/filters/company-filters) |
+| `filters.companies.include.sizes` | object[] | Employee count ranges as `{ "min": ..., "max": ... }` - use [GET /prospecting/filters/companies/sizes](/v2/filters/company-filters) |
+| `filters.companies.include.revenues` | object[] | Revenue ranges as `{ "min": ..., "max": ... }` - use [GET /prospecting/filters/companies/revenues](/v2/filters/company-filters) |
+| `filters.companies.include.locations` | object[] | HQ location filters - use [POST /prospecting/filters/companies/locations](/v2/filters/company-filters) |
 | `filters.companies.include.companyLocations` | object[] | Office location filters based on all known company locations, not just HQ |
-| `filters.companies.include.sicCodes` | string[] | SIC industry classification codes — use [GET /prospecting/filters/companies/sics](/v2/filters/company-filters) |
-| `filters.companies.include.naicsCodes` | string[] | NAICS industry classification codes — use [GET /prospecting/filters/companies/naics](/v2/filters/company-filters) |
-| `filters.companies.include.technologies` | object[] | Technologies the company uses, each as `{ "name": "..." }` — use [POST /prospecting/filters/companies/technologies](/v2/filters/company-filters) |
-| `filters.companies.include.intentTopics` | string[] | Buyer intent topics — use [GET /prospecting/filters/companies/intent_topics](/v2/filters/company-filters) |
-| `pages.page` / `pages.size` | number | Pagination — `page` ranges `0–1000`, `size` ranges `10–50` |
+| `filters.companies.include.sicCodes` | string[] | SIC industry classification codes - use [GET /prospecting/filters/companies/sics](/v2/filters/company-filters) |
+| `filters.companies.include.naicsCodes` | string[] | NAICS industry classification codes - use [GET /prospecting/filters/companies/naics](/v2/filters/company-filters) |
+| `filters.companies.include.technologies` | object[] | Technologies the company uses, each as `{ "name": "..." }` - use [POST /prospecting/filters/companies/technologies](/v2/filters/company-filters) |
+| `filters.companies.include.intentTopics` | string[] | Buyer intent topics - use [GET /prospecting/filters/companies/intent_topics](/v2/filters/company-filters) |
+| `pages.page` / `pages.size` | number | Pagination - `page` ranges `0–1000`, `size` ranges `10–50` |
 
 ## Signal filtering (premium feature)
 
@@ -75,7 +75,7 @@ Add a `signal` object under `filters.companies.include` to match companies with 
 }
 ```
 
-Company signal names use the same values as the [Signals API](/v2/signals/overview) — for example `surgeInHiring`, `headcountIncrease6m`, `websiteTrafficIncrease`, and `financialEventsNews`. See [GET /api/signals/filters/company](/v2/api-reference/signals/get-signal-options) for the complete list.
+Company signal names use the same values as the [Signals API](/v2/signals/overview) - for example `surgeInHiring`, `headcountIncrease6m`, `websiteTrafficIncrease`, and `financialEventsNews`. See [GET /api/signals/filters/company](/v2/api-reference/signals/get-signal-options) for the complete list.
 
 ## Example request
 

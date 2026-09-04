@@ -1,7 +1,7 @@
 ---
 title: "Enrich prospecting contacts with full contact data"
 sidebarTitle: "Enrich Contacts"
-description: "Turn contact IDs from a prospecting search into full records — verified emails, phone numbers, job title, company details, and location data."
+description: "Turn contact IDs from a prospecting search into full records - verified emails, phone numbers, job title, company details, and location data."
 ---
 
 `POST https://api.lusha.com/prospecting/contact/enrich` is step 3 of the 3-step prospecting flow. You pass the `requestId` and `contactId` values returned by [Search Contacts](/v2/prospecting/search-contacts) and receive back complete contact records with verified emails, phone numbers, job details, and company information. Credits are charged at this step for each contact successfully enriched.
@@ -29,7 +29,7 @@ Send a JSON body with the `requestId` from your search response and an array of 
 ## Unified Credits plan requirement
 
 <Warning>
-  `revealEmails` and `revealPhones` are only available to customers on the **Unified Credits** pricing plan. Passing either parameter on another plan returns a `403` error. When you omit both parameters, the API returns all available contact data — including emails and phones.
+  `revealEmails` and `revealPhones` are only available to customers on the **Unified Credits** pricing plan. Passing either parameter on another plan returns a `403` error. When you omit both parameters, the API returns all available contact data - including emails and phones.
 </Warning>
 
 ```json

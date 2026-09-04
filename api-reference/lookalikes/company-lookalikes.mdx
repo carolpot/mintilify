@@ -17,7 +17,7 @@ POST https://api.lusha.com/v3/companies/lookalike
 
 ## Pagination without duplicates
 
-On your first request, omit `dedupeSessionId` — the server generates one and returns it. Pass it on every subsequent request to get more results without repeating companies already seen. Sessions are retained for 30 days.
+On your first request, omit `dedupeSessionId` - the server generates one and returns it. Pass it on every subsequent request to get more results without repeating companies already seen. Sessions are retained for 30 days.
 
 ## Request body
 
@@ -86,7 +86,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="dedupeSessionId" type="string">
   Session ID to use for subsequent "get more" requests.
@@ -135,10 +135,10 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input data. |
+| `400` | Bad request - invalid input data. |
 | `402` | Insufficient credits. |
-| `403` | Forbidden — account inactive, or V3 access not enabled. |
-| `410` | `dedupeSessionId` is invalid or expired — start a new run by omitting it. |
+| `403` | Forbidden - account inactive, or V3 access not enabled. |
+| `410` | `dedupeSessionId` is invalid or expired - start a new run by omitting it. |
 | `500` | Internal server error. |
 
 <ResponseExample>

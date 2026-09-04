@@ -15,7 +15,7 @@ The Lusha API enforces rate limits to ensure fair usage and stable performance f
 | Create or delete webhook subscriptions | 25 items per bulk request |
 
 <Note>
-  Rate limits are applied at the account level, not per API key. If multiple systems share the same account, their requests count against the same quota. Higher-tier plans may have higher daily and hourly quotas — contact your account manager if you need a limit increase.
+  Rate limits are applied at the account level, not per API key. If multiple systems share the same account, their requests count against the same quota. Higher-tier plans may have higher daily and hourly quotas - contact your account manager if you need a limit increase.
 </Note>
 
 ## Rate limit response headers
@@ -35,7 +35,7 @@ Every response includes headers you can use to track your current usage against 
 | `x-daily-usage` | Requests made in the current daily window |
 
 <Tip>
-  Poll these headers instead of guessing when you are close to a limit — they tell you exactly how much headroom is left in each window.
+  Poll these headers instead of guessing when you are close to a limit - they tell you exactly how much headroom is left in each window.
 </Tip>
 
 ## 429 Too Many Requests
@@ -50,7 +50,7 @@ When you exceed a rate limit, the API returns:
 }
 ```
 
-The `message` reflects which limit was hit — for example, a per-second/per-minute burst, an hourly quota, a daily quota, or a trial account limit. Your client must detect the `429` status code and pause before retrying regardless of the exact message.
+The `message` reflects which limit was hit - for example, a per-second/per-minute burst, an hourly quota, a daily quota, or a trial account limit. Your client must detect the `429` status code and pause before retrying regardless of the exact message.
 
 ## Handling rate limit errors
 
@@ -79,7 +79,7 @@ def call_with_backoff(url, headers, max_retries=5):
 Additional best practices:
 
 - **Batch requests thoughtfully.** If you need to enrich thousands of records, spread requests over time rather than sending them all at once.
-- **Monitor the account usage endpoint sparingly.** Its limit is stricter (5 requests per minute), so poll it infrequently — for example, once at the start of a job rather than before every API call.
+- **Monitor the account usage endpoint sparingly.** Its limit is stricter (5 requests per minute), so poll it infrequently - for example, once at the start of a job rather than before every API call.
 - **Distinguish `429` from other errors.** Do not retry `400` or `401` responses; those indicate problems with your request or credentials that retrying will not fix.
 
 ## Next steps

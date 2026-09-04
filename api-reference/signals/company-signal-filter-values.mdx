@@ -38,7 +38,7 @@ GET https://api.lusha.com/v3/companies/signals/filters/{filterType}
 </ParamField>
 
 <Warning>
-  `hiringByLocations` requires `query` — omitting it returns a `400`. `newsEventTypes` and `hiringByDepartments` return their full value list whether or not you pass a `query`.
+  `hiringByLocations` requires `query` - omitting it returns a `400`. `newsEventTypes` and `hiringByDepartments` return their full value list whether or not you pass a `query`.
 </Warning>
 
 ---
@@ -71,14 +71,14 @@ curl --request GET \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="values" type="any">
-  The matching values for the requested `filterType`. Nullable — returns `null` when nothing matches.
+  The matching values for the requested `filterType`. Nullable - returns `null` when nothing matches.
 </ResponseField>
 
 <Info>
-  The API's `FilterValuesResponse` schema leaves `values` open-ended so it can represent different filter shapes. Treat the response as authoritative and read it directly rather than hardcoding a shape — the example below is illustrative.
+  The API's `FilterValuesResponse` schema leaves `values` open-ended so it can represent different filter shapes. Treat the response as authoritative and read it directly rather than hardcoding a shape - the example below is illustrative.
 </Info>
 
 <ResponseExample>
@@ -110,11 +110,11 @@ curl --request GET \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — `filterType` is invalid, or `query` is missing/too short/too long for `hiringByLocations`. |
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `403` | Forbidden — account inactive or V3 access not enabled. |
+| `400` | Bad request - `filterType` is invalid, or `query` is missing/too short/too long for `hiringByLocations`. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `403` | Forbidden - account inactive or V3 access not enabled. |
 
 ## Related pages
 
-- [Get Company Signal Filters](/api-reference/signals/company-signal-filters) — discover which filter types are available
-- [Company Signals](/api-reference/signals/company-signals) — retrieve signal events for specific companies
+- [Get Company Signal Filters](/api-reference/signals/company-signal-filters) - discover which filter types are available
+- [Company Signals](/api-reference/signals/company-signals) - retrieve signal events for specific companies

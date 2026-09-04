@@ -4,23 +4,23 @@ sidebarTitle: "Overview"
 description: "Search Lusha's B2B database by ICP filters, then enrich the matching previews to generate net-new contact and company records for your CRM."
 ---
 
-The Prospecting API lets you query Lusha's B2B database using filters that match your Ideal Customer Profile — job title, seniority, location, industry, company size, technologies, intent, and signals. Unlike the Enrich API, which fills in data on records you already know, Prospecting generates entirely new records you can load directly into your CRM.
+The Prospecting API lets you query Lusha's B2B database using filters that match your Ideal Customer Profile - job title, seniority, location, industry, company size, technologies, intent, and signals. Unlike the Enrich API, which fills in data on records you already know, Prospecting generates entirely new records you can load directly into your CRM.
 
 ## How prospecting works
 
-Prospecting is a **filter, then enrich** flow. A prospecting search never returns full contact or company records — it returns a page of lightweight previews. You look up full data separately, only for the previews you actually want.
+Prospecting is a **filter, then enrich** flow. A prospecting search never returns full contact or company records - it returns a page of lightweight previews. You look up full data separately, only for the previews you actually want.
 
 <Steps>
   <Step title="Search with filters">
-    POST rich filter criteria to [`/v3/contacts/prospecting`](/api-reference/prospecting/prospecting-contacts) or [`/v3/companies/prospecting`](/api-reference/prospecting/prospecting-companies). The response returns a paginated list of matching previews — name, current company, job title/industry, location, and an `id` — plus a `canReveal` list showing what you could reveal and at what credit cost.
+    POST rich filter criteria to [`/v3/contacts/prospecting`](/api-reference/prospecting/prospecting-contacts) or [`/v3/companies/prospecting`](/api-reference/prospecting/prospecting-companies). The response returns a paginated list of matching previews - name, current company, job title/industry, location, and an `id` - plus a `canReveal` list showing what you could reveal and at what credit cost.
   </Step>
   <Step title="Enrich the previews you want">
-    POST the `id` values you care about to [`/v3/contacts/enrich`](/api-reference/enrich/enrich-contacts) or [`/v3/companies/enrich`](/api-reference/enrich/enrich-companies) to reveal full data — verified emails, phone numbers, firmographics, and more.
+    POST the `id` values you care about to [`/v3/contacts/enrich`](/api-reference/enrich/enrich-contacts) or [`/v3/companies/enrich`](/api-reference/enrich/enrich-companies) to reveal full data - verified emails, phone numbers, firmographics, and more.
   </Step>
 </Steps>
 
 <Info>
-  There's no separate "enrich" endpoint scoped to prospecting results — Prospecting and Enrich are decoupled. Any `id` returned by a prospecting search can be enriched with the same Enrich endpoints you'd use for any other contact or company `id`.
+  There's no separate "enrich" endpoint scoped to prospecting results - Prospecting and Enrich are decoupled. Any `id` returned by a prospecting search can be enriched with the same Enrich endpoints you'd use for any other contact or company `id`.
 </Info>
 
 ## Prospecting flows
@@ -49,11 +49,11 @@ Prospecting is a **filter, then enrich** flow. A prospecting search never return
 ## Premium filters
 
 <Note>
-  **Signal filtering** narrows results to contacts or companies with recent activity — a promotion, a company change, a hiring surge, and more. Filter by signal type under `filters.contacts.include.signals` or `filters.companies.include.signals`. Credits are charged for each matched signal type per result, on top of the standard per-result charge. See [Search contacts](/prospecting/search-contacts) and [Search companies](/prospecting/search-companies) for signal filter syntax.
+  **Signal filtering** narrows results to contacts or companies with recent activity - a promotion, a company change, a hiring surge, and more. Filter by signal type under `filters.contacts.include.signals` or `filters.companies.include.signals`. Credits are charged for each matched signal type per result, on top of the standard per-result charge. See [Search contacts](/prospecting/search-contacts) and [Search companies](/prospecting/search-companies) for signal filter syntax.
 </Note>
 
 <Note>
-  **DNC filtering** — pass `"options": { "excludeDnc": true }` on a contacts prospecting request to exclude contacts whose phone numbers are all marked Do Not Call. Contacts with at least one callable number remain in results.
+  **DNC filtering** - pass `"options": { "excludeDnc": true }` on a contacts prospecting request to exclude contacts whose phone numbers are all marked Do Not Call. Contacts with at least one callable number remain in results.
 </Note>
 
 ## Filter reference

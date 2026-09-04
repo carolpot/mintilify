@@ -1,16 +1,16 @@
 ---
 title: "Search prospecting contacts by ICP filters"
 sidebarTitle: "Search Contacts"
-description: "Query Lusha's contact database by ICP filters — job title, seniority, department, location, and company size — to get a list of matching contact IDs."
+description: "Query Lusha's contact database by ICP filters - job title, seniority, department, location, and company size - to get a list of matching contact IDs."
 ---
 
-`POST https://api.lusha.com/prospecting/contact/search` is step 2 of the 3-step prospecting flow. You pass a set of filters that describe your Ideal Customer Profile and receive back a paginated list of matching contacts, each with a `contactId`. No credits are consumed at this step — credits are charged when you enrich the results in [step 3](/v2/prospecting/enrich-contacts).
+`POST https://api.lusha.com/prospecting/contact/search` is step 2 of the 3-step prospecting flow. You pass a set of filters that describe your Ideal Customer Profile and receive back a paginated list of matching contacts, each with a `contactId`. No credits are consumed at this step - credits are charged when you enrich the results in [step 3](/v2/prospecting/enrich-contacts).
 
 Before building your request, use the [Contact Filters](/v2/filters/contact-filters) endpoints to look up the valid values for each field.
 
 ## Request body
 
-Send a JSON body with a `filters` object. Filters are split into `contacts` and `companies`, each with `include` and `exclude` sections. All filter fields are optional — include only the ones relevant to your ICP.
+Send a JSON body with a `filters` object. Filters are split into `contacts` and `companies`, each with `include` and `exclude` sections. All filter fields are optional - include only the ones relevant to your ICP.
 
 ```json
 {
@@ -41,17 +41,17 @@ Send a JSON body with a `filters` object. Filters are split into `contacts` and 
 | Field | Type | Description |
 |-------|------|-------------|
 | `filters.contacts.include.jobTitles` | string[] | Free-text job titles to match |
-| `filters.contacts.include.seniority` | number[] | Seniority level IDs — use [GET /prospecting/filters/contacts/seniority](/v2/filters/contact-filters) for valid values |
-| `filters.contacts.include.departments` | string[] | Department names — use [GET /prospecting/filters/contacts/departments](/v2/filters/contact-filters) |
+| `filters.contacts.include.seniority` | number[] | Seniority level IDs - use [GET /prospecting/filters/contacts/seniority](/v2/filters/contact-filters) for valid values |
+| `filters.contacts.include.departments` | string[] | Department names - use [GET /prospecting/filters/contacts/departments](/v2/filters/contact-filters) |
 | `filters.contacts.include.locations` | object[] | Objects with `continent`, `country`, `state`, `city`, and `country_grouping` |
-| `filters.contacts.include.existing_data_points` | string[] | Require specific data types (e.g. `"phone"`, `"work_email"`, `"mobile_phone"`) — use [GET /prospecting/filters/contacts/existing_data_points](/v2/filters/contact-filters) |
+| `filters.contacts.include.existing_data_points` | string[] | Require specific data types (e.g. `"phone"`, `"work_email"`, `"mobile_phone"`) - use [GET /prospecting/filters/contacts/existing_data_points](/v2/filters/contact-filters) |
 | `filters.contacts.include.linkedinUrls` | string[] | Match specific LinkedIn profile URLs |
 | `filters.contacts.include.searchText` | string | Free-text search across contact fields |
-| `filters.companies.include.mainIndustriesIds` / `subIndustriesIds` | number[] | Industry IDs — use [GET /prospecting/filters/companies/industries_labels](/v2/filters/company-filters) |
+| `filters.companies.include.mainIndustriesIds` / `subIndustriesIds` | number[] | Industry IDs - use [GET /prospecting/filters/companies/industries_labels](/v2/filters/company-filters) |
 | `filters.companies.include.sizes` | object[] | Employee count ranges as `{ "min": ..., "max": ... }` |
 | `includePartialContact` | boolean | Include contacts with incomplete data. Defaults to `true`. |
-| `excludeDnc` | boolean | Scale-plan feature — see [DNC filtering](#dnc-filtering-scale-feature) below |
-| `pages.page` / `pages.size` | number | Pagination — `page` ranges `0–1000`, `size` ranges `10–50` |
+| `excludeDnc` | boolean | Scale-plan feature - see [DNC filtering](#dnc-filtering-scale-feature) below |
+| `pages.page` / `pages.size` | number | Pagination - `page` ranges `0–1000`, `size` ranges `10–50` |
 
 ## Signal filtering (premium feature)
 
@@ -108,7 +108,7 @@ Set `"excludeDnc": true` at the top level of the request body to filter out cont
 
 When `excludeDnc` is enabled:
 - Contacts with at least one callable phone number remain in results.
-- Only callable phone numbers are shown — DNC numbers are hidden.
+- Only callable phone numbers are shown - DNC numbers are hidden.
 - Contacts whose phones are all DNC are excluded entirely.
 
 ## Example request

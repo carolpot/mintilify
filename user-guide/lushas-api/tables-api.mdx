@@ -3,16 +3,16 @@ title: "Tables API"
 description: "Create and manage persistent tables of contacts and companies programmatically using the Lusha Tables API."
 ---
 
-The Lusha Tables API lets you create and manage persistent tables of contacts and companies directly from your own systems. If you use the Lusha Workspace UI, MCP server, or any other Lusha surface — they all read and write the same underlying data, so changes made through the API are reflected everywhere.
+The Lusha Tables API lets you create and manage persistent tables of contacts and companies directly from your own systems. If you use the Lusha Workspace UI, MCP server, or any other Lusha surface - they all read and write the same underlying data, so changes made through the API are reflected everywhere.
 
 ## What the Tables API does
 
 Tables are structured, configurable sets of contacts or companies. Through the API you can:
 
-- **Create and manage tables** — create, list, rename, archive, change visibility, or delete tables
-- **Manage entities** — add or remove contacts or companies (rows) from a table, or read the full list
-- **Run columns** — list available columns, remove columns, or trigger a column to populate across all rows in a table
-- **Persist search results automatically** — pass a `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to save those results into a table without a separate step
+- **Create and manage tables** - create, list, rename, archive, change visibility, or delete tables
+- **Manage entities** - add or remove contacts or companies (rows) from a table, or read the full list
+- **Run columns** - list available columns, remove columns, or trigger a column to populate across all rows in a table
+- **Persist search results automatically** - pass a `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to save those results into a table without a separate step
 
 ## Contacts Tables vs. Companies Tables
 
@@ -29,9 +29,9 @@ Both types support the same table, entity, and column operations.
 
 All Tables API calls require a valid API key passed as an `api_key` header.
 
-Every call must also include an `owner.email` value — the email of a user on your Lusha account — to identify who owns the table. This is required when authenticating with an API key.
+Every call must also include an `owner.email` value - the email of a user on your Lusha account - to identify who owns the table. This is required when authenticating with an API key.
 
-- For `POST` and `PATCH` calls: pass `owner` as a body field — `{ "owner": { "email": "you@company.com" } }`
+- For `POST` and `PATCH` calls: pass `owner` as a body field - `{ "owner": { "email": "you@company.com" } }`
 - For `GET` and `DELETE` calls (no body): pass `?email=you@company.com` as a query parameter
 
 💡 **Note:** OAuth and token-based callers are already identified by their token, so `owner.email` is optional for those authentication methods.
@@ -70,7 +70,7 @@ For the full list of Lusha API error codes, see the [Error Codes Reference](/use
 
 ## Where to find the full reference
 
-The complete endpoint reference — including request/response schemas and example calls — is in the API docs:
+The complete endpoint reference - including request/response schemas and example calls - is in the API docs:
 
 - [Contacts Tables →](https://docs.lusha.com/api-reference/v3#tag/Contacts-Tables)
 - [Companies Tables →](https://docs.lusha.com/api-reference/v3#tag/Companies-Tables)

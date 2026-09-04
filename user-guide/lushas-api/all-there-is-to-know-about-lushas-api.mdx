@@ -25,7 +25,7 @@ Limits vary by plan:
 | Premium | 300 | 1,800 | 18,000 |
 | Scale | 300 | 5,000 | 50,000 |
 
-Free and Starter plans do not have an hourly limit — only per-minute and per-day caps apply.
+Free and Starter plans do not have an hourly limit - only per-minute and per-day caps apply.
 
 Rate limits are enforced per API key. Exceeding a limit will result in a `429 Too Many Requests` response. To avoid a 429 error, implement retry logic with exponential backoff when hitting rate limits.
 
@@ -41,7 +41,7 @@ Retrieves contact data using identifiers like email, LinkedIn URL, name, company
 
 ## Company API
 
-Retrieves firmographic data for a company based on its domain or name — industry, employee count, location, revenue, and more. The **Bulk Company API** handles multiple domains or names in a single request.
+Retrieves firmographic data for a company based on its domain or name - industry, employee count, location, revenue, and more. The **Bulk Company API** handles multiple domains or names in a single request.
 
 ## Prospecting API
 
@@ -61,16 +61,16 @@ Returns current credit consumption by type. Rate limit: 5 requests per minute.
 
 ## Waterfall Reveal
 
-Waterfall Reveal is an enhancement to the Enrich Contacts endpoint. When Lusha's own data has no match for a requested field, the request automatically falls through to your enabled third-party providers to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
+Waterfall Reveal is an enhancement to the Enrich Contacts endpoint. When Lusha's own data has no match for a requested field, the request automatically falls through to your enabled third-party providers to fill the gap - extra reach on hard-to-match contacts, on top of standard enrichment.
 
-Admins turn Data Waterfall on and manage individual vendors under **Account Settings > Waterfall**. Once enabled, the waterfall runs automatically on every `POST /v3/contacts/enrich` call for the fields (`emails`, `phones`) you requested via `reveal` — you don't need to pass anything to trigger it. To opt a specific call out, pass `waterfallEnabled: false` alongside `reveal`.
+Admins turn Data Waterfall on and manage individual vendors under **Account Settings > Waterfall**. Once enabled, the waterfall runs automatically on every `POST /v3/contacts/enrich` call for the fields (`emails`, `phones`) you requested via `reveal` - you don't need to pass anything to trigger it. To opt a specific call out, pass `waterfallEnabled: false` alongside `reveal`.
 
 <Note>
-  Waterfall Reveal requires Data Waterfall to be enabled on your account, with at least one provider turned on, under **Account Settings > Waterfall** in the Lusha dashboard. Lusha determines the provider query order — it isn't caller-configurable. Pricing is flat and the same across every vendor: 2 credits per work email, 8 credits per phone, charged only on a match. Use of Data Waterfall is subject to Lusha's Supplementary Terms.
+  Waterfall Reveal requires Data Waterfall to be enabled on your account, with at least one provider turned on, under **Account Settings > Waterfall** in the Lusha dashboard. Lusha determines the provider query order - it isn't caller-configurable. Pricing is flat and the same across every vendor: 2 credits per work email, 8 credits per phone, charged only on a match. Use of Data Waterfall is subject to Lusha's Supplementary Terms.
 </Note>
 
 <Note>
-  Rollout is staged — live now for self-serve paid accounts on the API, with Scale accounts on the API following shortly after, and MCP, Workspace, and Plugin support coming soon. Vendor coverage starts with 2 providers covering the US, with global vendors being added over time.
+  Rollout is staged - live now for self-serve paid accounts on the API, with Scale accounts on the API following shortly after, and MCP, Workspace, and Plugin support coming soon. Vendor coverage starts with 2 providers covering the US, with global vendors being added over time.
 </Note>
 
 For full parameter reference, see the [Enrich Contacts API documentation](https://docs.lusha.com/apis/openapi/enrich).
@@ -106,7 +106,7 @@ Example: revealing an email and phone for one contact costs 7 credits total (5 f
 - Growth in Headcount: 1 credit per company
 - Job Change: 1 credit per contact
 
-**Key rules:** A minimum of 1 credit applies per request even if no data is returned. Maximum 100 contacts or companies per request. Each contact's data point is only charged once — re-querying the same contact won't incur additional charges for already-revealed data.
+**Key rules:** A minimum of 1 credit applies per request even if no data is returned. Maximum 100 contacts or companies per request. Each contact's data point is only charged once - re-querying the same contact won't incur additional charges for already-revealed data.
 
 ## Managing API key credit limits
 
@@ -123,9 +123,9 @@ You can set monthly credit limits per API key to control consumption per workflo
 
 ## Troubleshooting: API shows "credit limit reached" but I still have credits
 
-If your API calls are being rejected with a "credit limit reached" error but your Lusha dashboard shows credits remaining, the issue is almost always a **per-API-key credit limit** — not your account balance.
+If your API calls are being rejected with a "credit limit reached" error but your Lusha dashboard shows credits remaining, the issue is almost always a **per-API-key credit limit** - not your account balance.
 
-Each API key can have its own monthly credit cap set independently of your total account balance. When a key's cap is reached, all requests using that key are blocked — even if the account still has plenty of credits available.
+Each API key can have its own monthly credit cap set independently of your total account balance. When a key's cap is reached, all requests using that key are blocked - even if the account still has plenty of credits available.
 
 **To check and fix the limit on your API key:**
 

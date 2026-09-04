@@ -3,7 +3,7 @@ title: "Troubleshooting: Zoom Settings Blocking the Conversations Bot"
 description: "How to identify and fix Zoom account or meeting settings that reject the Lusha Conversations recording bot as an unauthenticated guest."
 ---
 
-If the Lusha Conversations bot fails to join a Zoom meeting, the most common cause is a Zoom setting that rejects unauthenticated guests — not a bug in the bot's join code. The bot joins as an anonymous SDK participant and cannot sign in through a Zoom account, so any setting that blocks unsigned-in users will prevent it from entering.
+If the Lusha Conversations bot fails to join a Zoom meeting, the most common cause is a Zoom setting that rejects unauthenticated guests - not a bug in the bot's join code. The bot joins as an anonymous SDK participant and cannot sign in through a Zoom account, so any setting that blocks unsigned-in users will prevent it from entering.
 
 The three settings below are the most frequent culprits. Check each one in your Zoom account and turn it off for the meetings your bot targets.
 
@@ -17,7 +17,7 @@ The three settings below are the most frequent culprits. Check each one in your 
 
 ## 2. Join Before Host / Host not present
 
-**Why it blocks the bot:** If **Join Before Host** is disabled and the host has not yet started the meeting, Zoom turns away any participant — including the bot — until the host joins. The bot may appear to time out or fail silently in this scenario.
+**Why it blocks the bot:** If **Join Before Host** is disabled and the host has not yet started the meeting, Zoom turns away any participant - including the bot - until the host joins. The bot may appear to time out or fail silently in this scenario.
 
 **Where to find it:** Zoom Web Portal → **Settings** → **Meeting** → **Schedule Meeting** → **Join before host**.
 

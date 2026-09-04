@@ -5,7 +5,7 @@ description: "Retrieve hiring, headcount, web traffic, IT spend, and news signal
 openapi: "post /v3/companies/signals"
 ---
 
-Use this endpoint when you already have Lusha company IDs and want their signal activity — hiring surges, headcount changes, web traffic and IT spend shifts, and categorized news — in one call. Pass up to 100 `ids` and the `signalTypes` you want back; there is no separate "search" step in V3 — one call returns all matched signal data for the IDs you send.
+Use this endpoint when you already have Lusha company IDs and want their signal activity - hiring surges, headcount changes, web traffic and IT spend shifts, and categorized news - in one call. Pass up to 100 `ids` and the `signalTypes` you want back; there is no separate "search" step in V3 - one call returns all matched signal data for the IDs you send.
 
 <Info>
   Don't have Lusha company IDs yet? Resolve companies first with [Enrich Companies](/enrichment/enrich-companies) or [Search & Enrich Companies](/enrichment/search-and-enrich-companies), then pass the returned `id` values here.
@@ -83,7 +83,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="results" type="object[]">
   One entry per requested company ID.
@@ -101,7 +101,7 @@ curl --request POST \
   </Expandable>
 
   <Info>
-    Beyond `id`, `companyName`, and `domain`, each result also carries one array per signal type that matched — keyed by the `signalTypes` value you requested (for example `surgeInHiring`, `financialEventsNews`), the same keying pattern the [contact signals](/api-reference/signals/contact-signals) response uses for `promotion` and `companyChange`.
+    Beyond `id`, `companyName`, and `domain`, each result also carries one array per signal type that matched - keyed by the `signalTypes` value you requested (for example `surgeInHiring`, `financialEventsNews`), the same keying pattern the [contact signals](/api-reference/signals/contact-signals) response uses for `promotion` and `companyChange`.
   </Info>
 </ResponseField>
 
@@ -154,15 +154,15 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input data. |
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `402` | Payment required — insufficient credits. |
-| `403` | Forbidden — account inactive or V3 access not enabled. |
-| `429` | Too many requests — you have exceeded the rate limit. |
+| `400` | Bad request - invalid input data. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `402` | Payment required - insufficient credits. |
+| `403` | Forbidden - account inactive or V3 access not enabled. |
+| `429` | Too many requests - you have exceeded the rate limit. |
 
 ## Related pages
 
-- [Signals overview](/signals/overview) — the consolidated signals model, credits, and delivery options
-- [Get Company Signal Types](/api-reference/signals/company-signal-types) — the current list of valid `signalTypes` values
-- [Get Company Signal Filters](/api-reference/signals/company-signal-filters) — discover which signal filter types are available
-- [Contact Signals](/api-reference/signals/contact-signals) — the equivalent endpoint for contacts
+- [Signals overview](/signals/overview) - the consolidated signals model, credits, and delivery options
+- [Get Company Signal Types](/api-reference/signals/company-signal-types) - the current list of valid `signalTypes` values
+- [Get Company Signal Filters](/api-reference/signals/company-signal-filters) - discover which signal filter types are available
+- [Contact Signals](/api-reference/signals/contact-signals) - the equivalent endpoint for contacts

@@ -3,36 +3,36 @@ title: "Getting Started with Lusha for Slack"
 description: "Learn how to install the Lusha Slack app and use it to find contacts and company data without leaving your workspace."
 ---
 
-The Lusha Slack app brings contact and company data directly into Slack. You can run quick lookups with slash commands or have a conversation with the Lusha Agent to find decision-makers, enrich contacts, and push data to your CRM — all without switching tabs.
+The Lusha Slack app brings contact and company data directly into Slack. You can run quick lookups with slash commands or have a conversation with the Lusha Agent to find decision-makers, enrich contacts, and push data to your CRM - all without switching tabs.
 
 ## What the Lusha Slack App Includes
 
 The app has two capabilities in a single install:
 
-- **Lusha Agent** — a conversational agent you can @mention in any channel or DM. Ask it to find contacts, summarize account activity, or identify decision-makers in plain English.
-- **Slash Commands** — `/lusha` for contact lookups and `/lusha_company` for company snapshots.
+- **Lusha Agent** - a conversational agent you can @mention in any channel or DM. Ask it to find contacts, summarize account activity, or identify decision-makers in plain English.
+- **Slash Commands** - `/lusha` for contact lookups and `/lusha_company` for company snapshots.
 
 ## Before You Start
 
 - An active Lusha account (Free plan or above)
 - Workspace Admin access in Slack (for the initial install)
-- The install is free — it works with your existing Lusha credit balance
+- The install is free - it works with your existing Lusha credit balance
 
 ## How to Install Lusha for Slack
 
 1. **Click Add to Slack** from the Lusha for Slack page. This opens the standard Slack OAuth authorization flow.
-2. **Authorize the app** in your Slack workspace. One admin install covers the entire workspace — no per-user setup required.
+2. **Authorize the app** in your Slack workspace. One admin install covers the entire workspace - no per-user setup required.
 3. **Sign in with your existing Lusha credentials.** Your credit balance and watch-list sync automatically.
 
 You're set up when you see the Lusha app appear in your Slack Apps sidebar. The whole process takes under 2 minutes.
 
 ## Using Slash Commands
 
-### /lusha — Contact Lookup
+### /lusha - Contact Lookup
 
 Type `/lusha [name] at [company]` in any channel or DM. For example: `/lusha Jane Smith at Stripe`.
 
-Lusha returns a contact card with name, title, company, and LinkedIn URL. The results are ephemeral — only you can see them.
+Lusha returns a contact card with name, title, company, and LinkedIn URL. The results are ephemeral - only you can see them.
 
 To reveal contact details, click **Reveal email & phone** or choose to reveal email or phone individually. Each reveal costs 1 credit. Search is always free.
 
@@ -40,11 +40,11 @@ To reveal contact details, click **Reveal email & phone** or choose to reveal em
 Results are visible only to you. No contact data is stored by the Slack app layer.
 </Note>
 
-### /lusha_company — Company Snapshot
+### /lusha_company - Company Snapshot
 
 Type `/lusha_company [company name]` to pull a company overview: headcount, industry, tech stack, and funding stage.
 
-Company lookups are free — no credits are consumed.
+Company lookups are free - no credits are consumed.
 
 ## Using the Lusha Agent
 
@@ -70,7 +70,7 @@ The Lusha Agent uses large language models to interpret your queries and structu
 | Provider | What is sent |
 |---|---|
 | OpenAI (GPT-5.4 mini) | Your query text and prior thread messages in the same conversation. No contact PII or credit data. |
-| Lusha API | Structured search parameters from your query. Contact data is returned directly to you — never to the LLM. |
+| Lusha API | Structured search parameters from your query. Contact data is returned directly to you - never to the LLM. |
 
 <Note>
 The AI models are not trained on your workspace data and do not make automated consequential decisions. Full sub-processor list: [lusha.com/sub-processors](https://lusha.com/sub-processors)
@@ -78,10 +78,10 @@ The AI models are not trained on your workspace data and do not make automated c
 
 ## Privacy & Security
 
-- **No PII stored** — Contact data passes through in memory only. Nothing is logged or persisted in the Slack app layer.
-- **Minimal OAuth scopes** — Only `chat:write`, `commands`, and `im:history`. No access to workspace message history.
-- **Encrypted API tokens** — Your Lusha API token is encrypted at rest and revocable from App Home → Settings at any time.
-- **Regional compliance** — US contact data restrictions are enforced at the API level.
+- **No PII stored** - Contact data passes through in memory only. Nothing is logged or persisted in the Slack app layer.
+- **Minimal OAuth scopes** - Only `chat:write`, `commands`, and `im:history`. No access to workspace message history.
+- **Encrypted API tokens** - Your Lusha API token is encrypted at rest and revocable from App Home → Settings at any time.
+- **Regional compliance** - US contact data restrictions are enforced at the API level.
 
 ---
 

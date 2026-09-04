@@ -74,12 +74,12 @@ Your account webhook secret is the key used to sign and verify all deliveries.
 | Endpoint | Purpose |
 |----------|---------|
 | `GET /api/account/secret` | Retrieve your current account webhook secret |
-| `POST /api/account/secret/regenerate` | Generate a new secret (upsert — works whether or not one already exists) |
+| `POST /api/account/secret/regenerate` | Generate a new secret (upsert - works whether or not one already exists) |
 
 When you regenerate the secret:
 
 - The new secret **immediately invalidates** the old one across all subscriptions
-- The secret is **returned only once** in the response — store it in your secrets manager before the response is gone
+- The secret is **returned only once** in the response - store it in your secrets manager before the response is gone
 - If no secret existed, a new one is created automatically
 
 <Note>

@@ -9,10 +9,10 @@ When you upload a CSV file for enrichment, Lusha attempts to match each row to a
 
 Lusha uses identity signals from the columns in your file to find matches. The more signals you include, the more accurate the match. In order of matching strength:
 
-1. **LinkedIn URL** — the most reliable identifier. If present, Lusha matches directly to the profile.
-2. **Email address** — a strong signal for contacts already in the Lusha database.
-3. **Full name + Company name** — used when LinkedIn URL and email are absent. Less precise for common names.
-4. **Full name + Company domain** — similar to name + company name, with slightly higher precision.
+1. **LinkedIn URL** - the most reliable identifier. If present, Lusha matches directly to the profile.
+2. **Email address** - a strong signal for contacts already in the Lusha database.
+3. **Full name + Company name** - used when LinkedIn URL and email are absent. Less precise for common names.
+4. **Full name + Company domain** - similar to name + company name, with slightly higher precision.
 
 <Tip>
   Including a LinkedIn URL column significantly improves match rates. Even partial URLs (e.g. linkedin.com/in/jane-doe) are accepted.
@@ -26,8 +26,8 @@ Once a match is found, Lusha enriches the row with available data. This can incl
 
 After processing, your file shows two key numbers:
 
-- **Scanned rows** — the total number of rows Lusha attempted to match
-- **Enriched** — the number of rows where at least one new field was added
+- **Scanned rows** - the total number of rows Lusha attempted to match
+- **Enriched** - the number of rows where at least one new field was added
 
 Match rates vary based on the quality of your input data. Common reasons for a low match rate:
 

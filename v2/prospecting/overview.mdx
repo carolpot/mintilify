@@ -4,9 +4,9 @@ sidebarTitle: "Overview"
 description: "Search Lusha's B2B database by ICP filters, then enrich matching results to generate net-new contact and company records for your CRM."
 ---
 
-{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide positions v3 (POST /v3/contacts/prospecting, POST /v3/contacts/enrich, POST /v3/companies/prospecting, POST /v3/companies/enrich) as the current prospecting API, with the legacy /prospecting/* endpoints documented below sunsetting Nov 18, 2026. openapi.json in this repo only defines the legacy paths, so this page (and its child pages) intentionally still document them. Revisit once openapi.json is updated with v3 paths. */}
+{/* VERIFY: live site and openapi.json disagree here - docs.lusha.com/tutorials/v3-migration-guide positions v3 (POST /v3/contacts/prospecting, POST /v3/contacts/enrich, POST /v3/companies/prospecting, POST /v3/companies/enrich) as the current prospecting API, with the legacy /prospecting/* endpoints documented below sunsetting Nov 18, 2026. openapi.json in this repo only defines the legacy paths, so this page (and its child pages) intentionally still document them. Revisit once openapi.json is updated with v3 paths. */}
 
-The Prospecting API lets you query Lusha's extensive B2B database using filters that match your Ideal Customer Profile — job title, seniority, location, industry, company size, and more. Unlike the Enrichment API, which fills in data on records you already know, Prospecting generates entirely new records you can load directly into your CRM.
+The Prospecting API lets you query Lusha's extensive B2B database using filters that match your Ideal Customer Profile - job title, seniority, location, industry, company size, and more. Unlike the Enrichment API, which fills in data on records you already know, Prospecting generates entirely new records you can load directly into your CRM.
 
 ## How prospecting works
 
@@ -14,13 +14,13 @@ The process runs in three ordered steps: choose your filters, run a search to ge
 
 <Steps>
   <Step title="Choose your filters">
-    Use the [Contact Filters](/v2/filters/contact-filters) or [Company Filters](/v2/filters/company-filters) endpoints to retrieve the valid values for each filter field — departments, seniority levels, industry labels, company sizes, locations, and more. Always look up filter values before building a search request; passing an unrecognized value will return no results.
+    Use the [Contact Filters](/v2/filters/contact-filters) or [Company Filters](/v2/filters/company-filters) endpoints to retrieve the valid values for each filter field - departments, seniority levels, industry labels, company sizes, locations, and more. Always look up filter values before building a search request; passing an unrecognized value will return no results.
   </Step>
   <Step title="Search">
     POST your filter criteria to `/prospecting/contact/search` or `/prospecting/company/search`. The response returns a list of matching record IDs and basic metadata. No credits are consumed at this step.
   </Step>
   <Step title="Enrich">
-    POST the IDs from your search results to `/prospecting/contact/enrich` or `/prospecting/company/enrich` to retrieve full records — verified emails, phone numbers, job details, firmographics, and more. Credits are charged at the enrich step.
+    POST the IDs from your search results to `/prospecting/contact/enrich` or `/prospecting/company/enrich` to retrieve full records - verified emails, phone numbers, job details, firmographics, and more. Credits are charged at the enrich step.
   </Step>
 </Steps>
 

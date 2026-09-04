@@ -20,7 +20,7 @@ Each contact object in the `contacts` array must include a `contactId` (your own
 
 - `email`
 - `linkedinUrl`
-- `personId` — the most direct identifier; uniquely identifies a record in Lusha's database
+- `personId` - the most direct identifier; uniquely identifies a record in Lusha's database
 - `fullName` **and** a company object with `name` or `domain`
 
 <Warning>
@@ -59,12 +59,12 @@ Each contact object in the `contacts` array must include a `contactId` (your own
 
 <ParamField body="contacts[].companies" type="array">
   Details of the company where the contact is currently (or previously) employed. Each entry includes:
-  - `name` (string) — company name; required if `domain` is not provided.
-  - `domain` (string) — company domain; required if `name` is not provided.
-  - `isCurrent` (boolean, required) — whether this is the person's current employer.
-  - `jobTitle` (string) — the person's job title at this company.
-  - `fqdn` (string) — fully qualified domain name.
-  - `companySocialId` (string) — social ID for the company.
+  - `name` (string) - company name; required if `domain` is not provided.
+  - `domain` (string) - company domain; required if `name` is not provided.
+  - `isCurrent` (boolean, required) - whether this is the person's current employer.
+  - `jobTitle` (string) - the person's job title at this company.
+  - `fqdn` (string) - fully qualified domain name.
+  - `companySocialId` (string) - social ID for the company.
 </ParamField>
 
 ### `metadata` object

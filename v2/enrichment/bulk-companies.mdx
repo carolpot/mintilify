@@ -18,9 +18,9 @@ POST https://api.lusha.com/bulk/company/v2
 
 Each company object in the `companies` array must include an `id` (your own sequential identifier for matching results) and at least one of the following:
 
-- `domain` — the company's web domain (recommended)
-- `name` — the company name
-- `companyId` — the Lusha company identifier
+- `domain` - the company's web domain (recommended)
+- `name` - the company name
+- `companyId` - the Lusha company identifier
 
 <Note>
   `signalsFilters` supports `newsEventTypes`, `hiringByDepartments`, and `hiringByLocations` sub-filters that are **not** available on the single-company `GET /v2/company` endpoint. Use this endpoint when you need filtered signal results.
@@ -94,7 +94,7 @@ Each company object in the `companies` array must include an `id` (your own sequ
 
 ## Response fields
 
-A successful `200` response is an object keyed by the `id` you provided for each company. Unlike `GET /v2/company`, each entry here is **flat** — firmographic and signal fields sit directly on the object rather than under a nested `data` key, and location is returned as flat `city`, `state`, `country`, `countryIso2`, `continent`, and `rawLocation` fields instead of a nested `location` object.
+A successful `200` response is an object keyed by the `id` you provided for each company. Unlike `GET /v2/company`, each entry here is **flat** - firmographic and signal fields sit directly on the object rather than under a nested `data` key, and location is returned as flat `city`, `state`, `country`, `countryIso2`, `continent`, and `rawLocation` fields instead of a nested `location` object.
 
 | Field | Type | Description |
 |-------|------|-------------|

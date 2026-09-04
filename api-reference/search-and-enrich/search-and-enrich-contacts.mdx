@@ -5,7 +5,7 @@ description: "Find up to 100 contacts by identifier and reveal their emails and 
 openapi: "post /v3/contacts/search-and-enrich"
 ---
 
-Use this endpoint to find contacts and reveal their full data in one request — it combines [Search Contacts](/api-reference/search/search-contacts) and [Enrich Contacts](/api-reference/enrich/enrich-contacts) into a single call. Provide identifiers the same way you would for Search Contacts, then use `reveal` to control what gets unlocked.
+Use this endpoint to find contacts and reveal their full data in one request - it combines [Search Contacts](/api-reference/search/search-contacts) and [Enrich Contacts](/api-reference/enrich/enrich-contacts) into a single call. Provide identifiers the same way you would for Search Contacts, then use `reveal` to control what gets unlocked.
 
 <Tip>
   If you need to inspect what's revealable and its credit cost before committing to a reveal, call [Search Contacts](/api-reference/search/search-contacts) first, then [Enrich Contacts](/api-reference/enrich/enrich-contacts) separately. Use this combined endpoint when you already know you want the full profile.
@@ -119,18 +119,18 @@ Each contact in the `contacts` array needs **one** of the following:
 </ResponseField>
 
 <Info>
-  **Billing:** Two charges apply — one for the search (`api_search`) and one per revealed field.
+  **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field.
 </Info>
 
 ## Error codes
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input data |
-| `401` | Unauthorized — invalid or missing API key |
-| `402` | Payment required — insufficient credits |
-| `403` | Forbidden — account inactive or V3 access not enabled |
-| `429` | Too many requests — rate limit exceeded |
+| `400` | Bad request - invalid input data |
+| `401` | Unauthorized - invalid or missing API key |
+| `402` | Payment required - insufficient credits |
+| `403` | Forbidden - account inactive or V3 access not enabled |
+| `429` | Too many requests - rate limit exceeded |
 
 ## Example
 

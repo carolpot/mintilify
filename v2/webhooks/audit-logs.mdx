@@ -4,7 +4,7 @@ sidebarTitle: "Audit Logs"
 description: "Query webhook delivery logs and stats to track success rates, diagnose failures, investigate retry behavior, and reactivate disabled subscriptions."
 ---
 
-Lusha records every webhook delivery attempt — successful or not — in audit logs. Use these logs to confirm your endpoints are receiving signals correctly, investigate failures, and understand delivery patterns across your account.
+Lusha records every webhook delivery attempt - successful or not - in audit logs. Use these logs to confirm your endpoints are receiving signals correctly, investigate failures, and understand delivery patterns across your account.
 
 ## What's logged
 
@@ -38,13 +38,13 @@ Retrieves webhook delivery logs for your account.
 
 Narrow results using query parameters:
 
-- **`subscriptionId`** — return logs for a specific subscription only
-- **`status`** — filter by delivery outcome:
+- **`subscriptionId`** - return logs for a specific subscription only
+- **`status`** - filter by delivery outcome:
   - Successful deliveries
   - Failed deliveries (retries pending or exhausted)
   - Permanent failures (all retries exhausted, subscription disabled)
-- **`limit`** — maximum results per page (1–100, default 50)
-- **`offset`** — number of results to skip, for paging through large result sets
+- **`limit`** - maximum results per page (1–100, default 50)
+- **`offset`** - number of results to skip, for paging through large result sets
 
 ---
 
@@ -71,7 +71,7 @@ Returns aggregated delivery statistics for your account, giving you a high-level
     Use the `subscriptionId` filter on `GET /api/audit-logs` to pull logs for the affected subscription. Look at the HTTP status codes and error messages to identify whether the issue is a timeout, an application error, or a network problem.
   </Step>
   <Step title="Fix the underlying issue">
-    Resolve the problem on your endpoint — for example, fix the handler returning a non-`2xx` status, increase the response timeout, or correct a signature verification bug.
+    Resolve the problem on your endpoint - for example, fix the handler returning a non-`2xx` status, increase the response timeout, or correct a signature verification bug.
   </Step>
   <Step title="Reactivate the subscription">
     If the subscription was automatically disabled after exhausting retries, reactivate it by calling `PATCH /api/subscriptions/{id}` with `isActive: true`. This clears the `blockReason`, resets the retry counter, and allows deliveries to resume.

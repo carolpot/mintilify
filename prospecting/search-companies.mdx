@@ -1,7 +1,7 @@
 ---
 title: "Search prospecting companies by firmographic filters"
 sidebarTitle: "Search Companies"
-description: "Query Lusha's company database using firmographic filters — industry, size, revenue, location, technologies, and more — to get a paginated list of company previews."
+description: "Query Lusha's company database using firmographic filters - industry, size, revenue, location, technologies, and more - to get a paginated list of company previews."
 ---
 
 `POST https://api.lusha.com/v3/companies/prospecting` takes firmographic filters describing your target account profile and returns a paginated list of matching **company previews**, each with an `id`. It does not return full firmographic records. To get those, pass the `id` values you want to [Enrich Companies](/api-reference/enrich/enrich-companies).
@@ -10,7 +10,7 @@ Before building your request, use the [company filter types](/api-reference/filt
 
 ## Request body
 
-Send a JSON body with `pagination` and `filters.companies.include` (required). All filter fields are optional — include only the ones relevant to your target accounts.
+Send a JSON body with `pagination` and `filters.companies.include` (required). All filter fields are optional - include only the ones relevant to your target accounts.
 
 ```json
 {
@@ -43,7 +43,7 @@ Send a JSON body with `pagination` and `filters.companies.include` (required). A
 | `filters.companies.include.technologies` | string[] | Technologies the company uses, combined via `technologiesCondition` (`or`/`and`) |
 | `filters.companies.include.intentTopics` | string[] | Buyer intent topics, combined via `intentTopicsCondition` (`or`/`and`) |
 | `filters.companies.exclude.domains` | string[] | Domains to remove from results |
-| `pagination.page` / `pagination.size` | integer | Pagination — `page` ranges `0–1000`, `size` ranges `10–100` |
+| `pagination.page` / `pagination.size` | integer | Pagination - `page` ranges `0–1000`, `size` ranges `10–100` |
 
 See the [full field reference](/api-reference/prospecting/prospecting-companies) for every available filter, including founded year, funding, business model, and company type.
 
@@ -141,7 +141,7 @@ curl --request POST \
 }
 ```
 
-Each result's `id` is what you pass to [Enrich Companies](/api-reference/enrich/enrich-companies) to reveal full firmographic records. Previews may also include `has` (fields already populated) and `canReveal` (fields you can reveal, and at what credit cost) — see the [full API reference](/api-reference/prospecting/prospecting-companies) for the complete response schema.
+Each result's `id` is what you pass to [Enrich Companies](/api-reference/enrich/enrich-companies) to reveal full firmographic records. Previews may also include `has` (fields already populated) and `canReveal` (fields you can reveal, and at what credit cost) - see the [full API reference](/api-reference/prospecting/prospecting-companies) for the complete response schema.
 
 <Tip>
   Use the [company filter types](/api-reference/filters/company-filter-types) and [company filter values](/api-reference/filters/company-filter-values) endpoints to fetch valid values for `mainIndustriesIds`, `sizes`, `revenues`, `sicCodes`, `naicsCodes`, `intentTopics`, and `technologies` before building your search request.

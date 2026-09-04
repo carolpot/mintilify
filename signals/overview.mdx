@@ -4,7 +4,7 @@ sidebarTitle: "Overview"
 description: "Use Lusha Signals to detect job changes, promotions, and company events. Integrate signals into your CRM or automation to engage prospects at the right time."
 ---
 
-Lusha Signals surface timely insights about contacts and companies — from job changes and promotions to hiring surges, headcount changes, and categorized news events. Instead of reaching out blindly, you can act on real triggers: a champion moved to a new company, or a target account doubled its engineering headcount. Signals help you keep CRM records current, prioritize outreach, and fire automations precisely when conditions are right.
+Lusha Signals surface timely insights about contacts and companies - from job changes and promotions to hiring surges, headcount changes, and categorized news events. Instead of reaching out blindly, you can act on real triggers: a champion moved to a new company, or a target account doubled its engineering headcount. Signals help you keep CRM records current, prioritize outreach, and fire automations precisely when conditions are right.
 
 ## What signals are
 
@@ -12,19 +12,19 @@ A signal is a detected change or event associated with a contact or company with
 
 Lusha provides two categories of signals:
 
-- **Contact signals** — changes tied to an individual, such as a job title promotion or a move to a new employer.
-- **Company signals** — events tied to an organization, such as a surge in hiring, a headcount change, or a news event.
+- **Contact signals** - changes tied to an individual, such as a job title promotion or a move to a new employer.
+- **Company signals** - events tied to an organization, such as a surge in hiring, a headcount change, or a news event.
 
 ## One call per entity type
 
-Signals is a consolidated, one-call-per-entity model: give an endpoint a list of IDs and the signal types you want, and it returns everything that matched — in a single request, no separate "search" step.
+Signals is a consolidated, one-call-per-entity model: give an endpoint a list of IDs and the signal types you want, and it returns everything that matched - in a single request, no separate "search" step.
 
 <CardGroup cols={2}>
   <Card title="Contact Signals" icon="user" href="/api-reference/signals/contact-signals">
-    `POST /v3/contacts/signals` — up to 100 contact IDs per request.
+    `POST /v3/contacts/signals` - up to 100 contact IDs per request.
   </Card>
   <Card title="Company Signals" icon="building" href="/api-reference/signals/company-signals">
-    `POST /v3/companies/signals` — up to 100 company IDs per request.
+    `POST /v3/companies/signals` - up to 100 company IDs per request.
   </Card>
 </CardGroup>
 
@@ -93,10 +93,10 @@ Company Signals results carry news-, department-, and location-specific detail. 
 
 <CardGroup cols={2}>
   <Card title="Get Company Signal Filters" icon="list" href="/api-reference/signals/company-signal-filters">
-    Discovery endpoint — lists the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) and whether each needs a search query.
+    Discovery endpoint - lists the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) and whether each needs a search query.
   </Card>
   <Card title="Get Company Signal Filter Values" icon="magnifying-glass" href="/api-reference/signals/company-signal-filter-values">
-    Returns the actual values for one filter type — a fixed list for `newsEventTypes` and `hiringByDepartments`, or a text-matched list for `hiringByLocations`.
+    Returns the actual values for one filter type - a fixed list for `newsEventTypes` and `hiringByDepartments`, or a text-matched list for `hiringByLocations`.
   </Card>
 </CardGroup>
 
@@ -105,7 +105,7 @@ Company Signals results carry news-, department-, and location-specific detail. 
 Pass a `startDate` in `YYYY-MM-DD` format to limit results to signals detected on or after that date. Use `maxResultsPerSignal` to cap how many instances of each signal type come back per contact or company.
 
 <Warning>
-  Signals are charged per matched signal per result — `showSignalsContact` for Contact Signals and `showSignalsCompany` for Company Signals. Request only the signal types you need to manage consumption.
+  Signals are charged per matched signal per result - `showSignalsContact` for Contact Signals and `showSignalsCompany` for Company Signals. Request only the signal types you need to manage consumption.
 </Warning>
 
 ## Next steps

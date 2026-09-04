@@ -4,7 +4,7 @@ sidebarTitle: "Company Lookalikes"
 description: "Identify new target accounts that share firmographics with your best customers by submitting seed company domains or LinkedIn URLs to the lookalikes endpoint."
 ---
 
-The company lookalikes endpoint takes a set of seed companies and returns accounts with similar firmographics — including industry, employee count, and geography. Use it to build account lists that mirror your current customer base without manually defining every filter criterion.
+The company lookalikes endpoint takes a set of seed companies and returns accounts with similar firmographics - including industry, employee count, and geography. Use it to build account lists that mirror your current customer base without manually defining every filter criterion.
 
 **Endpoint:** `POST https://api.lusha.com/v3/lookalike/companies`
 
@@ -22,7 +22,7 @@ The company lookalikes endpoint takes a set of seed companies and returns accoun
 The endpoint uses the same `dedupeSessionId` deduplication mechanism as contact lookalikes. On the first request the server generates a session; on subsequent requests you pass that session ID back to receive only new results.
 
 <Steps>
-  <Step title="First call — start a new session">
+  <Step title="First call - start a new session">
     Send your seed companies without a `dedupeSessionId`. The response includes the first batch of lookalike companies and a `dedupeSessionId` to use in follow-up calls.
 
     ```json
@@ -33,7 +33,7 @@ The endpoint uses the same `dedupeSessionId` deduplication mechanism as contact 
     }
     ```
   </Step>
-  <Step title="Subsequent calls — continue the session">
+  <Step title="Subsequent calls - continue the session">
     Pass the `dedupeSessionId` from the previous response. The server skips companies it has already returned for this session.
 
     ```json
@@ -123,8 +123,8 @@ Providing `domains` is generally the most reliable identifier when you know it.
 
 ## Use cases
 
-- **Mirror your customer base** — feed in your top accounts and get back companies with similar headcount and industry.
-- **Prioritize outbound accounts** — use lookalike results to rank new target accounts before handing them off to your sales team.
+- **Mirror your customer base** - feed in your top accounts and get back companies with similar headcount and industry.
+- **Prioritize outbound accounts** - use lookalike results to rank new target accounts before handing them off to your sales team.
 
 <Tip>
   Seed the endpoint with closed-won or high-LTV accounts for the highest-quality results. A focused seed set of 5–20 accounts typically outperforms a broad one.

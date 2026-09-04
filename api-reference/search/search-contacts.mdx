@@ -5,7 +5,7 @@ description: "Look up to 100 contacts per request by ID, LinkedIn URL, email, or
 openapi: "post /v3/contacts/search"
 ---
 
-Use this endpoint to look up contacts by identifier and get back a non-PII preview of each matching profile — no emails or phone numbers. Each result's `has` field lists the data points already available, and `canReveal` lists what you can unlock (and its credit cost) by calling [Enrich Contacts](/api-reference/enrich/enrich-contacts).
+Use this endpoint to look up contacts by identifier and get back a non-PII preview of each matching profile - no emails or phone numbers. Each result's `has` field lists the data points already available, and `canReveal` lists what you can unlock (and its credit cost) by calling [Enrich Contacts](/api-reference/enrich/enrich-contacts).
 
 ## Endpoint
 
@@ -29,7 +29,7 @@ Each contact in the `contacts` array needs **one** of the following:
 - `firstName` **and** `lastName` **and** (`companyName` **or** `companyDomain`)
 
 <Tip>
-  Attach a `clientReferenceId` to each contact so you can match results back to your input — the array of `results` isn't guaranteed to preserve input order.
+  Attach a `clientReferenceId` to each contact so you can match results back to your input - the array of `results` isn't guaranteed to preserve input order.
 </Tip>
 
 ## Request body
@@ -217,11 +217,11 @@ Each contact in the `contacts` array needs **one** of the following:
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input data |
-| `401` | Unauthorized — invalid or missing API key |
-| `402` | Payment required — insufficient credits |
-| `403` | Forbidden — account inactive or V3 access not enabled |
-| `429` | Too many requests — rate limit exceeded |
+| `400` | Bad request - invalid input data |
+| `401` | Unauthorized - invalid or missing API key |
+| `402` | Payment required - insufficient credits |
+| `403` | Forbidden - account inactive or V3 access not enabled |
+| `429` | Too many requests - rate limit exceeded |
 
 ## Example
 

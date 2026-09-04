@@ -88,7 +88,7 @@ var CTRL_TOTAL_EMAILS_VALUE  = 'H2';
 var CTRL_TOTAL_PHONES_LABEL  = 'G3';
 var CTRL_TOTAL_PHONES_VALUE  = 'H3';
 
-// Output column offsets (0-based from OUTPUT_START_COL) — used for stats scanning
+// Output column offsets (0-based from OUTPUT_START_COL) - used for stats scanning
 // Status = offset 0  (col H)
 // Email 1 = offset 5, Email 2 = offset 9
 // Phone 1 = offset 13, Phone 2 = offset 15
@@ -208,7 +208,7 @@ function readControlPanelSettings() {
   if (revealEmails === true) reveal.push('emails');
   if (revealPhones === true) reveal.push('phones');
 
-  Logger.log('Control panel — reveal: [' + reveal.join(', ') + ']');
+  Logger.log('Control panel - reveal: [' + reveal.join(', ') + ']');
 
   return { reveal };
 }
@@ -486,7 +486,7 @@ function processChunk(startRow, endRow) {
       if (hasCompany) dataPresent.push('company');
 
       const msg = dataPresent.length > 0
-        ? 'Failed: Insufficient data — Lusha requires: Lusha ID, LinkedIn URL, Email, or (Name AND Company). Have: ' + dataPresent.join(', ')
+        ? 'Failed: Insufficient data - Lusha requires: Lusha ID, LinkedIn URL, Email, or (Name AND Company). Have: ' + dataPresent.join(', ')
         : 'Failed: No data provided';
 
       sheet.getRange(rowIndex, OUTPUT_START_COL).setValue(msg).setFontColor('#8B0000');
@@ -510,7 +510,7 @@ function processChunk(startRow, endRow) {
     const result = processBatch(batch, API_KEY, sheet, state);
 
     if (result && result.outOfCredits) {
-      Logger.log('⚠️ Out of credits — stopping at row ' + result.stopRow);
+      Logger.log('⚠️ Out of credits - stopping at row ' + result.stopRow);
       updateStatusInTopRow(
         '⚠️ Stopped: Out of Lusha credits at row ' + result.stopRow +
         '. Please add credits and resume from that row.'
@@ -612,7 +612,7 @@ function processBatch(contacts, apiKey, sheet, state) {
         const errBody = JSON.parse(responseText);
         errMsg += ': ' + (errBody.message || responseText);
         if (errBody.errors && errBody.errors.length) {
-          errMsg += ' — ' + errBody.errors.join('; ');
+          errMsg += ' - ' + errBody.errors.join('; ');
         }
       } catch (e) {
         errMsg += ': ' + responseText;
@@ -686,7 +686,7 @@ function processBatch(contacts, apiKey, sheet, state) {
         } else if (code === 'COMPLIANCE_RESTRICTED') {
           statusMsg = 'Failed: Contact restricted due to compliance (GDPR/CCPA)';
         } else if (code === 'ENRICH_FAILED') {
-          statusMsg = 'Failed: Enrichment failed — ' + message;
+          statusMsg = 'Failed: Enrichment failed - ' + message;
         } else {
           statusMsg = 'Failed: ' + (code ? '[' + code + '] ' : '') + message;
         }
@@ -849,7 +849,7 @@ function updateEmailPhoneCounts() {
     sheet.getRange(CTRL_TOTAL_EMAILS_VALUE).setValue(totalEmails);
     sheet.getRange(CTRL_TOTAL_PHONES_VALUE).setValue(totalPhones);
 
-    Logger.log('Email/phone counts updated — emails: ' + totalEmails + ', phones: ' + totalPhones);
+    Logger.log('Email/phone counts updated - emails: ' + totalEmails + ', phones: ' + totalPhones);
   } catch (e) {
     Logger.log('Error updating email/phone counts: ' + e.message);
   }
@@ -1003,7 +1003,7 @@ function diagnoseContactData() {
   ui.alert(
     'Diagnosis Complete',
     'Check the Logs (View > Logs) for row ' + rowNumber + '.\n\n' +
-    'Strong identifier found: ' + (strongId ? 'YES ✅' : 'NO ❌ — this row would be skipped'),
+    'Strong identifier found: ' + (strongId ? 'YES ✅' : 'NO ❌ - this row would be skipped'),
     ui.ButtonSet.OK
   );
 }
@@ -1221,7 +1221,7 @@ function onOpen() {
   setupInitialStructure();
 }
 
-// [Full V2 script code — see original article version or contact support@lusha.com for the complete file]
+// [Full V2 script code - see original article version or contact support@lusha.com for the complete file]
 ```
 
 > For the full V2 script, refer to the previous version of this article or reach out to [support@lusha.com](mailto:support@lusha.com).

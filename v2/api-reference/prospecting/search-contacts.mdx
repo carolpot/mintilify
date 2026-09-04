@@ -1,11 +1,11 @@
 ---
-title: "POST /prospecting/contact/search — Search contacts"
+title: "POST /prospecting/contact/search - Search contacts"
 sidebarTitle: "POST /prospecting/contact/search"
 description: "Search Lusha's contact database using ICP filters like job title, seniority, location, and department. Step 2 of the prospecting flow."
 openapi: "post /prospecting/contact/search"
 ---
 
-{/* VERIFY: live site and openapi.json disagree here — docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/contact/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
+{/* VERIFY: live site and openapi.json disagree here - docs.lusha.com/tutorials/v3-migration-guide documents a v3 replacement (POST /v3/contacts/prospecting) as current, with the legacy path sunsetting Nov 18, 2026, but openapi.json only defines the legacy POST /prospecting/contact/search contract the Mintlify playground binds to. Kept the legacy endpoint here since that's what actually executes; revisit once openapi.json adds v3 paths. */}
 
 Use this endpoint to query Lusha's contact database with filters aligned to your Ideal Customer Profile. You get back a list of matching contacts with IDs you then pass to the [Enrich Contacts](/v2/api-reference/prospecting/enrich-contacts) endpoint to retrieve full details. This is **step 2** of the three-step prospecting flow.
 
@@ -117,7 +117,7 @@ POST https://api.lusha.com/prospecting/contact/search
   **Scale plan feature.** When `true`, filters out contacts whose phone numbers are all marked Do Not Call.
 
   - Contacts with at least one callable phone appear in results.
-  - Only callable phones are returned — DNC phones are hidden.
+  - Only callable phones are returned - DNC phones are hidden.
   - Contacts with only DNC phones are excluded entirely.
 
   Returns `403` on unsupported plans.
@@ -183,7 +183,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="requestId" type="string">
   Unique ID for this search. Pass this value to the Enrich Contacts endpoint as `requestId`.
@@ -329,11 +329,11 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Validation failed — check your request body for missing or invalid fields. |
-| `401` | Unauthorized — your API key is missing or invalid. |
-| `403` | Forbidden — your plan does not support this feature (e.g., `excludeDnc` on non-Scale plans, or signal filtering). |
-| `429` | Too many requests — you have exceeded the rate limit. |
-| `500` | Internal server error — retry with exponential backoff. |
+| `400` | Validation failed - check your request body for missing or invalid fields. |
+| `401` | Unauthorized - your API key is missing or invalid. |
+| `403` | Forbidden - your plan does not support this feature (e.g., `excludeDnc` on non-Scale plans, or signal filtering). |
+| `429` | Too many requests - you have exceeded the rate limit. |
+| `500` | Internal server error - retry with exponential backoff. |
 
 <ResponseExample>
 

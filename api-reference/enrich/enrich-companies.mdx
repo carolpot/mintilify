@@ -72,7 +72,7 @@ POST https://api.lusha.com/v3/companies/enrich
     <ResponseField name="results[].sicCodes" type="object[]">SIC classification codes.</ResponseField>
     <ResponseField name="results[].naicsCodes" type="object[]">NAICS classification codes.</ResponseField>
 
-    <ResponseField name="results[].location" type="object">HQ location — same shape as `additionalLocations` entries.</ResponseField>
+    <ResponseField name="results[].location" type="object">HQ location - same shape as `additionalLocations` entries.</ResponseField>
     <ResponseField name="results[].additionalLocations" type="object[]">All other known company site locations.</ResponseField>
 
     <ResponseField name="results[].socialLinks" type="object">
@@ -165,11 +165,11 @@ POST https://api.lusha.com/v3/companies/enrich
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input data |
-| `401` | Unauthorized — invalid or missing API key |
-| `402` | Payment required — insufficient credits |
-| `403` | Forbidden — account inactive or V3 access not enabled |
-| `429` | Too many requests — rate limit exceeded |
+| `400` | Bad request - invalid input data |
+| `401` | Unauthorized - invalid or missing API key |
+| `402` | Payment required - insufficient credits |
+| `403` | Forbidden - account inactive or V3 access not enabled |
+| `429` | Too many requests - rate limit exceeded |
 
 ## Example
 

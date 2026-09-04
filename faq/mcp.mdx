@@ -10,7 +10,7 @@ description: "Common questions about using Lusha with the Model Context Protocol
 </Accordion>
 
 <Accordion title="What is MCP?">
-  The Model Context Protocol (MCP) is an open standard that lets AI assistants and agents call external tools in a structured, consistent way. It means you can ask an MCP-compatible client to "enrich this contact" or "find decision makers at Acme Corp" and have it call the Lusha API automatically — no manual API calls required.
+  The Model Context Protocol (MCP) is an open standard that lets AI assistants and agents call external tools in a structured, consistent way. It means you can ask an MCP-compatible client to "enrich this contact" or "find decision makers at Acme Corp" and have it call the Lusha API automatically - no manual API calls required.
 </Accordion>
 
 <Accordion title="Which AI clients support the Lusha MCP server?">
@@ -18,16 +18,16 @@ description: "Common questions about using Lusha with the Model Context Protocol
 </Accordion>
 
 <Accordion title="Do I need a separate Lusha plan for MCP?">
-  No — MCP uses the same API key and credit pool as the REST API. Any plan that includes API access can use the MCP server. One exception: the recommendations tools are only available over an OAuth connection (Claude, ChatGPT, Codex) — API-key sessions get a `403` on those specific tools.
+  No - MCP uses the same API key and credit pool as the REST API. Any plan that includes API access can use the MCP server. One exception: the recommendations tools are only available over an OAuth connection (Claude, ChatGPT, Codex) - API-key sessions get a `403` on those specific tools.
 </Accordion>
 
 <Accordion title="Is MCP billed differently from the REST API?">
-  No. MCP tool calls translate into the same underlying Lusha API requests, and credits are deducted the same way — generally per successful, matched result. Filter-lookup tools and a few read-only tools (like checking your account usage) don't consume credits. See [available tools](/mcp/tools) for which tools do and don't charge credits.
+  No. MCP tool calls translate into the same underlying Lusha API requests, and credits are deducted the same way - generally per successful, matched result. Filter-lookup tools and a few read-only tools (like checking your account usage) don't consume credits. See [available tools](/mcp/tools) for which tools do and don't charge credits.
 </Accordion>
 
 <Accordion title="Is the MCP server open source?">
   {/* VERIFY: not confirmed on the live docs.lusha.com/mcp-docs page. Confirm license/open-source status with Product before publishing a claim either way. */}
-  Not confirmed yet — check with Product or DevRel before publishing an answer here.
+  Not confirmed yet - check with Product or DevRel before publishing an answer here.
 </Accordion>
 
 </AccordionGroup>

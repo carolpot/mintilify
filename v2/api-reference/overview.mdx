@@ -4,7 +4,7 @@ description: "Lusha's REST API gives you programmatic access to a comprehensive 
 ---
 
 <Info>
-  You're viewing the **V2 (Legacy)** documentation. Use the version switcher at the top of the sidebar on this tab to jump to V3 — the toggle is scoped to API docs only and won't appear on other tabs.
+  You're viewing the **V2 (Legacy)** documentation. Use the version switcher at the top of the sidebar on this tab to jump to V3 - the toggle is scoped to API docs only and won't appear on other tabs.
 </Info>
 
 Lusha is a RESTful API that lets you query verified contact and company data for prospecting, enrichment, automation, and analytics workflows. All requests are made over HTTPS and return JSON.
@@ -24,7 +24,7 @@ curl https://api.lusha.com/v2/person \
   -H "api_key: YOUR_API_KEY"
 ```
 
-Get your API key from the [Lusha dashboard](https://www.lusha.com/). Keep it secret — never expose it in client-side code or public repositories.
+Get your API key from the [Lusha dashboard](https://www.lusha.com/). Keep it secret - never expose it in client-side code or public repositories.
 
 ## Rate Limiting
 
@@ -44,10 +44,10 @@ When you exceed the limit, the API returns `429 Too Many Requests`. Back off and
 | Status | Meaning |
 | --- | --- |
 | `200` | Success |
-| `400` | Bad request — check your parameters |
-| `401` | Unauthorized — invalid or missing API key |
+| `400` | Bad request - check your parameters |
+| `401` | Unauthorized - invalid or missing API key |
 | `429` | Rate limit exceeded |
-| `5XX` | Server error — retry with exponential backoff |
+| `5XX` | Server error - retry with exponential backoff |
 
 ## API Modules
 

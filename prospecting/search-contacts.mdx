@@ -1,16 +1,16 @@
 ---
 title: "Search prospecting contacts by ICP filters"
 sidebarTitle: "Search Contacts"
-description: "Query Lusha's contact database by ICP filters — job title, seniority, department, location, and company attributes — to get a paginated list of contact previews."
+description: "Query Lusha's contact database by ICP filters - job title, seniority, department, location, and company attributes - to get a paginated list of contact previews."
 ---
 
-`POST https://api.lusha.com/v3/contacts/prospecting` takes filter criteria describing your Ideal Customer Profile and returns a paginated list of matching **contact previews**, each with an `id`. It does not return full contact records — no emails or phone numbers. To reveal those, pass the `id` values you want to [Enrich Contacts](/api-reference/enrich/enrich-contacts).
+`POST https://api.lusha.com/v3/contacts/prospecting` takes filter criteria describing your Ideal Customer Profile and returns a paginated list of matching **contact previews**, each with an `id`. It does not return full contact records - no emails or phone numbers. To reveal those, pass the `id` values you want to [Enrich Contacts](/api-reference/enrich/enrich-contacts).
 
 Before building your request, use the [contact filter types](/api-reference/filters/contact-filter-types) and [contact filter values](/api-reference/filters/contact-filter-values) endpoints to look up the valid values for each field.
 
 ## Request body
 
-Send a JSON body with `pagination` and `filters`. Filters are split into `contacts` and `companies`, each with optional `include` and `exclude` sections — include at least one of `contacts` or `companies`.
+Send a JSON body with `pagination` and `filters`. Filters are split into `contacts` and `companies`, each with optional `include` and `exclude` sections - include at least one of `contacts` or `companies`.
 
 ```json
 {
@@ -39,7 +39,7 @@ Send a JSON body with `pagination` and `filters`. Filters are split into `contac
 | Field | Type | Description |
 |-------|------|-------------|
 | `filters.contacts.include.jobTitles` | string[] | Free-text job titles to match |
-| `filters.contacts.include.seniorityIds` | integer[] | Seniority level IDs — look up valid values via [contact filter values](/api-reference/filters/contact-filter-values) |
+| `filters.contacts.include.seniorityIds` | integer[] | Seniority level IDs - look up valid values via [contact filter values](/api-reference/filters/contact-filter-values) |
 | `filters.contacts.include.departments` | string[] | Department names |
 | `filters.contacts.include.locations` | object[] | Objects with `city`, `state`, `country`, `continent`, `countryGrouping` |
 | `filters.contacts.include.existingDataPoints` | string[] | Require specific data types (e.g. `"work_email"`, `"work_phone"`) |
@@ -48,8 +48,8 @@ Send a JSON body with `pagination` and `filters`. Filters are split into `contac
 | `filters.companies.include.mainIndustriesIds` / `subIndustriesIds` | integer[] | Industry IDs |
 | `filters.companies.include.sizes` | object[] | Employee count ranges as `{ "min": ..., "max": ... }` |
 | `options.includePartialProfiles` | boolean | Include contacts with incomplete data. Defaults to `true`. |
-| `options.excludeDnc` | boolean | Exclude contacts whose phones are all Do Not Call — see below |
-| `pagination.page` / `pagination.size` | integer | Pagination — `page` ranges `0–1000`, `size` ranges `10–100` |
+| `options.excludeDnc` | boolean | Exclude contacts whose phones are all Do Not Call - see below |
+| `pagination.page` / `pagination.size` | integer | Pagination - `page` ranges `0–1000`, `size` ranges `10–100` |
 
 See the [full field reference](/api-reference/prospecting/prospecting-contacts) for every available filter, including company firmographics, funding, and keyword filters.
 
@@ -176,7 +176,7 @@ curl --request POST \
 }
 ```
 
-Each result's `id` is what you pass to [Enrich Contacts](/api-reference/enrich/enrich-contacts) to reveal full records. Previews may also include `has` (fields already populated) and `canReveal` (fields you can reveal, and at what credit cost) — see the [full API reference](/api-reference/prospecting/prospecting-contacts) for the complete response schema.
+Each result's `id` is what you pass to [Enrich Contacts](/api-reference/enrich/enrich-contacts) to reveal full records. Previews may also include `has` (fields already populated) and `canReveal` (fields you can reveal, and at what credit cost) - see the [full API reference](/api-reference/prospecting/prospecting-contacts) for the complete response schema.
 
 <Tip>
   Use the [contact filter types](/api-reference/filters/contact-filter-types) and [contact filter values](/api-reference/filters/contact-filter-values) endpoints to fetch valid values for `seniorityIds`, `departments`, `locations`, and `existingDataPoints` before building your search request.

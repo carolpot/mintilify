@@ -50,15 +50,15 @@ GET https://api.lusha.com/v3/companies/prospecting/filters/{filterType}
 <ResponseField name="values" type="any">
   The valid values for the requested `filterType`. The shape depends on which filter type you requested:
 
-  - **`industriesLabels`** — an array of industry label strings, for example `["Software", "SaaS"]`
-  - **`intentTopics`** — an array of topic strings, for example `["Cloud Migration"]`
-  - **`sizes`** — an array of `{ min, max }` employee-count range objects, for example `{ "min": 50, "max": 500 }`
-  - **`revenues`** — an array of `{ min, max }` revenue range objects, for example `{ "min": 1, "max": 1000000 }`
-  - **`sics`** — an array of `{ code, description }` SIC code objects, for example `{ "code": 7371, "description": "Custom computer programming services" }`
-  - **`naics`** — an array of `{ code, description }` NAICS code objects, for example `{ "code": 541511, "description": "Custom Computer Programming Services" }`
-  - **`names`** (query required) — an array of matching company name strings
-  - **`technologies`** (query required) — an array of matching technology name strings
-  - **`locations`** (query required) — an array of location objects with `city`, `state`, `country`, `continent`, and `countryGrouping`, matching the shape used in search requests
+  - **`industriesLabels`** - an array of industry label strings, for example `["Software", "SaaS"]`
+  - **`intentTopics`** - an array of topic strings, for example `["Cloud Migration"]`
+  - **`sizes`** - an array of `{ min, max }` employee-count range objects, for example `{ "min": 50, "max": 500 }`
+  - **`revenues`** - an array of `{ min, max }` revenue range objects, for example `{ "min": 1, "max": 1000000 }`
+  - **`sics`** - an array of `{ code, description }` SIC code objects, for example `{ "code": 7371, "description": "Custom computer programming services" }`
+  - **`naics`** - an array of `{ code, description }` NAICS code objects, for example `{ "code": 541511, "description": "Custom Computer Programming Services" }`
+  - **`names`** (query required) - an array of matching company name strings
+  - **`technologies`** (query required) - an array of matching technology name strings
+  - **`locations`** (query required) - an array of location objects with `city`, `state`, `country`, `continent`, and `countryGrouping`, matching the shape used in search requests
 
   <Info>
     The OpenAPI schema declares `values` as an open-ended field since its shape varies by filter type. Treat the examples above as representative, not a fixed contract.
@@ -69,10 +69,10 @@ GET https://api.lusha.com/v3/companies/prospecting/filters/{filterType}
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid `filterType`, or missing/too-short `query` for a filter type that requires one |
-| `401` | Unauthorized — invalid or missing API key |
-| `403` | Forbidden — account inactive or V3 access not enabled |
-| `429` | Too many requests — rate limit exceeded |
+| `400` | Bad request - invalid `filterType`, or missing/too-short `query` for a filter type that requires one |
+| `401` | Unauthorized - invalid or missing API key |
+| `403` | Forbidden - account inactive or V3 access not enabled |
+| `429` | Too many requests - rate limit exceeded |
 
 ## Examples
 
@@ -92,7 +92,7 @@ curl --request GET \
 
 </CodeGroup>
 
-```json Example response — sizes
+```json Example response - sizes
 {
   "values": [
     { "min": 1, "max": 10 },
@@ -102,14 +102,14 @@ curl --request GET \
 }
 ```
 
-```json Example response — technologies
+```json Example response - technologies
 {
   "values": ["Salesforce", "Salesforce Marketing Cloud", "Salesforce Pardot"]
 }
 ```
 
 <Tip>
-  Filter types with `requiresQuery: false` (`sizes`, `revenues`, `sics`, `naics`, `intentTopics`, `industriesLabels`) rarely change — cache their values instead of calling this endpoint before every search.
+  Filter types with `requiresQuery: false` (`sizes`, `revenues`, `sics`, `naics`, `intentTopics`, `industriesLabels`) rarely change - cache their values instead of calling this endpoint before every search.
 </Tip>
 
 <Note>

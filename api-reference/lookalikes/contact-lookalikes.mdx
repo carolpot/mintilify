@@ -17,7 +17,7 @@ POST https://api.lusha.com/v3/contacts/lookalike
 
 ## Pagination without duplicates
 
-On your first request, omit `dedupeSessionId` — the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.
+On your first request, omit `dedupeSessionId` - the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.
 
 ## Request body
 
@@ -38,7 +38,7 @@ On your first request, omit `dedupeSessionId` — the server generates one and r
     </ParamField>
 
     <ParamField body="seeds.contactIds" type="integer[]">
-      Lusha contact IDs, as numbers. Legacy — prefer `ids`. Max `100` items. Example: `[1234, 4567]`
+      Lusha contact IDs, as numbers. Legacy - prefer `ids`. Max `100` items. Example: `[1234, 4567]`
     </ParamField>
 
     <ParamField body="seeds.contacts" type="object[]">
@@ -117,7 +117,7 @@ curl --request POST \
 
 ## Response
 
-### 200 — Success
+### 200 - Success
 
 <ResponseField name="dedupeSessionId" type="string">
   Session ID to use for subsequent "get more" requests. Can be `null` when there are no results on the first request.
@@ -170,10 +170,10 @@ Results are lightweight previews. Pass each `id` to [Enrich Contacts](/api-refer
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request — invalid input data. |
+| `400` | Bad request - invalid input data. |
 | `402` | Insufficient credits. |
-| `403` | Forbidden — account inactive, or V3 access not enabled. |
-| `410` | `dedupeSessionId` is invalid or expired — start a new run by omitting it. |
+| `403` | Forbidden - account inactive, or V3 access not enabled. |
+| `410` | `dedupeSessionId` is invalid or expired - start a new run by omitting it. |
 | `500` | Internal server error. |
 
 <ResponseExample>
