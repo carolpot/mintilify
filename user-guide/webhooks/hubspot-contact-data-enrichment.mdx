@@ -3,10 +3,10 @@ title: "HubSpot contact data enrichment"
 description: "How to enrich HubSpot contact records with Lusha data using HubSpot workflow automation and the Lusha Person API."
 ---
 
-This guide shows you how to enrich HubSpot contact records with Lusha data using HubSpot's built-in workflow automation and Lusha's Person API. No additional apps or JSON configuration are required — just your Lusha API key.
+This guide shows you how to enrich HubSpot contact records with Lusha data using HubSpot's built-in workflow automation and Lusha's Person API. No additional apps or JSON configuration are required - just your Lusha API key.
 
 <Note>
-You'll need an active HubSpot subscription with Workflows enabled, a Lusha API key (visible to Admins and Managers at [dashboard.lusha.com/enrich/api](https://dashboard.lusha.com/enrich/api)), and available bulk credits on your Lusha account.
+You'll need an active HubSpot subscription with Workflows enabled, a Lusha API key (visible to Admins and Managers at [dashboard.lusha.com/api/manage-api-keys](https://dashboard.lusha.com/api/manage-api-keys)), and available bulk credits on your Lusha account.
 </Note>
 
 ## Step 1: Access HubSpot workflow automation
@@ -33,7 +33,7 @@ You'll need an active HubSpot subscription with Workflows enabled, a Lusha API k
 3. Enter the [Lusha API endpoint URL](https://docs.lusha.com) in the Webhook URL field.
 4. Set the HTTP method to **GET**.
 5. Add query parameters for the contact identifiers you want to use (e.g., LinkedIn URL, email, or full name + company domain).
-6. Add a request header with your Lusha API key. Your API key is available at [dashboard.lusha.com/enrich/api](https://dashboard.lusha.com/enrich/api).
+6. Add a request header with your Lusha API key. Your API key is available at [dashboard.lusha.com/api/manage-api-keys](https://dashboard.lusha.com/api/manage-api-keys).
 
 <img src="https://downloads.intercomcdn.eu/i/o/yu27vhse/65330441/f2bb230bf1fff6b8d749ed064dd6/22.png?expires=1780056000&signature=72ac1264e50b81e7a96183207d8533900cc18f6abca1eccce05d0b31eea3ad9d&req=1tBsxlj%2BqDZk2hj99dpg6h39ytCgx3pukUq4CPr5SxS85CoVjTpg3dy43C1c%0Ar5ge65gDMtxlESrfiZU7XCpq%0A" alt="" style={{maxWidth: "100%", height: "auto"}} />
 
@@ -61,7 +61,7 @@ Check the workflow history regularly and review any error logs. Adjust the enrol
 - Test with a small batch of contacts before activating for your full database.
 
 <Tip>
-**Top play:** [Auto-enrich incomplete HubSpot contacts](https://www.lusha.com/campus/plays/auto-enrich-incomplete-hubspot-contacts/) — automatically fill in missing contact data for new HubSpot records using Lusha.
+**Top play:** [Auto-enrich incomplete HubSpot contacts](https://www.lusha.com/campus/plays/auto-enrich-incomplete-hubspot-contacts/) - automatically fill in missing contact data for new HubSpot records using Lusha.
 </Tip>
 
 For help, see the [Lusha API documentation](https://docs.lusha.com), the [HubSpot Workflow documentation](https://knowledge.hubspot.com/workflows), or contact [support@lusha.com](mailto:support@lusha.com).

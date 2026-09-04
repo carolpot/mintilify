@@ -10,7 +10,7 @@
       "name": "Proprietary",
       "url": "https://lusha.com/legal/terms"
     },
-    "description": "<blockquote class=\"callout\">\n\n **This is the Lusha API V3 documentation.** \n \n V3 introduces a new search-then-enrich pattern, bulk operations, AI-powered lookalikes, and richer filter capabilities. All endpoints are under `https://api.lusha.com/v3/`.\n\n  For more information on V3, refer to the [Migration Guide](/tutorials/v3-migration-guide).\n\n</blockquote>\n\n  --- \n\nLusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. Built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.\n\nUse the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.\n\n> All API requests must be made over **HTTPS**. All responses are returned in **JSON** format.\n\n--- \n## Available Endpoints\n\n| Category | Description |\n|---|---|\n| [**Search**](#tag/Search) | Find contacts or companies using known identifiers |\n| [**Enrich**](#tag/Enrich) | Retrieve full profile data for contacts or companies by ID |\n| [**Search & Enrich**](#tag/Search-and-Enrich) | Find and retrieve full contact or company data in a single call |\n| [**Prospecting**](#tag/Prospecting) | Filter-based search across contacts and companies |\n| [**Lookalikes**](#tag/Lookalikes) | AI-powered recommendations for similar contacts and companies |\n| [**Contacts Tables**](#tag/Contacts-Tables) | Persist, organize, and enrich contacts in reusable tables |\n| [**Companies Tables**](#tag/Companies-Tables) | Persist, organize, and enrich companies in reusable tables |\n| [**Signals**](#tag/Signals) | Real-world activity data for contacts and companies |\n| [**Decision Makers**](#tag/Decision-Makers) | Find the most relevant decision makers across your target accounts |\n| [**Website Visitors**](#tag/Website-Visits) | Companies ranked by website-visit signals for your tracked domains |\n| [**Filters**](#tag/Filters) | Discover valid filter values for prospecting |\n| [**Webhooks**](#tag/Webhooks) | Real-time signal notifications via HTTP callbacks |\n| [**Account**](#tag/Account) | Usage, credits, rate limits, and pricing |\n\n<blockquote class=\"callout\">\n\n **`BETA` Waterfall Reveal for Contact Enrichment.**\n\n Enrich Contacts now supports `waterfallEnabled`. Fall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts. On by default once your account has it turned on - pass `waterfallEnabled: false` to opt a specific call out. This feature is currently in limited beta and isn't available to all accounts yet. **Contact [support@lusha.com](mailto:support@lusha.com)** to request access. [See Enrich Contacts](#operation/enrichContacts).\n\n</blockquote>\n\n---\n\n## Data Source and Privacy\n\n**Lusha is a search platform.** The data provided is not created or directly managed by Lusha. It is sourced from publicly available information and trusted business partners.\n\nFor more details on how we collect and handle data, see our [Privacy Policy](https://lusha.com/legal/privacy-notice/).\n\n---\n\n## Authentication\n\nAll API requests require an **API key** linked to your Lusha account and plan. Pass your key in the `api_key` request header on every call.\n\n> Generate and manage your API key in the [Lusha dashboard](https://dashboard.lusha.com/enrich/api).\n\nStore your API key securely and use it only in **server-side environments**.\n\n---\n\n## Rate Limiting\n\nLusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan.\n\nRate limits for the **Credit Usage API** differ from standard endpoint limits.\n\n> **Note:** To check your current plan's limits, visit the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.\n\n**Rate Limit Response Headers**\n\n| Header | Description |\n|--------|-------------|\n| `x-rate-limit-daily` | Total requests allowed per day |\n| `x-daily-requests-left` | Requests remaining in your daily quota |\n| `x-daily-usage` | Requests made in the current daily period |\n| `x-rate-limit-hourly` | Total requests allowed per hour |\n| `x-hourly-requests-left` | Requests remaining in your hourly quota |\n| `x-hourly-usage` | Requests made in the current hourly period |\n| `x-rate-limit-minute` | Total requests allowed per minute |\n| `x-minute-requests-left` | Requests remaining in the current minute window |\n| `x-minute-usage` | Requests made in the current minute window |\n\n---\n## Error Codes\n\nLusha uses standard HTTP status codes to indicate the result of each request.\n\n| Code | Name | Description |\n|------|------|-------------|\n| `200` | OK | Request was successful |\n| `400` | Bad Request | Request is malformed or missing required fields |\n| `401` | Unauthorized | API key is missing or invalid |\n| `402` | Payment Required | Insufficient credits or payment needed |\n| `403` | Forbidden | Account is inactive. Contact support@lusha.com |\n| `404` | Not Found | Endpoint or resource does not exist |\n| `429` | Too Many Requests | Rate limit or daily quota exceeded |\n| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |\n| `499` | Client Closed Request | Request timed out before completing |\n| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |\n\n**Error Response Format**\n\n```json\n{\n  \"statusCode\": 400,\n  \"message\": \"Invalid request parameters\"\n}\n```\n\n**Tables-specific error codes**\n\n| Code | Status | Meaning |\n|---|---|---|\n| `TABLE_NOT_FOUND` | 404 | The `table_id` does not exist or is not accessible to this account |\n| `COLUMN_NOT_FOUND` | 404 | The `column_id` does not exist on the given table |\n| `TABLE_NAME_CONFLICT` | 409 | A table with this name already exists |\n\nTables error bodies use the shape `{ \"message\": \"...\", \"code\": <status>, ... }` rather than the `statusCode`/`errors` shape used elsewhere in this doc.\n\n**Limits:** up to 500 entity IDs per add/remove call \u00b7 max 50,000 entities per table \u00b7 max 500 tables per account \u00b7 `page` 0\u2013100 \u00b7 `size` default 100.\n\n**Tips for Handling Errors**\n\n- Verify your API key is correct and active\n- Read the `message` field for specific troubleshooting details\n- For `429` errors, wait before retrying\n- For `5XX` errors, use exponential backoff before retrying\n",
+    "description": "<blockquote class=\"callout\">\n\n **This is the Lusha API V3 documentation.** \n \n V3 introduces a new search-then-enrich pattern, bulk operations, AI-powered lookalikes, and richer filter capabilities. All endpoints are under `https://api.lusha.com/v3/`.\n\n  For more information on V3, refer to the [Migration Guide](/tutorials/v3-migration-guide).\n\n</blockquote>\n\n  --- \n\nLusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. Built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.\n\nUse the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.\n\n> All API requests must be made over **HTTPS**. All responses are returned in **JSON** format.\n\n--- \n## Available Endpoints\n\n| Category | Description |\n|---|---|\n| [**Search**](#tag/Search) | Find contacts or companies using known identifiers |\n| [**Enrich**](#tag/Enrich) | Retrieve full profile data for contacts or companies by ID |\n| [**Search & Enrich**](#tag/Search-and-Enrich) | Find and retrieve full contact or company data in a single call |\n| [**Prospecting**](#tag/Prospecting) | Filter-based search across contacts and companies |\n| [**Lookalikes**](#tag/Lookalikes) | AI-powered recommendations for similar contacts and companies |\n| [**Contacts Tables**](#tag/Contacts-Tables) | Persist, organize, and enrich contacts in reusable tables |\n| [**Companies Tables**](#tag/Companies-Tables) | Persist, organize, and enrich companies in reusable tables |\n| [**Signals**](#tag/Signals) | Real-world activity data for contacts and companies |\n| [**Buying Group**](#tag/Buying-Group) | Identify decision makers, champions, and end users within target accounts |\n| [**Conversations**](#tag/Conversations) | Search recorded sales calls and fetch speaker-attributed transcripts |\n| [**Website Visitors**](#tag/Website-Visits) | Companies ranked by website-visit signals for your tracked domains |\n| [**Filters**](#tag/Filters) | Discover valid filter values for prospecting |\n| [**Webhooks**](#tag/Webhooks) | Real-time signal notifications via HTTP callbacks |\n| [**Account**](#tag/Account) | Usage, credits, rate limits, and pricing |\n\n<blockquote class=\"callout\">\n\n **`BETA` Waterfall Reveal for Contact Enrichment.**\n\n Enrich Contacts now supports `waterfallEnabled`. Fall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts. On by default once your account has it turned on - pass `waterfallEnabled: false` to opt a specific call out. This feature is currently in limited beta and isn't available to all accounts yet. **Contact [support@lusha.com](mailto:support@lusha.com)** to request access. [See Enrich Contacts](#operation/enrichContacts).\n\n</blockquote>\n\n---\n\n## Data Source and Privacy\n\n**Lusha is a search platform.** The data provided is not created or directly managed by Lusha. It is sourced from publicly available information and trusted business partners.\n\nFor more details on how we collect and handle data, see our [Privacy Policy](https://lusha.com/legal/privacy-notice/).\n\n---\n\n## Authentication\n\nAll API requests require an **API key** linked to your Lusha account and plan. Pass your key in the `api_key` request header on every call.\n\n> Generate and manage your API key in the [Lusha dashboard](https://dashboard.lusha.com/api/manage-api-keys).\n\nStore your API key securely and use it only in **server-side environments**.\n\n---\n\n## Rate Limiting\n\nLusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan.\n\nRate limits for the **Credit Usage API** differ from standard endpoint limits.\n\n> **Note:** To check your current plan's limits, visit the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.\n\n**Rate Limit Response Headers**\n\n| Header | Description |\n|--------|-------------|\n| `x-rate-limit-daily` | Total requests allowed per day |\n| `x-daily-requests-left` | Requests remaining in your daily quota |\n| `x-daily-usage` | Requests made in the current daily period |\n| `x-rate-limit-hourly` | Total requests allowed per hour |\n| `x-hourly-requests-left` | Requests remaining in your hourly quota |\n| `x-hourly-usage` | Requests made in the current hourly period |\n| `x-rate-limit-minute` | Total requests allowed per minute |\n| `x-minute-requests-left` | Requests remaining in the current minute window |\n| `x-minute-usage` | Requests made in the current minute window |\n\n---\n## Error Codes\n\nLusha uses standard HTTP status codes to indicate the result of each request.\n\n| Code | Name | Description |\n|------|------|-------------|\n| `200` | OK | Request was successful |\n| `400` | Bad Request | Request is malformed or missing required fields |\n| `401` | Unauthorized | API key is missing or invalid |\n| `402` | Payment Required | Insufficient credits or payment needed |\n| `403` | Forbidden | Account is inactive. Contact support@lusha.com |\n| `404` | Not Found | Endpoint or resource does not exist |\n| `429` | Too Many Requests | Rate limit or daily quota exceeded |\n| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |\n| `499` | Client Closed Request | Request timed out before completing |\n| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |\n\n**Error Response Format**\n\n```json\n{\n  \"statusCode\": 400,\n  \"message\": \"Invalid request parameters\"\n}\n```\n\n**Tables-specific error codes**\n\n| Code | Status | Meaning |\n|---|---|---|\n| `TABLE_NOT_FOUND` | 404 | The `table_id` does not exist or is not accessible to this account |\n| `COLUMN_NOT_FOUND` | 404 | The `column_id` does not exist on the given table |\n| `TABLE_NAME_CONFLICT` | 409 | A table with this name already exists |\n\nTables error bodies use the shape `{ \"message\": \"...\", \"code\": <status>, ... }` rather than the `statusCode`/`errors` shape used elsewhere in this doc.\n\n**Limits:** up to 500 entity IDs per add/remove call · max 50,000 entities per table · max 500 tables per account · `page` 0–100 · `size` default 100.\n\n**Tips for Handling Errors**\n\n- Verify your API key is correct and active\n- Read the `message` field for specific troubleshooting details\n- For `429` errors, wait before retrying\n- For `5XX` errors, use exponential backoff before retrying\n",
     "contact": {
       "name": "Lusha Support",
       "url": "https://api.lusha.com",
@@ -46,7 +46,7 @@
     },
     {
       "name": "Search & Enrich",
-      "description": "**Search & Enrich APIs:** Find and retrieve full contact or company data in a single call.\n\nCombines Search and Enrich into one request. Provide identifiers and control what gets revealed via the `reveal` field.\n\n> **Billing:** Two charges apply \u2014 one for the search (`api_search`) and one per revealed field.\n",
+      "description": "**Search & Enrich APIs:** Find and retrieve full contact or company data in a single call.\n\nCombines Search and Enrich into one request. Provide identifiers and control what gets revealed via the `reveal` field.\n\n> **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field.\n",
       "x-tag-expanded": true
     },
     {
@@ -61,22 +61,17 @@
     },
     {
       "name": "Contacts Tables",
-      "description": "**Contacts Tables API:** Create and manage persistent tables of contacts inside Lusha.\n\nTables are spreadsheets with configurable columns \u2014 default Lusha fields, enrichment data, Signals, AI insights, premium data points, CRM fields, and custom fields. Populate a table directly through the endpoints below, or pass `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to persist those results automatically.\n\nEvery surface that touches table data \u2014 this API, MCP, and the Workspace UI \u2014 reads and writes the same underlying data. Changes made through one surface are reflected on the others.\n\n**Working with tables:**\n- **Tables** \u2014 create, list, get status, update (rename/archive/visibility), delete\n- **Entities** \u2014 add, remove, or read the rows in a table\n- **Columns** \u2014 list, remove, or run a column across a table's rows\n\n**Owner resolution:** `owner.email` resolves to a user on your account and determines table ownership. **Required on every call when authenticating with an API key** \u2014 omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token. Sent in the body as `owner: { email }` on `POST`/`PATCH` calls (and on `DELETE .../entities`, which carries a body); sent as a `?email=` query parameter on other `GET`/`DELETE` calls, which have no body.\n\n**Billing:**\n- Adding contacts to a table is free.\n- Reading entities (`GET .../entities`) charges per row returned.\n- Create / List / Get / Update / Delete / List Columns / Remove Column / Remove Entities are free.\n- Running a column charges per row per the column's tier (contact enrichment per row with data; signal/AI/score per row per run).\n- Non-public-API-plan accounts always resolve to `0` credits charged.\n\n**Limits:** up to 500 entity IDs per add/remove call \u00b7 max 50,000 entities per table \u00b7 max 500 tables per account.\n\nSee also: [Companies Tables](#tag/Companies-Tables).\n",
+      "description": "**Contacts Tables API:** Create and manage persistent tables of contacts inside Lusha.\n\nTables are spreadsheets with configurable columns - default Lusha fields, enrichment data, Signals, AI insights, premium data points, CRM fields, and custom fields. Populate a table directly through the endpoints below, or pass `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to persist those results automatically.\n\nEvery surface that touches table data - this API, MCP, and the Workspace UI - reads and writes the same underlying data. Changes made through one surface are reflected on the others.\n\n**Working with tables:**\n- **Tables** - create, list, get status, update (rename/archive/visibility), delete\n- **Entities** - add, remove, or read the rows in a table\n- **Columns** - list, remove, or run a column across a table's rows\n\n**Owner resolution:** `owner.email` resolves to a user on your account and determines table ownership. **Required on every call when authenticating with an API key** - omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token. Sent in the body as `owner: { email }` on `POST`/`PATCH` calls (and on `DELETE .../entities`, which carries a body); sent as a `?email=` query parameter on other `GET`/`DELETE` calls, which have no body.\n\n**Billing:**\n- Adding contacts to a table is free.\n- Reading entities (`GET .../entities`) charges per row returned.\n- Create / List / Get / Update / Delete / List Columns / Remove Column / Remove Entities are free.\n- Running a column charges per row per the column's tier (contact enrichment per row with data; signal/AI/score per row per run).\n- Non-public-API-plan accounts always resolve to `0` credits charged.\n\n**Limits:** up to 500 entity IDs per add/remove call · max 50,000 entities per table · max 500 tables per account.\n\nSee also: [Companies Tables](#tag/Companies-Tables).\n",
       "x-tag-expanded": true
     },
     {
       "name": "Companies Tables",
-      "description": "**Companies Tables API:** Create and manage persistent tables of companies inside Lusha.\n\nTables are spreadsheets with configurable columns \u2014 default Lusha fields, enrichment data, Signals, AI insights, premium data points, CRM fields, and custom fields. Populate a table directly through the endpoints below, or pass `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to persist those results automatically.\n\nEvery surface that touches table data \u2014 this API, MCP, and the Workspace UI \u2014 reads and writes the same underlying data. Changes made through one surface are reflected on the others.\n\n**Working with tables:**\n- **Tables** \u2014 create, list, get status, update (rename/archive/visibility), delete\n- **Entities** \u2014 add, remove, or read the rows in a table\n- **Columns** \u2014 list, remove, or run a column across a table's rows\n\n**Owner resolution:** `owner.email` resolves to a user on your account and determines table ownership. **Required on every call when authenticating with an API key** \u2014 omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token. Sent in the body as `owner: { email }` on `POST`/`PATCH` calls (and on `DELETE .../entities`, which carries a body); sent as a `?email=` query parameter on other `GET`/`DELETE` calls, which have no body.\n\n**Billing:**\n- Adding companies to a table charges `reveal_company` per **newly added** company, deduped so duplicates and already-present companies aren't charged again.\n- Reading entities (`GET .../entities`) charges per row returned.\n- Create / List / Get / Update / Delete / List Columns / Remove Column / Remove Entities are free.\n- Running a column charges per row per the column's tier (company enrichment once per company per table \u2014 re-runs on an already-paid company are free; signal/AI/score per row per run).\n- Non-public-API-plan accounts always resolve to `0` credits charged.\n\n**Limits:** up to 500 entity IDs per add/remove call \u00b7 max 50,000 entities per table \u00b7 max 500 tables per account.\n\nSee also: [Contacts Tables](#tag/Contacts-Tables).\n",
+      "description": "**Companies Tables API:** Create and manage persistent tables of companies inside Lusha.\n\nTables are spreadsheets with configurable columns - default Lusha fields, enrichment data, Signals, AI insights, premium data points, CRM fields, and custom fields. Populate a table directly through the endpoints below, or pass `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to persist those results automatically.\n\nEvery surface that touches table data - this API, MCP, and the Workspace UI - reads and writes the same underlying data. Changes made through one surface are reflected on the others.\n\n**Working with tables:**\n- **Tables** - create, list, get status, update (rename/archive/visibility), delete\n- **Entities** - add, remove, or read the rows in a table\n- **Columns** - list, remove, or run a column across a table's rows\n\n**Owner resolution:** `owner.email` resolves to a user on your account and determines table ownership. **Required on every call when authenticating with an API key** - omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token. Sent in the body as `owner: { email }` on `POST`/`PATCH` calls (and on `DELETE .../entities`, which carries a body); sent as a `?email=` query parameter on other `GET`/`DELETE` calls, which have no body.\n\n**Billing:**\n- Adding companies to a table charges `reveal_company` per **newly added** company, deduped so duplicates and already-present companies aren't charged again.\n- Reading entities (`GET .../entities`) charges per row returned.\n- Create / List / Get / Update / Delete / List Columns / Remove Column / Remove Entities are free.\n- Running a column charges per row per the column's tier (company enrichment once per company per table - re-runs on an already-paid company are free; signal/AI/score per row per run).\n- Non-public-API-plan accounts always resolve to `0` credits charged.\n\n**Limits:** up to 500 entity IDs per add/remove call · max 50,000 entities per table · max 500 tables per account.\n\nSee also: [Contacts Tables](#tag/Contacts-Tables).\n",
       "x-tag-expanded": true
     },
     {
       "name": "Signals",
       "description": "Real-world activity data for contacts and companies.\n\nSignals are available as standalone endpoints or as an optional `signals` filter on Search and Prospecting endpoints.\n\n**Contact signal types:** `promotion`, `companyChange`, `allSignals`\n\n**Company signal types:** `headcountIncrease1m/3m/6m/12m`, `headcountDecrease1m/3m/6m/12m`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`, `allSignals`\n\nCredits are charged per matched signal per result via `showSignalsContact` or `showSignalsCompany`.\n\nPass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables) or [Companies Tables](#tag/Companies-Tables).\n",
-      "x-tag-expanded": true
-    },
-    {
-      "name": "Decision Makers",
-      "description": "Supply companies by domain or Lusha ID and get back the most relevant decision makers per company, ranked by fit. Results are free contact previews \u2014 pass the returned id values to Enrich Contacts to reveal emails and phones. \n",
       "x-tag-expanded": true
     },
     {
@@ -98,6 +93,16 @@
       "name": "Account",
       "description": "**Account API:** Retrieve account usage, credit balance, rate limits, plan details, and pricing.\n\nUse this endpoint to monitor consumption and understand the credit cost of each action type in the public API flow.\n\n> **Rate limit:** 5 requests per minute.\n",
       "x-tag-expanded": true
+    },
+    {
+      "name": "Buying Group",
+      "description": "**Buying Group API:** Identify and prioritize the buying committee within a set of target companies.\n\nSupply up to 25 companies by `domain` or Lusha company `id`. The model scores and labels each returned contact with a persona role - `decision_maker`, `potential_champion`, or `end_user` - so you can prioritize outreach across the buying committee instead of working one contact at a time.\n\nResults are lightweight previews grouped by company. Use [Enrich Contacts](#operation/enrichContacts) with the returned `id` to reveal emails and phones.\n\n> **Billing:** Charged per contact returned via the `buyingGroupContact` action.\n",
+      "x-tag-expanded": true
+    },
+    {
+      "name": "Conversations",
+      "description": "**Conversations API:** Search the sales conversations recorded by Lusha Conversations for your account, and fetch speaker-attributed transcripts.\n\nSearch Conversations returns each conversation's metadata, AI summary, action items, risks, objections, competitor mentions, coaching analysis, and chapters - transcripts are not included. Fetch the transcript for a single conversation separately.\n\n**Two search modes on one contract:**\n- **Keyword mode** - supply `query` to rank conversations by transcript content. All other filters are ignored.\n- **Filter mode** - omit `query` and supply the structural filters (dates, contact names, company domains, meeting titles).\n\nOnly conversations belonging to your account whose post-call processing has completed are returned. `summary`, `coaching`, and `chapters` come from an asynchronous pipeline and are `null`/empty until it has run - a `null` summary means \"analysis not ready yet\", not \"nothing found\".\n\n> **Billing:** Search charges 1 credit per block of up to 25 conversations returned (via `ci_meeting_data_export`); a request that returns nothing is free. Transcript charges 1 credit per successful request (via `ci_transcript_analysis`); a `404` is never charged. While the relevant action isn't yet seeded on your account's pricebook, the endpoint stays free (`billing.creditsCharged` is `0`).\n",
+      "x-tag-expanded": true
     }
   ],
   "paths": {
@@ -108,7 +113,7 @@
         ],
         "summary": "Search Contacts",
         "operationId": "searchContacts",
-        "description": "Look up contacts by identifier. Returns a non-PII preview of each profile \u2014 no emails or phone numbers.\n\n**Accepted identifiers (one required per contact):**\n- Lusha contact `id`\n- `linkedinUrl`\n- `email`\n- `firstName` + `lastName` + `companyName` or `companyDomain`\n\nUp to 100 contacts per request. Each result includes:\n- `has` \u2014 data points available on this profile\n- `canReveal` \u2014 what you can unlock via Enrich Contacts, and the credit cost\n\nPass a `signals` filter to narrow results to contacts with recent activity (e.g. promotion, job change).\n\n> **Billing:** Charged per successful result via the `api_search` action.\n",
+        "description": "Look up contacts by identifier. Returns a non-PII preview of each profile - no emails or phone numbers.\n\n**Accepted identifiers (one required per contact):**\n- Lusha contact `id`\n- `linkedinUrl`\n- `email`\n- `firstName` + `lastName` + `companyName` or `companyDomain`\n\nUp to 100 contacts per request. Each result includes:\n- `has` - data points available on this profile\n- `canReveal` - what you can unlock via Enrich Contacts, and the credit cost\n\nPass a `signals` filter to narrow results to contacts with recent activity (e.g. promotion, job change).\n\n> **Billing:** Charged per successful result via the `api_search` action.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -317,7 +322,7 @@
         ],
         "summary": "Enrich Contacts",
         "operationId": "enrichContacts",
-        "description": "Reveal full contact data for contacts you've already found via Search Contacts.\n\nPass up to 100 contact `ids` (from the search response). Use the `reveal` field to control what gets unlocked:\n- `emails` \u2014 work and personal email addresses\n- `phones` \u2014 mobile and direct phone numbers\n- Omit `reveal` to get both by default\n\n---\n\n###   **BETA** Waterfall Reveal\nFall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts.\n\nIf **Data Waterfall** is enabled on your account, with specific providers turned on under **Account > Waterfall**, the waterfall runs automatically on every Enrich Contacts call - you don't need to pass anything to trigger it.\n\nPass `waterfallEnabled: false` to opt a specific call out:\n\n```json\n        \"reveal\": [\"emails\", \"phones\"],\n        \"waterfallEnabled\": false\n```\n\n- `reveal` controls **which fields** come back.\n- `waterfallEnabled` controls whether the waterfall runs for this call at all. Defaults to `true` whenever Data Waterfall is enabled on your account; pass `false` to disable it just for this call.\n- Provider order isn't configurable - Lusha manages that internally.\n- If Data Waterfall is off or no providers are enabled on your account, `waterfallEnabled` has no effect either way.\n- **This feature is in limited beta and not yet available on all accounts.** Contact **support@lusha.com** to request access.\n\n---\n> **Tip:** If `canReveal.credits` is `0` in the search response, that data has already been revealed for your account \u2014 re-enriching it is free.\n\n> **Billing:** Charged per revealed field (email or phone) via per-datapoint pricing.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Work email / Phone columns. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Reveal full contact data for contacts you've already found via Search Contacts.\n\nPass up to 100 contact `ids` (from the search response). Use the `reveal` field to control what gets unlocked:\n- `emails` - work and personal email addresses\n- `phones` - mobile and direct phone numbers\n- Omit `reveal` to get both by default\n\n---\n\n###   **BETA** Waterfall Reveal\nFall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts.\n\nIf **Data Waterfall** is enabled on your account, with specific providers turned on under **Account > Waterfall**, the waterfall runs automatically on every Enrich Contacts call - you don't need to pass anything to trigger it.\n\nPass `waterfallEnabled: false` to opt a specific call out:\n\n```json\n        \"reveal\": [\"emails\", \"phones\"],\n        \"waterfallEnabled\": false\n```\n\n- `reveal` controls **which fields** come back.\n- `waterfallEnabled` controls whether the waterfall runs for this call at all. Defaults to `true` whenever Data Waterfall is enabled on your account; pass `false` to disable it just for this call.\n- Provider order isn't configurable - Lusha manages that internally.\n- If Data Waterfall is off or no providers are enabled on your account, `waterfallEnabled` has no effect either way.\n- **This feature is in limited beta and not yet available on all accounts.** Contact **support@lusha.com** to request access.\n\n---\n> **Tip:** If `canReveal.credits` is `0` in the search response, that data has already been revealed for your account - re-enriching it is free.\n\n> **Billing:** Charged per revealed field (email or phone) via per-datapoint pricing.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Work email / Phone columns. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -447,7 +452,7 @@
         ],
         "summary": "Search and Enrich Contacts",
         "operationId": "searchAndEnrichContacts",
-        "description": "Find contacts and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide contact identifiers the same way you would for Search Contacts. Use the `reveal` field to control what gets unlocked (`emails`, `phones`, or both).\n\nUp to 100 contacts per request.\n\n> **Billing:** Two charges apply \u2014 one for the search (`api_search`) and one per revealed field. The `billing.creditsCharged` in the response reflects the total.\n",
+        "description": "Find contacts and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide contact identifiers the same way you would for Search Contacts. Use the `reveal` field to control what gets unlocked (`emails`, `phones`, or both).\n\nUp to 100 contacts per request.\n\n> **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field. The `billing.creditsCharged` in the response reflects the total.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -792,7 +797,7 @@
                       "alternativeDomains": [
                         "lusha.com"
                       ],
-                      "description": "Lusha is the leader in Sales Streaming \u2013 a new sales paradigm that streams top leads straight to salespeople and handles all the outreach, so they can escape the lead grind and just sell.",
+                      "description": "Lusha is the leader in Sales Streaming – a new sales paradigm that streams top leads straight to salespeople and handles all the outreach, so they can escape the lead grind and just sell.",
                       "companyType": "Private Company",
                       "yearFounded": 2016,
                       "employeeCount": {
@@ -1054,7 +1059,7 @@
                       "alternativeDomains": [
                         "salesforce.com"
                       ],
-                      "description": "We're the #1 AI CRM\u2014where humans with agents drive customer success together with AI, data, and Customer 360 apps on one platform.",
+                      "description": "We're the #1 AI CRM-where humans with agents drive customer success together with AI, data, and Customer 360 apps on one platform.",
                       "companyType": "Public Company",
                       "employeeCount": {
                         "exact": 88711,
@@ -1286,7 +1291,7 @@
         ],
         "summary": "Search and Enrich Companies",
         "operationId": "searchAndEnrichCompanies",
-        "description": "Find companies and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide company identifiers the same way you would for Search Companies. Up to 100 companies per request.\n\n> **Billing:** Same as Enrich Companies \u2014 charged per successful result via the `reveal_company` action.\n",
+        "description": "Find companies and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide company identifiers the same way you would for Search Companies. Up to 100 companies per request.\n\n> **Billing:** Same as Enrich Companies - charged per successful result via the `reveal_company` action.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1332,7 +1337,7 @@
                       "alternativeDomains": [
                         "lusha.com"
                       ],
-                      "description": "Lusha is the leader in Sales Streaming \u2013 a new sales paradigm that streams top leads straight to salespeople and handles all the outreach, so they can escape the lead grind and just sell.",
+                      "description": "Lusha is the leader in Sales Streaming – a new sales paradigm that streams top leads straight to salespeople and handles all the outreach, so they can escape the lead grind and just sell.",
                       "companyType": "Private Company",
                       "yearFounded": 2016,
                       "employeeCount": {
@@ -1443,7 +1448,7 @@
                       "alternativeDomains": [
                         "salesforce.com"
                       ],
-                      "description": "We're the #1 AI CRM\u2014where humans with agents drive customer success together with AI, data, and Customer 360 apps on one platform.",
+                      "description": "We're the #1 AI CRM-where humans with agents drive customer success together with AI, data, and Customer 360 apps on one platform.",
                       "companyType": "Public Company",
                       "employeeCount": {
                         "exact": 88711,
@@ -1570,7 +1575,7 @@
         ],
         "summary": "Prospecting Contacts",
         "operationId": "prospectingContacts",
-        "description": "Search for contacts that match your Ideal Customer Profile using rich filter criteria.\n\n**Filter by contact attributes:**\n- Job title, seniority, department\n- Location (city, state, country, continent)\n- Existing data points (e.g. only contacts with a known work email)\n- Signal activity (promotion, job change)\n\n**Filter by company attributes:**\n- Size, revenue, industry, technologies\n- Location, intent topics, funding\n\nResults are paginated up to 50,000 total (1,000 pages \u00d7 50 results). Use the returned contact `id` values with Enrich Contacts to reveal emails and phones.\n\n> **Billing:** Charged per result via `api_search`. If signals are requested, an additional charge applies per matched signal per result.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. This is additive \u2014 the primary response is unchanged, and a `tableWrite` object is added showing what happened on the table side. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Search for contacts that match your Ideal Customer Profile using rich filter criteria.\n\n**Filter by contact attributes:**\n- Job title, seniority, department\n- Location (city, state, country, continent)\n- Existing data points (e.g. only contacts with a known work email)\n- Signal activity (promotion, job change)\n\n**Filter by company attributes:**\n- Size, revenue, industry, technologies\n- Location, intent topics, funding\n\nResults are paginated up to 50,000 total (1,000 pages × 50 results). Use the returned contact `id` values with Enrich Contacts to reveal emails and phones.\n\n> **Billing:** Charged per result via `api_search`. If signals are requested, an additional charge applies per matched signal per result.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. This is additive - the primary response is unchanged, and a `tableWrite` object is added showing what happened on the table side. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1707,7 +1712,7 @@
         ],
         "summary": "Prospecting Companies",
         "operationId": "prospectingCompanies",
-        "description": "Search for companies that match your target market using rich filter criteria.\n\n**Filter by:**\n- Size, revenue range, industry, sub-industry\n- Technologies in use\n- Locations (HQ country, state, city)\n- SIC and NAICS codes\n- Buyer intent topics\n- Signal activity (headcount changes, hiring surges, news events)\n\nResults are paginated up to 50,000 total. Use the returned company `id` values with Enrich Companies to get full firmographic data.\n\n> **Billing:** Charged per result via `api_search`. If signals are requested, an additional charge applies per matched signal per result.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. This is additive \u2014 the primary response is unchanged, and a `tableWrite` object is added showing what happened on the table side. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Search for companies that match your target market using rich filter criteria.\n\n**Filter by:**\n- Size, revenue range, industry, sub-industry\n- Technologies in use\n- Locations (HQ country, state, city)\n- SIC and NAICS codes\n- Buyer intent topics\n- Signal activity (headcount changes, hiring surges, news events)\n\nResults are paginated up to 50,000 total. Use the returned company `id` values with Enrich Companies to get full firmographic data.\n\n> **Billing:** Charged per result via `api_search`. If signals are requested, an additional charge applies per matched signal per result.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. This is additive - the primary response is unchanged, and a `tableWrite` object is added showing what happened on the table side. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1868,7 +1873,7 @@
         ],
         "summary": "Contact Lookalikes",
         "operationId": "getContactLookalikes",
-        "description": "Find contacts similar to a set of seed contacts using AI-powered recommendations.\n\nProvide 5-100 seed contacts via LinkedIn URLs, emails, Lusha IDs, or name + company. The API returns contacts who share similar roles, seniority, and company profiles.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` \u2014 the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific contacts (e.g. existing customers).\n\nResults are lightweight previews. Use Enrich Contacts with the returned `id` to get emails and phones.\n\n> **Billing:** Charged per result via the `lookalikeContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Find contacts similar to a set of seed contacts using AI-powered recommendations.\n\nProvide 5-100 seed contacts via LinkedIn URLs, emails, Lusha IDs, or name + company. The API returns contacts who share similar roles, seniority, and company profiles.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` - the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific contacts (e.g. existing customers).\n\nResults are lightweight previews. Use Enrich Contacts with the returned `id` to get emails and phones.\n\n> **Billing:** Charged per result via the `lookalikeContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1976,7 +1981,7 @@
         ],
         "summary": "Company Lookalikes",
         "operationId": "getCompanyLookalikes",
-        "description": "Find companies similar to a set of seed companies using AI-powered recommendations.\n\nProvide 5-100 seed companies via domains or LinkedIn URLs. The API returns companies with similar size, industry, and profile.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` \u2014 the server generates one and returns it. Pass it on every subsequent request to get more results without repeating companies already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific companies (e.g. existing customers or competitors).\n\nResults are lightweight previews. Use Enrich Companies with the returned `id` to get full firmographic data.\n\n> **Billing:** Charged per result via the `lookalikeCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Find companies similar to a set of seed companies using AI-powered recommendations.\n\nProvide 5-100 seed companies via domains or LinkedIn URLs. The API returns companies with similar size, industry, and profile.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` - the server generates one and returns it. Pass it on every subsequent request to get more results without repeating companies already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific companies (e.g. existing customers or competitors).\n\nResults are lightweight previews. Use Enrich Companies with the returned `id` to get full firmographic data.\n\n> **Billing:** Charged per result via the `lookalikeCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -2223,7 +2228,7 @@
         ],
         "summary": "Update Contacts Table",
         "operationId": "updateContactsTable",
-        "description": "Rename a table, change its visibility, or reassign its owner. All fields except `owner` are optional \u2014 send only what changes.\n\n> **Billing:** Free.\n",
+        "description": "Rename a table, change its visibility, or reassign its owner. All fields except `owner` are optional - send only what changes.\n\n> **Billing:** Free.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -2380,7 +2385,7 @@
         ],
         "summary": "Add Entities to Contacts Table",
         "operationId": "addContactsTableEntities",
-        "description": "Add up to 500 contact IDs to an existing table. `entityIds` accepts either the encrypted Lusha token (`v{N}.\u2026`, as returned by Search/Enrich/Get Entities) or the legacy numeric `personId` \u2014 an ID that's neither returns `400`. Already-present IDs are reported as `alreadyPresent` and not re-added; unresolvable IDs are not an error, they come back in `invalidIds` with a `200`.\n\nOptionally pass `companyIds` \u2014 one `lushaCompanyId` per contact, index-aligned with `entityIds` \u2014 to help pair company-level enrichment to the right company for each contact.\n\n> **Billing:** Free.\n",
+        "description": "Add up to 500 contact IDs to an existing table. `entityIds` accepts either the encrypted Lusha token (`v{N}.…`, as returned by Search/Enrich/Get Entities) or the legacy numeric `personId` - an ID that's neither returns `400`. Already-present IDs are reported as `alreadyPresent` and not re-added; unresolvable IDs are not an error, they come back in `invalidIds` with a `200`.\n\nOptionally pass `companyIds` - one `lushaCompanyId` per contact, index-aligned with `entityIds` - to help pair company-level enrichment to the right company for each contact.\n\n> **Billing:** Free.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -2592,7 +2597,7 @@
         ],
         "summary": "Run Column on Contacts Table",
         "operationId": "runContactsTableColumn",
-        "description": "Populate or refresh a column's data for some or all rows in the table. This is **asynchronous** \u2014 the call returns immediately with `status: \"processing\"`; poll Get Contacts Table for `isProcessing` and per-column row-status counts to know when it's done, then read the values via Get Contacts Table Entities.\n\n**`runScope` values:**\n- `all` \u2014 every row, including already-processed ones (re-runs / refreshes). Most expensive.\n- `missing` \u2014 only rows that have never been run for this column. Cheapest, safe to call repeatedly.\n- `specific` \u2014 only the `entityIds` you pass. Also how you implement \"run for this page\" \u2014 fetch the page via Get Contacts Table Entities, then pass those IDs here.\n\n> **Billing:** Charged per row processed, per the column's credit tier. Re-running with `all` charges again for rows that already have data.\n",
+        "description": "Populate or refresh a column's data for some or all rows in the table. This is **asynchronous** - the call returns immediately with `status: \"processing\"`; poll Get Contacts Table for `isProcessing` and per-column row-status counts to know when it's done, then read the values via Get Contacts Table Entities.\n\n**`runScope` values:**\n- `all` - every row, including already-processed ones (re-runs / refreshes). Most expensive.\n- `missing` - only rows that have never been run for this column. Cheapest, safe to call repeatedly.\n- `specific` - only the `entityIds` you pass. Also how you implement \"run for this page\" - fetch the page via Get Contacts Table Entities, then pass those IDs here.\n\n> **Billing:** Charged per row processed, per the column's credit tier. Re-running with `all` charges again for rows that already have data.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -2791,7 +2796,7 @@
         ],
         "summary": "Update Companies Table",
         "operationId": "updateCompaniesTable",
-        "description": "Rename a table, change its visibility, or reassign its owner. All fields except `owner` are optional \u2014 send only what changes.\n\n> **Billing:** Free.\n",
+        "description": "Rename a table, change its visibility, or reassign its owner. All fields except `owner` are optional - send only what changes.\n\n> **Billing:** Free.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -2948,7 +2953,7 @@
         ],
         "summary": "Add Entities to Companies Table",
         "operationId": "addCompaniesTableEntities",
-        "description": "Add up to 500 company IDs to an existing table. `entityIds` accepts either the encrypted Lusha token (`v{N}.\u2026`, as returned by Search/Enrich/Get Entities) or the legacy numeric `lushaCompanyId` \u2014 an ID that's neither returns `400`. Already-present IDs are reported as `alreadyPresent` and not re-added; unresolvable IDs are not an error, they come back in `invalidIds` with a `200`.\n\n> **Billing:** Charges `reveal_company` per newly-added company, deduped via row-count delta \u2014 duplicates and already-present companies aren't charged again.\n",
+        "description": "Add up to 500 company IDs to an existing table. `entityIds` accepts either the encrypted Lusha token (`v{N}.…`, as returned by Search/Enrich/Get Entities) or the legacy numeric `lushaCompanyId` - an ID that's neither returns `400`. Already-present IDs are reported as `alreadyPresent` and not re-added; unresolvable IDs are not an error, they come back in `invalidIds` with a `200`.\n\n> **Billing:** Charges `reveal_company` per newly-added company, deduped via row-count delta - duplicates and already-present companies aren't charged again.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -3153,7 +3158,7 @@
         ],
         "summary": "Run Column on Companies Table",
         "operationId": "runCompaniesTableColumn",
-        "description": "Populate or refresh a column's data for some or all rows in the table. This is **asynchronous** \u2014 the call returns immediately with `status: \"processing\"`; poll Get Companies Table for `isProcessing` and per-column row-status counts to know when it's done, then read the values via Get Companies Table Entities.\n\n**`runScope` values:**\n- `all` \u2014 every row, including already-processed ones (re-runs / refreshes). Most expensive.\n- `missing` \u2014 only rows that have never been run for this column. Cheapest, safe to call repeatedly.\n- `specific` \u2014 only the `entityIds` you pass. Also how you implement \"run for this page\" \u2014 fetch the page via Get Companies Table Entities, then pass those IDs here.\n\n> **Billing:** Charged per row processed, per the column's credit tier. Company enrichment charges once per company per table \u2014 re-runs on an already-paid company in the same table are free.\n",
+        "description": "Populate or refresh a column's data for some or all rows in the table. This is **asynchronous** - the call returns immediately with `status: \"processing\"`; poll Get Companies Table for `isProcessing` and per-column row-status counts to know when it's done, then read the values via Get Companies Table Entities.\n\n**`runScope` values:**\n- `all` - every row, including already-processed ones (re-runs / refreshes). Most expensive.\n- `missing` - only rows that have never been run for this column. Cheapest, safe to call repeatedly.\n- `specific` - only the `entityIds` you pass. Also how you implement \"run for this page\" - fetch the page via Get Companies Table Entities, then pass those IDs here.\n\n> **Billing:** Charged per row processed, per the column's credit tier. Company enrichment charges once per company per table - re-runs on an already-paid company in the same table are free.\n",
         "parameters": [
           {
             "$ref": "#/components/parameters/TableIdPath"
@@ -3211,7 +3216,7 @@
         ],
         "summary": "Contact Signals",
         "operationId": "getContactSignals",
-        "description": "Retrieve signal events for a list of contacts \u2014 job changes and promotions.\n\nPass up to 100 contact `ids`. Use `signalTypes` to specify which events to return (`promotion`, `companyChange`, or `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Signals column. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Retrieve signal events for a list of contacts - job changes and promotions.\n\nPass up to 100 contact `ids`. Use `signalTypes` to specify which events to return (`promotion`, `companyChange`, or `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Signals column. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3290,7 +3295,7 @@
         ],
         "summary": "Company Signals",
         "operationId": "getCompanySignals",
-        "description": "Retrieve signal events for a list of companies \u2014 hiring activity, headcount changes, web traffic, IT spend, and news.\n\nPass up to 100 company `ids`. Use `signalTypes` to specify which signals to return (or use `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these companies to an existing table and populate the Signals column. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Retrieve signal events for a list of companies - hiring activity, headcount changes, web traffic, IT spend, and news.\n\nPass up to 100 company `ids`. Use `signalTypes` to specify which signals to return (or use `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these companies to an existing table and populate the Signals column. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3530,134 +3535,6 @@
         }
       }
     },
-    "/v3/contacts/decision-makers": {
-      "post": {
-        "tags": [
-          "Decision Makers"
-        ],
-        "summary": "Get Decision Makers",
-        "x-badges": [
-          {
-            "name": "Beta",
-            "color": "purple"
-          }
-        ],
-        "operationId": "getDecisionMakers",
-        "description": "Resolve each supplied company to a Lusha company ID, rank the most relevant decision makers per company using the buying-committee-ranker model, and return them grouped per company.\n\nResults are free previews \u2014 name, title, company, location, LinkedIn, seniority, and department \u2014 with `has` and `canReveal` fields. Reveal emails and phones separately via Enrich Contacts.\n\n**Accepted company identifiers (exactly one required per entry):**\n- `domain` \u2014 resolved to a Lusha company ID server-side\n- `id` \u2014 encrypted Lusha company ID (`vN.\u2026`); legacy numeric IDs accepted during transition\n",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DecisionMakersRequest"
-              },
-              "example": {
-                "companies": [
-                  {
-                    "domain": "google.com",
-                    "clientReferenceId": "ref-1"
-                  },
-                  {
-                    "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
-                  }
-                ],
-                "pagination": {
-                  "page": 5,
-                  "size": 10
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DecisionMakersResponse"
-                },
-                "example": {
-                  "requestId": "550e8400-e29b-41d4-a716-446655440000",
-                  "results": [
-                    {
-                      "clientReferenceId": "ref-1",
-                      "companyId": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
-                      "decisionMakers": [
-                        {
-                          "id": "c-abcdef123456",
-                          "firstName": "Jane",
-                          "lastName": "Doe",
-                          "jobTitle": {
-                            "title": "Director of Engineering",
-                            "departments": [
-                              "Engineering"
-                            ],
-                            "seniority": "Director"
-                          },
-                          "company": {
-                            "id": "v1.AbCd...",
-                            "name": "Google",
-                            "domain": "google.com"
-                          },
-                          "location": {
-                            "country": "United States",
-                            "city": "Mountain View"
-                          },
-                          "socialLinks": {
-                            "linkedin": "https://www.linkedin.com/in/janedoe"
-                          },
-                          "has": [
-                            "emails",
-                            "phones"
-                          ],
-                          "canReveal": [
-                            {
-                              "field": "emails",
-                              "credits": 1
-                            },
-                            {
-                              "field": "phones",
-                              "credits": 1
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "domain": "unknown-co.com",
-                      "error": {
-                        "code": "NOT_FOUND",
-                        "message": "Company not found"
-                      }
-                    }
-                  ],
-                  "billing": {
-                    "creditsCharged": 0,
-                    "resultsReturned": 1
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/PaymentRequired"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "429": {
-            "$ref": "#/components/responses/TooManyRequests"
-          }
-        }
-      }
-    },
     "/v3/companies/website-visits": {
       "post": {
         "tags": [
@@ -3671,7 +3548,7 @@
           }
         ],
         "operationId": "getWebsiteVisits",
-        "description": "Returns companies ranked by website-visit signals for your tracked domains and date range.\n\nDomains must be configured for tracking in the Lusha dashboard \u2014 they are resolved to site IDs server-side. Each result combines a V3 company firmographic preview (same shape as Search Companies) with behavioral visit metrics.\n\n**Notes:**\n- Date range must be \u2264 3 months\n- If any requested domain is not configured for tracking, the entire request fails with `400`\n- `limit` accepts 1\u2013150\n",
+        "description": "Returns companies ranked by website-visit signals for your tracked domains and date range.\n\nDomains must be configured for tracking in the Lusha dashboard - they are resolved to site IDs server-side. Each result combines a V3 company firmographic preview (same shape as Search Companies) with behavioral visit metrics.\n\n**Notes:**\n- Date range must be ≤ 3 months\n- If any requested domain is not configured for tracking, the entire request fails with `400`\n- `limit` accepts 1–150\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -4024,7 +3901,7 @@
           "Webhooks"
         ],
         "summary": "Create Subscription",
-        "description": "Creates one or more webhook subscriptions for real-time signal notifications.\n\n**Delivery & Reliability:**\n- Webhooks are delivered with automatic retry on failures\n- Maximum 3 retry attempts with exponential backoff\n- Subscriptions auto-disable after max retries exceeded\n- All deliveries are logged in audit logs\n\n> **Note:** Your webhook endpoint must respond with a proper acknowledgment. \n See Client Response Format below for details.\n\n> **Limit:** Maximum 25 subscriptions per request\n\n*Endpoint*: **(POST) https://api.lusha.com/api/subscriptions**\n\n---\n\n### Webhook Payload You'll Receive\n When a signal is triggered, this payload is sent to your webhook URL:\n```json\n    {\n      \"id\": \"f3b87e05-0402-4f3e-8e26-6a38fd0ad62c\",\n      \"type\": \"promotion\",\n      \"entityType\": \"contact\",\n      \"entityId\": \"4158887495\",\n      \"subscriptionId\": \"507f1f77bcf86cd799439011\",\n      \"data\": {\n        \"personId\": 4158887495,\n        \"currentCompanyId\": 40823133,\n        \"currentCompanyName\": \"OMG Hospitality Group LLC\",\n        \"currentDomain\": \"omghospitalitygroup.com\",\n        \"currentTitle\": \"Bartender\",\n        \"currentDepartments\": [\n          { \"id\": 7, \"value\": \"Other\" }\n        ],\n        \"previousCompanyName\": \"First Watch Restaurants\",\n        \"previousDomain\": \"firstwatch.com\",\n        \"signalDate\": \"2025-07-01\"\n      },\n      \"timestamp\": \"2026-01-14T16:16:35.841Z\",\n      \"billing\": {\n        \"creditsCharged\": 1\n      }\n    }\n    ```\n            **Example \u2014 Company News Signal:**\n    ```json\n            {\n              \"id\": \"a7c92f14-1234-4b3e-9d22-8b4fe1d0bc45\",\n              \"type\": \"commercialActivityNews\",\n              \"entityType\": \"company\",\n              \"entityId\": \"33222678\",\n              \"subscriptionId\": \"507f1f77bcf86cd799439011\",\n              \"data\": {\n                \"companyId\": \"33222678\",\n                \"companyName\": \"Lusha\",\n                \"domain\": \"lusha.com\",\n                \"signalId\": \"1503910\",\n                \"eventType\": \"partnership\",\n                \"eventSummary\": \"Lusha announced a strategic partnership with Salesforce.\",\n                \"articlePublishedDate\": \"2025-06-15\",\n                \"articleTitle\": \"Lusha Partners with Salesforce\",\n                \"articleHighlight\": \"The partnership enables Salesforce users to access Lusha data directly within their CRM.\",\n                \"eventEffectiveDate\": \"2025-06-10\",\n                \"articleUrl\": \"https://example.com/lusha-salesforce-partnership\"\n              },\n              \"timestamp\": \"2026-01-14T16:16:35.841Z\",\n              \"billing\": {\n                \"creditsCharged\": 1\n              }\n            }\n          ```\n\n      **Headers Included:**\n\n      | Header | Description |\n      |--------|-------------|\n      | `X-Lusha-Signature` | HMAC-SHA256 signature for verification |\n      | `X-Lusha-Timestamp` | Unix timestamp of the request |\n      | `Content-Type` | application/json |\n      | `User-Agent` | Lusha-Webhooks/1.0 |\n\n\n---\n\u26a0\ufe0f **Important:** Ensure your account has a webhook secret before creating subscriptions.\nCreate one via the [Regenerate Account Secret](#operation/regenerateAccountSecret) endpoint.\n\n---\n\n### Client Response Format (Required)\n\nWhen your webhook endpoint receives a delivery, it **must** acknowledge receipt with this response:\n\n  **Required Response:**\n  ````json\n  {\n    \"received\": true,\n    \"timestamp\": \"2026-02-05T10:30:45.123Z\",\n    \"webhookId\": \"f3b87e05-0402-4f3e-8e26-6a38fd0ad62c\"\n  }\n  ````\n\n<details>\n<summary><strong>Response Requirements</strong></summary>\n\n  | Requirement | Value |\n  |-------------|-------|\n  | **HTTP Status** | `201 Created` (recommended) or any `2xx` status |\n  | **Content-Type** | `application/json` |\n  | **Response Time** | Within 10 seconds |\n</details>\n\n\n<details>\n<summary><strong>Field Descriptions & Implementation Guide</strong></summary>\n\n  **Field Descriptions:**\n  * `received` (boolean, required): Confirmation flag - must be `true`\n  * `timestamp` (string, required): ISO 8601 timestamp of receipt\n  * `webhookId` (string, required): Echo the `id` from webhook payload\n\n  **Implementation Example:**\n  ```javascript\n  app.post('/webhook', async (req, res) => {\n    // 1. Verify signature\n    if (!verifyWebhookSignature(req)) {\n      return res.status(401).json({ error: 'Invalid signature' });\n    }\n    \n    // 2. Queue for async processing\n    await queueWebhook(req.body);\n    \n    // 3. Acknowledge immediately\n    res.status(201).json({\n      received: true,\n      timestamp: new Date().toISOString(),\n      webhookId: req.body.id\n    });\n    ```\n\n  **Important Notes:**\n  * Return acknowledgment **before** heavy processing\n  * Non-2xx responses trigger retry mechanism\n  * After 3 failed retries, subscription is disabled\n\n  </details>\n\n----\n",
+        "description": "Creates one or more webhook subscriptions for real-time signal notifications.\n\n**Delivery & Reliability:**\n- Webhooks are delivered with automatic retry on failures\n- Maximum 3 retry attempts with exponential backoff\n- Subscriptions auto-disable after max retries exceeded\n- All deliveries are logged in audit logs\n\n> **Note:** Your webhook endpoint must respond with a proper acknowledgment. \n See Client Response Format below for details.\n\n> **Limit:** Maximum 25 subscriptions per request\n\n*Endpoint*: **(POST) https://api.lusha.com/api/subscriptions**\n\n---\n\n### Webhook Payload You'll Receive\n When a signal is triggered, this payload is sent to your webhook URL:\n```json\n    {\n      \"id\": \"f3b87e05-0402-4f3e-8e26-6a38fd0ad62c\",\n      \"type\": \"promotion\",\n      \"entityType\": \"contact\",\n      \"entityId\": \"4158887495\",\n      \"subscriptionId\": \"507f1f77bcf86cd799439011\",\n      \"data\": {\n        \"personId\": 4158887495,\n        \"currentCompanyId\": 40823133,\n        \"currentCompanyName\": \"OMG Hospitality Group LLC\",\n        \"currentDomain\": \"omghospitalitygroup.com\",\n        \"currentTitle\": \"Bartender\",\n        \"currentDepartments\": [\n          { \"id\": 7, \"value\": \"Other\" }\n        ],\n        \"previousCompanyName\": \"First Watch Restaurants\",\n        \"previousDomain\": \"firstwatch.com\",\n        \"signalDate\": \"2025-07-01\"\n      },\n      \"timestamp\": \"2026-01-14T16:16:35.841Z\",\n      \"billing\": {\n        \"creditsCharged\": 1\n      }\n    }\n    ```\n            **Example - Company News Signal:**\n    ```json\n            {\n              \"id\": \"a7c92f14-1234-4b3e-9d22-8b4fe1d0bc45\",\n              \"type\": \"commercialActivityNews\",\n              \"entityType\": \"company\",\n              \"entityId\": \"33222678\",\n              \"subscriptionId\": \"507f1f77bcf86cd799439011\",\n              \"data\": {\n                \"companyId\": \"33222678\",\n                \"companyName\": \"Lusha\",\n                \"domain\": \"lusha.com\",\n                \"signalId\": \"1503910\",\n                \"eventType\": \"partnership\",\n                \"eventSummary\": \"Lusha announced a strategic partnership with Salesforce.\",\n                \"articlePublishedDate\": \"2025-06-15\",\n                \"articleTitle\": \"Lusha Partners with Salesforce\",\n                \"articleHighlight\": \"The partnership enables Salesforce users to access Lusha data directly within their CRM.\",\n                \"eventEffectiveDate\": \"2025-06-10\",\n                \"articleUrl\": \"https://example.com/lusha-salesforce-partnership\"\n              },\n              \"timestamp\": \"2026-01-14T16:16:35.841Z\",\n              \"billing\": {\n                \"creditsCharged\": 1\n              }\n            }\n          ```\n\n      **Headers Included:**\n\n      | Header | Description |\n      |--------|-------------|\n      | `X-Lusha-Signature` | HMAC-SHA256 signature for verification |\n      | `X-Lusha-Timestamp` | Unix timestamp of the request |\n      | `Content-Type` | application/json |\n      | `User-Agent` | Lusha-Webhooks/1.0 |\n\n\n---\n⚠️ **Important:** Ensure your account has a webhook secret before creating subscriptions.\nCreate one via the [Regenerate Account Secret](#operation/regenerateAccountSecret) endpoint.\n\n---\n\n### Client Response Format (Required)\n\nWhen your webhook endpoint receives a delivery, it **must** acknowledge receipt with this response:\n\n  **Required Response:**\n  ````json\n  {\n    \"received\": true,\n    \"timestamp\": \"2026-02-05T10:30:45.123Z\",\n    \"webhookId\": \"f3b87e05-0402-4f3e-8e26-6a38fd0ad62c\"\n  }\n  ````\n\n<details>\n<summary><strong>Response Requirements</strong></summary>\n\n  | Requirement | Value |\n  |-------------|-------|\n  | **HTTP Status** | `201 Created` (recommended) or any `2xx` status |\n  | **Content-Type** | `application/json` |\n  | **Response Time** | Within 10 seconds |\n</details>\n\n\n<details>\n<summary><strong>Field Descriptions & Implementation Guide</strong></summary>\n\n  **Field Descriptions:**\n  * `received` (boolean, required): Confirmation flag - must be `true`\n  * `timestamp` (string, required): ISO 8601 timestamp of receipt\n  * `webhookId` (string, required): Echo the `id` from webhook payload\n\n  **Implementation Example:**\n  ```javascript\n  app.post('/webhook', async (req, res) => {\n    // 1. Verify signature\n    if (!verifyWebhookSignature(req)) {\n      return res.status(401).json({ error: 'Invalid signature' });\n    }\n    \n    // 2. Queue for async processing\n    await queueWebhook(req.body);\n    \n    // 3. Acknowledge immediately\n    res.status(201).json({\n      received: true,\n      timestamp: new Date().toISOString(),\n      webhookId: req.body.id\n    });\n    ```\n\n  **Important Notes:**\n  * Return acknowledgment **before** heavy processing\n  * Non-2xx responses trigger retry mechanism\n  * After 3 failed retries, subscription is disabled\n\n  </details>\n\n----\n",
         "operationId": "createSubscription",
         "requestBody": {
           "required": true,
@@ -4956,7 +4833,7 @@
         ],
         "summary": "Get Account Usage",
         "operationId": "getAccountUsage",
-        "description": "Returns a full snapshot of your account status:\n- **Credits** \u2014 total, used, and remaining for the current billing cycle\n- **Rate limits** \u2014 current usage and reset times for daily, hourly, and per-minute windows\n- **Plan** \u2014 your current plan category and renewal dates\n- **Pricing** \u2014 credit cost per action type across all public API endpoints\n\n> **Rate limit:** This endpoint is limited to 5 requests per minute.\n",
+        "description": "Returns a full snapshot of your account status:\n- **Credits** - total, used, and remaining for the current billing cycle\n- **Rate limits** - current usage and reset times for daily, hourly, and per-minute windows\n- **Plan** - your current plan category and renewal dates\n- **Pricing** - credit cost per action type across all public API endpoints\n\n> **Rate limit:** This endpoint is limited to 5 requests per minute.\n",
         "responses": {
           "200": {
             "description": "Successfully retrieved account usage",
@@ -5010,6 +4887,592 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v3/contacts/buying-group": {
+      "post": {
+        "tags": [
+          "Buying Group"
+        ],
+        "summary": "Get Buying Group Contacts",
+        "operationId": "getContactsBuyingGroup",
+        "description": "Identify the buying group within a set of target companies. Supply companies by `domain` or Lusha company `id` - the model scores and labels each returned contact with a persona role.\n\n**Personas:**\n- `decision_maker` - has budget or sign-off authority\n- `potential_champion` - likely internal advocate for the purchase\n- `end_user` - likely day-to-day user of the product\n\nPass `personas` to filter to specific roles, or omit it to get all three. Use `contactsLimit` to cap how many contacts are returned per company (default 60).\n\nResults are lightweight previews grouped by company. Each contact includes a `has` field listing available data points, a `canReveal` field showing what can be unlocked via Enrich, a `roles` array with the assigned persona(s), and a `score` (0-1) reflecting relevance to the assigned role.\n\nUse Enrich Contacts with the returned contact `id` to reveal emails and phones.\n\n> **Billing:** Charged per contact returned via the `buyingGroupContact` action.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V3BuyingGroupRequest"
+              },
+              "example": {
+                "companies": [
+                  {
+                    "clientReferenceId": "comp-ref-1",
+                    "domain": "acme.com"
+                  },
+                  {
+                    "clientReferenceId": "comp-ref-2",
+                    "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+                  }
+                ],
+                "personas": [
+                  "decision_maker",
+                  "potential_champion"
+                ],
+                "contactsLimit": 20
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3BuyingGroupResponse"
+                },
+                "example": {
+                  "requestId": "951d46da-24f9-4608-84bf-5e70a10bf851",
+                  "results": [
+                    {
+                      "companyId": "v1.ocoj3UrkPqHcR8yAEosYFTuVXTH282LP",
+                      "contacts": [
+                        {
+                          "id": "v1.VdKU4HkaDb7CE4CEImoUcm7bxUGUUz-aOQ",
+                          "firstName": "Mohammed",
+                          "lastName": "Alam",
+                          "jobTitle": {
+                            "title": "RF/Analog IC Design Engineer",
+                            "departments": [
+                              "Engineering & Technical"
+                            ],
+                            "seniority": "Non-Manager"
+                          },
+                          "company": {
+                            "id": "v1.ocoj3UrkPqHcR8yAEosYFTuVXTH282LP",
+                            "name": "Intel",
+                            "domain": "www.intel.com"
+                          },
+                          "location": {
+                            "country": "United States",
+                            "state": "Arizona",
+                            "city": "Chandler"
+                          },
+                          "socialLinks": {
+                            "linkedin": "https://www.linkedin.com/in/mohammed-alam-83759111"
+                          },
+                          "has": [
+                            "firstName",
+                            "lastName",
+                            "jobTitle",
+                            "company",
+                            "location",
+                            "socialLinks",
+                            "phones",
+                            "previousEmployment",
+                            "jobStartDate"
+                          ],
+                          "canReveal": [
+                            {
+                              "field": "phones",
+                              "credits": 5
+                            }
+                          ],
+                          "roles": [
+                            "potential_champion"
+                          ],
+                          "score": 0.8872673511505127
+                        }
+                      ]
+                    }
+                  ],
+                  "pagination": {
+                    "page": 0,
+                    "size": 100,
+                    "total": 1
+                  },
+                  "billing": {
+                    "creditsCharged": 1,
+                    "resultsReturned": 1
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v3/contacts/signal-score": {
+      "post": {
+        "tags": [
+          "Signals"
+        ],
+        "summary": "Score Contacts by Signal Activity",
+        "operationId": "getContactSignalScores",
+        "description": "Score contacts by their active buying signals. Returns the aggregate Signal Score - a `[0, 1]` value - plus the active signal breakdown per contact.\n\nAccepts up to 100 contacts. Each contact is resolved to a Lusha person ID and company ID server-side (identity only - no PII is revealed) before scoring. Provide one of:\n- `id` (encrypted Lusha contact ID)\n- `linkedinUrl`\n- `email`\n- `firstName` + `lastName` + (`companyName` or `companyDomain`)\n\nEach result is one of:\n- A **scored entry** - `signalScore`, `signalTypes`, and `noActiveSignals`.\n- A **`NOT_FOUND`** entry - identity resolution failed for the supplied identifier.\n- A **`NO_SCORE`** entry - the contact resolved, but the scoring engine returned nothing for it.\n\n> **Note:** A full outage of the identity-resolution provider is never masked as `NOT_FOUND` - it returns a retryable `502` instead, so callers can retry rather than treating the batch as authoritatively unresolved.\n\n> **Billing:** 1 credit is charged per scored row via `signal_score_contact_reveal`. This action is currently limited-availability - while it isn't yet seeded on an account's pricebook, the endpoint stays free (`billing.creditsCharged` is `0`). Error rows (`NOT_FOUND` / `NO_SCORE`) are never charged.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V3SignalScoreContactsRequest"
+              },
+              "example": {
+                "contacts": [
+                  {
+                    "clientReferenceId": "ref-1",
+                    "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+                  },
+                  {
+                    "clientReferenceId": "ref-2",
+                    "linkedinUrl": "https://linkedin.com/in/johndoe"
+                  },
+                  {
+                    "clientReferenceId": "ref-3",
+                    "firstName": "Jane",
+                    "lastName": "Doe",
+                    "companyDomain": "acme.com"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3SignalScoreContactsResponse"
+                },
+                "example": {
+                  "requestId": "5d6f13d2-f6b0-4e55-85d5-04e17f932c1a",
+                  "results": [
+                    {
+                      "clientReferenceId": "ref-1",
+                      "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                      "fullName": "Jane Doe",
+                      "company": {
+                        "id": "v1.6789ZyXwVuTsRqPoNmLkJiHgFeDcBa01",
+                        "name": "Acme Corp",
+                        "domain": "acme.com"
+                      },
+                      "signalScore": 0.3,
+                      "signalTypes": [
+                        "promotion"
+                      ],
+                      "noActiveSignals": false
+                    },
+                    {
+                      "clientReferenceId": "ref-2",
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Contact not found"
+                      }
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 1,
+                    "resultsReturned": 1
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadGateway"
+          }
+        }
+      }
+    },
+    "/v3/companies/signal-score": {
+      "post": {
+        "tags": [
+          "Signals"
+        ],
+        "summary": "Score Companies by Signal Activity",
+        "operationId": "getCompanySignalScores",
+        "description": "Score companies by their active buying signals. Returns the aggregate Signal Score - a `[0, 1]` value reflecting the fraction of the company's active signals - plus the active signal breakdown.\n\nAccepts up to 100 companies, each identified by exactly one of `id`, `domain`, `name`, or `email`. All identifiers are resolved to Lusha company IDs server-side before scoring.\n\nEach result is one of:\n- A **scored entry** - `signalScore`, `signalTypes`, and `noActiveSignals`.\n- A **`NOT_FOUND`** entry - the company service could not resolve the supplied identifier.\n- A **`NO_SCORE`** entry - the company resolved, but the scoring engine returned nothing for it.\n\n> **Billing:** 1 credit is charged per scored row via `signal_score_company_reveal`. This action is currently limited-availability - while it isn't yet seeded on an account's pricebook, the endpoint stays free (`billing.creditsCharged` is `0`). Error rows (`NOT_FOUND` / `NO_SCORE`) are never charged.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V3SignalScoreCompaniesRequest"
+              },
+              "example": {
+                "companies": [
+                  {
+                    "clientReferenceId": "ref-1",
+                    "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+                  },
+                  {
+                    "clientReferenceId": "ref-2",
+                    "domain": "www.microsoft.com"
+                  },
+                  {
+                    "clientReferenceId": "ref-3",
+                    "name": "Apple"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3SignalScoreCompaniesResponse"
+                },
+                "example": {
+                  "requestId": "5d6f13d2-f6b0-4e55-85d5-04e17f932c1a",
+                  "results": [
+                    {
+                      "clientReferenceId": "ref-1",
+                      "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                      "name": "Acme Corp",
+                      "domain": "www.acmecorp.io",
+                      "signalScore": 0.42,
+                      "signalTypes": [
+                        "hiringSignalIncrease",
+                        "websiteVisit"
+                      ],
+                      "noActiveSignals": false
+                    },
+                    {
+                      "clientReferenceId": "ref-2",
+                      "id": "v1.6789ZyXwVuTsRqPoNmLkJiHgFeDcBa01",
+                      "name": "Microsoft",
+                      "domain": "www.microsoft.com",
+                      "signalScore": 0,
+                      "signalTypes": [],
+                      "noActiveSignals": true
+                    },
+                    {
+                      "clientReferenceId": "ref-3",
+                      "domain": "nope-xyz.com",
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Company not found"
+                      }
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 2,
+                    "resultsReturned": 2
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v3/account/conversations/search": {
+      "post": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "Search Conversations",
+        "operationId": "searchConversations",
+        "description": "Search the sales conversations recorded by Lusha Conversations for your account. Returns each conversation's metadata, AI summary, action items, risks, objections, competitor mentions, coaching analysis, and chapters. Transcripts are not included - fetch those from [Get Conversation Transcript](#operation/getConversationTranscript).\n\n**Two modes on the same contract:**\n- **Keyword mode** - supply `query` to rank conversations by transcript content. All other filters are ignored.\n- **Filter mode** - omit `query` and supply the structural filters.\n\nBoth modes return the same response shape. An empty body is valid and returns the first page of the account's conversations.\n\n**Validation notes:**\n- `companyDomains` matches on domain, not display name. Resolve a company name to a domain first (e.g. via [Search Companies](#operation/searchCompanies)).\n- `dateFrom` / `dateTo` accept date-only `YYYY-MM-DD` values. Datetimes, reduced precision (`2026`, `2026-01`), basic format (`20260101`), and impossible dates (`2026-02-31`) are rejected with `400`.\n- `pageSize` above 100 is rejected with `400` - it is not silently clamped.\n- `conversationIds` that don't exist, are still processing, or belong to another account are omitted from the response rather than erroring.\n\n> **Billing:** 1 credit per block of up to 25 conversations returned (1–25 = 1, 26–50 = 2, 51–75 = 3, 76–100 = 4), via `ci_meeting_data_export`. Charged on results returned, not the page size requested. A request that returns nothing is free. While `ci_meeting_data_export` isn't seeded on your account's pricebook, the endpoint stays free (`billing.creditsCharged` is `0`).\n\n> **Note:** `summary`, `coaching`, and `chapters` come from an asynchronous post-call pipeline. A `null` summary on a recent conversation means analysis isn't ready yet, not \"nothing found\". A `null` `severity` on a risk or objection means the pipeline didn't assess it - do not read it as \"low\".\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V3ConversationsSearchRequest"
+              },
+              "examples": {
+                "keywordMode": {
+                  "summary": "Keyword mode (ranks by transcript content)",
+                  "value": {
+                    "query": "pricing objection",
+                    "page": 1,
+                    "pageSize": 25
+                  }
+                },
+                "filterMode": {
+                  "summary": "Filter mode (structural filters)",
+                  "value": {
+                    "dateFrom": "2026-01-01",
+                    "dateTo": "2026-03-31",
+                    "companyDomains": [
+                      "acme.com"
+                    ],
+                    "contactNames": [
+                      "Jane Doe"
+                    ],
+                    "meetingTitles": [
+                      "Quarterly review"
+                    ],
+                    "page": 1,
+                    "pageSize": 25
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3ConversationsSearchResponse"
+                },
+                "example": {
+                  "requestId": "3f1a9c2e-7b4d-4a8e-9f10-2c5d6e7a8b90",
+                  "conversations": [
+                    {
+                      "id": "8f2c9b1e-4a7d-4f3b-9c2e-1d6a5b8c7e90",
+                      "title": "Acme <> Lusha - Quarterly review",
+                      "date": "2026-03-12",
+                      "startTime": "2026-03-12T14:00:00Z",
+                      "durationSeconds": 1830,
+                      "durationFormatted": "30m 30s",
+                      "meetingType": "discovery",
+                      "isExternal": true,
+                      "company": {
+                        "name": "Acme Inc",
+                        "domain": "acme.com"
+                      },
+                      "participants": [
+                        {
+                          "name": "Jane Doe",
+                          "email": "jane@acme.com",
+                          "role": "VP Sales",
+                          "isInternal": false
+                        },
+                        {
+                          "name": "Sam Rep",
+                          "email": "sam@lusha.com",
+                          "role": "AE",
+                          "isInternal": true
+                        }
+                      ],
+                      "topicLabels": [
+                        "pricing",
+                        "security"
+                      ],
+                      "summary": {
+                        "text": "The team walked through the pricing tiers.",
+                        "keyHighlights": [
+                          "Budget confirmed for Q3"
+                        ],
+                        "actionItems": [
+                          {
+                            "text": "Send the revised pricing sheet",
+                            "owner": "Sam Rep",
+                            "dueDate": "2026-03-19"
+                          }
+                        ],
+                        "nextSteps": [
+                          "Schedule a technical deep dive"
+                        ],
+                        "risks": [
+                          {
+                            "text": "Budget approval is still pending",
+                            "severity": "high"
+                          }
+                        ],
+                        "objections": [
+                          {
+                            "text": "Price is above the current spend",
+                            "severity": null
+                          }
+                        ],
+                        "competition": [
+                          {
+                            "name": "Competitor Inc",
+                            "context": "Mentioned as incumbent",
+                            "sentiment": "negative"
+                          }
+                        ]
+                      },
+                      "coaching": {
+                        "overallScore": 68,
+                        "likelihoodOfSale": 45,
+                        "sections": [
+                          {
+                            "section": "discovery",
+                            "score": 72,
+                            "whatHappened": "The rep opened with a clear agenda.",
+                            "whatToKeep": [
+                              "Strong discovery questions"
+                            ],
+                            "whatToImprove": [
+                              "Confirm the decision process earlier"
+                            ]
+                          }
+                        ],
+                        "notes": "Focus on quantifying impact."
+                      },
+                      "chapters": [
+                        {
+                          "index": 0,
+                          "title": "Introductions",
+                          "startTime": "00:00:00",
+                          "endTime": "00:04:12",
+                          "summary": "Participants introduced themselves."
+                        }
+                      ]
+                    }
+                  ],
+                  "page": {
+                    "page": 1,
+                    "pageSize": 25,
+                    "totalItems": 137,
+                    "totalPages": 6
+                  },
+                  "billing": {
+                    "creditsCharged": 1,
+                    "resultsReturned": 1
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v3/account/conversations/{conversationId}/transcript": {
+      "get": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "Get Conversation Transcript",
+        "operationId": "getConversationTranscript",
+        "description": "Returns the speaker-attributed, timestamped transcript of a single conversation. Get the `conversationId` from [Search Conversations](#operation/searchConversations).\n\nNo request body and no query parameters.\n\n> **Billing:** 1 credit per successful request via `ci_transcript_analysis`, including repeat requests for the same conversation. A `404` is never charged. While `ci_transcript_analysis` isn't seeded on your account's pricebook, the endpoint stays free.\n\n> **Note:** A single `404` covers all three cases - the conversation doesn't exist, its processing hasn't completed, or it belongs to another account. Transcripts can be long; when feeding one to an LLM, budget for it or summarize it (Search Conversations already returns the summary, chapters, and coaching without the transcript).\n",
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "description": "Conversation identifier returned by Search Conversations.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "8f2c9b1e-4a7d-4f3b-9c2e-1d6a5b8c7e90"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3ConversationTranscriptResponse"
+                },
+                "example": {
+                  "requestId": "3f1a9c2e-7b4d-4a8e-9f10-2c5d6e7a8b90",
+                  "conversationId": "8f2c9b1e-4a7d-4f3b-9c2e-1d6a5b8c7e90",
+                  "segments": [
+                    {
+                      "speaker": "Jane Doe",
+                      "side": "external",
+                      "text": "We need to understand the pricing tiers before we commit.",
+                      "startTime": "00:12:04",
+                      "endTime": "00:12:19"
+                    },
+                    {
+                      "speaker": "Sam Rep",
+                      "side": "internal",
+                      "text": "Happy to walk you through them.",
+                      "startTime": "00:12:20",
+                      "endTime": "00:12:26"
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 1,
+                    "resultsReturned": 1
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
           }
         }
       }
@@ -5247,6 +5710,20 @@
             }
           }
         }
+      },
+      "BadGateway": {
+        "description": "Bad gateway - upstream identity resolution provider is unavailable. Retryable.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "statusCode": 502,
+              "message": "Identity resolution provider is temporarily unavailable. Retry with backoff."
+            }
+          }
+        }
       }
     },
     "schemas": {
@@ -5352,7 +5829,8 @@
             "enum": [
               "NOT_FOUND",
               "COMPLIANCE_RESTRICTED",
-              "ENRICH_FAILED"
+              "ENRICH_FAILED",
+              "NO_SCORE"
             ],
             "example": "NOT_FOUND"
           },
@@ -5444,7 +5922,7 @@
       },
       "TableOwner": {
         "type": "object",
-        "description": "Identifies the user acting on the table, and resolves to a user on your account. Required on every table-route call when authenticating with an API key (there is no signed-in user) \u2014 omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token; still accepted if you want to act on behalf of another owner.\n",
+        "description": "Identifies the user acting on the table, and resolves to a user on your account. Required on every table-route call when authenticating with an API key (there is no signed-in user) - omitting it returns `400`. Optional for OAuth/token callers, since the caller is already identified by the token; still accepted if you want to act on behalf of another owner.\n",
         "properties": {
           "email": {
             "type": "string",
@@ -5463,7 +5941,7 @@
           "no_data",
           "failed"
         ],
-        "description": "Current state of a single cell's data. `no_data` means the run succeeded but found nothing \u2014 distinct from `failed`, which means the run itself errored.\n"
+        "description": "Current state of a single cell's data. `no_data` means the run succeeded but found nothing - distinct from `failed`, which means the run itself errored.\n"
       },
       "RunScope": {
         "type": "string",
@@ -5555,7 +6033,7 @@
       },
       "TableMetadata": {
         "type": "object",
-        "description": "TableDto \u2014 static metadata for a table.",
+        "description": "TableDto - static metadata for a table.",
         "properties": {
           "tableId": {
             "type": "string",
@@ -5624,7 +6102,7 @@
       },
       "TableStatusData": {
         "type": "object",
-        "description": "Response payload for Get Table \u2014 TableDto fields plus live entity/column counts.",
+        "description": "Response payload for Get Table - TableDto fields plus live entity/column counts.",
         "allOf": [
           {
             "$ref": "#/components/schemas/TableMetadata"
@@ -5702,7 +6180,7 @@
         "required": [
           "owner"
         ],
-        "description": "`name`, `visibility`, and `archived` are all optional \u2014 send any subset; omitted fields stay unchanged. Sending none of them is a no-op. A partial update re-reads the persisted table first, so fields you don't send are never clobbered.\n",
+        "description": "`name`, `visibility`, and `archived` are all optional - send any subset; omitted fields stay unchanged. Sending none of them is a no-op. A partial update re-reads the persisted table first, so fields you don't send are never clobbered.\n",
         "properties": {
           "name": {
             "type": "string",
@@ -5747,7 +6225,7 @@
           },
           "name": {
             "type": "string",
-            "description": "Optional filter \u2014 matches tables whose name contains this text.",
+            "description": "Optional filter - matches tables whose name contains this text.",
             "example": "Q3"
           },
           "status": {
@@ -5790,7 +6268,7 @@
               "type": "string"
             },
             "maxItems": 500,
-            "description": "Lusha IDs as strings \u2014 `personId` for contacts, `lushaCompanyId` for companies. Accepts either the encrypted token (`v{N}.\u2026`, as returned by Search/Enrich/Get Entities) or the legacy numeric ID. An ID that is neither a valid token nor numeric returns `400`.\n",
+            "description": "Lusha IDs as strings - `personId` for contacts, `lushaCompanyId` for companies. Accepts either the encrypted token (`v{N}.…`, as returned by Search/Enrich/Get Entities) or the legacy numeric ID. An ID that is neither a valid token nor numeric returns `400`.\n",
             "example": [
               "10042854",
               "10042855",
@@ -5830,7 +6308,7 @@
               },
               "invalidIds": {
                 "type": "array",
-                "description": "IDs that couldn't be resolved. Not an error \u2014 the call still returns `200`.",
+                "description": "IDs that couldn't be resolved. Not an error - the call still returns `200`.",
                 "items": {
                   "type": "string"
                 },
@@ -5858,7 +6336,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Accepts either the encrypted token (`v{N}.\u2026`, as returned by Get Entities) or the legacy numeric ID. Unresolved IDs are echoed back in `invalidIds` in the exact form you sent them.\n",
+            "description": "Accepts either the encrypted token (`v{N}.…`, as returned by Get Entities) or the legacy numeric ID. Unresolved IDs are echoed back in `invalidIds` in the exact form you sent them.\n",
             "example": [
               "10042851",
               "10042852"
@@ -5895,7 +6373,7 @@
       },
       "EntityColumnValue": {
         "type": "object",
-        "description": "One column's value on a single row, as returned by Get Entities. This shape is a passthrough from the underlying Workspace service \u2014 the fields shown here (`id`, `name`, `type`, `sourceType`, `value`, `status`) are representative, not an exhaustive schema.\n",
+        "description": "One column's value on a single row, as returned by Get Entities. This shape is a passthrough from the underlying Workspace service - the fields shown here (`id`, `name`, `type`, `sourceType`, `value`, `status`) are representative, not an exhaustive schema.\n",
         "properties": {
           "id": {
             "type": "string",
@@ -5925,7 +6403,7 @@
       },
       "TableEntity": {
         "type": "object",
-        "description": "A single row. `id` is the **encrypted** Lusha ID (`v{N}.\u2026`) \u2014 `personId` for contacts, `lushaCompanyId` for companies \u2014 in the same format used across V3, so it round-trips directly into Add Entities, Remove Entities, and Enrich. Internal fields (`accountId`, `companyLid`, `lushaCompanyId`, `personId`, `companyDetails`) are not returned. Remaining per-row fields under `columns` are owned by the Workspace service; this shape is representative, not an exhaustive schema.\n",
+        "description": "A single row. `id` is the **encrypted** Lusha ID (`v{N}.…`) - `personId` for contacts, `lushaCompanyId` for companies - in the same format used across V3, so it round-trips directly into Add Entities, Remove Entities, and Enrich. Internal fields (`accountId`, `companyLid`, `lushaCompanyId`, `personId`, `companyDetails`) are not returned. Remaining per-row fields under `columns` are owned by the Workspace service; this shape is representative, not an exhaustive schema.\n",
         "properties": {
           "id": {
             "type": "string",
@@ -5959,7 +6437,7 @@
       },
       "ColumnSummary": {
         "type": "object",
-        "description": "ColumnDto \u2014 a column's definition plus aggregated per-cell status counts.",
+        "description": "ColumnDto - a column's definition plus aggregated per-cell status counts.",
         "properties": {
           "columnId": {
             "type": "string",
@@ -6017,91 +6495,12 @@
       },
       "ColumnsListResponse": {
         "type": "object",
-        "description": "Response for List Columns \u2014 `data` is a bare array of ColumnDto.",
+        "description": "Response for List Columns - `data` is a bare array of ColumnDto.",
         "properties": {
           "data": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ColumnSummary"
-            }
-          },
-          "billing": {
-            "$ref": "#/components/schemas/V3Billing"
-          }
-        }
-      },
-      "ColumnsAddRequest": {
-        "type": "object",
-        "required": [
-          "name",
-          "type",
-          "owner"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "Job title"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "lusha",
-              "crm",
-              "signal",
-              "ai",
-              "score"
-            ],
-            "example": "lusha"
-          },
-          "key": {
-            "type": "string",
-            "description": "Optional, type-specific key identifying which underlying field/signal/etc. this column pulls.",
-            "example": "jobTitle"
-          },
-          "meta": {
-            "type": "object",
-            "description": "Optional, type-specific configuration for the column.",
-            "example": {}
-          },
-          "runScope": {
-            "$ref": "#/components/schemas/RunScope"
-          },
-          "entityIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Required only when `runScope` is `specific`."
-          },
-          "owner": {
-            "$ref": "#/components/schemas/TableOwner"
-          }
-        }
-      },
-      "ColumnsAddResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "columnId": {
-                "type": "string",
-                "example": "c1"
-              },
-              "name": {
-                "type": "string",
-                "example": "Job title"
-              },
-              "type": {
-                "type": "string",
-                "example": "lusha"
-              },
-              "runStatus": {
-                "type": "string",
-                "nullable": true,
-                "description": "Present only if `runScope` triggered a run on add.",
-                "example": "processing"
-              }
             }
           },
           "billing": {
@@ -6133,7 +6532,7 @@
       },
       "ColumnsRunResponse": {
         "type": "object",
-        "description": "Run is asynchronous \u2014 this response confirms the run was accepted. Poll Get Table for per-column row-status counts to know when it's finished.\n",
+        "description": "Run is asynchronous - this response confirms the run was accepted. Poll Get Table for per-column row-status counts to know when it's finished.\n",
         "properties": {
           "data": {
             "type": "object",
@@ -6616,107 +7015,6 @@
           }
         ]
       },
-      "DecisionMakersCompanyInput": {
-        "type": "object",
-        "properties": {
-          "domain": {
-            "type": "string",
-            "description": "Company domain, resolved to a Lusha company ID server-side. Mutually exclusive with `id`.",
-            "example": "google.com"
-          },
-          "id": {
-            "type": "string",
-            "description": "Encrypted Lusha company ID (`vN.\u2026`); legacy numeric IDs accepted. Mutually exclusive with `domain`.",
-            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
-          },
-          "clientReferenceId": {
-            "type": "string",
-            "description": "Caller-supplied correlation token, echoed back on the matching result.",
-            "example": "ref-1"
-          }
-        }
-      },
-      "DecisionMakersRequest": {
-        "type": "object",
-        "required": [
-          "companies"
-        ],
-        "properties": {
-          "companies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DecisionMakersCompanyInput"
-            },
-            "minItems": 1,
-            "description": "1\u2013N companies. Each entry must contain exactly one of `domain` or `id`."
-          },
-          "pagination": {
-            "type": "object",
-            "properties": {
-              "page": {
-                "type": "integer",
-                "minimum": 0,
-                "example": 0
-              },
-              "size": {
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 100,
-                "example": 10
-              }
-            }
-          }
-        }
-      },
-      "DecisionMakersCompanyResult": {
-        "type": "object",
-        "properties": {
-          "clientReferenceId": {
-            "type": "string",
-            "description": "Echoed from the matching request entry.",
-            "example": "ref-1"
-          },
-          "companyId": {
-            "type": "string",
-            "description": "Encrypted Lusha company ID the decision makers belong to. Omitted on NOT_FOUND entries.",
-            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
-          },
-          "domain": {
-            "type": "string",
-            "description": "Requested domain, echoed back on a NOT_FOUND entry.",
-            "example": "unknown-co.com"
-          },
-          "decisionMakers": {
-            "type": "array",
-            "description": "Ranked decision makers, highest relevance first.",
-            "items": {
-              "$ref": "#/components/schemas/V3ContactPreview"
-            }
-          },
-          "error": {
-            "$ref": "#/components/schemas/V3ItemError"
-          }
-        }
-      },
-      "DecisionMakersResponse": {
-        "type": "object",
-        "properties": {
-          "requestId": {
-            "type": "string",
-            "format": "uuid",
-            "example": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DecisionMakersCompanyResult"
-            }
-          },
-          "billing": {
-            "$ref": "#/components/schemas/V3Billing"
-          }
-        }
-      },
       "WebsiteVisitsIntRange": {
         "type": "object",
         "description": "Integer range filter (non-negative)",
@@ -6795,7 +7093,7 @@
                 "$ref": "#/components/schemas/WebsiteVisitsIntRange"
               }
             ],
-            "description": "Score range (1\u2013100)."
+            "description": "Score range (1–100)."
           },
           "totalSessions": {
             "$ref": "#/components/schemas/WebsiteVisitsIntRange"
@@ -6847,7 +7145,7 @@
           "endDate": {
             "type": "string",
             "format": "date",
-            "description": "Window end date (YYYY-MM-DD). Range must be \u2264 3 months.",
+            "description": "Window end date (YYYY-MM-DD). Range must be ≤ 3 months.",
             "example": "2026-03-18"
           },
           "pagination": {
@@ -6904,7 +7202,7 @@
             "properties": {
               "score": {
                 "type": "number",
-                "description": "Display score (0\u2013100).",
+                "description": "Display score (0–100).",
                 "example": 87
               },
               "scoreBand": {
@@ -9151,7 +9449,7 @@
                 "intent"
               ]
             },
-            "description": "Additional data fields to reveal. Each field is charged separately per result.\n- `employeesByDepartment` \u2014 breakdown of employees by department\n- `employeesByLocation` \u2014 breakdown of employees by country/state\n- `employeesBySeniority` \u2014 breakdown of employees by seniority level\n- `competitors` \u2014 list of competitor company IDs\n- `intent` \u2014 buyer intent topics\n",
+            "description": "Additional data fields to reveal. Each field is charged separately per result.\n- `employeesByDepartment` - breakdown of employees by department\n- `employeesByLocation` - breakdown of employees by country/state\n- `employeesBySeniority` - breakdown of employees by seniority level\n- `competitors` - list of competitor company IDs\n- `intent` - buyer intent topics\n",
             "example": [
               "employeesByDepartment",
               "employeesByLocation",
@@ -10024,70 +10322,6 @@
           }
         }
       },
-      "WebhookPayload": {
-        "type": "object",
-        "description": "Payload sent to your webhook URL when a signal is triggered",
-        "required": [
-          "id",
-          "type",
-          "entityType",
-          "entityId",
-          "subscriptionId",
-          "data",
-          "timestamp",
-          "billing"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Unique payload ID",
-            "example": "f3b87e05-0402-4f3e-8e26-6a38fd0ad62c"
-          },
-          "type": {
-            "type": "string",
-            "description": "Signal type that triggered the webhook",
-            "example": "promotion"
-          },
-          "entityType": {
-            "type": "string",
-            "enum": [
-              "contact",
-              "company"
-            ],
-            "example": "contact"
-          },
-          "entityId": {
-            "type": "string",
-            "example": "4158887495"
-          },
-          "subscriptionId": {
-            "type": "string",
-            "example": "507f1f77bcf86cd799439011"
-          },
-          "data": {
-            "type": "object",
-            "description": "Signal-specific payload data. Structure varies by signal type."
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2026-01-14T16:16:35.841Z"
-          },
-          "billing": {
-            "type": "object",
-            "required": [
-              "creditsCharged"
-            ],
-            "properties": {
-              "creditsCharged": {
-                "type": "integer",
-                "example": 1
-              }
-            }
-          }
-        }
-      },
       "AuditLogEntry": {
         "type": "object",
         "required": [
@@ -10266,6 +10500,1236 @@
           }
         }
       },
+      "TestSubscriptionResponse": {
+        "type": "object",
+        "required": [
+          "subscriptionId",
+          "url",
+          "mode",
+          "isSuccess",
+          "timestamp"
+        ],
+        "properties": {
+          "subscriptionId": {
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "subscriptionName": {
+            "type": "string",
+            "example": "My Test Webhook"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/webhook"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "direct",
+              "kafka",
+              "full"
+            ],
+            "example": "full"
+          },
+          "flowCheck": {
+            "type": "object",
+            "properties": {
+              "success": {
+                "type": "boolean",
+                "example": true
+              },
+              "statusCode": {
+                "type": "integer",
+                "example": 200
+              },
+              "durationMs": {
+                "type": "integer",
+                "example": 150
+              }
+            }
+          },
+          "testPayload": {
+            "type": "object",
+            "properties": {
+              "entityType": {
+                "type": "string",
+                "example": "contact"
+              },
+              "signalType": {
+                "type": "string",
+                "example": "promotion"
+              },
+              "data": {
+                "type": "object"
+              }
+            }
+          },
+          "isSuccess": {
+            "type": "boolean",
+            "example": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        }
+      },
+      "Conversation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Conversation identifier. Pass this to Get Conversation Transcript.",
+            "example": "8f2c9b1e-4a7d-4f3b-9c2e-1d6a5b8c7e90"
+          },
+          "title": {
+            "type": "string",
+            "description": "Meeting title.",
+            "example": "Acme <> Lusha - Quarterly review"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Meeting date (YYYY-MM-DD).",
+            "example": "2026-03-12"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Meeting start time (ISO 8601).",
+            "example": "2026-03-12T14:00:00Z"
+          },
+          "durationSeconds": {
+            "type": "number",
+            "description": "Meeting length in seconds.",
+            "example": 1830
+          },
+          "durationFormatted": {
+            "type": "string",
+            "description": "Human readable length, e.g. 30m 30s.",
+            "example": "30m 30s"
+          },
+          "meetingType": {
+            "type": "string",
+            "nullable": true,
+            "description": "Meeting type as classified by the analysis pipeline.",
+            "example": "discovery"
+          },
+          "isExternal": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "true when at least one participant is outside your account.",
+            "example": true
+          },
+          "company": {
+            "$ref": "#/components/schemas/ConversationCompany"
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationParticipant"
+            }
+          },
+          "topicLabels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Topics detected in the conversation.",
+            "example": [
+              "pricing",
+              "security"
+            ]
+          },
+          "summary": {
+            "$ref": "#/components/schemas/ConversationSummary"
+          },
+          "coaching": {
+            "$ref": "#/components/schemas/ConversationCoaching"
+          },
+          "chapters": {
+            "type": "array",
+            "description": "Timestamped chapters. Empty until the analysis pipeline has run.",
+            "items": {
+              "$ref": "#/components/schemas/ConversationChapter"
+            }
+          }
+        }
+      },
+      "ConversationActionItem": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "Send the revised pricing sheet"
+          },
+          "owner": {
+            "type": "string",
+            "example": "Sam Rep"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "May be null.",
+            "example": "2026-03-19"
+          }
+        }
+      },
+      "ConversationChapter": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "example": 0
+          },
+          "title": {
+            "type": "string",
+            "example": "Introductions"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Offset from the start of the recording.",
+            "example": "00:00:00"
+          },
+          "endTime": {
+            "type": "string",
+            "description": "Offset from the start of the recording.",
+            "example": "00:04:12"
+          },
+          "summary": {
+            "type": "string",
+            "example": "Participants introduced themselves."
+          }
+        }
+      },
+      "ConversationCoaching": {
+        "type": "object",
+        "nullable": true,
+        "description": "Coaching analysis, or null while it is still being produced.",
+        "properties": {
+          "overallScore": {
+            "type": "number",
+            "description": "Overall coaching score, 0–100.",
+            "example": 68
+          },
+          "likelihoodOfSale": {
+            "type": "number",
+            "nullable": true,
+            "description": "Predicted likelihood of closing, 0–100. May be null.",
+            "example": 45
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationCoachingSection"
+            }
+          },
+          "notes": {
+            "type": "string",
+            "description": "Free-text coaching notes.",
+            "example": "Focus on quantifying impact."
+          }
+        }
+      },
+      "ConversationCoachingSection": {
+        "type": "object",
+        "properties": {
+          "section": {
+            "type": "string",
+            "example": "discovery"
+          },
+          "score": {
+            "type": "number",
+            "nullable": true,
+            "description": "May be null.",
+            "example": 72
+          },
+          "whatHappened": {
+            "type": "string",
+            "example": "The rep opened with a clear agenda."
+          },
+          "whatToKeep": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Strong discovery questions"
+            ]
+          },
+          "whatToImprove": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Confirm the decision process earlier"
+            ]
+          }
+        }
+      },
+      "ConversationCompany": {
+        "type": "object",
+        "description": "External participants' company. Either field may be null.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "example": "Acme Inc"
+          },
+          "domain": {
+            "type": "string",
+            "nullable": true,
+            "example": "acme.com"
+          }
+        }
+      },
+      "ConversationCompetitor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Competitor Inc"
+          },
+          "context": {
+            "type": "string",
+            "example": "Mentioned as incumbent"
+          },
+          "sentiment": {
+            "type": "string",
+            "nullable": true,
+            "description": "May be null.",
+            "example": "negative"
+          }
+        }
+      },
+      "ConversationPage": {
+        "type": "object",
+        "description": "Paging envelope for Search Conversations.",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "example": 25
+          },
+          "totalItems": {
+            "type": "integer",
+            "example": 137
+          },
+          "totalPages": {
+            "type": "integer",
+            "example": 6
+          }
+        }
+      },
+      "ConversationParticipant": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Jane Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "jane@acme.com"
+          },
+          "role": {
+            "type": "string",
+            "example": "VP Sales"
+          },
+          "isInternal": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "ConversationSeverityItem": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "Budget approval is still pending"
+          },
+          "severity": {
+            "type": "string",
+            "nullable": true,
+            "description": "Null means the pipeline did not assess severity. Do not read it as \"low\".",
+            "example": "high"
+          }
+        }
+      },
+      "ConversationSummary": {
+        "type": "object",
+        "nullable": true,
+        "description": "Post-call analysis, or null while it is still being produced.",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Narrative summary.",
+            "example": "The team walked through the pricing tiers."
+          },
+          "keyHighlights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Notable moments.",
+            "example": [
+              "Budget confirmed for Q3"
+            ]
+          },
+          "actionItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationActionItem"
+            }
+          },
+          "nextSteps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Schedule a technical deep dive"
+            ]
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationSeverityItem"
+            }
+          },
+          "objections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationSeverityItem"
+            }
+          },
+          "competition": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversationCompetitor"
+            }
+          }
+        }
+      },
+      "ConversationTranscriptSegment": {
+        "type": "object",
+        "properties": {
+          "speaker": {
+            "type": "string",
+            "description": "Speaker name as resolved by the meeting provider.",
+            "example": "Jane Doe"
+          },
+          "side": {
+            "type": "string",
+            "nullable": true,
+            "description": "Which side of the conversation the speaker is on, e.g. internal / external.",
+            "example": "external"
+          },
+          "text": {
+            "type": "string",
+            "description": "What was said.",
+            "example": "We need to understand the pricing tiers before we commit."
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Offset from the start of the recording.",
+            "example": "00:12:04"
+          },
+          "endTime": {
+            "type": "string",
+            "description": "Offset from the start of the recording.",
+            "example": "00:12:19"
+          }
+        }
+      },
+      "V3BuyingGroupCompanyItem": {
+        "type": "object",
+        "description": "Identifies one target company. Provide exactly one of domain or id.",
+        "properties": {
+          "clientReferenceId": {
+            "type": "string",
+            "description": "Optional caller-supplied token, echoed back on the matching result.",
+            "example": "comp-ref-1"
+          },
+          "domain": {
+            "type": "string",
+            "example": "acme.com"
+          },
+          "id": {
+            "type": "string",
+            "description": "Lusha company ID.",
+            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+          }
+        }
+      },
+      "V3BuyingGroupCompanyResult": {
+        "type": "object",
+        "properties": {
+          "clientReferenceId": {
+            "type": "string",
+            "example": "comp-ref-1"
+          },
+          "companyId": {
+            "type": "string",
+            "example": "v1.ocoj3UrkPqHcR8yAEosYFTuVXTH282LP"
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3BuyingGroupContact"
+            }
+          },
+          "error": {
+            "$ref": "#/components/schemas/V3ItemError"
+          }
+        }
+      },
+      "V3BuyingGroupContact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "v1.VdKU4HkaDb7CE4CEImoUcm7bxUGUUz-aOQ"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Mohammed"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Alam"
+          },
+          "jobTitle": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "example": "RF/Analog IC Design Engineer"
+              },
+              "departments": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "Engineering & Technical"
+                ]
+              },
+              "seniority": {
+                "type": "string",
+                "example": "Non-Manager"
+              }
+            }
+          },
+          "company": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "v1.ocoj3UrkPqHcR8yAEosYFTuVXTH282LP"
+              },
+              "name": {
+                "type": "string",
+                "example": "Intel"
+              },
+              "domain": {
+                "type": "string",
+                "example": "www.intel.com"
+              }
+            }
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string",
+                "example": "United States"
+              },
+              "state": {
+                "type": "string",
+                "example": "Arizona"
+              },
+              "city": {
+                "type": "string",
+                "example": "Chandler"
+              }
+            }
+          },
+          "socialLinks": {
+            "type": "object",
+            "properties": {
+              "linkedin": {
+                "type": "string",
+                "example": "https://www.linkedin.com/in/mohammed-alam-83759111"
+              }
+            }
+          },
+          "has": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "firstName",
+              "lastName",
+              "jobTitle",
+              "company",
+              "location",
+              "socialLinks",
+              "phones",
+              "previousEmployment",
+              "jobStartDate"
+            ]
+          },
+          "canReveal": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3CanRevealItem"
+            }
+          },
+          "roles": {
+            "type": "array",
+            "description": "Persona role(s) the model assigned to this contact.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "decision_maker",
+                "potential_champion",
+                "end_user"
+              ]
+            },
+            "example": [
+              "potential_champion"
+            ]
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Relevance score for the assigned role(s).",
+            "example": 0.8872673511505127
+          },
+          "error": {
+            "$ref": "#/components/schemas/V3ItemError"
+          }
+        }
+      },
+      "V3BuyingGroupRequest": {
+        "type": "object",
+        "required": [
+          "companies"
+        ],
+        "properties": {
+          "companies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3BuyingGroupCompanyItem"
+            },
+            "minItems": 1,
+            "maxItems": 25
+          },
+          "personas": {
+            "type": "array",
+            "description": "Filter results to specific persona roles. Omit to return all three.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "decision_maker",
+                "potential_champion",
+                "end_user"
+              ]
+            },
+            "example": [
+              "decision_maker",
+              "potential_champion"
+            ]
+          },
+          "contactsLimit": {
+            "type": "integer",
+            "description": "Maximum number of contacts returned per company.",
+            "default": 60,
+            "minimum": 1,
+            "example": 20
+          },
+          "pagination": {
+            "type": "object",
+            "description": "Optional. If omitted, defaults to page 0, size 100.",
+            "properties": {
+              "page": {
+                "type": "integer",
+                "minimum": 0,
+                "default": 0,
+                "example": 0
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 10,
+                "maximum": 100,
+                "default": 100,
+                "example": 100
+              }
+            }
+          }
+        }
+      },
+      "V3BuyingGroupResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "951d46da-24f9-4608-84bf-5e70a10bf851"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3BuyingGroupCompanyResult"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/V3PaginationResponse"
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "V3ConversationTranscriptResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Correlation / request id for support and tracing.",
+            "example": "3f1a9c2e-7b4d-4a8e-9f10-2c5d6e7a8b90"
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "The conversation this transcript belongs to.",
+            "example": "8f2c9b1e-4a7d-4f3b-9c2e-1d6a5b8c7e90"
+          },
+          "segments": {
+            "type": "array",
+            "description": "Chronologically ordered segments.",
+            "items": {
+              "$ref": "#/components/schemas/ConversationTranscriptSegment"
+            }
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "V3ConversationsSearchRequest": {
+        "type": "object",
+        "description": "All properties are optional. Supply `query` for keyword mode (structural filters are then ignored), or omit `query` and supply structural filters for filter mode. An empty body returns the first page of the account's conversations.\n",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Free-text search over transcript content. When present, the structural filters below are ignored.",
+            "example": "pricing objection"
+          },
+          "conversationIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "description": "Return only these conversations. IDs that don't exist, are still processing, or belong to another account are omitted from the response rather than erroring."
+          },
+          "dateFrom": {
+            "type": "string",
+            "format": "date",
+            "description": "Earliest meeting date, inclusive (YYYY-MM-DD).",
+            "example": "2026-01-01"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date",
+            "description": "Latest meeting date, inclusive (YYYY-MM-DD).",
+            "example": "2026-03-31"
+          },
+          "contactNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Partial, case-insensitive match on participant names. Multiple values are ORed.",
+            "example": [
+              "Jane Doe"
+            ]
+          },
+          "companyDomains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Company domains of the external participants (e.g. acme.com). Matches on domain, not display name. Multiple values are ORed.",
+            "example": [
+              "acme.com"
+            ]
+          },
+          "meetingTitles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Partial, case-insensitive match on the meeting title. Multiple values are ORed.",
+            "example": [
+              "Quarterly review"
+            ]
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "Page number, starting at 1.",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 25,
+            "description": "Conversations per page. Values above 100 are rejected with 400 (not silently clamped).",
+            "example": 25
+          }
+        }
+      },
+      "V3ConversationsSearchResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Correlation / request id for support and tracing.",
+            "example": "3f1a9c2e-7b4d-4a8e-9f10-2c5d6e7a8b90"
+          },
+          "conversations": {
+            "type": "array",
+            "description": "Matching conversations. In keyword mode they are ordered by content relevance.",
+            "items": {
+              "$ref": "#/components/schemas/Conversation"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/ConversationPage"
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "V3SignalScoreCompaniesRequest": {
+        "type": "object",
+        "required": [
+          "companies"
+        ],
+        "properties": {
+          "companies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3SignalScoreCompanyItem"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          }
+        }
+      },
+      "V3SignalScoreCompaniesResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "5d6f13d2-f6b0-4e55-85d5-04e17f932c1a"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3SignalScoreCompanyResult"
+            }
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "V3SignalScoreCompanyItem": {
+        "type": "object",
+        "description": "Must contain exactly one of id, domain, name, or email.",
+        "properties": {
+          "clientReferenceId": {
+            "type": "string",
+            "maxLength": 256,
+            "description": "Caller-supplied token echoed back on the matching result.",
+            "example": "ref-1"
+          },
+          "id": {
+            "type": "string",
+            "description": "Encrypted Lusha company ID (vN.…). Legacy numeric IDs accepted during the transition window.",
+            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+          },
+          "domain": {
+            "type": "string",
+            "example": "www.microsoft.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "Apple"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Must be a valid email address; only the domain part is used for resolution. A malformed email is rejected with 400.",
+            "example": "jane@acme.com"
+          }
+        }
+      },
+      "V3SignalScoreCompanyResult": {
+        "type": "object",
+        "description": "A scored entry, or an error entry with NOT_FOUND / NO_SCORE instead of the score fields.",
+        "properties": {
+          "clientReferenceId": {
+            "type": "string",
+            "example": "ref-1"
+          },
+          "id": {
+            "type": "string",
+            "description": "Encrypted Lusha company ID for scored entries. On NOT_FOUND, echoes the supplied domain/name (or the derived domain, for an email request).",
+            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+          },
+          "name": {
+            "type": "string",
+            "example": "Acme Corp"
+          },
+          "domain": {
+            "type": "string",
+            "example": "www.acmecorp.io"
+          },
+          "signalScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Aggregate signal score - the fraction of the company's active signals. Absent on error entries.",
+            "example": 0.42
+          },
+          "signalTypes": {
+            "type": "array",
+            "description": "Signal types currently active for this company (canonical camelCase). Absent on error entries.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "hiringSignalIncrease",
+              "websiteVisit"
+            ]
+          },
+          "noActiveSignals": {
+            "type": "boolean",
+            "description": "True when the company resolved and scored but has no active signals (signalScore is 0). Absent on error entries.",
+            "example": false
+          },
+          "error": {
+            "$ref": "#/components/schemas/V3ItemError"
+          }
+        }
+      },
+      "V3SignalScoreContactCompanyRef": {
+        "type": "object",
+        "description": "Company the contact was scored at.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "v1.6789ZyXwVuTsRqPoNmLkJiHgFeDcBa01"
+          },
+          "name": {
+            "type": "string",
+            "example": "Acme Corp"
+          },
+          "domain": {
+            "type": "string",
+            "example": "acme.com"
+          }
+        }
+      },
+      "V3SignalScoreContactItem": {
+        "type": "object",
+        "description": "Must contain id, linkedinUrl, email, or firstName + lastName + (companyName | companyDomain).\n",
+        "properties": {
+          "clientReferenceId": {
+            "type": "string",
+            "maxLength": 256,
+            "example": "ref-1"
+          },
+          "id": {
+            "type": "string",
+            "description": "Encrypted Lusha contact ID (vN.…).",
+            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+          },
+          "linkedinUrl": {
+            "type": "string",
+            "example": "https://linkedin.com/in/johndoe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "jane.doe@acme.com"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "companyName": {
+            "type": "string",
+            "example": "Acme Corp"
+          },
+          "companyDomain": {
+            "type": "string",
+            "example": "acme.com"
+          }
+        }
+      },
+      "V3SignalScoreContactResult": {
+        "type": "object",
+        "description": "A scored entry, or an error entry with NOT_FOUND / NO_SCORE instead of the score fields.",
+        "properties": {
+          "clientReferenceId": {
+            "type": "string",
+            "example": "ref-1"
+          },
+          "id": {
+            "type": "string",
+            "description": "Encrypted Lusha contact ID for scored entries. On NOT_FOUND, echoes the supplied id, if one was given.",
+            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+          },
+          "fullName": {
+            "type": "string",
+            "example": "Jane Doe"
+          },
+          "company": {
+            "$ref": "#/components/schemas/V3SignalScoreContactCompanyRef"
+          },
+          "signalScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Aggregate signal score. Absent on error entries.",
+            "example": 0.3
+          },
+          "signalTypes": {
+            "type": "array",
+            "description": "Signal types currently active for this contact (canonical camelCase). Absent on error entries.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "promotion"
+            ]
+          },
+          "noActiveSignals": {
+            "type": "boolean",
+            "description": "True when the contact resolved and scored but has no active signals (signalScore is 0). Absent on error entries.",
+            "example": false
+          },
+          "error": {
+            "$ref": "#/components/schemas/V3ItemError"
+          }
+        }
+      },
+      "V3SignalScoreContactsRequest": {
+        "type": "object",
+        "required": [
+          "contacts"
+        ],
+        "properties": {
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3SignalScoreContactItem"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          }
+        }
+      },
+      "V3SignalScoreContactsResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "5d6f13d2-f6b0-4e55-85d5-04e17f932c1a"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3SignalScoreContactResult"
+            }
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "ColumnsAddRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "owner"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Job title"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "lusha",
+              "crm",
+              "signal",
+              "ai",
+              "score"
+            ],
+            "example": "lusha"
+          },
+          "key": {
+            "type": "string",
+            "description": "Optional, type-specific key identifying which underlying field/signal/etc. this column pulls.",
+            "example": "jobTitle"
+          },
+          "meta": {
+            "type": "object",
+            "description": "Optional, type-specific configuration for the column.",
+            "example": {}
+          },
+          "runScope": {
+            "$ref": "#/components/schemas/RunScope"
+          },
+          "entityIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Required only when `runScope` is `specific`."
+          },
+          "owner": {
+            "$ref": "#/components/schemas/TableOwner"
+          }
+        }
+      },
+      "ColumnsAddResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "columnId": {
+                "type": "string",
+                "example": "c1"
+              },
+              "name": {
+                "type": "string",
+                "example": "Job title"
+              },
+              "type": {
+                "type": "string",
+                "example": "lusha"
+              },
+              "runStatus": {
+                "type": "string",
+                "nullable": true,
+                "description": "Present only if `runScope` triggered a run on add.",
+                "example": "processing"
+              }
+            }
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "WebhookPayload": {
+        "type": "object",
+        "description": "Payload sent to your webhook URL when a signal is triggered",
+        "required": [
+          "id",
+          "type",
+          "entityType",
+          "entityId",
+          "subscriptionId",
+          "data",
+          "timestamp",
+          "billing"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique payload ID",
+            "example": "f3b87e05-0402-4f3e-8e26-6a38fd0ad62c"
+          },
+          "type": {
+            "type": "string",
+            "description": "Signal type that triggered the webhook",
+            "example": "promotion"
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "contact",
+              "company"
+            ],
+            "example": "contact"
+          },
+          "entityId": {
+            "type": "string",
+            "example": "4158887495"
+          },
+          "subscriptionId": {
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "data": {
+            "type": "object",
+            "description": "Signal-specific payload data. Structure varies by signal type."
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-01-14T16:16:35.841Z"
+          },
+          "billing": {
+            "type": "object",
+            "required": [
+              "creditsCharged"
+            ],
+            "properties": {
+              "creditsCharged": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          }
+        }
+      },
       "OptOutDatapoint": {
         "type": "object",
         "description": "A single contact data point that must be removed following an opt-out request",
@@ -10358,82 +11822,6 @@
             "nullable": true,
             "description": "Your internal client/tenant identifier, if provided when the contact data was originally revealed. Useful for multi-tenant setups to route the removal to the correct system.\n",
             "example": "acme-crm-tenant-42"
-          }
-        }
-      },
-      "TestSubscriptionResponse": {
-        "type": "object",
-        "required": [
-          "subscriptionId",
-          "url",
-          "mode",
-          "isSuccess",
-          "timestamp"
-        ],
-        "properties": {
-          "subscriptionId": {
-            "type": "string",
-            "example": "507f1f77bcf86cd799439011"
-          },
-          "subscriptionName": {
-            "type": "string",
-            "example": "My Test Webhook"
-          },
-          "url": {
-            "type": "string",
-            "format": "uri",
-            "example": "https://example.com/webhook"
-          },
-          "mode": {
-            "type": "string",
-            "enum": [
-              "direct",
-              "kafka",
-              "full"
-            ],
-            "example": "full"
-          },
-          "flowCheck": {
-            "type": "object",
-            "properties": {
-              "success": {
-                "type": "boolean",
-                "example": true
-              },
-              "statusCode": {
-                "type": "integer",
-                "example": 200
-              },
-              "durationMs": {
-                "type": "integer",
-                "example": 150
-              }
-            }
-          },
-          "testPayload": {
-            "type": "object",
-            "properties": {
-              "entityType": {
-                "type": "string",
-                "example": "contact"
-              },
-              "signalType": {
-                "type": "string",
-                "example": "promotion"
-              },
-              "data": {
-                "type": "object"
-              }
-            }
-          },
-          "isSuccess": {
-            "type": "boolean",
-            "example": true
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-01-01T00:00:00.000Z"
           }
         }
       }

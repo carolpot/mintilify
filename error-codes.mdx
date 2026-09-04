@@ -27,8 +27,8 @@ The `errors` array is most commonly populated on `400` and `403` responses, wher
 |---|---|---|
 | `400` Bad Request | The request failed validation. | A required parameter is missing, a parameter value is invalid, or the search criteria combination is not supported. |
 | `401` Unauthorized | Authentication failed. | The `api_key` header is missing or the key is invalid. See [authentication](/authentication). |
-| `402` Payment Required | Insufficient credits. | Your account has run out of credits, or otherwise requires payment before the request can be completed. Check your balance with the [account usage endpoint](/credits/overview). |
-| `403` Forbidden | Access denied. | Your account is inactive, or the request uses a feature your plan doesn't include — for example, `revealEmails`/`revealPhones` outside the Unified Credits plan (see below), or `excludeDnc` filtering outside a plan that supports it. |
+| `402` Payment Required | Insufficient credits. | Your account has run out of credits, or otherwise requires payment before the request can be completed. Check your balance with the [account usage endpoint](/account/usage). |
+| `403` Forbidden | Access denied. | Your account is inactive, or the request uses a feature your plan doesn't include - for example, `revealEmails`/`revealPhones` outside the Unified Credits plan (see below), or `excludeDnc` filtering outside a plan that supports it. |
 | `404` Not Found | The resource does not exist. | The endpoint path is incorrect or the requested record is not in Lusha's database. |
 | `409` Conflict | The request conflicts with existing state. | For example, creating a Table with a name that already exists on your account. See the [Tables API](/user-guide/lushas-api/tables-api). |
 | `412` Precondition Failed | The request body has invalid syntax. | For example, a full name field that doesn't contain a valid first and last name. |
@@ -38,7 +38,7 @@ The `errors` array is most commonly populated on `400` and `403` responses, wher
 | `500` Internal Server Error | Unexpected server error. | A problem occurred on Lusha's side. Retry the request, and contact [support@lusha.com](mailto:support@lusha.com) if the error persists. |
 
 <Note>
-  `403` responses use the same response shape as other errors but the `errors` array will name the specific restriction — for example, `"excludeDnc is not available on your current plan"`.
+  `403` responses use the same response shape as other errors but the `errors` array will name the specific restriction - for example, `"excludeDnc is not available on your current plan"`.
 </Note>
 
 ## Contact-level errors
@@ -66,7 +66,7 @@ Check `contact.isCreditCharged` to confirm whether a credit was consumed for the
 
 ## Unified Credits plan restriction
 
-The `revealEmails` and `revealPhones` parameters on enrichment endpoints — including `GET /v2/person`, `POST /v2/person`, and `POST /prospecting/contact/enrich` — are available only to accounts on the Unified Credits pricing plan.
+The `revealEmails` and `revealPhones` parameters on enrichment endpoints - including `GET /v2/person`, `POST /v2/person`, and `POST /prospecting/contact/enrich` - are available only to accounts on the Unified Credits pricing plan.
 
 <Warning>
   If you pass `revealEmails=true` or `revealPhones=true` on a plan that does not include Unified Credits, the API returns `403 Forbidden`. Contact your Lusha account manager to upgrade your plan.
@@ -82,7 +82,7 @@ Similarly, `excludeDnc` (DNC filtering on prospecting search) returns `403 Forbi
 - **Start with the status code.** A `4xx` error is always a client-side problem; a `5xx` error is server-side.
 - **Read the `message` and `errors` fields.** Validation errors (`400`) list exactly which parameters failed and why.
 - **Check your API key first on `401`.** Confirm the `api_key` header is present and the value matches what is shown in your API settings.
-- **Check your credit balance on `402`.** Use the [account usage endpoint](/credits/overview) to confirm you have credits remaining before retrying.
-- **Do not retry `400`, `401`, `402`, or `403` without fixing the request.** These errors will repeat until you correct the underlying issue — a bad parameter, a bad key, an empty credit balance, or a plan restriction.
+- **Check your credit balance on `402`.** Use the [account usage endpoint](/account/usage) to confirm you have credits remaining before retrying.
+- **Do not retry `400`, `401`, `402`, or `403` without fixing the request.** These errors will repeat until you correct the underlying issue - a bad parameter, a bad key, an empty credit balance, or a plan restriction.
 - **Retry `500` and `499` with exponential backoff.** Transient server errors and timeouts usually resolve quickly.
 - **Log the full response body.** The `errors` array often contains the information you need to fix the request immediately.

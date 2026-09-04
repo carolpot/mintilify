@@ -1,5 +1,5 @@
 ---
-title: "Lusha API — Frequently Asked Questions (Q&A)"
+title: "Lusha API - Frequently Asked Questions (Q&A)"
 description: "Answers to common questions about Lusha's API endpoint groups, versioning, authentication, billing, rate limits, and errors."
 ---
 
@@ -8,27 +8,31 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 <Accordion title="What APIs does Lusha offer?">
   Lusha provides eight main RESTful API endpoint groups:
 
-  **Enrichment API** — Search and enrich contact and company records. V3 uses a search-then-enrich pattern: first search by identifier to get a non-PII preview, then enrich to reveal emails, phones, and firmographic data. A combined Search and Enrich endpoint is also available for single-step workflows.
+  **Enrichment API** - Search and enrich contact and company records. V3 uses a search-then-enrich pattern: first search by identifier to get a non-PII preview, then enrich to reveal emails, phones, and firmographic data. A combined Search and Enrich endpoint is also available for single-step workflows.
 
-  **Prospecting API** — Filter-based queries across Lusha's full database. Filter by job title, seniority, department, location, company size, revenue, industry, technologies, intent topics, and signals to build targeted contact and company lists. Returns up to 50,000 results per query (1,000 pages × 50 results).
+  **Prospecting API** - Filter-based queries across Lusha's full database. Filter by job title, seniority, department, location, company size, revenue, industry, technologies, intent topics, and signals to build targeted contact and company lists. Returns up to 50,000 results per query (1,000 pages × 50 results).
 
-  **Signals API** — Real-time buying intent and market intelligence data. Retrieve contact signals (job changes, promotions) and company signals (headcount changes, hiring surges, website traffic, IT spend, news events) by ID or by identifier. Can also be used as a filter inside Search and Prospecting requests.
+  **Signals API** - Real-time buying intent and market intelligence data. Retrieve contact signals (job changes, promotions) and company signals (headcount changes, hiring surges, website traffic, IT spend, news events) by ID or by identifier. Can also be used as a filter inside Search and Prospecting requests.
 
-  **Lookalikes API** — AI-powered contact and company recommendations based on seed inputs. Uses session-based deduplication so repeated calls return new results without overlap. Sessions persist for 30 days.
+  **Lookalikes API** - AI-powered contact and company recommendations based on seed inputs. Uses session-based deduplication so repeated calls return new results without overlap. Sessions persist for 30 days.
 
-  **Tables API** — Create and manage persistent tables of contacts or companies. Save results into a table directly from Prospecting, Enrich, Signals, or Lookalike calls by passing `tableId`, or manage tables, rows, and enrichment columns directly through dedicated endpoints. Tables are shared with the Workspace UI — changes made through one surface show up on the other.
+  **Tables API** - Create and manage persistent tables of contacts or companies. Save results into a table directly from Prospecting, Enrich, Signals, or Lookalike calls by passing `tableId`, or manage tables, rows, and enrichment columns directly through dedicated endpoints. Tables are shared with the Workspace UI - changes made through one surface show up on the other.
 
-  **Webhooks API** — Subscribe to real-time push notifications when contacts change jobs or companies experience key business events. Supports bulk subscription management, HMAC-SHA256 signature verification, automatic retries, and delivery audit logs. Includes an opt-out notification endpoint for GDPR/CCPA compliance workflows.
+  **Webhooks API** - Subscribe to real-time push notifications when contacts change jobs or companies experience key business events. Supports bulk subscription management, HMAC-SHA256 signature verification, automatic retries, and delivery audit logs. Includes an opt-out notification endpoint for GDPR/CCPA compliance workflows.
 
-  **Decision Makers API** — Identify the most relevant contacts to reach within a set of companies. Supply companies by domain or Lusha company ID and get back ranked decision makers as free previews (name, title, location, LinkedIn, seniority, department). Pass the returned contact IDs to Enrich Contacts to reveal emails and phones.
+  **Buying Group API** - Map the buying committee within a set of companies. Supply up to 25 companies by domain or Lusha company ID and get back contacts labelled by persona role (`decision_maker`, `potential_champion`, `end_user`) as free previews. Pass the returned contact IDs to Enrich Contacts to reveal emails and phones. This replaces the retired Decision Makers API.
 
-  **Website Visitors API** — Identify and filter companies that have visited your website. Query traffic across your tracked domains and filter by engagement score, session depth, unique visitors, and geography to surface high-intent accounts. Returns company previews you can pass directly to Enrich Companies for full firmographic data.
+  **Signal Score API** - Score contacts or companies by their active buying signals, returning a single `[0, 1]` value plus the signal breakdown behind it. Accepts up to 100 records per call.
+
+  **Conversations API** - Search the sales calls recorded by Lusha Conversations for your account and fetch speaker-attributed transcripts. Search returns metadata, AI summaries, action items, risks, objections, and coaching analysis.
+
+  **Website Visitors API** - Identify and filter companies that have visited your website. Query traffic across your tracked domains and filter by engagement score, session depth, unique visitors, and geography to surface high-intent accounts. Returns company previews you can pass directly to Enrich Companies for full firmographic data.
 
   Account usage, credits, and pricing are covered by a separate Account API endpoint (`GET /v3/account/usage`).
 </Accordion>
 
 <Accordion title="What version of the API should I use?">
-  V3 is the current production version and is recommended for all new integrations. All V3 endpoints are under `https://api.lusha.com/v3/`. V2 is still operational but is approaching deprecation — see the [Migration Guide](/tutorials/v3-migration-guide) for details on what changed.
+  V3 is the current production version and is recommended for all new integrations. All V3 endpoints are under `https://api.lusha.com/v3/`. V2 is still operational but is approaching deprecation - see the [Migration Guide](/tutorials/v3-migration-guide) for details on what changed.
 </Accordion>
 
 <Accordion title="How do I make requests to Lusha's APIs?">
@@ -38,28 +42,28 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 </Accordion>
 
 <Accordion title="How does authentication work?">
-  Pass your API key in the `api_key` header of every request. You can generate and manage your key in the Lusha dashboard. Store your key securely and only use it in server-side environments — never expose it in client-side code.
+  Pass your API key in the `api_key` header of every request. You can generate and manage your key in the Lusha dashboard. Store your key securely and only use it in server-side environments - never expose it in client-side code.
 </Accordion>
 
 <Accordion title="What is the search-then-enrich pattern in V3?">
   V3 separates data retrieval into two steps:
 
-  1. **Search** — Look up contacts or companies by identifier (LinkedIn URL, email, name + company, domain, or Lusha ID). Returns a non-PII preview with a `has` field listing available data points and a `canReveal` field showing what can be unlocked and the credit cost.
-  2. **Enrich** — Pass the IDs from search results to reveal full data (emails, phones, firmographics).
+  1. **Search** - Look up contacts or companies by identifier (LinkedIn URL, email, name + company, domain, or Lusha ID). Returns a non-PII preview with a `has` field listing available data points and a `canReveal` field showing what can be unlocked and the credit cost.
+  2. **Enrich** - Pass the IDs from search results to reveal full data (emails, phones, firmographics).
 
   You can also use the **Search and Enrich** endpoint to combine both steps in a single call. Billing applies at both steps.
 </Accordion>
 
 <Accordion title="What is Waterfall Reveal, and how does it work?">
-  Waterfall Reveal is an enhancement to Enrich Contacts. When Lusha's own data has no match for a field, it falls through to your enabled third-party providers to try to fill the gap — extra reach on hard-to-match contacts, on top of standard enrichment.
+  Waterfall Reveal is an enhancement to Enrich Contacts. When Lusha's own data has no match for a field, it falls through to your enabled third-party providers to try to fill the gap - extra reach on hard-to-match contacts, on top of standard enrichment.
 
   How it works:
 
-  - If Data Waterfall is enabled on your account, with specific providers turned on under **Account > Waterfall** in the Lusha dashboard, the waterfall runs automatically on every Enrich Contacts call — you don't need to pass anything to trigger it.
+  - If Data Waterfall is enabled on your account, with specific providers turned on under **Account > Waterfall** in the Lusha dashboard, the waterfall runs automatically on every Enrich Contacts call - you don't need to pass anything to trigger it.
   - Pass `waterfallEnabled: false` to opt a specific call out.
   - `reveal` still controls which fields come back; `waterfallEnabled` only controls whether the fallback runs for this call at all.
   - If Data Waterfall is off, or no providers are enabled, `waterfallEnabled` has no effect either way.
-  - Lusha determines the provider query order — it isn't caller-configurable.
+  - Lusha determines the provider query order - it isn't caller-configurable.
   - Use of Data Waterfall is subject to Lusha's Supplementary Terms.
 
   ```json
@@ -131,20 +135,60 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 
   For contacts, seed with LinkedIn URLs, emails, Lusha IDs, or name + company (5–100 seeds required). For companies, seed with domains or LinkedIn URLs.
 
-  Results use session-based deduplication via `dedupeSessionId` — omit it on your first request and the server generates one. Pass it on subsequent requests to get more results without repeats. Sessions are active for 30 days from last use.
+  Results use session-based deduplication via `dedupeSessionId` - omit it on your first request and the server generates one. Pass it on subsequent requests to get more results without repeats. Sessions are active for 30 days from last use.
 
   Use the returned IDs with the Enrich endpoints to get full contact or company data, or pass `tableId` to save results directly into an existing table.
 </Accordion>
 
+<Accordion title="What is the Buying Group API?">
+  The Buying Group API (`POST /v3/contacts/buying-group`) identifies and prioritizes the buying committee within a set of target companies. Rather than pulling every contact at an account and guessing who matters, it returns contact previews grouped by company and pre-labelled by role.
+
+  Supply up to 25 companies by `domain` or Lusha company `id`. For each company, the model scores and labels contacts with one or more persona roles:
+
+  - **`decision_maker`** - has budget or sign-off authority
+  - **`potential_champion`** - likely internal advocate for the purchase
+  - **`end_user`** - likely day-to-day user of the product
+
+  Optional request fields:
+
+  - `personas` - filter to specific roles; omit to get all three
+  - `contactsLimit` - cap on contacts returned per company (default 60)
+  - `clientReferenceId` - optional token on each company entry, echoed back on the matching result
+
+  Each returned contact includes the same non-PII preview shape as Search Contacts (`has`, `canReveal`), plus a `roles` array and a `score` (0-1) reflecting relevance to the assigned role. Results are paginated via `pagination.page` / `pagination.size` in the request body.
+
+  Use the returned contact `id` values with `POST /v3/contacts/enrich` to reveal emails and phones for the people you want to prioritize.
+
+  This endpoint replaces the retired Decision Makers API. See the [Buying Group overview](/buying-group/overview).
+</Accordion>
+
+<Accordion title="What is the Conversations API?">
+  The Conversations API surfaces the sales conversations recorded by Lusha Conversations for your account. It has two endpoints:
+
+  - `POST /v3/account/conversations/search` - search conversations. Returns per-conversation metadata plus an AI `summary`, `coaching` analysis, and `chapters`, along with action items, risks, objections, and competitor mentions. Transcripts are **not** included.
+  - `GET /v3/account/conversations/{conversationId}/transcript` - return the speaker-attributed, timestamped transcript for a single conversation, as an ordered list of `segments`.
+
+  Search has two modes on one contract:
+
+  - **Keyword mode** - supply `query` (1-500 chars) to rank conversations by transcript content. All other filters are ignored.
+  - **Filter mode** - omit `query` and use the structural filters: `dateFrom`/`dateTo` (date-only `YYYY-MM-DD`), `contactNames`, `companyDomains` (matches on domain, not display name - resolve names to domains first), `meetingTitles`, and `conversationIds`.
+
+  Paginate via `page` (starts at 1) and `pageSize` (1-100, default 25). An empty body is valid and returns the first page of your account's conversations. `pageSize` above 100 returns a `400` (it is not silently clamped), and malformed or partial dates also return a `400`.
+
+  Only conversations belonging to your account whose processing has completed are returned. `summary`, `coaching`, and `chapters` come from an asynchronous post-call pipeline - a `null`/empty value means analysis isn't ready yet, not that nothing was found. A `null` `severity` on a risk or objection means the pipeline didn't assess it, not "low". On the transcript endpoint, a single `404` covers all of: the conversation doesn't exist, its processing hasn't completed, or it belongs to another account.
+
+  Use the `id` from a search result to fetch that conversation's transcript. See the [Conversations overview](/conversations/overview).
+</Accordion>
+
 <Accordion title="What is the Tables API?">
-  The Tables API lets you create and manage persistent, spreadsheet-like tables of contacts or companies inside Lusha. Tables have configurable columns — default Lusha fields, CRM fields, Signals, AI-generated fields, and score columns — and are shared with the Workspace UI, so a table built via API shows up there immediately, and vice versa.
+  The Tables API lets you create and manage persistent, spreadsheet-like tables of contacts or companies inside Lusha. Tables have configurable columns - default Lusha fields, CRM fields, Signals, AI-generated fields, and score columns - and are shared with the Workspace UI, so a table built via API shows up there immediately, and vice versa.
 
   There are two ways to work with tables:
 
   - **Save results directly.** Pass `tableId` on a Prospecting, Enrich, Signals, or Lookalike call. Results are returned as usual, and a `tableWrite` object confirms what was saved to the table.
-  - **Manage tables explicitly.** Create a table, add or remove rows (entities), add or run enrichment columns, and read rows back — all via dedicated endpoints under `/v3/contacts/tables/...` and `/v3/companies/tables/...`.
+  - **Manage tables explicitly.** Create a table, add or remove rows (entities), add or run enrichment columns, and read rows back - all via dedicated endpoints under `/v3/contacts/tables/...` and `/v3/companies/tables/...`.
 
-  To get a `tableId`, either create a table (the response returns one) or list your existing tables — there's no way to guess or predict one.
+  To get a `tableId`, either create a table (the response returns one) or list your existing tables - there's no way to guess or predict one.
 
   **Ownership**: every table-route call requires `owner.email`, which must resolve to an existing user on the account tied to your API key. It's sent in the request body (`owner: { email }`) on POST/PATCH calls, and as a `?email=` query parameter on GET/DELETE calls that carry no body.
 
@@ -156,7 +200,7 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 <Accordion title="What is the Website Visitors API?">
   The Website Visitors API (`POST /v3/companies/website-visits`) returns a paginated list of companies that visited your website within a specified date range (max 3 months).
 
-  Domains must be configured for tracking in the Lusha dashboard before use — they are resolved to site IDs server-side. If any requested domain is not configured, the entire request fails with a 400 error.
+  Domains must be configured for tracking in the Lusha dashboard before use - they are resolved to site IDs server-side. If any requested domain is not configured, the entire request fails with a 400 error.
 
   Filter results by:
 
@@ -211,7 +255,7 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 
   Rate limit status is returned in response headers (`x-rate-limit-daily`, `x-daily-requests-left`, `x-rate-limit-hourly`, `x-hourly-requests-left`, `x-rate-limit-minute`, `x-minute-requests-left`, and their usage counterparts). Contact your account manager if you frequently hit limits.
 
-  Tables endpoints follow the same general rate limits, with their own separate caps on batch size and table size — see "What is the Tables API?" above.
+  Tables endpoints follow the same general rate limits, with their own separate caps on batch size and table size - see "What is the Tables API?" above.
 </Accordion>
 
 <Accordion title="How are API errors handled?">
@@ -220,15 +264,15 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
   | Code | Meaning |
   |---|---|
   | 200 | Success |
-  | 400 | Bad request — malformed or missing parameters |
-  | 401 | Unauthorized — invalid or missing API key |
-  | 402 | Payment required — insufficient credits |
-  | 403 | Forbidden — account inactive or feature not available on your plan |
+  | 400 | Bad request - malformed or missing parameters |
+  | 401 | Unauthorized - invalid or missing API key |
+  | 402 | Payment required - insufficient credits |
+  | 403 | Forbidden - account inactive or feature not available on your plan |
   | 404 | Not found |
-  | 409 | Conflict — a table with this name already exists |
+  | 409 | Conflict - a table with this name already exists |
   | 429 | Rate limit or daily quota exceeded |
   | 451 | Blocked due to GDPR regulations |
-  | 5XX | Server error — retry with exponential backoff |
+  | 5XX | Server error - retry with exponential backoff |
 
   Error response format:
 
@@ -263,19 +307,19 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 <Accordion title="Where can I find valid filter values for Prospecting?">
   Use the Filter endpoints before building your prospecting queries:
 
-  - `GET /v3/contacts/prospecting/filters` — lists available contact filter types
-  - `GET /v3/contacts/prospecting/filters/{filterType}` — returns valid values for a specific filter (e.g. departments, seniority, countries, locations)
-  - `GET /v3/companies/prospecting/filters` — lists available company filter types
-  - `GET /v3/companies/prospecting/filters/{filterType}` — returns valid values (e.g. sizes, revenues, industriesLabels, technologies, intentTopics)
+  - `GET /v3/contacts/prospecting/filters` - lists available contact filter types
+  - `GET /v3/contacts/prospecting/filters/{filterType}` - returns valid values for a specific filter (e.g. departments, seniority, countries, locations)
+  - `GET /v3/companies/prospecting/filters` - lists available company filter types
+  - `GET /v3/companies/prospecting/filters/{filterType}` - returns valid values (e.g. sizes, revenues, industriesLabels, technologies, intentTopics)
 
   Some filters require a query parameter (e.g. `locations`, `technologies`, `names`).
 </Accordion>
 
 <Accordion title="Where do I get a table's ID?">
-  There's no way to predict a `tableId` in advance — you get one from the API itself, either by:
+  There's no way to predict a `tableId` in advance - you get one from the API itself, either by:
 
-  - Creating a table (`POST /v3/contacts/tables` or `/v3/companies/tables`) — the 201 response returns `data.tableId`
-  - Listing existing tables (`POST /v3/contacts/tables/list` or `/v3/companies/tables/list`) — each item in the response includes its own `tableId`
+  - Creating a table (`POST /v3/contacts/tables` or `/v3/companies/tables`) - the 201 response returns `data.tableId`
+  - Listing existing tables (`POST /v3/contacts/tables/list` or `/v3/companies/tables/list`) - each item in the response includes its own `tableId`
 
   Once you have it, pass it as the `{table_id}` path parameter on other Tables endpoints, or as the `tableId` body field on Prospecting, Enrich, Signals, or Lookalike calls.
 </Accordion>
@@ -283,13 +327,13 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 <Accordion title="What's the difference between V2 and V3?">
   Key changes in V3:
 
-  - **Search-then-enrich pattern** — Search is now a separate billable step that returns previews before you commit to enrichment
-  - **New endpoint paths** — All V3 enrichment endpoints are under `/v3/contacts/` and `/v3/companies/`
-  - **Bulk by default** — V3 endpoints natively accept arrays of up to 100 records
-  - **Lookalikes redesign** — New session-based deduplication, expanded seed identifier types, and renamed fields (`contactId` instead of `id` in results)
-  - **Company enrich** — New revealable fields: `employeesByDepartment`, `employeesByLocation`, `employeesBySeniority`, `competitors`, `intent`
-  - **Signals are optional per-request** — `maxResultsPerSignal` is now optional (previously required in v2.1.0)
-  - **Tables** — New persistent Tables API for contacts and companies, with an opt-in `tableId` parameter on Prospecting, Enrich, Signals, and Lookalike to save results directly into a table
+  - **Search-then-enrich pattern** - Search is now a separate billable step that returns previews before you commit to enrichment
+  - **New endpoint paths** - All V3 enrichment endpoints are under `/v3/contacts/` and `/v3/companies/`
+  - **Bulk by default** - V3 endpoints natively accept arrays of up to 100 records
+  - **Lookalikes redesign** - New session-based deduplication, expanded seed identifier types, and renamed fields (`contactId` instead of `id` in results)
+  - **Company enrich** - New revealable fields: `employeesByDepartment`, `employeesByLocation`, `employeesBySeniority`, `competitors`, `intent`
+  - **Signals are optional per-request** - `maxResultsPerSignal` is now optional (previously required in v2.1.0)
+  - **Tables** - New persistent Tables API for contacts and companies, with an opt-in `tableId` parameter on Prospecting, Enrich, Signals, and Lookalike to save results directly into a table
 
   See the [Migration Guide](/tutorials/v3-migration-guide) for the full breakdown.
 </Accordion>

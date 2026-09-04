@@ -4,7 +4,7 @@ sidebarTitle: "Get Started"
 description: "Learn what the Lusha API offers, make your first request to the base URL, and understand how the credit-based billing model works before you build."
 ---
 
-The Lusha API gives you programmatic access to one of the world's largest B2B contact and company databases. All requests go to a single base URL — `https://api.lusha.com` — and are authenticated with an API key you pass in a request header. Whether you are enriching CRM records, prospecting for new leads, or wiring up real-time event signals, every capability is available through a consistent REST interface.
+The Lusha API gives you programmatic access to one of the world's largest B2B contact and company databases. All requests go to a single base URL - `https://api.lusha.com` - and are authenticated with an API key you pass in a request header. Whether you are enriching CRM records, prospecting for new leads, or wiring up real-time event signals, every capability is available through a consistent REST interface.
 
 ## What you can build
 
@@ -27,7 +27,7 @@ The Lusha API gives you programmatic access to one of the world's largest B2B co
   <Card title="Account" icon="chart-bar" href="/account/usage">
     Check your credit balance and usage at any time with the account usage endpoint.
   </Card>
-  <Card title="Decision Makers" icon="user-tie" href="/decision-makers/overview">
+  <Card title="Buying Group" icon="user-group" href="/buying-group/overview">
     Resolve a list of companies straight to the contacts most worth reaching at each one.
   </Card>
   <Card title="Website Visits" icon="globe" href="/website-visits/overview">
@@ -37,10 +37,10 @@ The Lusha API gives you programmatic access to one of the world's largest B2B co
 
 ## How the API is organized
 
-The API is built around a small set of core data types — **contacts**, **companies**, **signals**, and **lookalikes** — accessed through a consistent set of patterns: search, enrich, search-and-enrich, and filter-based prospecting. Two additional building blocks sit alongside these:
+The API is built around a small set of core data types - **contacts**, **companies**, **signals**, and **lookalikes** - accessed through a consistent set of patterns: search, enrich, search-and-enrich, and filter-based prospecting. Two additional building blocks sit alongside these:
 
-- **Tables** — persistent, configurable lists of contacts or companies. Save results into a table directly from Enrich, Prospecting, Signals, or Lookalikes calls by passing a `tableId`, or manage tables and their rows/columns through dedicated endpoints. Tables are shared with the Workspace UI. See the [Tables API guide](/user-guide/lushas-api/tables-api).
-- **Waterfall Reveal** — an enhancement to contact enrichment. When Lusha's own data has no match for a field, it automatically falls through to your enabled third-party providers instead of returning an empty field. Runs automatically once Data Waterfall is enabled under **Account > Waterfall** in the dashboard — pass `waterfallEnabled: false` on a specific call to opt it out.
+- **Tables** - persistent, configurable lists of contacts or companies. Save results into a table directly from Enrich, Prospecting, Signals, or Lookalikes calls by passing a `tableId`, or manage tables and their rows/columns through dedicated endpoints. Tables are shared with the Workspace UI. See the [Tables API guide](/user-guide/lushas-api/tables-api).
+- **Waterfall Reveal** - an enhancement to contact enrichment. When Lusha's own data has no match for a field, it automatically falls through to your enabled third-party providers instead of returning an empty field. Runs automatically once Data Waterfall is enabled under **Account > Waterfall** in the dashboard - pass `waterfallEnabled: false` on a specific call to opt it out.
 
 ## Base URL
 
@@ -52,7 +52,7 @@ https://api.lusha.com
 
 ## Credits and billing
 
-The Lusha API uses a credit-based model. Credits are charged per data point revealed (for example, an email address or phone number), with a minimum of 1 credit per request — even if no match is found. See [credits and plans](/credits/overview) for the full breakdown. To check how many credits you have remaining, call the account usage endpoint:
+The Lusha API uses a credit-based model. Credits are charged per data point revealed (for example, an email address or phone number), with a minimum of 1 credit per request - even if no match is found. Contact your account manager for the rates on your plan. To check how many credits you have remaining, call the account usage endpoint:
 
 ```bash
 curl --request GET \
@@ -91,7 +91,7 @@ A successful response returns a `contacts` array with each matched profile's ema
 </Tip>
 
 <Info>
-  **You're reading the V3 docs — the current, default version of the Lusha API.** V3 introduced this search-and-enrich pattern, Tables, and Waterfall Reveal. The previous V2 API (endpoints under no version prefix, like `/v2/person`) is still fully supported but is now **legacy** — pick "V2 (Legacy)" from the version switcher at the top of the [API docs](/api-reference/overview) to browse it, or see the [V3 migration guide](/tutorials/v3-migration-guide) to move existing V2 integrations over.
+  **You're reading the V3 docs - the current, default version of the Lusha API.** V3 introduced this search-and-enrich pattern, Tables, and Waterfall Reveal. The previous V2 API (endpoints under no version prefix, like `/v2/person`) is still fully supported but is now **legacy** - pick "V2 (Legacy)" from the version switcher at the top of the [API docs](/api-reference/overview) to browse it, or see the [V3 migration guide](/tutorials/v3-migration-guide) to move existing V2 integrations over.
 </Info>
 
 ## Next steps

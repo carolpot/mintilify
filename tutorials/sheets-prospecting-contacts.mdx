@@ -94,7 +94,7 @@ const BASE_URL = 'https://api.lusha.com/v3';
 // ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
-// API Key — stored as a Script Property named 'api_key'
+// API Key - stored as a Script Property named 'api_key'
 // To set it: Extensions > Apps Script > Project Settings > Script Properties
 // Add a property with name: api_key  and value: your Lusha API key
 // ---------------------------------------------------------------------------
@@ -508,7 +508,7 @@ function enrichContacts() {
 
     if (!emailChecked && !phoneChecked) {
       sheet.getRange(i + 1, 13).setValue('Excluded');
-      Logger.log(`⏭️ Row ${i + 1} excluded — both checkboxes unchecked.`);
+      Logger.log(`⏭️ Row ${i + 1} excluded - both checkboxes unchecked.`);
       continue;
     }
 
@@ -707,7 +707,7 @@ function writeEnrichedData(sheet, enrichedContacts, rowMap) {
    - **Key**: `api_key`
    - **Value**: your actual Lusha API key
 
-You can find your API key in your [Lusha Dashboard](https://dashboard.lusha.com/enrich/api) (admins and managers only).
+You can find your API key in your [Lusha Dashboard](https://dashboard.lusha.com/api/manage-api-keys) (admins and managers only).
 
 <Warning>
 **Do not paste your API key directly into the script.** Storing it in Script Properties keeps it secure and out of the code.

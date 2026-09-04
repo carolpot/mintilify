@@ -8,8 +8,19 @@
     "dark": "#be97ff"
   },
   "favicon": "/favicon.png",
-  "custom": {
-    "stylesheets": ["/fonts/abc-social.css"]
+  "fonts": {
+    "heading": {
+      "family": "ABC Social",
+      "source": "/fonts/ABCSocialMedium.woff2",
+      "format": "woff2",
+      "weight": 500
+    },
+    "body": {
+      "family": "ABC Social",
+      "source": "/fonts/ABCSocialBook.woff2",
+      "format": "woff2",
+      "weight": 400
+    }
   },
   "logo": {
     "light": "/logo-light.svg",
@@ -28,8 +39,7 @@
   },
   "api": {
     "playground": {
-      "mode": "show",
-      "display": "auth"
+      "display": "interactive"
     },
     "examples": {
       "languages": [
@@ -42,9 +52,9 @@
     }
   },
   "feedback": {
-    "thumbs": true,
-    "edits": true,
-    "issues": true
+    "thumbsRating": true,
+    "suggestEdit": true,
+    "raiseIssue": true
   },
   "navigation": {
     "tabs": [
@@ -100,8 +110,6 @@
                       {
                         "group": "Credits & Plans",
                         "pages": [
-                          "credits/overview",
-                          "credits/costs",
                           "credits/unified-credits"
                         ]
                       },
@@ -130,13 +138,20 @@
                         "pages": [
                           "signals/overview",
                           "signals/contact-signals",
-                          "signals/company-signals"
+                          "signals/company-signals",
+                          "signals/signal-score"
                         ]
                       },
                       {
-                        "group": "Decision Makers",
+                        "group": "Buying Group",
                         "pages": [
-                          "decision-makers/overview"
+                          "buying-group/overview"
+                        ]
+                      },
+                      {
+                        "group": "Conversations",
+                        "pages": [
+                          "conversations/overview"
                         ]
                       },
                       {
@@ -374,19 +389,29 @@
                     "pages": [
                       "POST /v3/contacts/signals",
                       "GET /v3/contacts/signals/types",
+                      "POST /v3/contacts/signal-score",
                       "POST /v3/companies/signals",
                       "GET /v3/companies/signals/filters",
                       "GET /v3/companies/signals/filters/{filterType}",
-                      "GET /v3/companies/signals/types"
+                      "GET /v3/companies/signals/types",
+                      "POST /v3/companies/signal-score"
                     ],
                     "icon": "bolt"
                   },
                   {
-                    "group": "Decision Makers",
+                    "group": "Buying Group",
                     "pages": [
-                      "POST /v3/contacts/decision-makers"
+                      "POST /v3/contacts/buying-group"
                     ],
-                    "icon": "user-tie"
+                    "icon": "user-group"
+                  },
+                  {
+                    "group": "Conversations",
+                    "pages": [
+                      "POST /v3/account/conversations/search",
+                      "GET /v3/account/conversations/{conversationId}/transcript"
+                    ],
+                    "icon": "comments"
                   },
                   {
                     "group": "Website Visits",
@@ -442,8 +467,6 @@
               {
                 "group": "Credits & Plans",
                 "pages": [
-                  "v2/credits/overview",
-                  "v2/credits/costs",
                   "v2/credits/unified-credits"
                 ],
                 "icon": "credit-card"

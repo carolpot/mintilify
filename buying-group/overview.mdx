@@ -1,0 +1,75 @@
+---
+title: "Map the buying committee at target companies"
+sidebarTitle: "Overview"
+description: "Supply up to 25 companies by domain or ID and get back contacts labelled as decision makers, potential champions, or end users - free to preview and revealed separately via Enrich Contacts."
+---
+
+Buying Group answers the question that follows "which accounts should I work?" - namely, *who* inside each account you need to reach. Give it a list of companies and it returns the relevant contacts at each one, labelled with the role they're likely to play in the purchase.
+
+Rather than working one contact at a time, you get the committee: the person who signs off, the person who champions you internally, and the people who will actually use the product.
+
+## What it does
+
+For each company you supply, Buying Group:
+
+1. Resolves the company to a Lusha company record (by `domain` or `id`).
+2. Scores the relevant contacts at that company.
+3. Labels each contact with a persona role and returns them grouped per company.
+
+<CardGroup cols={2}>
+  <Card title="API reference" icon="code" href="/api-reference/buying-group/get-buying-group-contacts">
+    `POST /v3/contacts/buying-group` - full request/response schema.
+  </Card>
+  <Card title="Enrich Contacts" icon="id-card" href="/enrichment/enrich-contacts">
+    Reveal emails and phone numbers for the contacts Buying Group returns.
+  </Card>
+</CardGroup>
+
+## Persona roles
+
+Every returned contact carries exactly one persona:
+
+| Persona | Meaning |
+|---|---|
+| `decision_maker` | Has budget or sign-off authority |
+| `potential_champion` | Likely internal advocate for the purchase |
+| `end_user` | Likely day-to-day user of the product |
+
+Pass `personas` to filter to specific roles, or omit it to get all three.
+
+## Request basics
+
+| Field | Notes |
+|---|---|
+| `companies` | **Required.** Up to 25 companies, each identified by `domain` or Lusha company `id`. |
+| `personas` | Optional. Filter to specific persona roles. Omit for all three. |
+| `contactsLimit` | Optional. Caps contacts returned per company. Defaults to 60. |
+| `pagination` | Optional. Defaults to page 0, size 100. |
+
+You can attach your own `clientReferenceId` to each company to match results back to your records without depending on Lusha's resolved ID.
+
+## Previews and revealing
+
+Results are lightweight **previews** grouped by company. Each contact includes:
+
+- `has` - the data points already visible on the contact
+- `canReveal` - what you can unlock, and what it costs
+
+<Steps>
+  <Step title="Map the committee">
+    Call `POST /v3/contacts/buying-group` with your target companies to get personas and previews back.
+  </Step>
+  <Step title="Reveal the people you want to reach">
+    Pass the returned contact `id` to [Enrich Contacts](/enrichment/enrich-contacts) to reveal emails and phone numbers.
+  </Step>
+</Steps>
+
+<Note>
+  **Billing.** You're charged per contact returned, via the `buyingGroupContact` action. Revealing emails and phone numbers through Enrich Contacts is charged separately.
+</Note>
+
+## Related pages
+
+- [API reference: Get Buying Group Contacts](/api-reference/buying-group/get-buying-group-contacts) - request/response fields, error codes, and examples
+- [Enrich Contacts](/enrichment/enrich-contacts) - reveal emails and phone numbers
+- [Signals](/signals/overview) - prioritize which accounts to work first

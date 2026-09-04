@@ -8,20 +8,20 @@ description: "Identify companies visiting your tracked domains, ranked by engage
   **Beta.** Website Visits is a new endpoint. Its request and response shape may change before general availability.
 </Warning>
 
-Website Visits turns anonymous website traffic into a ranked list of companies. Give it your tracked domains and a date range, and it returns the companies that visited, ranked by engagement — score, total sessions, unique visitors, days visited, high-intent pageviews, and more.
+Website Visits turns anonymous website traffic into a ranked list of companies. Give it your tracked domains and a date range, and it returns the companies that visited, ranked by engagement - score, total sessions, unique visitors, days visited, high-intent pageviews, and more.
 
 <CardGroup cols={2}>
   <Card title="API reference" icon="code" href="/api-reference/website-visits/get-website-visits">
-    `POST /v3/companies/website-visits` — full request/response schema.
+    `POST /v3/companies/website-visits` - full request/response schema.
   </Card>
-  <Card title="Decision Makers" icon="users" href="/decision-makers/overview">
+  <Card title="Buying Group" icon="user-group" href="/buying-group/overview">
     Once you know which companies are visiting, find who to contact there.
   </Card>
 </CardGroup>
 
 ## Prerequisite: configure domain tracking
 
-Website Visits only returns data for domains you've already set up for tracking in the [Lusha dashboard](https://dashboard.lusha.com). The API resolves each domain you pass to its tracked site ID server-side — it doesn't scan arbitrary websites.
+Website Visits only returns data for domains you've already set up for tracking in the [Lusha dashboard](https://dashboard.lusha.com). The API resolves each domain you pass to its tracked site ID server-side - it doesn't scan arbitrary websites.
 
 <Warning>
   If any domain in your request isn't configured for tracking, the entire request fails with `400`. Set up tracking for a domain in the dashboard before calling this endpoint with it.
@@ -33,7 +33,7 @@ Website Visits only returns data for domains you've already set up for tracking 
 
 ## What you get back
 
-Each result combines a company firmographic preview — the same shape [Search Companies](/enrichment/search-companies) returns (name, domain, industry, location, employee count) — with visit-behavior metrics:
+Each result combines a company firmographic preview - the same shape [Search Companies](/enrichment/search-companies) returns (name, domain, industry, location, employee count) - with visit-behavior metrics:
 
 | Metric | Description |
 |---|---|
@@ -50,14 +50,14 @@ Each result combines a company firmographic preview — the same shape [Search C
 
 ## Filtering and sorting
 
-Narrow results with `filters` — by `scoreBands`, visitor country (`visitorCountries.include` / `.exclude`), or range filters (`score`, `totalSessions`, `uniqueVisitors`, `daysVisited`, `highIntentPageviews`, `daysSinceLastVisit`, `avgSessionMinutes`). Sort with `sort.by` / `sort.order` (for example, sort by `score` descending to see your hottest accounts first).
+Narrow results with `filters` - by `scoreBands`, visitor country (`visitorCountries.include` / `.exclude`), or range filters (`score`, `totalSessions`, `uniqueVisitors`, `daysVisited`, `highIntentPageviews`, `daysSinceLastVisit`, `avgSessionMinutes`). Sort with `sort.by` / `sort.order` (for example, sort by `score` descending to see your hottest accounts first).
 
 <Tip>
-  Combine `scoreBands: ["hot"]` with a recent date range to build a "companies to contact this week" list, then pass the matched domains into [Decision Makers](/decision-makers/overview) to find who to reach out to.
+  Combine `scoreBands: ["hot"]` with a recent date range to build a "companies to contact this week" list, then pass the matched domains into [Buying Group](/buying-group/overview) to find who to reach out to.
 </Tip>
 
 ## Related pages
 
-- [API reference: Get Website Visits](/api-reference/website-visits/get-website-visits) — request/response fields, error codes, and examples
-- [Decision Makers](/decision-makers/overview) — find contacts at the companies visiting your site
-- [Search Companies](/enrichment/search-companies) — the firmographic shape each result is based on
+- [API reference: Get Website Visits](/api-reference/website-visits/get-website-visits) - request/response fields, error codes, and examples
+- [Buying Group](/buying-group/overview) - find contacts at the companies visiting your site
+- [Search Companies](/enrichment/search-companies) - the firmographic shape each result is based on

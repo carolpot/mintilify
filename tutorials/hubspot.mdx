@@ -10,7 +10,7 @@ Enrich HubSpot Contact Data with Lusha's API key based on Full Name and Domain p
 This workflow requires an active HubSpot subscription with the necessary feature enabled, along with the inclusion of Lusha resources (such as an API token for the account and available bulk credits).
 
 - A credit will be consumed only when a match is successfully found
-- Lusha's API key can be found [here](https://dashboard.lusha.com/enrich/api) (visible only by Lusha admins or managers)
+- Lusha's API key can be found [here](https://dashboard.lusha.com/api/manage-api-keys) (visible only by Lusha admins or managers)
 
 ## What is HubSpot Workflow?
 HubSpot workflows are automated sequences of actions triggered by a specific set of conditions. These conditions can be based on user behavior, contact properties, or specific events. Workflows are designed to move contacts through a predefined set of actions.
@@ -42,7 +42,7 @@ HubSpot workflows are automated sequences of actions triggered by a specific set
 3. In the Webhook configuration, enter the Webhook URL that will be used to send the contact data for enrichment. You can see all Lusha's available endpoints [here](https://www.lusha.com/docs/#introduction)
 4. Choose the HTTP method (e.g., GET)
 5. Set up the Query Parameters to include the necessary contact information (e.g., LinkedIn URL, email or full name + company name/website)
-6. Add any required headers (e.g., Content-Type: application/json). *API key can be found [here](https://dashboard.lusha.com/enrich/api)
+6. Add any required headers (e.g., Content-Type: application/json). *API key can be found [here](https://dashboard.lusha.com/api/manage-api-keys)
 
 ![Webhook Configuration](https://downloads.intercomcdn.eu/i/o/19922661/2fa48a2d28838f05bfa0ac8b/2.png?expires=1750089600&signature=2c8e45e9a258035ec24db6d705af0106ae8f04c9a2d062a255659d4a0e51da95&req=0dxmx1r8qjZk2hL085ZhoY00gRPKZTcVR9A5dwD%2FsYkYqqEfOw19wmdQK7AA%0An%2FZhyWFINPznks1y%0A)
 

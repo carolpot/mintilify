@@ -1,92 +1,109 @@
 ---
 title: "API overview"
-description: "Lusha's V3 REST API gives you programmatic access to a comprehensive dataset of business profiles and company information."
+description: "Programmatic access to Lusha's B2B contact and company dataset."
 ---
 
-<Info>
-  You're viewing the **V3** documentation. Use the version switcher at the top of the sidebar on this tab to jump to V2 (Legacy) — the toggle is scoped to API docs only and won't appear on other tabs.
-</Info>
-
-Lusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. It's built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.
-
-Use the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.
+Lusha's V3 REST API lets you **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered recommendations. It's built for prospecting, enrichment, automation, and analytics workflows, and every endpoint accepts batches, so real-time and bulk use the same calls.
 
 <Info>
-  All API requests must be made over **HTTPS**. All responses are returned in **JSON** format.
+  You're viewing the **V3** documentation - the current version. Use the version switcher at the top of the sidebar to jump to V2 (Legacy). The toggle is scoped to API docs and won't appear on other tabs. Moving over from V2? Start with the [migration guide](/tutorials/v3-migration-guide).
 </Info>
 
-**Base URL**
+## Quickstart
 
-```text
-https://api.lusha.com/v3/
-```
+<Steps>
+  <Step title="Get your API key">
+    Generate and manage your key in the [Lusha dashboard](https://dashboard.lusha.com/api/manage-api-keys). Your key is tied to your account and plan.
 
-<Tip>
-  This is the Lusha API V3 documentation. V3 introduces a new search-then-enrich pattern, bulk operations in every call, AI-powered lookalikes, and richer filter capabilities. See the [migration guide](/tutorials/v3-migration-guide) if you're moving from V2.
-</Tip>
+    <Warning>
+      Treat your API key like a password. Use it only in **server-side environments** - never ship it in browser or mobile code.
+    </Warning>
+  </Step>
 
-## Authentication
+  <Step title="Make your first request">
+    Pass the key in the `api_key` header on every call. This searches for four contacts by different identifiers in a single request:
 
-All API requests require an **API key** linked to your Lusha account and plan. Pass your key in the `api_key` request header on every call.
+    <CodeGroup>
 
-```bash
-curl https://api.lusha.com/v3/contacts/search \
-  --header "api_key: YOUR_API_KEY" \
-  --header "Content-Type: application/json"
-```
+    ```bash cURL
+    curl --request POST \
+      --url https://api.lusha.com/v3/contacts/search \
+      --header 'api_key: YOUR_API_KEY' \
+      --header 'Content-Type: application/json' \
+      --data '{
+        "contacts": [
+          { "clientReferenceId": "my-ref-1", "firstName": "Orit", "lastName": "Shilvock", "companyDomain": "lusha.com" },
+          { "clientReferenceId": "my-ref-2", "linkedinUrl": "https://www.linkedin.com/in/shmulikwillinger" },
+          { "clientReferenceId": "my-ref-3", "email": "gal.ashkelon@lusha.com" }
+        ],
+        "options": { "includePartialProfiles": true }
+      }'
+    ```
 
-Generate and manage your API key in the [Lusha dashboard](https://dashboard.lusha.com/enrich/api). Store it securely and use it only in **server-side environments**.
+    ```python Python
+    import requests
 
-## Rate limiting
+    response = requests.post(
+        "https://api.lusha.com/v3/contacts/search",
+        headers={"api_key": "YOUR_API_KEY", "Content-Type": "application/json"},
+        json={
+            "contacts": [
+                {"clientReferenceId": "my-ref-1", "firstName": "Orit",
+                 "lastName": "Shilvock", "companyDomain": "lusha.com"},
+                {"clientReferenceId": "my-ref-2",
+                 "linkedinUrl": "https://www.linkedin.com/in/shmulikwillinger"},
+                {"clientReferenceId": "my-ref-3", "email": "gal.ashkelon@lusha.com"},
+            ],
+            "options": {"includePartialProfiles": True},
+        },
+    )
 
-Lusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan. Rate limits for the Credit Usage API differ from standard endpoint limits.
+    print(response.json())
+    ```
 
-| Header | Description |
-| --- | --- |
-| `x-rate-limit-daily` | Total requests allowed per day |
-| `x-daily-requests-left` | Requests remaining in your daily quota |
-| `x-daily-usage` | Requests made in the current daily period |
-| `x-rate-limit-hourly` | Total requests allowed per hour |
-| `x-hourly-requests-left` | Requests remaining in your hourly quota |
-| `x-hourly-usage` | Requests made in the current hourly period |
-| `x-rate-limit-minute` | Total requests allowed per minute |
-| `x-minute-requests-left` | Requests remaining in the current minute window |
-| `x-minute-usage` | Requests made in the current minute window |
+    ```javascript JavaScript
+    const response = await fetch("https://api.lusha.com/v3/contacts/search", {
+      method: "POST",
+      headers: {
+        api_key: "YOUR_API_KEY",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contacts: [
+          { clientReferenceId: "my-ref-1", firstName: "Orit", lastName: "Shilvock", companyDomain: "lusha.com" },
+          { clientReferenceId: "my-ref-2", linkedinUrl: "https://www.linkedin.com/in/shmulikwillinger" },
+          { clientReferenceId: "my-ref-3", email: "gal.ashkelon@lusha.com" },
+        ],
+        options: { includePartialProfiles: true },
+      }),
+    });
 
-<Tip>
-  To check your plan's limits, visit the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.
-</Tip>
+    console.log(await response.json());
+    ```
 
-## Error codes
+    </CodeGroup>
 
-Lusha uses standard HTTP status codes to indicate the result of each request.
+    <Tip>
+      Attach your own `clientReferenceId` to each item and it's echoed back on the matching result - so you can align responses with your own records without depending on Lusha's IDs.
+    </Tip>
+  </Step>
 
-| Code | Name | Description |
-| --- | --- | --- |
-| `200` | OK | Request was successful |
-| `400` | Bad Request | Request is malformed or missing required fields |
-| `401` | Unauthorized | API key is missing or invalid |
-| `402` | Payment Required | Insufficient credits or payment needed |
-| `403` | Forbidden | Account is inactive. Contact [support@lusha.com](mailto:support@lusha.com) |
-| `404` | Not Found | Endpoint or resource does not exist |
-| `429` | Too Many Requests | Rate limit or daily quota exceeded |
-| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |
-| `499` | Client Closed Request | Request timed out before completing |
-| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |
+  <Step title="Enrich what you found">
+    Search returns matches and what's available on each one. Pass the returned contact `id` to [Enrich Contacts](/enrichment/enrich-contacts) to reveal emails and phone numbers - that reveal is the step that spends credits.
+  </Step>
+</Steps>
 
-Every error response shares the same shape:
-
-```json
-{
-  "statusCode": 400,
-  "message": "Invalid request parameters"
-}
-```
-
-- Verify your API key is correct and active.
-- Read the `message` field for specific troubleshooting details.
-- For `429` errors, wait before retrying.
-- For `5XX` errors, use exponential backoff before retrying.
+<CardGroup cols={3}>
+  <Card title="Try it live" icon="play" href="/playground">
+    Run real requests against your account from the browser.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    How to pass your key securely and what happens when it's missing.
+  </Card>
+  <Card title="Migrating from V2" icon="arrow-right-arrow-left" href="/tutorials/v3-migration-guide">
+    What changed, and how to move across.
+  </Card>
+</CardGroup>
 
 ## API modules
 
@@ -99,7 +116,7 @@ Every error response shares the same shape:
     Retrieve full profile data for contacts or companies by ID.
   </Card>
 
-  <Card title="Search & Enrich" icon="layer-group" href="/api-reference/search-and-enrich/search-and-enrich-contacts">
+  <Card title="Search &amp; Enrich" icon="layer-group" href="/api-reference/search-and-enrich/search-and-enrich-contacts">
     Find and retrieve full contact or company data in a single call.
   </Card>
 
@@ -115,8 +132,16 @@ Every error response shares the same shape:
     Real-world activity data for contacts and companies.
   </Card>
 
-  <Card title="Decision Makers" icon="user-tie" href="/api-reference/decision-makers/get-decision-makers">
-    Find the most relevant decision makers across your target accounts.
+  <Card title="Signal Score" icon="gauge-high" href="/api-reference/signals/score-contacts-by-signal-activity">
+    A single `[0, 1]` buying-activity score per contact or company.
+  </Card>
+
+  <Card title="Buying Group" icon="user-group" href="/api-reference/buying-group/get-buying-group-contacts">
+    The buying committee at each target account, labelled by persona role.
+  </Card>
+
+  <Card title="Conversations" icon="comments" href="/api-reference/conversations/search-conversations">
+    Search recorded sales calls and fetch speaker-attributed transcripts.
   </Card>
 
   <Card title="Website Visits" icon="globe" href="/api-reference/website-visits/get-website-visits">
@@ -135,6 +160,82 @@ Every error response shares the same shape:
     Usage, credits, rate limits, and pricing.
   </Card>
 </CardGroup>
+
+## Authentication
+
+All requests require an **API key** linked to your Lusha account and plan, passed in the `api_key` request header.
+
+| | |
+| --- | --- |
+| **Base URL** | `https://api.lusha.com/v3/` |
+| **Auth header** | `api_key: YOUR_API_KEY` |
+| **Transport** | HTTPS only |
+| **Format** | JSON request and response bodies |
+
+Generate and manage your key in the [Lusha dashboard](https://dashboard.lusha.com/api/manage-api-keys).
+
+## Rate limiting
+
+Rate limits are applied per plan across three windows - per minute, per hour, and per day - and vary by account. Every response carries your current standing in the headers below, so you can back off before you hit a `429` rather than after.
+
+<Note>
+  Rate limits for the Credit Usage API differ from standard endpoint limits.
+</Note>
+
+<AccordionGroup>
+  <Accordion title="Rate limit response headers" icon="gauge-high">
+    | Header | Description |
+    | --- | --- |
+    | `x-rate-limit-daily` | Total requests allowed per day |
+    | `x-daily-requests-left` | Requests remaining in your daily quota |
+    | `x-daily-usage` | Requests made in the current daily period |
+    | `x-rate-limit-hourly` | Total requests allowed per hour |
+    | `x-hourly-requests-left` | Requests remaining in your hourly quota |
+    | `x-hourly-usage` | Requests made in the current hourly period |
+    | `x-rate-limit-minute` | Total requests allowed per minute |
+    | `x-minute-requests-left` | Requests remaining in the current minute window |
+    | `x-minute-usage` | Requests made in the current minute window |
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  To check your plan's limits, see the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.
+</Tip>
+
+## Error codes
+
+Lusha uses standard HTTP status codes. Every error response shares the same shape:
+
+```json
+{
+  "statusCode": 400,
+  "message": "Invalid request parameters"
+}
+```
+
+| Code | Name | Description |
+| --- | --- | --- |
+| `200` | OK | Request was successful |
+| `400` | Bad Request | Request is malformed or missing required fields |
+| `401` | Unauthorized | API key is missing or invalid |
+| `402` | Payment Required | Insufficient credits or payment needed |
+| `403` | Forbidden | Account is inactive. Contact [support@lusha.com](mailto:support@lusha.com) |
+| `404` | Not Found | Endpoint or resource does not exist |
+| `429` | Too Many Requests | Rate limit or daily quota exceeded |
+| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |
+| `499` | Client Closed Request | Request timed out before completing |
+| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |
+
+<AccordionGroup>
+  <Accordion title="How to handle errors" icon="wrench">
+    - Read the `message` field first - it carries the specific reason.
+    - **`401`** - verify your API key is correct, active, and sent in the `api_key` header.
+    - **`429`** - wait for the window to reset. Check the rate limit headers to see which window you exhausted.
+    - **`5XX`** - retry with exponential backoff rather than immediately.
+
+    For the full per-endpoint list, see the [error codes reference](/error-codes).
+  </Accordion>
+</AccordionGroup>
 
 ## Data source and privacy
 

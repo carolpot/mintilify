@@ -3,7 +3,13 @@ title: "Decision Makers API"
 description: "Understand how Decision Makers works, what it returns, and how to use it in your prospecting flow."
 ---
 
-Decision Makers is a Lusha API feature that identifies and ranks the contacts most likely to close a deal at any given company. It uses Lusha's verified contact database to surface the person with budget authority — the one whose yes matters most.
+<Warning>
+  **This endpoint has been retired.** Decision Makers has been superseded by [Buying Group](/buying-group/overview), which covers the same use case with a broader persona set - Decision Maker, Champion, and End User, rather than decision makers only - plus per-contact relevance scoring.
+
+  This article is kept for reference only. New integrations should use the Buying Group API.
+</Warning>
+
+Decision Makers is a Lusha API feature that identifies and ranks the contacts most likely to close a deal at any given company. It uses Lusha's verified contact database to surface the person with budget authority - the one whose yes matters most.
 
 In most B2B deals, a buying committee is involved. Every member plays a different role, but only one person has final authority to approve the purchase. Decision Makers surfaces that person for any seller–company pair, so you spend less time guessing and more time selling.
 
@@ -11,24 +17,24 @@ This article explains what the feature includes, how it works, and what to keep 
 
 ## Key concepts
 
-- **Decision maker:** the contact with final authority to approve a purchase — typically the budget owner.
+- **Decision maker:** the contact with final authority to approve a purchase - typically the budget owner.
 - **Seller–company pair:** a combination of a selling entity and a target company for which Decision Makers returns ranked contacts.
 - **Signal tier filtering:** a parameter that lets you control the trade-off between precision (fewer, higher-confidence matches) and recall (more matches, broader net).
 - **2-step reveal:** contacts are shown for free first; email and phone are only revealed when you explicitly request them.
 
 ## What's included
 
-- **Ranked contacts per company —** Phase 1 covers ~155K companies matched in Lusha's database, grounded in verified data. Expansion to all 29M companies in Lusha's database is planned.
-- **Batch support —** query up to 20 companies in a single API call.
-- **2-step reveal pattern —** view contacts at no cost; reveal email and phone only when you're ready.
-- **Signal tier filtering —** control precision vs. recall based on your use case.
-- **Compatibility —** works with any company prospecting flow.
+- **Ranked contacts per company -** Phase 1 covers ~155K companies matched in Lusha's database, grounded in verified data. Expansion to all 29M companies in Lusha's database is planned.
+- **Batch support -** query up to 20 companies in a single API call.
+- **2-step reveal pattern -** view contacts at no cost; reveal email and phone only when you're ready.
+- **Signal tier filtering -** control precision vs. recall based on your use case.
+- **Compatibility -** works with any company prospecting flow.
 
 ## How it fits your prospecting flow
 
 Decision Makers is designed to slot into your existing company prospecting process. Once you've identified a target company, pass it to the API and get back a ranked table of decision makers at that company. From there, you can reveal contact details for the contacts you want to engage.
 
-Because it supports batch requests, you can run it across a table of target accounts in one call — useful for account-based workflows where you're working many companies at once.
+Because it supports batch requests, you can run it across a table of target accounts in one call - useful for account-based workflows where you're working many companies at once.
 
 ## Availability and plan information
 

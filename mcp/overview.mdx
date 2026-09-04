@@ -3,24 +3,28 @@ title: "Lusha MCP"
 description: "Connect Lusha's B2B data to any MCP-compatible AI assistant, agent, or workflow."
 ---
 
-The **Lusha MCP server** implements the [Model Context Protocol](https://modelcontextprotocol.io/) — a standard that lets AI assistants and agents call external tools directly. It's generally available today at `https://mcp.lusha.com`. Once connected, an MCP-compatible client can enrich contacts, search for prospects, and retrieve company data using natural language — without you writing a single API call.
+The **Lusha MCP server** implements the [Model Context Protocol](https://modelcontextprotocol.io/) - a standard that lets AI assistants and agents call external tools directly. It's generally available today at `https://mcp.lusha.com`. Once connected, an MCP-compatible client can enrich contacts, search for prospects, and retrieve company data using natural language - without you writing a single API call.
 
 <Note>
-  The Lusha MCP server has moved beyond its original beta. Some connection details below (client list, exact tool set) can change as Lusha adds tools — always check the tools menu in your client for the current list.
+  The Lusha MCP server has moved beyond its original beta. Some connection details below (client list, exact tool set) can change as Lusha adds tools - always check the tools menu in your client for the current list.
 </Note>
+
+<Tip>
+  **Starter prompt included.** Every new Lusha MCP connection ships with a built-in starter prompt on the client's consent screen - copy it in one click to run a real first query (find a person, verify they still work there, and pull their title and verified contact details) as soon as you connect. This is available across every MCP client below, not just Claude.
+</Tip>
 
 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", margin: "32px 0" }}>
 
   <div>
-    <div style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1, marginBottom: "5px" }}>20+</div>
+    <div style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1, marginBottom: "5px" }}>22</div>
     <div className="text-violet-600 dark:text-violet-400" style={{ fontSize: "1rem", fontWeight: 700, letterSpacing: "0.06em", marginBottom: "8px" }}>MCP tools</div>
-    <div className="text-gray-700 dark:text-gray-300" style={{ fontSize: "0.95rem", lineHeight: 1.5 }}>Enrichment, prospecting, signals, lookalikes, decision makers, and account tools.</div>
+    <div className="text-gray-700 dark:text-gray-300" style={{ fontSize: "0.95rem", lineHeight: 1.5 }}>Enrichment, prospecting, signals, lookalikes, recommendations, and account tools.</div>
   </div>
 
   <div>
     <div style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1, marginBottom: "5px" }}>7</div>
     <div className="text-violet-600 dark:text-violet-400" style={{ fontSize: "1rem", fontWeight: 700, letterSpacing: "0.06em", marginBottom: "8px" }}>Supported clients</div>
-    <div className="text-gray-700 dark:text-gray-300" style={{ fontSize: "0.95rem", lineHeight: 1.5 }}>Claude, ChatGPT, Codex, VS Code, Cursor, Gemini CLI, and n8n — plus any other MCP client.</div>
+    <div className="text-gray-700 dark:text-gray-300" style={{ fontSize: "0.95rem", lineHeight: 1.5 }}>Claude, ChatGPT, Codex, VS Code, Cursor, Gemini CLI, and n8n - plus any other MCP client.</div>
   </div>
 
   <div>
@@ -35,10 +39,8 @@ The **Lusha MCP server** implements the [Model Context Protocol](https://modelco
 
 - Ask an AI assistant to "enrich this contact" and get back verified emails and phone numbers
 - Instruct an agent to "find 20 VP of Engineering contacts at Series B companies in New York"
-- Identify the decision makers to contact at a given company
 - Find companies or contacts that look like your best customers (lookalikes)
 - Check recent hiring, headcount, or news signals for an account before you reach out
-- See which companies have been visiting your tracked website
 - Trigger a prospect list build from inside a Claude, ChatGPT, Cursor, or Gemini CLI session
 
 ## How it works
@@ -54,7 +56,7 @@ The **Lusha MCP server** implements the [Model Context Protocol](https://modelco
 
   <div className="bg-violet-50 dark:bg-violet-950 border border-violet-200 dark:border-violet-800" style={{ borderRadius: "10px", padding: "16px 18px", minWidth: "180px", flex: "1" }}>
     <div className="text-violet-600 dark:text-violet-400" style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "6px" }}>Lusha MCP server</div>
-    <div className="text-gray-900 dark:text-gray-100" style={{ fontSize: "0.9rem", fontWeight: 600 }}>mcp.lusha.com — translates tool calls into API requests</div>
+    <div className="text-gray-900 dark:text-gray-100" style={{ fontSize: "0.9rem", fontWeight: 600 }}>mcp.lusha.com - translates tool calls into API requests</div>
   </div>
 
   <div className="text-violet-600 dark:text-violet-400" style={{ padding: "0 14px", fontSize: "1.3rem", fontWeight: 700 }}>→</div>
@@ -70,14 +72,14 @@ The MCP server translates natural-language tool calls into authenticated Lusha A
 
 <CardGroup cols={2}>
   <Card title="OAuth" icon="key">
-    For **Claude**, **ChatGPT**, and **Codex** — connect your Lusha account through the client's own connector directory. No API key handling required on your side.
+    For **Claude**, **ChatGPT**, and **Codex** - connect your Lusha account through the client's own connector directory. No API key handling required on your side.
   </Card>
   <Card title="API key" icon="lock">
-    For **VS Code** (GitHub Copilot), **Cursor**, **Gemini CLI**, **n8n**, and any other MCP client — pass your key via an `x-api-key` header.
+    For **VS Code** (GitHub Copilot), **Cursor**, **Gemini CLI**, **n8n**, and any other MCP client - pass your key via an `x-api-key` header.
   </Card>
 </CardGroup>
 
-MCP tool calls use the same Lusha API key and credit pool as the REST API — see [MCP setup](/mcp/setup) for connecting each client.
+MCP tool calls use the same Lusha API key and credit pool as the REST API - see [MCP setup](/mcp/setup) for connecting each client.
 
 ## Next steps
 
@@ -91,7 +93,7 @@ MCP tool calls use the same Lusha API key and credit pool as the REST API — se
   <Card title="Examples" icon="sparkles" href="/mcp/examples">
     Prompt examples for common enrichment and prospecting tasks.
   </Card>
-  <Card title="Get API Key" icon="key" href="https://dashboard.lusha.com/enrich/api">
+  <Card title="Get API Key" icon="key" href="https://dashboard.lusha.com/api/manage-api-keys">
     You need a Lusha API key to use the MCP server with API-key-based clients.
   </Card>
 </CardGroup>

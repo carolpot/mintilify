@@ -1,0 +1,88 @@
+---
+title: "Search sales conversations and fetch transcripts"
+sidebarTitle: "Overview"
+description: "Search the calls recorded by Lusha Conversations for your account - metadata, AI summaries, action items, risks, and coaching analysis - then fetch speaker-attributed transcripts one conversation at a time."
+---
+
+The Conversations API exposes the sales calls recorded by [Lusha Conversations](/user-guide/getting-started-with-conversations/lusha-conversations-overview) to your own tooling. Search across the account's conversations, then pull the full transcript for any one of them.
+
+It's two endpoints working together: search returns everything *about* a conversation, and a second call returns what was actually *said*.
+
+<CardGroup cols={2}>
+  <Card title="Search Conversations" icon="magnifying-glass" href="/api-reference/conversations/search-conversations">
+    `POST /v3/account/conversations/search` - metadata, summaries, and analysis.
+  </Card>
+  <Card title="Get Conversation Transcript" icon="file-lines" href="/api-reference/conversations/get-conversation-transcript">
+    `GET /v3/account/conversations/{conversationId}/transcript` - the speaker-attributed transcript.
+  </Card>
+</CardGroup>
+
+## Two search modes on one contract
+
+Search Conversations behaves differently depending on whether you supply `query`:
+
+| Mode | How to trigger | Behavior |
+|---|---|---|
+| **Keyword** | Supply `query` | Ranks conversations by transcript content. **All other filters are ignored.** |
+| **Filter** | Omit `query` | Filters structurally by dates, contact names, company domains, and meeting titles. |
+
+Both modes return the same response shape. An empty body is valid and returns the first page of the account's conversations.
+
+<Warning>
+  In keyword mode the structural filters are ignored rather than combined. If you need both a text match and a date range, filter the results client-side.
+</Warning>
+
+## Filter-mode fields
+
+| Field | Notes |
+|---|---|
+| `conversationIds` | Return only these conversations. |
+| `dateFrom` / `dateTo` | Meeting date bounds, inclusive (`YYYY-MM-DD`). |
+| `contactNames` | Partial, case-insensitive match on participant names. Multiple values are ORed. |
+| `companyDomains` | Domains of external participants (e.g. `acme.com`). Matches on domain, not display name. |
+| `meetingTitles` | Partial, case-insensitive match on the meeting title. Multiple values are ORed. |
+| `page` / `pageSize` | Page starts at 1. `pageSize` above 100 is rejected with `400` - it is not silently clamped. |
+
+## What search returns
+
+Each conversation comes back with its metadata plus AI-derived analysis: summary, action items, risks, objections, competitor mentions, coaching analysis, and chapters. **Transcripts are not included.**
+
+<Note>
+  `summary`, `coaching`, and `chapters` come from an asynchronous pipeline and are `null` or empty until it has run. A `null` here means "not processed yet", not "nothing found". Only conversations whose post-call processing has completed are returned at all.
+</Note>
+
+## Fetching a transcript
+
+Take a `conversationId` from search and call the transcript endpoint. There's no request body and no query parameters.
+
+<Steps>
+  <Step title="Find the conversation">
+    Call `POST /v3/account/conversations/search` in either mode and pick the conversation you want.
+  </Step>
+  <Step title="Fetch the transcript">
+    Call `GET /v3/account/conversations/{conversationId}/transcript` to get the speaker-attributed, timestamped transcript.
+  </Step>
+</Steps>
+
+<Warning>
+  A single `404` covers all three failure cases: the conversation doesn't exist, its processing hasn't completed, or it belongs to another account.
+</Warning>
+
+<Tip>
+  Transcripts can be long. If you're feeding one to an LLM, budget for the token count or summarize before passing it through.
+</Tip>
+
+## Billing
+
+| Endpoint | Cost |
+|---|---|
+| Search Conversations | Contact your account manager for pricing on your plan. |
+| Get Conversation Transcript | 1 credit per successful request via `ci_transcript_analysis`, including repeat requests for the same conversation. A `404` is never charged. |
+
+While `ci_transcript_analysis` isn't seeded on your account's pricebook, the transcript endpoint stays free.
+
+## Related pages
+
+- [API reference: Search Conversations](/api-reference/conversations/search-conversations)
+- [API reference: Get Conversation Transcript](/api-reference/conversations/get-conversation-transcript)
+- [Lusha Conversations overview](/user-guide/getting-started-with-conversations/lusha-conversations-overview) - the product these recordings come from

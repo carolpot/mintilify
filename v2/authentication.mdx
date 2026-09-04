@@ -3,7 +3,7 @@ title: "Authenticate with the Lusha API"
 description: "Get your Lusha API key from the API dashboard and pass it in the api_key header on every request. Learn what to expect when authentication fails."
 ---
 
-Every request to the Lusha API must include your API key. The API uses a simple key-based scheme — there are no OAuth flows or token exchanges. You pass a single header, and the server authenticates the request before processing it.
+Every request to the Lusha API must include your API key. The API uses a simple key-based scheme - there are no OAuth flows or token exchanges. You pass a single header, and the server authenticates the request before processing it.
 
 ## Get your API key
 
@@ -12,7 +12,7 @@ Every request to the Lusha API must include your API key. The API uses a simple 
     Go to [lusha.com](https://www.lusha.com/signup/) and create an account, or log in if you already have one.
   </Step>
   <Step title="Open the API dashboard">
-    Generate and retrieve your API key from the [Lusha API Dashboard](https://dashboard.lusha.com/enrich/api). Copy it to a secure location.
+    Generate and retrieve your API key from the [Lusha API Dashboard](https://dashboard.lusha.com/api/manage-api-keys). Copy it to a secure location.
   </Step>
 </Steps>
 
@@ -49,11 +49,11 @@ If your API key is missing or invalid, the API returns a `401 Unauthorized` resp
 Check the following if you receive a `401`:
 
 - Confirm the `api_key` header is present on the request.
-- Verify you are using the correct key from the [API dashboard](https://dashboard.lusha.com/enrich/api).
+- Verify you are using the correct key from the [API dashboard](https://dashboard.lusha.com/api/manage-api-keys).
 - Ensure the key has not been revoked or regenerated since you last copied it.
 
 <Warning>
-  Keep your API key secret. Do not commit it to version control, embed it in client-side code, or share it publicly. If a key is exposed, regenerate it immediately from the [API dashboard](https://dashboard.lusha.com/enrich/api).
+  Keep your API key secret. Do not commit it to version control, embed it in client-side code, or share it publicly. If a key is exposed, regenerate it immediately from the [API dashboard](https://dashboard.lusha.com/api/manage-api-keys).
 </Warning>
 
 ## Next steps

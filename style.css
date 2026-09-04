@@ -1,0 +1,41 @@
+/*
+ * Lusha docs - global styles
+ *
+ * Mintlify automatically includes any .css file in the content root on every
+ * page. Do NOT reference this file from docs.json (there is no `custom` key in
+ * the Mintlify schema; adding one is silently ignored).
+ *
+ * The ABC Social 400 (Book) face is registered natively via the `fonts` key in
+ * docs.json. The Medium/Bold faces below extend that family so headings and
+ * bold text use real cut weights instead of browser-synthesised ones.
+ */
+
+@font-face {
+  font-family: 'ABC Social';
+  src: url('/fonts/ABCSocialMedium.woff2') format('woff2'),
+       url('/fonts/ABCSocialMedium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Social';
+  src: url('/fonts/ABCSocialBold.woff2') format('woff2'),
+       url('/fonts/ABCSocialBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Sticky sidebar dropdown selector */
+[class*="DropdownButton"],
+[class*="dropdown-button"],
+[class*="SidebarDropdown"] > button,
+[data-testid="sidebar-dropdown-button"],
+nav [class*="dropdown"] > button:first-child {
+  position: sticky !important;
+  top: 0;
+  z-index: 10;
+  background: inherit;
+}

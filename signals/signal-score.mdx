@@ -1,0 +1,72 @@
+---
+title: "Score contacts and companies by signal activity"
+sidebarTitle: "Signal Score"
+description: "Turn active buying signals into a single [0, 1] score per contact or company, with the signal breakdown behind it - up to 100 records per call."
+---
+
+Signal Score collapses a record's active buying signals into one number you can sort and threshold on. Where [Signals](/signals/overview) tells you *what* is happening, Signal Score tells you *how much* is happening - so you can rank a list rather than read it.
+
+Every score comes with the signal breakdown behind it, so a high score is always explainable.
+
+<CardGroup cols={2}>
+  <Card title="Score Contacts" icon="user" href="/api-reference/signals/score-contacts-by-signal-activity">
+    `POST /v3/contacts/signal-score` - up to 100 contacts per call.
+  </Card>
+  <Card title="Score Companies" icon="building" href="/api-reference/signals/score-companies-by-signal-activity">
+    `POST /v3/companies/signal-score` - up to 100 companies per call.
+  </Card>
+</CardGroup>
+
+## The score
+
+`signalScore` is a value in `[0, 1]` reflecting the fraction of the record's active signals. Alongside it you get:
+
+- `signalTypes` - the active signal breakdown
+- `noActiveSignals` - set when the record resolved but has nothing currently firing
+
+## Identifying records
+
+Identity is resolved server-side before scoring. **This is identity resolution only - no PII is revealed and no enrichment credits are spent on it.**
+
+<Tabs>
+  <Tab title="Contacts">
+    Provide one of:
+
+    - `id` - encrypted Lusha contact ID
+    - `linkedinUrl`
+    - `email`
+    - `firstName` + `lastName` + (`companyName` or `companyDomain`)
+  </Tab>
+  <Tab title="Companies">
+    Provide exactly one of:
+
+    - `id`
+    - `domain`
+    - `name`
+    - `email`
+  </Tab>
+</Tabs>
+
+## Reading the results
+
+Each entry in the response is one of three outcomes:
+
+| Outcome | Meaning |
+|---|---|
+| **Scored** | `signalScore`, `signalTypes`, and `noActiveSignals` are populated. |
+| **`NOT_FOUND`** | Identity resolution failed for the identifier you supplied. |
+| **`NO_SCORE`** | The record resolved, but the scoring engine returned nothing for it. |
+
+<Note>
+  `NOT_FOUND` and `NO_SCORE` mean different things and deserve different handling. `NOT_FOUND` is an identifier problem worth retrying with a better identifier; `NO_SCORE` means the record is genuinely unscored right now.
+</Note>
+
+## Billing
+
+1 credit is charged per scored record. Entries returned as `NOT_FOUND` or `NO_SCORE` are not charged.
+
+## Related pages
+
+- [Signals overview](/signals/overview) - the underlying signal types
+- [Contact signals](/signals/contact-signals) and [company signals](/signals/company-signals)
+- [Buying Group](/buying-group/overview) - who to contact once you've picked the account

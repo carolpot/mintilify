@@ -3,10 +3,10 @@ title: "MCP tools reference"
 description: "Every tool the Lusha MCP server exposes, grouped by category."
 ---
 
-The Lusha MCP server exposes over 20 tools. Most map closely to the underlying Lusha API, so the same plan, credit, and rate-limit rules that apply to the REST API apply to MCP tool calls — see the [API FAQ](/faq/api) and [credits FAQ](/faq/billing).
+The Lusha MCP server exposes 22 tools. Most map closely to the underlying Lusha API, so the same plan, credit, and rate-limit rules that apply to the REST API apply to MCP tool calls - see the [API FAQ](/faq/api) and [credits FAQ](/faq/billing).
 
 <Note>
-  Tool names and behavior can change as Lusha ships new capabilities. Ask your MCP client to list its available Lusha tools for the exact, current set.
+  Available tools may vary depending on the client used to connect. Tool names and behavior can also change as Lusha ships new capabilities - ask your MCP client to list its available Lusha tools for the exact, current set.
 </Note>
 
 <AccordionGroup>
@@ -14,80 +14,63 @@ The Lusha MCP server exposes over 20 tools. Most map closely to the underlying L
 <Accordion title="Known contacts and companies (2)">
 | Tool | What it does |
 |---|---|
-| `contacts_search` | Look up 1–25 known contacts by Lusha ID, name + company, LinkedIn URL, or email. |
-| `companies_search` | Look up 1–25 known companies by name, domain, or FQDN. |
+| `contacts_search` | Enrich contact data using email, LinkedIn URL, or name + company. |
+| `companies_search` | Retrieve company data using domain or company name. |
 </Accordion>
 
 <Accordion title="Prospecting (6)">
 | Tool | What it does |
 |---|---|
-| `prospecting_contact_search` | Find contacts by job title, seniority, department, location, and company-level filters. |
-| `prospecting_contact_filters` | Look up valid values (departments, seniority, countries, locations, existing data points) before calling `prospecting_contact_search`. |
-| `prospecting_contact_enrich` | Reveal emails and phone numbers for contacts already returned by a search. |
-| `prospecting_company_search` | Find companies by industry, size, revenue, technology, founded year, and location filters. |
-| `prospecting_company_filters` | Look up valid values (industries, sizes, revenues, technologies, and more) before calling `prospecting_company_search`. |
-| `prospecting_company_enrich` | Reveal detailed firmographic data for companies already returned by a search. |
-</Accordion>
-
-<Accordion title="Decision makers (1)">
-| Tool | What it does |
-|---|---|
-| `decision_makers_search` | Rank the buying-committee contacts at up to 20 companies (by domain or Lusha company ID). |
+| `prospecting_contact_filters` | Get available filter values for contact prospecting (no credits charged). |
+| `prospecting_contact_search` | Search contacts by job title, seniority, location, department, and more. |
+| `prospecting_contact_enrich` | Enrich contacts by ID to reveal emails and phones (credits consumed). |
+| `prospecting_company_filters` | Get available filter values for company prospecting (no credits charged). |
+| `prospecting_company_search` | Search companies by firmographic and technographic filters. |
+| `prospecting_company_enrich` | Enrich companies by ID for detailed firmographic data. |
 </Accordion>
 
 <Accordion title="Lookalikes (2)">
 | Tool | What it does |
 |---|---|
-| `lookalike_contacts` | Find contacts similar to 5–100 seed contacts. |
-| `lookalike_companies` | Find companies similar to 5–100 seed companies. |
+| `lookalike_contacts` | Find contacts similar to a seed contact. |
+| `lookalike_companies` | Find companies similar to a seed company. |
 </Accordion>
 
 <Accordion title="Signals (6)">
 | Tool | What it does |
 |---|---|
-| `signals_contacts_search` | Resolve contacts by LinkedIn URL, email, or name + company, and return recent promotion / company-change signals. |
-| `signals_contacts_get` | Get signals for contacts you already have a Lusha ID for. |
-| `signals_contact_filters` | List the contact signal types the API currently supports. |
-| `signals_companies_search` | Resolve companies by domain or name, and return recent hiring, headcount, and news signals. |
-| `signals_companies_get` | Get signals for companies you already have a Lusha ID for. |
-| `signals_company_filters` | List company signal types and the values for sub-filters like news event types or hiring departments. |
-
-Signal lookback defaults to 6 months and 10 results per signal type unless you specify otherwise.
+| `signals_contact_filters` | Get available filter values for contact signals (no credits charged). |
+| `signals_contacts_search` | Resolve contacts and return recent activity signals. |
+| `signals_contacts_get` | Get signals for known contacts by ID. |
+| `signals_company_filters` | Get available filter values for company signals (no credits charged). |
+| `signals_companies_search` | Resolve companies and return recent activity signals. |
+| `signals_companies_get` | Get signals for known companies by ID. |
 </Accordion>
 
-<Accordion title="Website visits (1)">
+<Accordion title="Recommendations (5)">
 | Tool | What it does |
 |---|---|
-| `website_visits_search` | Rank companies that visited your tracked websites, by engagement score (cold/warm/hot), sessions, and geography. Lookback defaults to 30 days and cannot exceed 3 months. |
-</Accordion>
+| `recommendations_contacts_get` | Get paginated, scored contact recommendations with signals and Target Profile attribution. |
+| `recommendations_companies_get` | Get paginated, scored company recommendations with signals and Target Profile attribution. |
+| `recommendations_status_get` | Check whether a user's recommendations are `none`, `computing`, or `done`. |
+| `recommendations_contacts_filters` | Get valid signal types and Target Profiles for filtering contact recommendations. |
+| `recommendations_companies_filters` | Get valid signal types and Target Profiles for filtering company recommendations. |
 
-<Accordion title="Recommendations (5) — OAuth only">
 <Note>
-  Recommendation tools are OAuth-only. API-key connections (Cursor, VS Code, Gemini CLI, n8n) get a `403` if they call these.
+  Results are drawn from the authenticated user's own Target Profiles (plus any shared account-level profiles) - user and account IDs are inferred from the session, never passed as inputs. If you haven't set up a Target Profile in ICP Hub yet, you'll be nudged to do so with each recommendations request. Recommendations refresh daily and recalculate within minutes of an ICP change.
 </Note>
-
-| Tool | What it does |
-|---|---|
-| `recommendations_contacts` | AI-ranked, paginated contact recommendations with signals, scoring, and Target Profile attribution. |
-| `recommendations_contacts_filters` | List the target ICPs and signal types accepted by `recommendations_contacts`. |
-| `recommendations_companies` | AI-ranked, paginated company recommendations with signals, scoring, and Target Profile attribution. |
-| `recommendations_companies_filters` | List the target ICPs and signal types accepted by `recommendations_companies`. |
-| `recommendations_status` | Check whether a user's recommendations are `none`, `computing`, or `done`. |
-
-Results are drawn from the authenticated user's own Target Profiles (plus any shared account-level profiles) — user and account IDs are inferred from the session, never passed as inputs. If you haven't set up a Target Profile in ICP Hub yet, you'll be nudged to do so with each recommendations request. Recommendations refresh daily and recalculate within minutes of a Target Profile change.
 </Accordion>
 
-<Accordion title="Account (2)">
+<Accordion title="Account (1)">
 | Tool | What it does |
 |---|---|
-| `account_usage` | Check credit balance, rate-limit headroom, plan, and per-action credit pricing. Doesn't consume credits. |
-| `purchase_options` | View credit packages available for in-chat purchase, or (for non-admins) get an email template to request more credits from an account admin. |
+| `account_usage` | Check credit balance, rate-limit status, and plan info. |
 </Accordion>
 
 </AccordionGroup>
 
 ## Credits and rate limits
 
-- Lookup and search tools generally consume credits only for successful, matched results — no charge for a miss.
-- Filter-discovery tools (`*_filters`), `account_usage`, `decision_makers_search`, and `website_visits_search` don't consume credits.
+- Lookup and search tools generally consume credits only for successful, matched results - failed lookups are not charged.
+- Filter-discovery tools (`*_filters`) and `account_usage` don't consume credits.
 - Rate limits follow your Lusha plan, the same as the REST API. `account_usage` returns your current limits and remaining headroom.

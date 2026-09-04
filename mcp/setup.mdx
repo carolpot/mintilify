@@ -7,7 +7,7 @@ The Lusha MCP server is hosted at `https://mcp.lusha.com`. Connect to it in one 
 
 <CardGroup cols={2}>
   <Card title="OAuth" icon="key">
-    For **Claude**, **ChatGPT**, and **Codex**. You authenticate through the client's own connector directory — no API key handling required on your side.
+    For **Claude**, **ChatGPT**, and **Codex**. You authenticate through the client's own connector directory - no API key handling required on your side.
   </Card>
   <Card title="API key" icon="lock">
     For **VS Code** (GitHub Copilot), **Cursor**, **Gemini CLI**, **n8n**, and any other MCP client. You pass your Lusha API key as an `x-api-key` header (or via an environment variable, depending on the client).
@@ -15,13 +15,13 @@ The Lusha MCP server is hosted at `https://mcp.lusha.com`. Connect to it in one 
 </CardGroup>
 
 <Tip>
-  **Starter prompt included.** Every new Lusha MCP connection ships with a ready-to-use starter prompt on the client's consent screen — copy it in one click to run a real first query (find a person, verify they still work there, and pull their title and verified contact details) as soon as you connect. This applies across every MCP client listed below, not just Claude.
+  **Starter prompt included.** Every new Lusha MCP connection ships with a ready-to-use starter prompt on the client's consent screen - copy it in one click to run a real first query (find a person, verify they still work there, and pull their title and verified contact details) as soon as you connect. This applies across every MCP client listed below, not just Claude.
 </Tip>
 
 ## Prerequisites
 
-- A Lusha API key for the API-key connection method — generate one in the Lusha dashboard under **API → Manage API Keys**, or go directly to the [API keys page](https://dashboard.lusha.com/enrich/api)
-- Any plan that includes API access can use the MCP server — it draws from the same credit pool as the REST API
+- A Lusha API key for the API-key connection method - generate one in the Lusha dashboard under **API → Manage API Keys**, or go directly to the [API keys page](https://dashboard.lusha.com/api/manage-api-keys)
+- Any plan that includes API access can use the MCP server - it draws from the same credit pool as the REST API
 
 ## Connect your client
 
@@ -104,7 +104,7 @@ Edit `~/.cursor/mcp.json` (Mac/Linux) or `%APPDATA%\Cursor\mcp.json` (Windows):
 }
 ```
 
-Restart Cursor — the Lusha tools become available automatically.
+Restart Cursor - the Lusha tools become available automatically.
 </Tab>
 
 <Tab title="Gemini CLI">
@@ -150,8 +150,8 @@ export LUSHA_API_KEY=YOUR_LUSHA_API_KEY
 
 If you installed via the extension, you also get slash commands:
 
-- `/lusha:prospect` — run a prospecting search
-- `/lusha:enrich` — enrich a contact or company
+- `/lusha:prospect` - run a prospecting search
+- `/lusha:enrich` - enrich a contact or company
 </Tab>
 
 <Tab title="n8n">
@@ -178,7 +178,7 @@ Header: x-api-key: YOUR_LUSHA_API_KEY
 </Tabs>
 
 <Note>
-  Some Lusha MCP tools — the recommendations tools — are only available over an OAuth connection (Claude, ChatGPT, Codex). API-key sessions receive a `403` if they call those tools. See [available tools](/mcp/tools) for details.
+  Some Lusha MCP tools - the recommendations tools - are only available over an OAuth connection (Claude, ChatGPT, Codex). API-key sessions receive a `403` if they call those tools. See [available tools](/mcp/tools) for details.
 </Note>
 
 ## Troubleshooting
@@ -192,14 +192,14 @@ Header: x-api-key: YOUR_LUSHA_API_KEY
 | Tools not showing in Cursor | Verify `mcp.json` is in the correct path and is valid JSON. Restart Cursor fully. |
 | Tools not showing in n8n | Confirm the MCP Client Tool node is connected to your AI Agent node and the workflow is active. Check the URL and header format. |
 | Tools not showing in Gemini CLI | Verify `settings.json` is correctly formatted. Run `/mcp reload` to refresh. Restart Gemini CLI. |
-| Auth errors — wrong header | For custom MCP clients, the header must be `x-api-key` (lowercase). Using `Authorization: Bearer` or any other casing will fail. |
-| Auth errors — expired key | API keys can be revoked or expired. Verify your key is active in the [API dashboard](https://dashboard.lusha.com/enrich/api) and generate a new one if needed. |
-| Partial or no results | Credits follow the same rules as the REST API — failed lookups are not charged. Check your credit balance in the Lusha dashboard or via `account_usage`. |
+| Auth errors - wrong header | For custom MCP clients, the header must be `x-api-key` (lowercase). Using `Authorization: Bearer` or any other casing will fail. |
+| Auth errors - expired key | API keys can be revoked or expired. Verify your key is active in the [API dashboard](https://dashboard.lusha.com/api/manage-api-keys) and generate a new one if needed. |
+| Partial or no results | Credits follow the same rules as the REST API - failed lookups are not charged. Check your credit balance in the Lusha dashboard or via `account_usage`. |
 | OAuth not completing | If the OAuth flow stalls or errors, try disconnecting and reconnecting the connector from the directory listing. Make sure you are signed in to Lusha before starting the flow. |
 
 ## Security
 
-- Store API keys in secure credentials (OS keychain, password manager, or your editor's secrets manager) — avoid hardcoding them in shared config files.
+- Store API keys in secure credentials (OS keychain, password manager, or your editor's secrets manager) - avoid hardcoding them in shared config files.
 - In n8n, use the built-in **Credentials** system rather than pasting keys directly into node fields.
 - Use environment variables for team setups instead of committing keys to version control.
 - Rotate API keys periodically and remove unused connectors.
