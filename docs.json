@@ -917,6 +917,7 @@
             "groups": [
               {
                 "group": "Extension",
+                "icon": "chrome",
                 "root": "user-guide/extension/extension-overview",
                 "pages": [
                   "user-guide/extension/extension-overview",
@@ -961,6 +962,7 @@
               },
               {
                 "group": "Engage & Sequences",
+                "icon": "paper-plane",
                 "root": "user-guide/engage-and-sequences",
                 "pages": [
                   "user-guide/engage-and-sequences",
