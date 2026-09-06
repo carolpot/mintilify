@@ -9,9 +9,11 @@ This article covers the **Search in My CRM** filter, which enables your prospect
 
 Learn more about the "Not in my CRM" filter (see the Account-Based Prospecting section under Building Your Workspace Tables).
 
-**💡 Note:** CRM Filters are currently supported for Salesforce only. HubSpot support is coming soon.
+<Note>
+CRM Filters are currently supported for Salesforce only. HubSpot support is coming soon.
+</Note>
 
-## Before You Start
+## Before you start
 
 To use CRM Filters, you'll need:
 
@@ -23,7 +25,7 @@ To use CRM Filters, you'll need:
 The first sync can take up to 24 hours.
 </Warning>
 
-## How to Apply CRM Filters
+## How to apply CRM Filters
 
 1. Go to **Workspace** and open the **Contact filters** or **Company filters** panel.
 2. Scroll down to the **CRM** section and expand **Search in My CRM**.
@@ -33,7 +35,9 @@ The first sync can take up to 24 hours.
 6. Optionally, add more CRM filters or combine with standard Lusha filters (job title, location, industry, and more).
 7. Your results update to reflect all applied filters.
 
-**💡 Note:** Each filter type takes approximately 4 seconds to load because Lusha fetches your exact Salesforce values in real time. If you select three filters in sequence, expect around 12 seconds of total loading time.
+<Note>
+Each filter type takes approximately 4 seconds to load because Lusha fetches your exact Salesforce values in real time. If you select three filters in sequence, expect around 12 seconds of total loading time.
+</Note>
 
 <Note>
 When filters are applied, the result count updates to show how many contacts or companies matched your criteria. You'll also see a note like: *"Salesforce returned 10,000 records, 5,500 matched in Lusha."*
@@ -56,11 +60,15 @@ The table below shows which filters are available when searching Contacts versus
 | - Lead Owner | **Contacts only.** Leads owned by you or your team | Not available when searching Companies |
 | - Lead Status | **Contacts only.** Leads with this status | Not available when searching Companies |
 
-**💡 Note:** Lead Owner and Lead Status only apply to Contact searches. Leads are individual people, not companies. When searching Companies, these filters are automatically hidden.
+<Note>
+Lead Owner and Lead Status only apply to Contact searches. Leads are individual people, not companies. When searching Companies, these filters are automatically hidden.
+</Note>
 
-**💡 Note:** Lead filters cannot be combined with Opportunity, Account, or Contact filters. If you select a Lead filter, the others are disabled - and vice versa. Clear your current filters to switch.
+<Note>
+Lead filters cannot be combined with Opportunity, Account, or Contact filters. If you select a Lead filter, the others are disabled - and vice versa. Clear your current filters to switch.
+</Note>
 
-## Include vs. Exclude: How Operators Work
+## Include vs. Exclude: How operators work
 
 **Include** - Shows only records that match your criteria.
 
@@ -74,11 +82,11 @@ The table below shows which filters are available when searching Contacts versus
 
 Example: **Include Account Owner = "My accounts"** AND **Exclude Account Type = "Customer"** → Shows your prospect and partner accounts only.
 
-## Data Freshness and Sync Timing
+## Data freshness and sync timing
 
 Not all CRM data appears in Lusha at the same speed. Here's what to expect:
 
-| **Change type** | **When it appears in Lusha** |
+| **Change Type** | **When It Appears in Lusha** |
 | --- | --- |
 | Updates to existing records (e.g. Opportunity Stage, Account Type, Contact Owner) | Immediately |
 | New records created in Salesforce (new Leads, Contacts, Accounts, Opportunities) | Within 8 hours (batch sync) |
@@ -86,7 +94,7 @@ Not all CRM data appears in Lusha at the same speed. Here's what to expect:
 
 If your data is more than 24 hours old, you'll see a warning. If the connection has expired, you'll be prompted to reconnect.
 
-## Understanding Your Results
+## Understanding your results
 
 ### Why do I see fewer results than expected?
 
@@ -107,12 +115,14 @@ Opportunity filters identify accounts that have matching opportunities, then ret
 
 These two features serve opposite purposes and cannot be used at the same time:
 
-| **Feature** | **Purpose** | **When to use** |
+| **Feature** | **Purpose** | **When to Use** |
 | --- | --- | --- |
 | "Search in My CRM" (CRM Filters) | Work within your pipeline. Shows only records matching your CRM criteria. | Expanding existing accounts, multi-threading deals, enriching pipeline contacts. |
 | "Not in My CRM" | Avoid duplicates. Excludes all records already in your Salesforce. | Finding net-new prospects that aren't in your CRM yet. |
 
-**⚠️ Important:** You can only have one of these active at a time. Turn off one before enabling the other.
+<Warning>
+You can only have one of these active at a time. Turn off one before enabling the other.
+</Warning>
 
 ## Troubleshooting
 
