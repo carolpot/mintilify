@@ -20,6 +20,18 @@ Map ad-hoc patterns to real Mintlify components:
 - `**Important:**` / anything cautionary (data loss, billing impact, irreversible action) → `<Warning>...</Warning>`
 - Keep `<Info>` only for "see also / cross-reference" asides (existing usage).
 
+## Step-by-step instructions
+- A numbered markdown list (`1. `, `2. `, ...) where each item is a sequential
+  action the reader performs in the product UI ("Click X", "Go to Y", "Select
+  Z") → convert to `<Steps>` / `<Step title="...">...</Step>`. The step title
+  is a short imperative summary of the action; the body is the existing
+  explanatory text/links. Reference: `user-guide/dashboard.mdx`'s "Getting
+  oriented" section.
+- Do NOT convert a numbered list that isn't sequential UI steps: FAQ answers,
+  reasons/causes (e.g. "why an email bounced"), requirements/prerequisites,
+  or an enumeration of options. Leave those as plain numbered or bulleted
+  markdown lists. If ambiguous, leave as-is rather than force it.
+
 ## Tables
 - Markdown tables only (never raw `<table>`).
 - Header row in Title Case, one-space-padded pipes: `| Field | Description |` / `| --- | --- |`
