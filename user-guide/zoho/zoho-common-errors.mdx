@@ -15,10 +15,20 @@ If contacts that previously exported successfully are now failing, or the export
 
 To fix this:
 
-1. Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in your Lusha dashboard.
-2. Disconnect the Zoho CRM integration.
-3. Reconnect and complete the OAuth authorisation flow again.
-4. Retry the export.
+<Steps>
+  <Step title="Open Integrations">
+    Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in your Lusha dashboard.
+  </Step>
+  <Step title="Disconnect Zoho CRM">
+    Disconnect the Zoho CRM integration.
+  </Step>
+  <Step title="Reconnect and reauthorize">
+    Reconnect and complete the OAuth authorisation flow again.
+  </Step>
+  <Step title="Retry the export">
+    Retry the export.
+  </Step>
+</Steps>
 
 If the issue started suddenly with no changes on your side, it may be a temporary service disruption. Wait a few minutes, reconnect, and try again.
 
@@ -28,10 +38,20 @@ If you see an error during the connection flow, or users report they cannot expo
 
 To fix this:
 
-1. Have a Zoho CRM Administrator disconnect the integration in Lusha.
-2. Log into Zoho CRM as that Administrator.
-3. Reconnect the integration from Lusha's [Integrations page](https://dashboard.lusha.com/lusha-integrations).
-4. Complete the OAuth flow while logged in as the Administrator.
+<Steps>
+  <Step title="Disconnect the integration">
+    Have a Zoho CRM Administrator disconnect the integration in Lusha.
+  </Step>
+  <Step title="Log in as the Administrator">
+    Log into Zoho CRM as that Administrator.
+  </Step>
+  <Step title="Reconnect the integration">
+    Reconnect the integration from Lusha's [Integrations page](https://dashboard.lusha.com/lusha-integrations).
+  </Step>
+  <Step title="Complete the OAuth flow">
+    Complete the OAuth flow while logged in as the Administrator.
+  </Step>
+</Steps>
 
 If individual users on your team are getting permission errors while trying to export, check that their Zoho CRM role includes write access to Leads or Contacts (whichever record type you are exporting to). Refer to [Lusha's CRM permissions guide](/user-guide/integrations-basics/crm-permissions-required-for-lusha-integration) for the minimum required permissions.
 
@@ -41,9 +61,17 @@ By default, Lusha exports contacts to Zoho CRM as **Leads**. If contacts are app
 
 To change the target record type:
 
-1. Go to **Settings → Integrations → Zoho CRM → Field Mapping** in Lusha.
-2. Confirm that the object type (Lead or Contact) matches your intended Zoho module.
-3. Save and retry the export.
+<Steps>
+  <Step title="Open Zoho CRM field mapping">
+    Go to **Settings → Integrations → Zoho CRM → Field Mapping** in Lusha.
+  </Step>
+  <Step title="Confirm the object type">
+    Confirm that the object type (Lead or Contact) matches your intended Zoho module.
+  </Step>
+  <Step title="Save and retry">
+    Save and retry the export.
+  </Step>
+</Steps>
 
 If you need contacts exported to a specific pipeline or view within Zoho, configure this in your Zoho CRM lead assignment rules after import - Lusha does not control post-import routing.
 
@@ -55,9 +83,17 @@ This usually means the **Company** field is not mapped in your Lusha field mappi
 
 To fix this:
 
-1. Go to **Settings → Integrations → Zoho CRM → Field Mapping** in Lusha.
-2. Map the Lusha **Company** field to the Zoho **Account Name** (for Contacts) or **Company** (for Leads) field.
-3. Save the mapping and retry the export.
+<Steps>
+  <Step title="Open Zoho CRM field mapping">
+    Go to **Settings → Integrations → Zoho CRM → Field Mapping** in Lusha.
+  </Step>
+  <Step title="Map the Company field">
+    Map the Lusha **Company** field to the Zoho **Account Name** (for Contacts) or **Company** (for Leads) field.
+  </Step>
+  <Step title="Save and retry">
+    Save the mapping and retry the export.
+  </Step>
+</Steps>
 
 <Note>
 Zoho CRM does not automatically create an Account record from the Company name field on a Lead. If you need full account linkage, you will need to convert the Lead to a Contact in Zoho and associate it with an Account record manually.
@@ -78,10 +114,20 @@ The middle part of a compound name ("Bautista" in this example) is treated as a 
 
 If the Lusha panel is not visible when viewing a Lead or Contact record in Zoho CRM:
 
-1. Open the Lusha browser extension and click **More**.
-2. Make sure **Enable Lusha Everywhere** is toggled on. If it is already on, toggle it off, then back on, and restart your browser.
-3. If the issue persists, open your browser's developer tools, right-click the refresh button, and select **Empty Cache and Hard Reload**.
-4. Confirm you are using a supported browser (Chrome or Edge) and that the Lusha extension is up to date.
+<Steps>
+  <Step title="Open the extension's More menu">
+    Open the Lusha browser extension and click **More**.
+  </Step>
+  <Step title="Toggle Enable Lusha Everywhere">
+    Make sure **Enable Lusha Everywhere** is toggled on. If it is already on, toggle it off, then back on, and restart your browser.
+  </Step>
+  <Step title="Hard reload the page">
+    If the issue persists, open your browser's developer tools, right-click the refresh button, and select **Empty Cache and Hard Reload**.
+  </Step>
+  <Step title="Confirm your browser is supported">
+    Confirm you are using a supported browser (Chrome or Edge) and that the Lusha extension is up to date.
+  </Step>
+</Steps>
 
 ## Export succeeds but CRM indicator is not showing existing contacts
 
