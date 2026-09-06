@@ -11,9 +11,17 @@ Your Pipedrive session has expired, or the integration was disconnected.
 
 Go to **Settings → Integrations → Pipedrive**.
 
-1. Click **Disconnect**, then **Connect**.
-2. Log in to Pipedrive and re-authorize the connection.
-3. Try exporting a contact again to confirm the connection is working.
+<Steps>
+  <Step title="Disconnect and reconnect">
+    Click **Disconnect**, then **Connect**.
+  </Step>
+  <Step title="Re-authorize the connection">
+    Log in to Pipedrive and re-authorize the connection.
+  </Step>
+  <Step title="Confirm the connection works">
+    Try exporting a contact again to confirm the connection is working.
+  </Step>
+</Steps>
 
 <Note>
 If you recently changed your Pipedrive password or enabled 2FA, you'll need to reconnect the integration.
@@ -31,9 +39,17 @@ Pipedrive found an existing person record that matches the contact you're trying
 
 The field mapping between Lusha and Pipedrive may be misconfigured.
 
-1. Go to **Settings → Integrations → Pipedrive → Field Mapping**.
-2. Check that Lusha fields (e.g., email, phone, job title) are mapped to the correct Pipedrive person fields.
-3. Save your field mapping and try the export again.
+<Steps>
+  <Step title="Open Field Mapping">
+    Go to **Settings → Integrations → Pipedrive → Field Mapping**.
+  </Step>
+  <Step title="Check the field mappings">
+    Check that Lusha fields (e.g., email, phone, job title) are mapped to the correct Pipedrive person fields.
+  </Step>
+  <Step title="Save and re-export">
+    Save your field mapping and try the export again.
+  </Step>
+</Steps>
 
 For a full reference of available Lusha fields and their Pipedrive equivalents, see the [Fields for Field Mapping](/user-guide/integrations-basics/fields-for-field-mapping-and-descriptions) article.
 
@@ -49,8 +65,16 @@ The Pipedrive account used to authorize the integration doesn't have the require
 
 The contact may have been created in a Pipedrive pipeline or stage you're not currently viewing.
 
-1. In Pipedrive, go to **Contacts → People** and search for the contact by name or email.
-2. If found, check which pipeline or owner it was assigned to - adjust your default export settings in **Settings → Integrations → Pipedrive → Export Settings**.
-3. If not found, check Pipedrive's activity log for any import errors.
+<Steps>
+  <Step title="Search for the contact in Pipedrive">
+    In Pipedrive, go to **Contacts → People** and search for the contact by name or email.
+  </Step>
+  <Step title="Check its pipeline or owner">
+    If found, check which pipeline or owner it was assigned to - adjust your default export settings in **Settings → Integrations → Pipedrive → Export Settings**.
+  </Step>
+  <Step title="Check the activity log">
+    If not found, check Pipedrive's activity log for any import errors.
+  </Step>
+</Steps>
 
 If none of the above resolves the issue, contact **Lusha Support** using the chat icon in your dashboard. Include the contact name, the time of the export attempt, and any error message you saw.
