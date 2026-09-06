@@ -1,5 +1,5 @@
 ---
-title: "Lusha API Error Codes Reference"
+title: "Lusha API error codes reference"
 description: "A reference for common Lusha API error codes, what they mean, and how to resolve them."
 ---
 
@@ -19,7 +19,7 @@ When a Lusha API request fails, the response includes an HTTP status code and an
 | 500 | Internal server error | Something went wrong on Lusha's side |
 | 503 | Service unavailable | Lusha API is temporarily down or under maintenance |
 
-## Error: 400 Bad Request
+## Error: 400 bad request
 
 Your request is missing a required parameter or contains an invalid value.
 
@@ -27,7 +27,7 @@ Your request is missing a required parameter or contains an invalid value.
 - Verify that parameter values are in the correct format (e.g., email addresses must be valid format, country codes must be ISO 2-letter)
 - Check the response body - it usually specifies which parameter is invalid
 
-## Error: 401 Unauthorized
+## Error: 401 unauthorized
 
 A **401 Unauthorized** error indicates that your request could not be authenticated. Common causes include missing or incorrect credentials, invalid API keys, or issues with OAuth tokens.
 
@@ -44,7 +44,7 @@ A **401 Unauthorized** error indicates that your request could not be authentica
 3. **Check OAuth Tokens (if applicable)**: - Use a valid, non-expired access token. - If the token has expired, refresh it using your refresh token before making API calls.
 4. **Review Your Request**: - Confirm the exact request you're sending (endpoint, headers, body) and compare it against the API documentation to ensure proper authentication formatting.
 
-## Error: 403 Forbidden
+## Error: 403 forbidden
 
 A **403 Forbidden** error occurs when you attempt to access an API endpoint that is not included in your subscription plan. Here's what you need to know:
 
@@ -57,14 +57,14 @@ A **403 Forbidden** error occurs when you attempt to access an API endpoint that
 2. **Upgrade Your Plan**: - If the endpoint is not available in your current plan, consider upgrading to the Scale plan to gain access to Prospecting and Filters APIs.
 3. **Use Supported Endpoints**: - On self-service plans, ensure you are using only the enrichment endpoints for contact and company data.
 
-## Error: 422 Unprocessable Entity
+## Error: 422 unprocessable entity
 
 Your request is formatted correctly but the server can't process the specific input.
 
 - Check the response body for details on which field failed validation
 - Common causes: invalid email format, unsupported country code, empty required field
 
-## Error: 429 Too Many Requests
+## Error: 429 too many requests
 
 You've exceeded your API rate limit. Limits are based on your plan and may apply per minute, per hour, or per day.
 
@@ -76,7 +76,7 @@ You've exceeded your API rate limit. Limits are based on your plan and may apply
   A 429 response does not consume a credit. Only successful data returns are charged.
 </Note>
 
-## Error: 500 Internal Server Error
+## Error: 500 internal server error
 
 Something went wrong on Lusha's side.
 
@@ -92,7 +92,7 @@ A 200 response with an empty result set means Lusha couldn't find a match for yo
   A minimum of 1 credit is charged per API request, even if no results are returned. A 200 with no results still counts as a request.
 </Warning>
 
-## Best Practices for Avoiding API Errors
+## Best practices for avoiding API errors
 
 - **Understand Your Plan**: Familiarize yourself with the endpoints available in your subscription plan.
 - **Keep Credentials Secure**: Regularly update and securely store your API keys and tokens.
