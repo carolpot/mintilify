@@ -25,11 +25,23 @@ Our team will investigate and resolve it on the server side.
 
 If users see an error on the CRM integration management page and cannot verify their Dynamics connection to export contacts, try the following:
 
-1. Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in your Lusha dashboard.
-2. Disconnect the Dynamics 365 integration.
-3. Reconnect and enter your Organisation URL again (see below for how to find it).
-4. Complete the Microsoft OAuth flow as a Dynamics 365 Administrator.
-5. Retry the export.
+<Steps>
+  <Step title="Open Integrations">
+    Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in your Lusha dashboard.
+  </Step>
+  <Step title="Disconnect Dynamics 365">
+    Disconnect the Dynamics 365 integration.
+  </Step>
+  <Step title="Reconnect with your organisation URL">
+    Reconnect and enter your Organisation URL again (see below for how to find it).
+  </Step>
+  <Step title="Complete the OAuth flow">
+    Complete the Microsoft OAuth flow as a Dynamics 365 Administrator.
+  </Step>
+  <Step title="Retry the export">
+    Retry the export.
+  </Step>
+</Steps>
 
 If the issue affects multiple users on your account at the same time, it may be a service disruption. Contact Lusha Support with details.
 
@@ -39,10 +51,20 @@ If the "Grant permission" or "Permission Granted" window appears and then closes
 
 To fix this:
 
-1. Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in Lusha and disconnect Dynamics 365.
-2. Return to the contact you want to export.
-3. Reconnect Dynamics 365 from the integration settings.
-4. Complete the OAuth flow and immediately retry the export.
+<Steps>
+  <Step title="Disconnect Dynamics 365">
+    Go to [Integrations](https://dashboard.lusha.com/lusha-integrations) in Lusha and disconnect Dynamics 365.
+  </Step>
+  <Step title="Return to the contact">
+    Return to the contact you want to export.
+  </Step>
+  <Step title="Reconnect Dynamics 365">
+    Reconnect Dynamics 365 from the integration settings.
+  </Step>
+  <Step title="Complete OAuth and retry the export">
+    Complete the OAuth flow and immediately retry the export.
+  </Step>
+</Steps>
 
 If the loop continues after reconnecting, check that your Dynamics 365 user account has the **Salesperson** or higher security role, and that it has write access to the Lead or Contact entity. Restricted users may be able to complete OAuth but fail silently when Lusha attempts to write to Dynamics.
 
@@ -52,10 +74,18 @@ When connecting Lusha to Dynamics 365, you are asked to enter your Organisation 
 
 To find it:
 
-1. Log into your Dynamics 365 account.
-2. Look at the URL in your browser's address bar - it follows this format:
-   `https://orgXXXXXXXX.crm.dynamics.com`
-3. Copy that base URL (up to and including `.dynamics.com`) and paste it into Lusha.
+<Steps>
+  <Step title="Log in to Dynamics 365">
+    Log into your Dynamics 365 account.
+  </Step>
+  <Step title="Find the URL in your address bar">
+    Look at the URL in your browser's address bar - it follows this format:
+    `https://orgXXXXXXXX.crm.dynamics.com`
+  </Step>
+  <Step title="Copy the base URL into Lusha">
+    Copy that base URL (up to and including `.dynamics.com`) and paste it into Lusha.
+  </Step>
+</Steps>
 
 The URL varies by region. Common formats include:
 - `https://orgXXXXXXXX.crm.dynamics.com` (United States)

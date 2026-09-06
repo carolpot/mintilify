@@ -27,13 +27,29 @@ The first sync can take up to 24 hours.
 
 ## How to apply CRM Filters
 
-1. Go to **Workspace** and open the **Contact filters** or **Company filters** panel.
-2. Scroll down to the **CRM** section and expand **Search in My CRM**.
-3. Choose your filter type (e.g., **Opportunity Stage**, **Account Owner**, **Account Type**).
-4. Select the operator: **Include** (show only these) or **Exclude** (hide these).
-5. Choose a value from the dropdown. Values are pulled from your Salesforce in real time, including any custom picktable values.
-6. Optionally, add more CRM filters or combine with standard Lusha filters (job title, location, industry, and more).
-7. Your results update to reflect all applied filters.
+<Steps>
+  <Step title="Open the filter panel">
+    Go to **Workspace** and open the **Contact filters** or **Company filters** panel.
+  </Step>
+  <Step title="Expand Search in My CRM">
+    Scroll down to the **CRM** section and expand **Search in My CRM**.
+  </Step>
+  <Step title="Choose a filter type">
+    Choose your filter type (e.g., **Opportunity Stage**, **Account Owner**, **Account Type**).
+  </Step>
+  <Step title="Select an operator">
+    Select the operator: **Include** (show only these) or **Exclude** (hide these).
+  </Step>
+  <Step title="Choose a value">
+    Choose a value from the dropdown. Values are pulled from your Salesforce in real time, including any custom picktable values.
+  </Step>
+  <Step title="Add more filters (optional)">
+    Optionally, add more CRM filters or combine with standard Lusha filters (job title, location, industry, and more).
+  </Step>
+  <Step title="Review your results">
+    Your results update to reflect all applied filters.
+  </Step>
+</Steps>
 
 <Note>
 Each filter type takes approximately 4 seconds to load because Lusha fetches your exact Salesforce values in real time. If you select three filters in sequence, expect around 12 seconds of total loading time.
@@ -128,10 +144,20 @@ You can only have one of these active at a time. Turn off one before enabling th
 
 ### CRM Filters aren't showing up
 
-1. Go to **Settings → Integrations** and confirm Salesforce is connected.
-2. Confirm you've logged in individually with your Salesforce credentials (not just the admin account-level connection).
-3. Check the sync status. If the initial 24-hour sync isn't complete, filters will be unavailable.
-4. Refresh your browser and try again.
+<Steps>
+  <Step title="Confirm Salesforce is connected">
+    Go to **Settings → Integrations** and confirm Salesforce is connected.
+  </Step>
+  <Step title="Confirm your individual login">
+    Confirm you've logged in individually with your Salesforce credentials (not just the admin account-level connection).
+  </Step>
+  <Step title="Check the sync status">
+    Check the sync status. If the initial 24-hour sync isn't complete, filters will be unavailable.
+  </Step>
+  <Step title="Refresh and retry">
+    Refresh your browser and try again.
+  </Step>
+</Steps>
 
 ### My Salesforce connection expired
 
