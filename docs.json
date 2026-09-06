@@ -1162,6 +1162,7 @@
             "groups": [
               {
                 "group": "Billing & Plans",
+                "icon": "credit-card",
                 "root": "user-guide/billing-and-plans",
                 "pages": [
                   "user-guide/billing-and-plans",
@@ -1194,6 +1195,7 @@
               },
               {
                 "group": "Account & Team Management",
+                "icon": "users",
                 "root": "user-guide/account-and-team-management",
                 "pages": [
                   "user-guide/account-and-team-management",
@@ -1233,6 +1235,7 @@
               },
               {
                 "group": "Security & Legal",
+                "icon": "shield-halved",
                 "root": "user-guide/security-and-legal",
                 "pages": [
                   "user-guide/security-and-legal",
