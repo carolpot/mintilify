@@ -11,8 +11,14 @@ Data containing special characters may not display correctly in Excel even after
 
 ## Option 1 - Narrow the rows
 
-1. Click the small square at the intersection of column A and row 1 to select the entire sheet.
-2. Reduce the height of row 1 to a smaller size.
+<Steps>
+  <Step title="Select the entire sheet">
+    Click the small square at the intersection of column A and row 1 to select the entire sheet.
+  </Step>
+  <Step title="Shrink row 1">
+    Reduce the height of row 1 to a smaller size.
+  </Step>
+</Steps>
 
 You can watch this video as well:
 
@@ -20,38 +26,62 @@ You can watch this video as well:
 
 Open the CSV file in Excel, then:
 
-1. Select all the contacts.
-2. Click **Data**.
-3. Click **Text to Columns**.
-4. Make sure **Delimited** is selected and click **Next**.
+<Steps>
+  <Step title="Select the contacts">
+    Select all the contacts.
+  </Step>
+  <Step title="Open the Data tab">
+    Click **Data**.
+  </Step>
+  <Step title="Open Text to Columns">
+    Click **Text to Columns**.
+  </Step>
+  <Step title="Choose Delimited">
+    Make sure **Delimited** is selected and click **Next**.
 
-<Frame>
-  <img src="https://downloads.intercomcdn.eu/i/o/17659201/b1c8ba6c36da94724231a8eb/Screenshot+2024-07-29+at+11_39_14.png?expires=1780056000&signature=926757163b2eb652945c80993341acec83f1c39ef3b95ac77a6b0d1c6a156761&req=0dJpwFH4rDZk2hj99dpg6q2xESjk5bNFew6zgi%2FsiilU3zUdfnOLgKrsQk4m%0ABpCvFcQZGc%2FQZBolyP6FxI9S%0A" alt="Text to Columns wizard with Delimited selected" style="max-width:100%;height:auto;" />
-</Frame>
+    <Frame>
+      <img src="https://downloads.intercomcdn.eu/i/o/17659201/b1c8ba6c36da94724231a8eb/Screenshot+2024-07-29+at+11_39_14.png?expires=1780056000&signature=926757163b2eb652945c80993341acec83f1c39ef3b95ac77a6b0d1c6a156761&req=0dJpwFH4rDZk2hj99dpg6q2xESjk5bNFew6zgi%2FsiilU3zUdfnOLgKrsQk4m%0ABpCvFcQZGc%2FQZBolyP6FxI9S%0A" alt="Text to Columns wizard with Delimited selected" style="max-width:100%;height:auto;" />
+    </Frame>
+  </Step>
+  <Step title="Select the Comma delimiter">
+    Check **Comma** and click **Next**.
 
-5. Check **Comma** and click **Next**.
+    <Frame>
+      <img src="https://downloads.intercomcdn.eu/i/o/17659554/ce6ef0d1e7b49c14f32f83fe/Screenshot+2024-07-29+at+11_46_11.png?expires=1780056000&signature=20b384e71c155118f84f895c205dc12754172a880a87715e39604db05428cbbc&req=0dJpwFH%2FqTNk2hj99dpg6utOlfum4yDA8K0RqOeCKjri1pUJ5m4WZsKKCPtR%0AvCojrnLYrBFGSsXno%2BepvBwK%0A" alt="Text to Columns wizard with Comma delimiter selected" style="max-width:100%;height:auto;" />
+    </Frame>
+  </Step>
+  <Step title="Finish the import">
+    Select **General** and click **Finish**.
 
-<Frame>
-  <img src="https://downloads.intercomcdn.eu/i/o/17659554/ce6ef0d1e7b49c14f32f83fe/Screenshot+2024-07-29+at+11_46_11.png?expires=1780056000&signature=20b384e71c155118f84f895c205dc12754172a880a87715e39604db05428cbbc&req=0dJpwFH%2FqTNk2hj99dpg6utOlfum4yDA8K0RqOeCKjri1pUJ5m4WZsKKCPtR%0AvCojrnLYrBFGSsXno%2BepvBwK%0A" alt="Text to Columns wizard with Comma delimiter selected" style="max-width:100%;height:auto;" />
-</Frame>
-
-6. Select **General** and click **Finish**.
-
-<Frame>
-  <img src="https://downloads.intercomcdn.eu/i/o/17659573/d20727239b1beec490da88cc/Screenshot+2024-07-29+at+11_46_19.png?expires=1780056000&signature=c9bd1331ae4af6b4ad2b050216e180183f9b552893ff3343107b17854693bbdc&req=0dJpwFH%2FqzRk2hj99dpg6vCNXNthQCXPyGt2NsHy86jOKHyS3S7lliA1wO6G%0A%2FEcEYGflIjuWcaBxZKw%2FxxyK%0A" alt="Text to Columns wizard with General column format selected" style="max-width:100%;height:auto;" />
-</Frame>
+    <Frame>
+      <img src="https://downloads.intercomcdn.eu/i/o/17659573/d20727239b1beec490da88cc/Screenshot+2024-07-29+at+11_46_19.png?expires=1780056000&signature=c9bd1331ae4af6b4ad2b050216e180183f9b552893ff3343107b17854693bbdc&req=0dJpwFH%2FqzRk2hj99dpg6vCNXNthQCXPyGt2NsHy86jOKHyS3S7lliA1wO6G%0A%2FEcEYGflIjuWcaBxZKw%2FxxyK%0A" alt="Text to Columns wizard with General column format selected" style="max-width:100%;height:auto;" />
+    </Frame>
+  </Step>
+</Steps>
 
 ## Option 3 - Import the file into a new sheet
 
-1. Open an empty new sheet in Excel.
-2. Click **Data**.
-3. Click **Get Data → From A File → From Text/CSV** and select the exported file.
-4. Make sure the File Origin dropdown shows **65001: Unicode (UTF-8)**.
-5. Click **Load**.
+<Steps>
+  <Step title="Open a new sheet">
+    Open an empty new sheet in Excel.
+  </Step>
+  <Step title="Open the Data tab">
+    Click **Data**.
+  </Step>
+  <Step title="Import the exported file">
+    Click **Get Data → From A File → From Text/CSV** and select the exported file.
+  </Step>
+  <Step title="Check the file origin encoding">
+    Make sure the File Origin dropdown shows **65001: Unicode (UTF-8)**.
+  </Step>
+  <Step title="Load the file">
+    Click **Load**.
 
-<Frame>
-  <img src="https://lusha.intercom-attachments.eu/i/o/17656898/7606a8bcdeaa7045268c8949/image.png?expires=1780056000&signature=155b8e5e7141652ff9165f2a3718b34d655026b20a48ab35386bf123d17eeb2a&req=0dJpwF7ypT9k2hj99dpg6oMVAa8n5UjoZ5usFnqSK7aQXfJYpVVRuFWqBh8L%0ARD9hAkXCTRWL3aX5Zermn7Xf%0A" alt="Importing a CSV file into a new Excel sheet with UTF-8 encoding" style="max-width:100%;height:auto;" />
-</Frame>
+    <Frame>
+      <img src="https://lusha.intercom-attachments.eu/i/o/17656898/7606a8bcdeaa7045268c8949/image.png?expires=1780056000&signature=155b8e5e7141652ff9165f2a3718b34d655026b20a48ab35386bf123d17eeb2a&req=0dJpwF7ypT9k2hj99dpg6oMVAa8n5UjoZ5usFnqSK7aQXfJYpVVRuFWqBh8L%0ARD9hAkXCTRWL3aX5Zermn7Xf%0A" alt="Importing a CSV file into a new Excel sheet with UTF-8 encoding" style="max-width:100%;height:auto;" />
+    </Frame>
+  </Step>
+</Steps>
 
 ## Option 4 - Update the CSV delimiter in Excel
 
@@ -63,9 +93,19 @@ In many European countries, commas are used as decimal separators, so Excel uses
 
 ## Option 5 Import the file into Google Sheets
 
-1. Open a new Google Sheets file at [https://sheets.new/](https://sheets.new/).
-2. Click **File → Open**.
-3. Choose **Upload** and select the exported file.
-4. The file should display correctly. To download it as a properly formatted CSV, click **File → Download → Comma-separated values (CSV)**.
+<Steps>
+  <Step title="Open a new Google Sheets file">
+    Open a new Google Sheets file at [https://sheets.new/](https://sheets.new/).
+  </Step>
+  <Step title="Open the file menu">
+    Click **File → Open**.
+  </Step>
+  <Step title="Upload the exported file">
+    Choose **Upload** and select the exported file.
+  </Step>
+  <Step title="Download as a proper CSV">
+    The file should display correctly. To download it as a properly formatted CSV, click **File → Download → Comma-separated values (CSV)**.
+  </Step>
+</Steps>
 
 Still having trouble? Export a new file and send it to [support@lusha.com](mailto:support@lusha.com), or contact the support team via live chat from the [Lusha website](http://www.lusha.com/) or your [Lusha Dashboard](http://dashboard.lusha.com/dashboard).

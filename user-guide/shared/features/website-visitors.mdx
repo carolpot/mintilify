@@ -53,18 +53,33 @@ Setup requires two steps: configuring your domain and installing a lightweight t
 
 ## Step 1 - Add and configure your domain
 
-1. Click **Website visits** in the left-hand navigation menu.
-2. Go to **Account Settings** (the gear icon ⚙️, left navigation) → **Website visits** tab.
-3. Click **Add domain** and enter your website URL (e.g., `https://www.yourcompany.com`).
+<Steps>
+  <Step title="Open Website Visitors">
+    Click **Website visits** in the left-hand navigation menu.
+  </Step>
+  <Step title="Open the Website visits settings tab">
+    Go to **Account Settings** (the gear icon ⚙️, left navigation) → **Website visits** tab.
+  </Step>
+  <Step title="Add your domain">
+    Click **Add domain** and enter your website URL (e.g., `https://www.yourcompany.com`).
 
-![Add domain settings](/img/website-visitors/add-domain-modal.png)
+    ![Add domain settings](/img/website-visitors/add-domain-modal.png)
+  </Step>
+  <Step title="Set high-priority pages">
+    Enter URL paths like `/pricing` or `/demo`. Visits to these pages will increase a company's Intent Score.
+  </Step>
+  <Step title="Exclude pages (optional)">
+    Enter paths like `/careers` or `/blog` to avoid spending credits on non-sales traffic.
+  </Step>
+  <Step title="Exclude countries (optional)">
+    Select countries to ignore if you only sell in specific regions.
+  </Step>
+  <Step title="Save the domain">
+    Click **Add domain** to save.
 
-4. Set high-priority pages - enter URL paths like `/pricing` or `/demo`. Visits to these pages will increase a company's Intent Score.
-5. Exclude pages (optional) - enter paths like `/careers` or `/blog` to avoid spending credits on non-sales traffic.
-6. Exclude countries (optional) - select countries to ignore if you only sell in specific regions.
-7. Click **Add domain** to save.
-
-![Domain configuration settings](/img/website-visitors/domains-table.png)
+    ![Domain configuration settings](/img/website-visitors/domains-table.png)
+  </Step>
+</Steps>
 
 <Tip>
 Prioritising high-intent pages like `/pricing` and `/demo` means companies that visit those pages are flagged as Hot sooner, helping your sales team focus on the most engaged accounts.
@@ -76,17 +91,37 @@ The tracking pixel is a lightweight JavaScript snippet (loads in under 50ms) tha
 
 **Manual installation:**
 
-1. In the Website Visitors settings, copy your unique tracking pixel code.
-2. Paste it into the `<head>` section of your website.
-3. Return to Lusha and click **Verify Installation** to confirm it is working.
+<Steps>
+  <Step title="Copy the tracking pixel code">
+    In the Website Visitors settings, copy your unique tracking pixel code.
+  </Step>
+  <Step title="Paste the code into your site">
+    Paste it into the `<head>` section of your website.
+  </Step>
+  <Step title="Verify the installation">
+    Return to Lusha and click **Verify Installation** to confirm it is working.
+  </Step>
+</Steps>
 
 **Via Google Tag Manager:**
 
-1. In Google Tag Manager, create a new **Custom HTML** tag.
-2. Paste your tracking pixel code into the tag.
-3. Set the trigger to **All Pages**.
-4. Publish the container.
-5. Pixel active and waiting for matches. Your installation was successful.
+<Steps>
+  <Step title="Create a Custom HTML tag">
+    In Google Tag Manager, create a new **Custom HTML** tag.
+  </Step>
+  <Step title="Paste the tracking pixel code">
+    Paste your tracking pixel code into the tag.
+  </Step>
+  <Step title="Set the trigger to All Pages">
+    Set the trigger to **All Pages**.
+  </Step>
+  <Step title="Publish the container">
+    Publish the container.
+  </Step>
+  <Step title="Confirm the pixel is active">
+    Pixel active and waiting for matches. Your installation was successful.
+  </Step>
+</Steps>
 
 <Note>
 Data typically begins appearing in your dashboard within **24 to 48 hours** of installation.
@@ -96,9 +131,17 @@ Data typically begins appearing in your dashboard within **24 to 48 hours** of i
 
 You can control how many credits Website Visitors can spend each month by setting a credit limit on your domain. This keeps identification costs predictable without stopping you from seeing returning visitors or companies already saved to your tables.
 
-1. In **Settings → Website visits**, find the **Credit Limit** field for your domain.
-2. Enter a credit amount, or leave it empty for no limit.
-3. Click **Save**.
+<Steps>
+  <Step title="Find the credit limit field">
+    In **Settings → Website visits**, find the **Credit Limit** field for your domain.
+  </Step>
+  <Step title="Set the credit amount">
+    Enter a credit amount, or leave it empty for no limit.
+  </Step>
+  <Step title="Save the limit">
+    Click **Save**.
+  </Step>
+</Steps>
 
 The credit limit works as follows:
 
