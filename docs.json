@@ -672,12 +672,14 @@
                 "pages": [
                   "user-guide/index",
                   "user-guide/overview",
+                  "user-guide/dashboard",
                   "user-guide/getting-started/lusha-glossary"
                 ]
               },
               {
                 "group": "Getting Started",
                 "icon": "list-check",
+                "root": "user-guide/getting-started/index",
                 "pages": [
                   "user-guide/getting-started/index",
                   "user-guide/getting-started/introduction-to-lusha",
@@ -737,6 +739,7 @@
                   "user-guide/search-and-lists",
                   {
                     "group": "Introduction & Agentic Search",
+                    "icon": "wand-magic-sparkles",
                     "pages": [
                       "user-guide/introduction-and-getting-started/workspace-ai-powered-table-building",
                       "user-guide/building-your-workspace-tables/how-to-use-the-ai-chat-to-build-a-table",
@@ -746,6 +749,7 @@
                   },
                   {
                     "group": "Building & Filtering Tables",
+                    "icon": "filter",
                     "pages": [
                       "user-guide/building-your-workspace-tables/using-workspace-filters-contact-and-company-filter-panel",
                       "user-guide/building-your-workspace-tables/how-to-build-your-first-api-request-using-tables",
@@ -757,6 +761,7 @@
                   },
                   {
                     "group": "Account-Based Workspace (Beta)",
+                    "icon": "building",
                     "pages": [
                       "user-guide/getting-started-with-prospecting/account-based-prospecting-beta",
                       "user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/account-based-prospecting-filters-overview",
@@ -767,6 +772,7 @@
                   },
                   {
                     "group": "Managing Views, Signals & Sharing",
+                    "icon": "share-nodes",
                     "pages": [
                       "user-guide/shared/tables/working-inside-a-saved-workspace-table",
                       "user-guide/enriching-with-data-and-signals/workspace-enrichment-lusha-data-vs-ai-data-columns",
@@ -786,6 +792,7 @@
                 "pages": [
                   {
                     "group": "Getting Started with Prospecting",
+                    "icon": "flag",
                     "pages": [
                       "user-guide/getting-started-with-prospecting/getting-started-with-lusha-prospecting",
                       "user-guide/getting-started-with-prospecting/lushas-flex-search",
@@ -800,6 +807,7 @@
                   },
                   {
                     "group": "Core Filters",
+                    "icon": "sliders",
                     "pages": [
                       "user-guide/shared/filters/filters-breakdown-how-to-reach-your-icp",
                       "user-guide/shared/filters/technology-filter-technographics",
@@ -810,6 +818,7 @@
                   },
                   {
                     "group": "Intent Data",
+                    "icon": "signal",
                     "pages": [
                       "user-guide/intent/what-is-lusha-intent",
                       "user-guide/intent/how-to-use-lushas-intent-solution"
@@ -817,6 +826,7 @@
                   },
                   {
                     "group": "Saving Searches to Tables",
+                    "icon": "floppy-disk",
                     "pages": [
                       "user-guide/shared/tables/working-inside-a-saved-workspace-table",
                       "user-guide/managing-and-exporting-data/adding-contacts-to-an-existing-workspace-table",
@@ -825,6 +835,7 @@
                   },
                   {
                     "group": "Exports & CSVs",
+                    "icon": "file-export",
                     "pages": [
                       "user-guide/export/export-contacts-to-csv-file",
                       "user-guide/export/export-company-data-to-csv",
@@ -853,6 +864,7 @@
                 "pages": [
                   {
                     "group": "AI Recommendations",
+                    "icon": "sparkles",
                     "pages": [
                       "user-guide/ai-recommendations/how-ai-recommendations-work",
                       "user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations",
@@ -863,6 +875,7 @@
                   },
                   {
                     "group": "Event-Based Recommendations",
+                    "icon": "bolt",
                     "pages": [
                       "user-guide/event-based-recommendations/activity-based-recommendations",
                       "user-guide/event-based-recommendations/crm-based-recommendations",
@@ -878,6 +891,7 @@
                 "pages": [
                   {
                     "group": "Getting Started with Conversations",
+                    "icon": "flag",
                     "pages": [
                       "user-guide/getting-started-with-conversations/lusha-conversations-overview",
                       "user-guide/getting-started-with-conversations/how-to-connect-your-calendar-to-lusha-conversations",
@@ -887,6 +901,7 @@
                   },
                   {
                     "group": "Using the Platform",
+                    "icon": "layer-group",
                     "pages": [
                       "user-guide/using-the-platform/deal-view-in-lusha-conversations",
                       "user-guide/using-the-platform/using-the-snippets-library",
@@ -897,12 +912,14 @@
                   },
                   {
                     "group": "Team & Administration",
+                    "icon": "user-gear",
                     "pages": [
                       "user-guide/team-and-administration/coaching-your-team-with-lusha-conversations"
                     ]
                   },
                   {
                     "group": "Trust & Compliance",
+                    "icon": "shield-halved",
                     "pages": [
                       "user-guide/trust-and-compliance/lusha-conversations-data-security-and-compliance"
                     ]
@@ -931,6 +948,7 @@
                   "user-guide/extension/lusha-extension-for-recruiters",
                   {
                     "group": "Sales Navigator \u2013 Bulk Enrichment",
+                    "icon": "linkedin",
                     "pages": [
                       "user-guide/sales-navigator-bulk-enrichment/bulk-enrichment-over-linkedin-sales-navigator",
                       "user-guide/sales-navigator-bulk-enrichment/bulk-save-to-table-on-linkedin-sales-navigator",
@@ -939,6 +957,7 @@
                   },
                   {
                     "group": "Lusha Everywhere",
+                    "icon": "globe",
                     "pages": [
                       "user-guide/lusha-everywhere/what-is-lusha-everywhere",
                       "user-guide/lusha-everywhere/enabling-lusha-everywhere-in-every-b2b-website",
@@ -949,6 +968,7 @@
                   },
                   {
                     "group": "FAQs & Troubleshooting",
+                    "icon": "circle-question",
                     "pages": [
                       "user-guide/faqs-and-troubleshooting/cancel-lusha-extension-auto-open",
                       "user-guide/faqs-and-troubleshooting/how-to-update-your-lusha-extension",
@@ -968,6 +988,7 @@
                   "user-guide/engage-and-sequences",
                   {
                     "group": "Getting Started with Engage",
+                    "icon": "flag",
                     "pages": [
                       "user-guide/getting-started-with-engage/what-is-lusha-engage",
                       "user-guide/getting-started-with-engage/send-a-one-time-email-from-a-table"
@@ -975,6 +996,7 @@
                   },
                   {
                     "group": "Building Sequences",
+                    "icon": "hammer",
                     "pages": [
                       "user-guide/building-sequences/how-to-compose-your-email-sequence",
                       "user-guide/building-sequences/how-lusha-composes-ai-email-sequences",
@@ -987,6 +1009,7 @@
                   },
                   {
                     "group": "Manage Sequences",
+                    "icon": "list-check",
                     "pages": [
                       "user-guide/manage-sequences/overview-and-optimize-your-sequences",
                       "user-guide/manage-sequences/auto-sequence",
@@ -996,6 +1019,7 @@
                   },
                   {
                     "group": "Performance & Troubleshooting",
+                    "icon": "gauge-high",
                     "pages": [
                       "user-guide/performance-and-troubleshooting/email-limits-best-practices",
                       "user-guide/performance-and-troubleshooting/engage-sending-limits-by-email-provider",
@@ -1028,6 +1052,7 @@
                   "user-guide/getting-started-with-slack",
                   {
                     "group": "Integration Basics",
+                    "icon": "book",
                     "pages": [
                       "user-guide/integrations-basics/crm-permissions-required-for-lusha-integration",
                       "user-guide/integrations-basics/fields-for-field-mapping-and-descriptions",
@@ -1040,6 +1065,7 @@
                   },
                   {
                     "group": "Salesforce",
+                    "icon": "cloud",
                     "pages": [
                       "user-guide/salesforce/salesforce-integration",
                       "user-guide/salesforce/salesforce-identifier-indicator",
@@ -1050,6 +1076,7 @@
                   },
                   {
                     "group": "HubSpot",
+                    "icon": "circle-nodes",
                     "pages": [
                       "user-guide/hubspot/hubspot-integration",
                       "user-guide/hubspot/hubspot-identifier-indicator",
@@ -1061,6 +1088,7 @@
                   },
                   {
                     "group": "Bullhorn",
+                    "icon": "bullhorn",
                     "pages": [
                       "user-guide/bullhorn/bullhorn-integration",
                       "user-guide/bullhorn/bullhorn-identifier-indicator",
@@ -1069,6 +1097,7 @@
                   },
                   {
                     "group": "Pipedrive",
+                    "icon": "chart-line",
                     "pages": [
                       "user-guide/pipedrive/pipedrive-integration",
                       "user-guide/pipedrive/pipedrive-common-errors"
@@ -1076,18 +1105,21 @@
                   },
                   {
                     "group": "Outreach",
+                    "icon": "paper-plane",
                     "pages": [
                       "user-guide/outreach/outreach-integration"
                     ]
                   },
                   {
                     "group": "Salesloft",
+                    "icon": "layer-group",
                     "pages": [
                       "user-guide/salesloft/salesloft-integration"
                     ]
                   },
                   {
                     "group": "Zoho",
+                    "icon": "grip",
                     "pages": [
                       "user-guide/zoho/zoho-integration",
                       "user-guide/zoho/zoho-common-errors",
@@ -1096,6 +1128,7 @@
                   },
                   {
                     "group": "Dynamics",
+                    "icon": "microsoft",
                     "pages": [
                       "user-guide/dynamics/ms-dynamics-field-mapping",
                       "user-guide/dynamics/ms-dynamics-common-errors"
@@ -1103,12 +1136,14 @@
                   },
                   {
                     "group": "Capsule",
+                    "icon": "address-book",
                     "pages": [
                       "user-guide/capsule/capsule-integration"
                     ]
                   },
                   {
                     "group": "Lusha Partners",
+                    "icon": "handshake",
                     "pages": [
                       "user-guide/lusha-partners/chilipiper-integration",
                       "user-guide/lusha-partners/mondaycom-integration",
@@ -1137,6 +1172,7 @@
                   "user-guide/lushas-api/lusha-api-error-codes-reference",
                   {
                     "group": "Automations & Connectors",
+                    "icon": "plug-circle-bolt",
                     "pages": [
                       "user-guide/automations-connectors/lusha-connectors-centralized-automation-hub",
                       "user-guide/automations-connectors/using-lusha-with-connectors-lusha-campus-plays",
@@ -1146,6 +1182,7 @@
                   },
                   {
                     "group": "MCP",
+                    "icon": "robot",
                     "pages": [
                       "user-guide/mcp/lusha-model-context-protocol-mcp-server",
                       "user-guide/mcp/using-lusha-inside-llms",
@@ -1168,6 +1205,7 @@
                   "user-guide/billing-and-plans",
                   {
                     "group": "Plans & Upgrades",
+                    "icon": "arrow-up-right-dots",
                     "pages": [
                       "user-guide/plans-and-upgrades/lushas-pricing-system-2",
                       "user-guide/plans-and-upgrades/how-to-upgrade-your-plan",
@@ -1178,6 +1216,7 @@
                   },
                   {
                     "group": "Billing & Payments",
+                    "icon": "receipt",
                     "pages": [
                       "user-guide/billing-and-payments/why-was-my-payment-declined",
                       "user-guide/billing-and-payments/i-was-charged-unexpectedly-what-do-i-do",
@@ -1206,6 +1245,7 @@
                   "user-guide/team-management/how-to-see-each-team-members-credit-usage",
                   {
                     "group": "Team Capabilities & Permissions",
+                    "icon": "user-lock",
                     "pages": [
                       "user-guide/manage-your-team-capabilities/how-to-change-roles-within-your-account",
                       "user-guide/manage-your-team-capabilities/how-to-limit-credits-per-user-or-group",
@@ -1214,6 +1254,7 @@
                   },
                   {
                     "group": "Manage Your Users",
+                    "icon": "users-gear",
                     "pages": [
                       "user-guide/manage-your-users/how-to-invite-a-user-to-your-plan",
                       "user-guide/manage-your-users/how-to-accept-an-invitation-to-join-an-account",
@@ -1223,6 +1264,7 @@
                   },
                   {
                     "group": "Analytics & Usage",
+                    "icon": "chart-column",
                     "pages": [
                       "user-guide/usage-analytics/understanding-the-analytics-dashboard",
                       "user-guide/lushas-api/api-usage-analytics",
@@ -1243,6 +1285,7 @@
                   "legal/terms",
                   {
                     "group": "Security",
+                    "icon": "lock",
                     "pages": [
                       "user-guide/security/lusha-security-overview",
                       "user-guide/security/okta-saml-20-setup-for-lusha-sso",
@@ -1253,6 +1296,7 @@
                   },
                   {
                     "group": "Privacy & Compliance",
+                    "icon": "user-shield",
                     "pages": [
                       "user-guide/privacy-and-compliance/how-can-i-ensure-compliance-with-privacy-laws-when-using-lushas-data-for-b2b-out",
                       "user-guide/privacy-and-compliance/what-are-my-rights-as-a-data-subject",
