@@ -1,5 +1,5 @@
 ---
-title: "Industry Taxonomy Update for CRM Integration"
+title: "Industry taxonomy update for CRM integration"
 description: "How to update your CRM integration after Lusha's November 2025 industry taxonomy changes, including picktable and field mapping updates."
 ---
 
@@ -24,27 +24,28 @@ This taxonomy update is relevant if you:
 
 The update process depends on your CRM field type. Follow these steps:
 
-1. **Check your field mapping**
+<Steps>
+  <Step title="Check your field mapping">
+    - Navigate to Lusha CRM Integration → Manage → Field Mapping
+    - Verify if you're using the Industry or Sub-Industry fields
+  </Step>
+  <Step title="Identify your CRM field type">
+    - In your CRM, check the field type for Industry and Sub-Industry fields
+    - Determine if each field is configured as:
 
-   - Navigate to Lusha CRM Integration → Manage → Field Mapping
-   - Verify if you're using the Industry or Sub-Industry fields
-
-1. **Identify your CRM field type**
-
-   - In your CRM, check the field type for Industry and Sub-Industry fields
-   - Determine if each field is configured as:
-
-     - **Text/String field** - No action needed
-     - **Picktable field** - Continue to Step 3
-2. **Update picktable values (if applicable)**
-
-   - Download the complete table of new industries
-   - In your CRM, update your picktable values to match the new taxonomy
-   - Ensure both active and inactive values are updated to prevent data sync issues
-3. **Test your integration**
-
-   - Sync a few test contacts to verify data flows correctly
-   - Check that industry values appear as expected in your CRM
+      - **Text/String field** - No action needed
+      - **Picktable field** - Continue to Step 3
+  </Step>
+  <Step title="Update picktable values (if applicable)">
+    - Download the complete table of new industries
+    - In your CRM, update your picktable values to match the new taxonomy
+    - Ensure both active and inactive values are updated to prevent data sync issues
+  </Step>
+  <Step title="Test your integration">
+    - Sync a few test contacts to verify data flows correctly
+    - Check that industry values appear as expected in your CRM
+  </Step>
+</Steps>
 
 ## CRM-specific instructions
 

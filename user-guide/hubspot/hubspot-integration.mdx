@@ -11,11 +11,23 @@ You must be both a Lusha Admin and a HubSpot Admin to set up the integration. On
 
 ## Step 1: Connect HubSpot to Lusha
 
-1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/).
-2. Go to **Settings → [Integrations](https://dashboard.lusha.com/lusha-integrations)** and select **HubSpot**.
-3. Click **Connect** - you'll be taken to the HubSpot login page.
-4. Sign in to HubSpot. (If you're already logged in, this step is skipped.)
-5. Click **Continue to field mapping**.
+<Steps>
+  <Step title="Log in to Lusha">
+    Log in to your [Lusha dashboard](https://dashboard.lusha.com/).
+  </Step>
+  <Step title="Select HubSpot from Integrations">
+    Go to **Settings → [Integrations](https://dashboard.lusha.com/lusha-integrations)** and select **HubSpot**.
+  </Step>
+  <Step title="Click Connect">
+    Click **Connect** - you'll be taken to the HubSpot login page.
+  </Step>
+  <Step title="Sign in to HubSpot">
+    Sign in to HubSpot. (If you're already logged in, this step is skipped.)
+  </Step>
+  <Step title="Continue to field mapping">
+    Click **Continue to field mapping**.
+  </Step>
+</Steps>
 
 ## Step 2: Configure field mapping
 
@@ -31,7 +43,7 @@ By default, all contacts exported to HubSpot are owned by the HubSpot user who c
 
 **Contact**
 
-| Lusha field | HubSpot field |
+| Lusha Field | HubSpot Field |
 | --- | --- |
 | Email 1 | Email |
 | Phone 1 | Phone |
@@ -43,7 +55,7 @@ By default, all contacts exported to HubSpot are owned by the HubSpot user who c
 
 **Companies**
 
-| Lusha field | HubSpot field |
+| Lusha Field | HubSpot Field |
 | --- | --- |
 | Company Name | Name |
 | Company Phone | Phone |
@@ -60,16 +72,34 @@ For a full table of available Lusha fields, see [Fields for field mapping and de
 
 ## Step 3: Add predefined value fields (optional)
 
-1. Choose a record type (Contacts or Companies).
-2. Click **+ Add field** and select **Predefined Value**.
-3. Select a HubSpot field and enter the fixed value.
-4. Click **Save changes** before switching tabs.
+<Steps>
+  <Step title="Choose a record type">
+    Choose a record type (Contacts or Companies).
+  </Step>
+  <Step title="Add a predefined value field">
+    Click **+ Add field** and select **Predefined Value**.
+  </Step>
+  <Step title="Set the field and value">
+    Select a HubSpot field and enter the fixed value.
+  </Step>
+  <Step title="Save changes">
+    Click **Save changes** before switching tabs.
+  </Step>
+</Steps>
 
 ## Step 4: Set up conditional field mapping (optional)
 
-1. In Field mapping, click **Advanced** next to **Email 1** or **Phone 1**.
-2. Use the **Map** dropdown to define the condition and value.
-3. Click **Apply**, then **Save changes**.
+<Steps>
+  <Step title="Open Advanced mapping">
+    In Field mapping, click **Advanced** next to **Email 1** or **Phone 1**.
+  </Step>
+  <Step title="Define the condition and value">
+    Use the **Map** dropdown to define the condition and value.
+  </Step>
+  <Step title="Apply and save">
+    Click **Apply**, then **Save changes**.
+  </Step>
+</Steps>
 
 ## Account export preferences
 
@@ -77,9 +107,17 @@ For a full table of available Lusha fields, see [Fields for field mapping and de
 
 Admins can control whether new records are created in HubSpot when exporting from Lusha - for both Contacts and Companies.
 
-1. Go to **Settings → Integrations → HubSpot → [Settings tab](https://dashboard.lusha.com/lusha-integrations/advancedSettings/hubspot/settings)**.
-2. Use the **Contact** toggle to enable or disable new contact creation.
-3. Use the **Company** toggle to enable or disable new company record creation.
+<Steps>
+  <Step title="Open the HubSpot settings tab">
+    Go to **Settings → Integrations → HubSpot → [Settings tab](https://dashboard.lusha.com/lusha-integrations/advancedSettings/hubspot/settings)**.
+  </Step>
+  <Step title="Toggle contact creation">
+    Use the **Contact** toggle to enable or disable new contact creation.
+  </Step>
+  <Step title="Toggle company creation">
+    Use the **Company** toggle to enable or disable new company record creation.
+  </Step>
+</Steps>
 
 <Note>
 These settings apply to all team members in your account.
@@ -125,8 +163,14 @@ If HubSpot is rejecting contact exports due to an owner field error, check that 
 
 You can connect directly without using the Marketplace:
 
-1. Go to **Settings → Integrations → HubSpot → Connect** in Lusha.
-2. Verify Marketplace access or regional availability in your HubSpot account if needed.
+<Steps>
+  <Step title="Connect directly from Lusha">
+    Go to **Settings → Integrations → HubSpot → Connect** in Lusha.
+  </Step>
+  <Step title="Check Marketplace access">
+    Verify Marketplace access or regional availability in your HubSpot account if needed.
+  </Step>
+</Steps>
 
 ## Duplicate contacts are being created in HubSpot after exporting from Lusha
 
@@ -134,9 +178,17 @@ If Lusha is creating new contact records instead of updating existing ones, the 
 
 **Step 1: Check your identifier configuration**
 
-1. Go to **Settings → Integrations → HubSpot → HubSpot Identifier tab**.
-2. Confirm that an identifier is set up for Contacts (email address is the most reliable match field).
-3. If no identifier is configured, set one up now - Lusha will use it for all future exports.
+<Steps>
+  <Step title="Open the HubSpot Identifier tab">
+    Go to **Settings → Integrations → HubSpot → HubSpot Identifier tab**.
+  </Step>
+  <Step title="Confirm an identifier is set for Contacts">
+    Confirm that an identifier is set up for Contacts (email address is the most reliable match field).
+  </Step>
+  <Step title="Set up an identifier if missing">
+    If no identifier is configured, set one up now - Lusha will use it for all future exports.
+  </Step>
+</Steps>
 
 **Step 2: Confirm the matching fields contain data**
 
@@ -146,8 +198,14 @@ If you're matching on email but contacts in Lusha don't have an email address re
 
 HubSpot has a built-in duplicate management tool. To merge existing duplicates:
 
-1. In HubSpot, go to **Contacts → Actions → Manage duplicates**.
-2. Review the suggested duplicate pairs and click **Merge** to consolidate records.
+<Steps>
+  <Step title="Open Manage duplicates">
+    In HubSpot, go to **Contacts → Actions → Manage duplicates**.
+  </Step>
+  <Step title="Review and merge duplicate pairs">
+    Review the suggested duplicate pairs and click **Merge** to consolidate records.
+  </Step>
+</Steps>
 
 <Warning>
 Merging contacts in HubSpot is irreversible. Review each pair carefully before confirming.

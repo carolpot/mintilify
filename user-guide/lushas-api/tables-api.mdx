@@ -18,8 +18,8 @@ Tables are structured, configurable sets of contacts or companies. Through the A
 
 There are two separate table types, each with its own set of endpoints:
 
-| Table type | Tag in API docs | What it stores |
-|---|---|---|
+| Table Type | Tag in API Docs | What It Stores |
+| --- | --- | --- |
 | Contacts Tables | `Contacts Tables` | Individual contacts with enrichment, Signals, and contact-level data |
 | Companies Tables | `Companies Tables` | Company records with firmographics, tech stack, Signals, and company-level data |
 
@@ -34,12 +34,14 @@ Every call must also include an `owner.email` value - the email of a user on you
 - For `POST` and `PATCH` calls: pass `owner` as a body field - `{ "owner": { "email": "you@company.com" } }`
 - For `GET` and `DELETE` calls (no body): pass `?email=you@company.com` as a query parameter
 
-💡 **Note:** OAuth and token-based callers are already identified by their token, so `owner.email` is optional for those authentication methods.
+<Note>
+OAuth and token-based callers are already identified by their token, so `owner.email` is optional for those authentication methods.
+</Note>
 
 ## Limits
 
 | Limit | Value |
-|---|---|
+| --- | --- |
 | Entities per add/remove call | Up to 500 |
 | Entities per table | Max 50,000 |
 | Tables per account | Max 500 |
@@ -61,7 +63,7 @@ Tables API errors use a different response shape than other Lusha API endpoints:
 Common Tables-specific error codes:
 
 | Code | Status | Meaning |
-|---|---|---|
+| --- | --- | --- |
 | `TABLE_NOT_FOUND` | 404 | The `table_id` doesn't exist or isn't accessible to this account |
 | `COLUMN_NOT_FOUND` | 404 | The `column_id` doesn't exist on the given table |
 | `TABLE_NAME_CONFLICT` | 409 | A table with this name already exists |

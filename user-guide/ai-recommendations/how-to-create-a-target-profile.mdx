@@ -1,11 +1,11 @@
 ---
-title: "How to Create a Target Profile"
+title: "How to create a Target Profile"
 description: "Learn how to set up a Target Profile in ICP Hub so your AI recommendations match the companies and contacts you actually want to reach."
 ---
 
 A Target Profile tells Lusha's recommendation engine who your ideal customers are. Once saved, it runs continuously in the background and shapes the contacts and companies surfaced in your recommendation lists. You can create up to 10 Target Profiles per user.
 
-## Before You Start
+## Before you start
 
 - You need a Lusha account on any plan (Free, Pro, Premium, or Scale).
 - To use CRM-based exclusions, your account Admin must first connect and consent to a CRM integration in ICP Hub. See **[ICP Hub: How AI Recommendations Work](https://info.lusha.com/en/articles/662006-icp-hub-how-ai-recommendations-work)** for details.
@@ -16,9 +16,17 @@ Already searching in Workspace? If you've built a search using ICP-supported fil
 
 ## Step 1: Open ICP Hub
 
-1. **Log in** to your Lusha account.
-2. Open the **Profile dropdown** at the top right and select **ICP Hub**.
-3. Click **+ New ICP** or, if this is your first time, follow the onboarding prompt to define your first profile.
+<Steps>
+  <Step title="Log in to your account">
+    **Log in** to your Lusha account.
+  </Step>
+  <Step title="Open ICP Hub">
+    Open the **Profile dropdown** at the top right and select **ICP Hub**.
+  </Step>
+  <Step title="Start a new profile">
+    Click **+ New ICP** or, if this is your first time, follow the onboarding prompt to define your first profile.
+  </Step>
+</Steps>
 
 <Note>
 If you haven't set up an ICP yet, you'll already have a feed on your Home page - labeled "Lusha generated" - based on your account history. Creating a Target Profile replaces this with a scored feed tailored to your actual targets.
@@ -26,12 +34,12 @@ If you haven't set up an ICP yet, you'll already have a feed on your Home page -
 
 ![ICP Hub new profile screen](https://downloads.intercomcdn.eu/i/o/yu27vhse/138303127/ec77c667bd89f9117caf06698bee/da49216c-719b-42f0-9b41-9610e60da438)
 
-## Step 2: Name Your Target Profile
+## Step 2: Name your Target Profile
 
 1. Enter a name for this profile in the **Profile Name** field.
 2. Choose a name that reflects the segment you're targeting - for example, "Mid-Market SaaS – VP Sales" or "Enterprise EMEA".
 
-## Step 3: Set Your Account Criteria
+## Step 3: Set your Account Criteria
 
 Account Criteria define the types of companies you want to reach.
 
@@ -47,7 +55,7 @@ Supported filters include:
 
 2. Each filter you add is applied as a **Must Include** criterion - a strict filter that excludes companies that don't match.
 
-## Step 4: Set Your Persona Criteria
+## Step 4: Set your Persona Criteria
 
 Persona Criteria define the contacts - the specific buyers or decision-makers - within your target accounts.
 
@@ -67,7 +75,7 @@ Supported filters include:
 
 3. Each filter you add is applied as a **Must Include** criterion - contacts that don't match are excluded.
 
-## Step 5: Review Your Potential Population
+## Step 5: Review your potential population
 
 As you build your Target Profile, Lusha displays the estimated number of contacts and companies that match your Must Include criteria.
 
@@ -78,21 +86,27 @@ As you build your Target Profile, Lusha displays the estimated number of contact
 The preview shows a limited set of matching contacts and companies so you can verify relevance before saving.
 </Warning>
 
-## Step 6: Configure Exclusion Rules (Optional)
+## Step 6: Configure Exclusion Rules (optional)
 
 Exclusion Rules prevent certain contacts or companies from appearing in your recommendations.
 
-1. Under **Exclusion Rules**, choose what to exclude for contacts:
-   - **Shown contacts** - exclude contacts already shown to you, to any user, or no one (default: shown by me).
-   - **Saved contacts** - exclude contacts already saved (default: none).
-
-2. Choose what to exclude for companies:
-   - **Companies with shown contacts** - exclude companies where a threshold of contacts has already been revealed.
-   - **Saved companies** - exclude companies already saved.
-
-3. To exclude based on CRM records, select the CRM objects you want to use as exclusion criteria. Available objects depend on your connected CRM:
-   - **Salesforce:** Lead, Contact, Opportunity, Account
-   - **HubSpot:** Contacts, Companies, Deals
+<Steps>
+  <Step title="Choose contact exclusions">
+    Under **Exclusion Rules**, choose what to exclude for contacts:
+    - **Shown contacts** - exclude contacts already shown to you, to any user, or no one (default: shown by me).
+    - **Saved contacts** - exclude contacts already saved (default: none).
+  </Step>
+  <Step title="Choose company exclusions">
+    Choose what to exclude for companies:
+    - **Companies with shown contacts** - exclude companies where a threshold of contacts has already been revealed.
+    - **Saved companies** - exclude companies already saved.
+  </Step>
+  <Step title="Select CRM exclusion objects">
+    To exclude based on CRM records, select the CRM objects you want to use as exclusion criteria. Available objects depend on your connected CRM:
+    - **Salesforce:** Lead, Contact, Opportunity, Account
+    - **HubSpot:** Contacts, Companies, Deals
+  </Step>
+</Steps>
 
 <Warning>
 CRM-based exclusions are only available if your account Admin has connected a CRM and provided consent in ICP Hub. If you see a Connect CRM prompt, reach out to your admin.
@@ -104,7 +118,7 @@ To revoke a permission, go to **Integrations → Manage** and disable **CRM-base
 
 ![Exclusion Rules CRM configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/138303129/54b29d66eadc75e0fa7128340bfe/52f48172-879e-4073-b695-28ee89be1f22)
 
-## Step 7: Add Intent Topics (Optional)
+## Step 7: Add intent topics (optional)
 
 If your account has intent topics configured, you can include them in your Target Profile to boost recommendations from companies showing buying signals.
 
@@ -112,7 +126,7 @@ Under **Intent**, select the relevant intent topics for this profile.
 
 If no intent topics are configured for your account yet, click the prompt to set them up. Intent topics act as ranking boosters in AI recommendations - they don't exclude non-matching results, and they are not applied when using a Target Profile as a search filter.
 
-## Step 8: Save Your Target Profile
+## Step 8: Save your Target Profile
 
 Review your configuration.
 
@@ -128,7 +142,7 @@ Your saved Target Profile also becomes available as a filter preset in the Works
 Check your Home page the following day to see your updated feed. The Signals column shows you exactly why each lead surfaced based on your new profile.
 </Note>
 
-## Managing Your Target Profiles
+## Managing your Target Profiles
 
 From the ICP Hub, you can manage all your Target Profiles:
 

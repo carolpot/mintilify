@@ -55,7 +55,7 @@ Uses machine learning to find contacts and companies that mirror your best-perfo
 
 Enriches contacts and companies with timely sales intelligence like job moves, promotions, and company growth signals. Useful for triggering outreach at moments of change. See the [Signals API documentation](https://docs.lusha.com/apis/openapi/signals).
 
-## Credit Usage API
+## Credit usage API
 
 Returns current credit consumption by type. Rate limit: 5 requests per minute.
 
@@ -85,7 +85,7 @@ Credits are charged based on two factors: the data points revealed and the numbe
 
 **Data points (per reveal):**
 
-| Data point type | Credit cost |
+| Data Point Type | Credit Cost |
 | --- | --- |
 | Email | 1 credit |
 | Phone number | 5 credits |
@@ -93,7 +93,7 @@ Credits are charged based on two factors: the data points revealed and the numbe
 
 **Request type:**
 
-| Request type | Results returned | Credit cost |
+| Request Type | Results Returned | Credit Cost |
 | --- | --- | --- |
 | Single request | 1 contact/company | 1 credit per result |
 | Bulk request | Up to 25 results | 1 credit per 1–25 results |
@@ -112,10 +112,20 @@ Example: revealing an email and phone for one contact costs 7 credits total (5 f
 
 You can set monthly credit limits per API key to control consumption per workflow (e.g. Zapier, Make, or internal tools).
 
-1. In **API Hub**, click the **Manage API Keys** tab.
-2. Click the **edit (pencil) icon** or **Set limit** in the Credit usage column.
-3. In the Edit Key panel, toggle on the limit and enter the maximum credits allowed per month.
-4. Click **Continue**.
+<Steps>
+  <Step title="Open Manage API Keys">
+    In **API Hub**, click the **Manage API Keys** tab.
+  </Step>
+  <Step title="Open the key's credit limit">
+    Click the **edit (pencil) icon** or **Set limit** in the Credit usage column.
+  </Step>
+  <Step title="Set the monthly credit limit">
+    In the Edit Key panel, toggle on the limit and enter the maximum credits allowed per month.
+  </Step>
+  <Step title="Confirm">
+    Click **Continue**.
+  </Step>
+</Steps>
 
 <Note>
   Only Admins can set or edit credit limits. The sum of all individual API key limits cannot exceed your total account credit allowance. Limits reset automatically at the start of each billing cycle.
@@ -129,11 +139,23 @@ Each API key can have its own monthly credit cap set independently of your total
 
 **To check and fix the limit on your API key:**
 
-1. Go to **API Hub → Manage API Keys**.
-2. Find the key you're using and check the **Credit usage** column. If a limit is set and you've reached it, you'll see the cap amount here.
-3. Click the **edit (pencil) icon** next to the key.
-4. In the Edit Key panel, either increase the monthly credit limit or toggle the limit **off** to remove it entirely.
-5. Click **Continue** to save your changes.
+<Steps>
+  <Step title="Open Manage API Keys">
+    Go to **API Hub → Manage API Keys**.
+  </Step>
+  <Step title="Check the key's credit usage">
+    Find the key you're using and check the **Credit usage** column. If a limit is set and you've reached it, you'll see the cap amount here.
+  </Step>
+  <Step title="Edit the key">
+    Click the **edit (pencil) icon** next to the key.
+  </Step>
+  <Step title="Increase or remove the limit">
+    In the Edit Key panel, either increase the monthly credit limit or toggle the limit **off** to remove it entirely.
+  </Step>
+  <Step title="Save your changes">
+    Click **Continue** to save your changes.
+  </Step>
+</Steps>
 
 <Note>
   Only **Admins** can view and edit API key credit limits. If you don't have Admin access, ask your Lusha Admin to check the key's limit for you.

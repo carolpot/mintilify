@@ -15,9 +15,17 @@ This error means your Salesforce account has hit its daily API call limit, which
 
 To fix this:
 
-1. Ask your Salesforce Admin to increase the daily API limit. They can also adjust it in Lusha via **Settings → Integrations → Salesforce → [API request limit](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesforce/dataEnrichment)**.
-2. After changing the limit, disconnect and reconnect the Lusha–Salesforce integration for the update to take effect.
-3. Alternatively, wait 24 hours - the API limit resets daily.
+<Steps>
+  <Step title="Increase the daily API limit">
+    Ask your Salesforce Admin to increase the daily API limit. They can also adjust it in Lusha via **Settings → Integrations → Salesforce → [API request limit](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesforce/dataEnrichment)**.
+  </Step>
+  <Step title="Disconnect and reconnect the integration">
+    After changing the limit, disconnect and reconnect the Lusha–Salesforce integration for the update to take effect.
+  </Step>
+  <Step title="Or wait for the daily reset">
+    Alternatively, wait 24 hours - the API limit resets daily.
+  </Step>
+</Steps>
 
 ## Lead assignment rules issue
 
@@ -25,10 +33,20 @@ This error appears when a saved lead is automatically reassigned to another owne
 
 To fix this, your Salesforce Admin needs to add a new rule to bypass the existing assignment logic for Lusha-sourced leads:
 
-1. In Salesforce Setup, search for **Lead Assignment Rules**.
-2. Open the relevant rule and add a new entry at sort order **No. 1**.
-3. Set the condition: when **Lead Source** equals **Lusha**, then select **Do Not Reassign Owner**.
-4. Save the rule.
+<Steps>
+  <Step title="Find Lead Assignment Rules">
+    In Salesforce Setup, search for **Lead Assignment Rules**.
+  </Step>
+  <Step title="Add a new entry">
+    Open the relevant rule and add a new entry at sort order **No. 1**.
+  </Step>
+  <Step title="Set the condition">
+    Set the condition: when **Lead Source** equals **Lusha**, then select **Do Not Reassign Owner**.
+  </Step>
+  <Step title="Save the rule">
+    Save the rule.
+  </Step>
+</Steps>
 
 ## Bad value for restricted picktable field
 
@@ -54,10 +72,20 @@ This error means Salesforce is blocking the Lusha app from connecting. Some Sale
 
 To fix this:
 
-1. In Salesforce Setup, go to **Connected Apps OAuth Usage**.
-2. Find **Lusha Push to Salesforce** and unblock it.
-3. Review your OAuth policies to confirm third-party app connections are permitted.
-4. Adjust IP restrictions if needed to allow data push from Lusha.
+<Steps>
+  <Step title="Open Connected Apps OAuth Usage">
+    In Salesforce Setup, go to **Connected Apps OAuth Usage**.
+  </Step>
+  <Step title="Unblock the Lusha app">
+    Find **Lusha Push to Salesforce** and unblock it.
+  </Step>
+  <Step title="Review OAuth policies">
+    Review your OAuth policies to confirm third-party app connections are permitted.
+  </Step>
+  <Step title="Adjust IP restrictions">
+    Adjust IP restrictions if needed to allow data push from Lusha.
+  </Step>
+</Steps>
 
 ## The REST API is not enabled for this organization
 
@@ -102,10 +130,20 @@ Users experiencing this typically see one or more of the following:
 
 A Salesforce Admin needs to set the OAuth session policy for the Lusha connected app to prevent it from expiring with the org's general session timeout:
 
-1. In Salesforce Setup, go to **Apps → Connected Apps → Manage Connected Apps**.
-2. Find **Lusha** (or **Lusha Push to Salesforce**) and click **Edit Policies**.
-3. Under **Session Policies**, set **Timeout Value** to **24 hours** - or the longest value your organisation's policy permits.
-4. Save the changes.
+<Steps>
+  <Step title="Open Manage Connected Apps">
+    In Salesforce Setup, go to **Apps → Connected Apps → Manage Connected Apps**.
+  </Step>
+  <Step title="Edit the Lusha app's policies">
+    Find **Lusha** (or **Lusha Push to Salesforce**) and click **Edit Policies**.
+  </Step>
+  <Step title="Set the session timeout">
+    Under **Session Policies**, set **Timeout Value** to **24 hours** - or the longest value your organisation's policy permits.
+  </Step>
+  <Step title="Save the changes">
+    Save the changes.
+  </Step>
+</Steps>
 
 <Warning>
 If your Salesforce org enforces a session timeout at the profile or org level that's shorter than the connected app setting, the shorter timeout takes precedence. Ask your Salesforce Admin to review both the org-wide session settings (**Setup → Session Settings**) and any profile-level overrides.
@@ -113,8 +151,16 @@ If your Salesforce org enforces a session timeout at the profile or org level th
 
 ## How to reconnect after a session drop
 
-1. Go to **[Integrations](https://dashboard.lusha.com/lusha-integrations)** in your Lusha dashboard.
-2. Click **Connect** next to Salesforce and complete the OAuth flow.
-3. Your field mapping and settings are preserved - no reconfiguration is needed after reconnecting.
+<Steps>
+  <Step title="Open Integrations">
+    Go to **[Integrations](https://dashboard.lusha.com/lusha-integrations)** in your Lusha dashboard.
+  </Step>
+  <Step title="Reconnect Salesforce">
+    Click **Connect** next to Salesforce and complete the OAuth flow.
+  </Step>
+  <Step title="Settings are preserved">
+    Your field mapping and settings are preserved - no reconfiguration is needed after reconnecting.
+  </Step>
+</Steps>
 
 If none of the above resolves your issue, contact Lusha Support using the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com).

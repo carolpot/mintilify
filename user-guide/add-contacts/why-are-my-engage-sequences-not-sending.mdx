@@ -1,5 +1,5 @@
 ---
-title: "Why Are My Engage Sequences Not Sending?"
+title: "Why are my Engage sequences not sending?"
 description: "How to diagnose and fix Engage email sequences that have stopped sending or are stuck with contacts on \"Scheduled.\""
 ---
 
@@ -17,7 +17,7 @@ If your Engage sequences have stopped delivering, or most contacts are sitting o
 
 Every email provider caps how many messages you can send per day. When a sequence reaches that limit, the remaining contacts stay on "Scheduled" and resume automatically the next day - no action needed.
 
-| **Email provider** | **Default daily sending limit** |
+| Email Provider | Default Daily Sending Limit |
 | --- | --- |
 | Gmail / Google Workspace | Up to 500 emails/day |
 | Microsoft 365 / Outlook | Up to 300 emails/day |
@@ -30,18 +30,36 @@ You can set a lower custom daily limit to protect your sender reputation. Go to 
 
 If your sender account has been disconnected, sequences stop sending entirely. This often happens when an OAuth session expires with Google or Microsoft.
 
-1. Go to **Engage → Settings → Email Account**.
-2. Check whether your account shows as **Connected**.
-3. If you see a warning or a **Reconnect** prompt, click **Reconnect** and sign in again.
-4. Return to your sequence - it should resume automatically.
+<Steps>
+  <Step title="Go to Email Account settings">
+    Go to **Engage → Settings → Email Account**.
+  </Step>
+  <Step title="Check the connection status">
+    Check whether your account shows as **Connected**.
+  </Step>
+  <Step title="Reconnect if prompted">
+    If you see a warning or a **Reconnect** prompt, click **Reconnect** and sign in again.
+  </Step>
+  <Step title="Return to your sequence">
+    Return to your sequence - it should resume automatically.
+  </Step>
+</Steps>
 
 ## Fix 3: Microsoft 365 requires admin approval
 
 If you're connecting a Microsoft 365 or Outlook account, your IT admin may need to grant consent before Engage can send on your behalf.
 
-1. Ask your Microsoft 365 admin to approve the Lusha Engage app in **Azure Active Directory → Enterprise Applications**.
-2. Once approved, go to **Engage → Settings → Email Account** and click **Connect** again.
-3. After a successful connection, your sequences will resume from where they paused.
+<Steps>
+  <Step title="Ask your admin to approve the app">
+    Ask your Microsoft 365 admin to approve the Lusha Engage app in **Azure Active Directory → Enterprise Applications**.
+  </Step>
+  <Step title="Reconnect the email account">
+    Once approved, go to **Engage → Settings → Email Account** and click **Connect** again.
+  </Step>
+  <Step title="Confirm the sequence resumes">
+    After a successful connection, your sequences will resume from where they paused.
+  </Step>
+</Steps>
 
 <Note>
 Admin consent is a Microsoft security requirement, not a Lusha limitation. Your admin can scope the permission to email access only - full tenant-wide access is not required for Engage to function.
@@ -51,25 +69,49 @@ Admin consent is a Microsoft security requirement, not a Lusha limitation. Your 
 
 If emails are queued but not sending, the current time may fall outside the sequence's configured send window.
 
-1. Open your sequence in **Engage**.
-2. Click **Settings** and review the **Send schedule**.
-3. Confirm the days and time range include the current moment - and check that the time zone is set correctly.
-4. Adjust the schedule if needed and click **Save**.
+<Steps>
+  <Step title="Open your sequence">
+    Open your sequence in **Engage**.
+  </Step>
+  <Step title="Review the send schedule">
+    Click **Settings** and review the **Send schedule**.
+  </Step>
+  <Step title="Check days, times, and time zone">
+    Confirm the days and time range include the current moment - and check that the time zone is set correctly.
+  </Step>
+  <Step title="Adjust and save the schedule">
+    Adjust the schedule if needed and click **Save**.
+  </Step>
+</Steps>
 
 ## Fix 5: Contacts are missing email addresses
 
 Contacts without a valid email address cannot receive sequence emails and will stay on "Scheduled" indefinitely - without any error message.
 
-1. In your sequence, filter contacts by status **Scheduled**.
-2. Check whether any of those contacts are missing an email address.
-3. Reveal their contact details in Lusha Search or the Extension to add a verified email - or remove the contact from the sequence.
+<Steps>
+  <Step title="Filter contacts by Scheduled status">
+    In your sequence, filter contacts by status **Scheduled**.
+  </Step>
+  <Step title="Check for missing email addresses">
+    Check whether any of those contacts are missing an email address.
+  </Step>
+  <Step title="Add a verified email or remove the contact">
+    Reveal their contact details in Lusha Search or the Extension to add a verified email - or remove the contact from the sequence.
+  </Step>
+</Steps>
 
 ## Changing the email account for your sequences
 
 If you want to switch which email address your sequences send from:
 
-1. Go to **Engage → Settings → Email Account**.
-2. Disconnect the current account and connect the new one.
+<Steps>
+  <Step title="Go to Email Account settings">
+    Go to **Engage → Settings → Email Account**.
+  </Step>
+  <Step title="Disconnect and connect the new account">
+    Disconnect the current account and connect the new one.
+  </Step>
+</Steps>
 
 <Warning>
 Changing your sender account affects all active sequences immediately - not just one. Sequences already in progress will continue sending from the new account right away.

@@ -39,3 +39,36 @@ nav [class*="dropdown"] > button:first-child {
   z-index: 10;
   background: inherit;
 }
+
+/*
+ * Sticky top navbar (tabs + Contact Sales button) so it stays visible on
+ * scroll, same reasoning as the sidebar-dropdown rule above: no official
+ * Mintlify option controls this, so it's targeted by best-guess selectors
+ * against the theme's generated markup. Verify after deploy - if the top
+ * bar still scrolls away, the real class/tag needs to be found via
+ * browser inspector and this selector list updated to match it.
+ */
+header,
+[data-testid="header"],
+[class*="Navbar"],
+[class*="TopBar"] {
+  position: sticky !important;
+  top: 0;
+  z-index: 30;
+  background: inherit;
+}
+
+/*
+ * Bold sidebar group section labels ("Start here", "Workspace & Tables",
+ * etc.) so they read as clear section dividers rather than blending into
+ * the page links below them. Same caveat as above: best-guess selectors,
+ * not an official API - verify after deploy.
+ */
+nav [class*="SidebarGroup"] > span,
+nav [class*="SidebarGroup"] > p,
+nav [class*="SidebarGroup"] > div > span,
+nav [class*="group-header"],
+nav [class*="GroupHeader"],
+nav [class*="sidebar-group-title"] {
+  font-weight: 700 !important;
+}

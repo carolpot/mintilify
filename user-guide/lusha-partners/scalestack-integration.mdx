@@ -1,5 +1,5 @@
 ---
-title: "Scalestack Integration"
+title: "Scalestack integration"
 description: "Learn how to connect your Lusha license to Scalestack so your verified contact data flows automatically into your CRM and GTM workflows."
 ---
 
@@ -11,38 +11,49 @@ This article walks you through connecting Lusha to Scalestack and explains what 
   This integration requires an active Lusha license with API access. Your Lusha API key is used to authenticate the connection - Scalestack does not resell Lusha data or require additional Lusha seats. Please confirm your plan includes API access before starting.
 </Note>
 
-## **Before you start**
+## Before you start
 
 - An active Lusha account with API access enabled
 - Your Lusha API key (find it under **Settings → API Access**)
 - A Scalestack account (you can create one at platform.scalestack.ai using your work email)
 
-## **How to connect Lusha to Scalestack**
+## How to connect Lusha to Scalestack
 
-1. **Log into your Scalestack account.** Go to platform.scalestack.ai. If you're new to Scalestack, create an account with your work email.
-
-1. **Open the Integrations tab.** In the Scalestack platform, navigate to **Integrations**. Use the search bar to find Lusha in the catalog.
-2. **Click Connect.** Select Lusha from the results and click **Connect**. No new Lusha seats are required - you use your existing license.
-3. **Enter your Lusha API key.** Paste your Lusha API key into the field provided and confirm. Your key is securely stored and used only to authenticate enrichment requests from your account.
-4. **Activate.** Once the key is accepted, the integration goes live. Scalestack's AI agents will begin enriching, scoring, and routing records using your Lusha data automatically.
+<Steps>
+  <Step title="Log into your Scalestack account">
+    Go to platform.scalestack.ai. If you're new to Scalestack, create an account with your work email.
+  </Step>
+  <Step title="Open the Integrations tab">
+    In the Scalestack platform, navigate to **Integrations**. Use the search bar to find Lusha in the catalog.
+  </Step>
+  <Step title="Click Connect">
+    Select Lusha from the results and click **Connect**. No new Lusha seats are required - you use your existing license.
+  </Step>
+  <Step title="Enter your Lusha API key">
+    Paste your Lusha API key into the field provided and confirm. Your key is securely stored and used only to authenticate enrichment requests from your account.
+  </Step>
+  <Step title="Activate the integration">
+    Once the key is accepted, the integration goes live. Scalestack's AI agents will begin enriching, scoring, and routing records using your Lusha data automatically.
+  </Step>
+</Steps>
 
 <Tip>
   When the connection is successful, Lusha appears as an active integration in your Scalestack dashboard. AI agents will start processing records based on your configured workflows.
 </Tip>
 
-## **What happens after you connect**
+## What happens after you connect
 
 Once Lusha is connected, Scalestack uses your verified data to power the following automatically:
 
-## **Record enrichment**
+## Record enrichment
 
 Incoming records are enriched with verified work emails, direct phone numbers, role and seniority data, and firmographic information - as records enter your system or on a scheduled enrichment pass.
 
-## **ICP scoring**
+## ICP scoring
 
 Enriched records are scored against your Ideal Customer Profile. High-fit accounts are prioritized and routed to the right rep automatically.
 
-## **Buying signal triggers**
+## Buying signal triggers
 
 Scalestack monitors your target accounts for Lusha buying signals, including:
 
@@ -53,25 +64,25 @@ Scalestack monitors your target accounts for Lusha buying signals, including:
 
 When a signal fires, Scalestack can re-score the account, update your CRM, and alert the assigned rep - without manual monitoring.
 
-## **CRM hygiene**
+## CRM hygiene
 
 Stale records are updated using Lusha's continuously validated data, so your CRM reflects current contact information without manual intervention.
 
-## **Example workflows**
+## Example workflows
 
-### **Enrich and route inbound leads**
+### Enrich and route inbound leads
 
 When a prospect fills out a form, Scalestack enriches the record with Lusha data, scores it against your ICP, and routes it to the right rep - before anyone opens a CRM tab.
 
-### **Run CRM hygiene at scale**
+### Run CRM hygiene at scale
 
 Point Scalestack at a segment of your CRM - stale records, unworked leads, recently imported tables - and Lusha enriches and validates them in bulk.
 
-### **Trigger outreach on buying signals**
+### Trigger outreach on buying signals
 
 Set up a workflow that monitors target accounts for Lusha signals. When a signal fires, the workflow updates the account score, notifies the assigned rep, and queues the account for outreach.
 
-### **Keep territories current**
+### Keep territories current
 
 When reps join, leave, or territories shift, Scalestack re-routes records using Lusha's enriched data to confirm ownership and validate contacts.
 

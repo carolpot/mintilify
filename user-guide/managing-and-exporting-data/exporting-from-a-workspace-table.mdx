@@ -1,5 +1,5 @@
 ---
-title: "Exporting from a Workspace Table"
+title: "Exporting from a Workspace table"
 description: "How to export a Workspace table to CSV, sync contacts to your CRM, or push them into an Engage sequence - including costs and scope options."
 ---
 
@@ -21,8 +21,8 @@ Before exporting, select the contacts you want to act on:
 
 Selection is no longer capped by page size. The maximum depends on where you are working:
 
-| Context | Selection limit |
-|---|---|
+| Context | Selection Limit |
+| --- | --- |
 | Search / filter mode | Up to 10,000 rows for **Show** - no plan-based cap. CSV export is not available directly from search; save to a table first. |
 | Saved table | Up to 150 rows (alignment to 10,000 coming soon) |
 
@@ -30,14 +30,14 @@ Once contacts are selected, the export buttons in the toolbar become active.
 
 ---
 
-## Export Option 1: CSV
+## Export option 1: CSV
 
 To export to CSV, you must be inside a saved Workspace table. If you are in a search or filter view, save it as a table first, then follow the steps below.
 
 Click the **CSV** button in the toolbar. A dialog appears with three scope options:
 
-| Option | What it exports |
-|---|---|
+| Option | What It Exports |
+| --- | --- |
 | **Selected rows only** | Only the rows you have checked |
 | **Current page** | All rows visible on the current page |
 | **All rows (including filtered)** | Every row in the table, applying any active filters |
@@ -54,14 +54,24 @@ Click the **CSV** button in the toolbar. A dialog appears with three scope optio
 
 ---
 
-## Export Option 2: CRM sync
+## Export option 2: CRM sync
 
 To push contacts directly to your connected CRM:
 
-1. Select the contacts you want to sync
-2. Click the **CRM** button in the toolbar
-3. Select the CRM you want to export to. Connected integrations appear at the top of the list under **Connected**; other available ones are shown below under **Not Connected**.
-4. Lusha syncs the selected records to the chosen CRM account
+<Steps>
+  <Step title="Select the contacts">
+    Select the contacts you want to sync
+  </Step>
+  <Step title="Click the CRM button">
+    Click the **CRM** button in the toolbar
+  </Step>
+  <Step title="Select the CRM to export to">
+    Select the CRM you want to export to. Connected integrations appear at the top of the list under **Connected**; other available ones are shown below under **Not Connected**.
+  </Step>
+  <Step title="Sync the records">
+    Lusha syncs the selected records to the chosen CRM account
+  </Step>
+</Steps>
 
 Lusha maps contact fields to your CRM objects automatically based on your integration settings. For Salesforce, contacts are pushed as Contact or Lead records depending on your configuration. Read more in the [Salesforce Integration article](https://info.lusha.com/en/articles/163953-salesforce-integration).
 
@@ -69,14 +79,24 @@ Lusha maps contact fields to your CRM objects automatically based on your integr
 
 ---
 
-## Export Option 3: Sequences (Engage)
+## Export option 3: Sequences (Engage)
 
 To push contacts directly into an Engage email sequence:
 
-1. Select the contacts you want to enroll
-2. Click the **Sequence** button in the toolbar
-3. A sidebar opens - select the active sequence you want to add them to
-4. Confirm the selection
+<Steps>
+  <Step title="Select the contacts">
+    Select the contacts you want to enroll
+  </Step>
+  <Step title="Click the Sequence button">
+    Click the **Sequence** button in the toolbar
+  </Step>
+  <Step title="Choose the sequence">
+    A sidebar opens - select the active sequence you want to add them to
+  </Step>
+  <Step title="Confirm the selection">
+    Confirm the selection
+  </Step>
+</Steps>
 
 The contacts will appear in that sequence in Engage, ready for outreach.
 

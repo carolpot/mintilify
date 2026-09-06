@@ -1,5 +1,5 @@
 ---
-title: "Engage Sending Limits by Email Provider"
+title: "Engage sending limits by email provider"
 description: "Daily sending caps for Gmail, Google Workspace, and Outlook, plus recommended ramp-up volumes for new mailboxes."
 ---
 
@@ -14,7 +14,7 @@ Each email provider imposes daily limits on how many emails you can send from a 
 | Outlook / Microsoft 365 | 10,000 emails/day | Per mailbox; lower limits may apply on new accounts |
 
 <Note>
-**Note:** These are provider-imposed limits, not Lusha limits. Lusha enforces its own sending caps to protect your deliverability - see [Email Limits Best Practices](/user-guide/performance-and-troubleshooting/email-limits-best-practices) for Lusha's recommended daily sending volumes.
+These are provider-imposed limits, not Lusha limits. Lusha enforces its own sending caps to protect your deliverability - see [Email limits best practices](/user-guide/performance-and-troubleshooting/email-limits-best-practices) for Lusha's recommended daily sending volumes.
 </Note>
 
 ## Recommended sending volumes for new mailboxes
@@ -36,11 +36,19 @@ Depending on the provider:
 - **Outlook / Microsoft 365** - you may receive a bounce with a 550 or 421 error code. The account may be temporarily throttled.
 
 <Warning>
-**Important:** Consistently exceeding limits can result in your account being flagged or temporarily suspended by your email provider.
+Consistently exceeding limits can result in your account being flagged or temporarily suspended by your email provider.
 </Warning>
 
 ## How to check your current sending volume in Engage
 
-1. Go to **[Engage](https://dashboard.lusha.com/engage).**
-2. View the **Emails Sent** metric for today to see how many have been sent from your connected account at the top toolbar.
-3. Adjust your sequence schedule if you're approaching your provider's limit.
+<Steps>
+  <Step title="Open Engage">
+    Go to **[Engage](https://dashboard.lusha.com/engage).**
+  </Step>
+  <Step title="Check the Emails Sent metric">
+    View the **Emails Sent** metric for today to see how many have been sent from your connected account at the top toolbar.
+  </Step>
+  <Step title="Adjust the sequence schedule if needed">
+    Adjust your sequence schedule if you're approaching your provider's limit.
+  </Step>
+</Steps>
