@@ -729,6 +729,7 @@
             "groups": [
               {
                 "group": "Workspace & Tables",
+                "icon": "table-cells",
                 "root": "user-guide/platform-and-workspace",
                 "pages": [
                   "user-guide/platform-and-workspace",
@@ -780,6 +781,7 @@
               },
               {
                 "group": "Prospecting",
+                "icon": "magnifying-glass",
                 "root": "user-guide/search-and-lists",
                 "pages": [
                   {
@@ -835,6 +837,7 @@
               },
               {
                 "group": "CSV Enrichment",
+                "icon": "file-csv",
                 "root": "user-guide/csv-enrichment/csv-enrichment",
                 "pages": [
                   "user-guide/csv-enrichment/csv-enrichment",
@@ -845,6 +848,7 @@
               },
               {
                 "group": "Recommendations",
+                "icon": "sparkles",
                 "root": "user-guide/ai-recommendations/how-ai-recommendations-work",
                 "pages": [
                   {
@@ -869,6 +873,7 @@
               },
               {
                 "group": "Conversations",
+                "icon": "comments",
                 "root": "user-guide/getting-started-with-conversations/lusha-conversations-overview",
                 "pages": [
                   {
