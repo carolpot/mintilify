@@ -666,7 +666,9 @@
             "icon": "flag",
             "groups": [
               {
-                "group": "Overview",
+                "group": "Start here",
+                "icon": "house",
+                "root": "user-guide/index",
                 "pages": [
                   "user-guide/index",
                   "user-guide/overview",
@@ -675,6 +677,7 @@
               },
               {
                 "group": "Getting Started",
+                "icon": "list-check",
                 "pages": [
                   "user-guide/getting-started/index",
                   "user-guide/getting-started/introduction-to-lusha",
@@ -684,36 +687,38 @@
                   "user-guide/getting-started/how-credits-work-in-lusha",
                   "user-guide/getting-started/how-to-contact-lusha-support",
                   "user-guide/getting-started/join-lusha-community",
-                  "user-guide/getting-started/feature-requests",
-                  {
-                    "group": "Explore Key Features",
-                    "pages": [
-                      "user-guide/introduction-and-getting-started/workspace-ai-powered-table-building",
-                      "user-guide/automations-connectors/lusha-api-connectors-build-and-automate",
-                      "user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations",
-                      "user-guide/getting-started-with-prospecting/lusha-lookalikes-finding-similar-contacts-and-companies",
-                      "user-guide/csv-enrichment/the-enrich-page-lushas-enrichment-hub",
-                      "user-guide/integrations-basics/lusha-integrations-connect-your-crm",
-                      "user-guide/extension/lusha-extension-prospect-from-anywhere",
-                      "user-guide/getting-started-with-engage/lusha-engage-outreach-built-into-lusha",
-                      "user-guide/getting-started-with-prospecting/the-ultimate-guide-to-prospect-search-with-lusha",
-                      "user-guide/getting-started-with-conversations/lusha-conversations-overview",
-                      "user-guide/getting-started/understanding-data-quality-and-coverage",
-                      "user-guide/shared/features/website-visitors"
-                    ]
-                  },
-                  {
-                    "group": "User Setup",
-                    "pages": [
-                      "user-guide/user-setup/how-to-sign-up-to-lusha",
-                      "user-guide/user-setup/two-factor-authentication-2fa",
-                      "user-guide/user-setup/how-to-change-your-password",
-                      "user-guide/user-setup/forgot-your-password",
-                      "user-guide/user-setup/your-lusha-account-settings-a-complete-guide",
-                      "user-guide/user-setup/why-does-my-email-address-appear-as-invalid-or-suspicious",
-                      "user-guide/user-setup/how-to-change-your-login-email-or-transfer-admin-access"
-                    ]
-                  }
+                  "user-guide/getting-started/feature-requests"
+                ]
+              },
+              {
+                "group": "Explore key features",
+                "icon": "star",
+                "pages": [
+                  "user-guide/introduction-and-getting-started/workspace-ai-powered-table-building",
+                  "user-guide/automations-connectors/lusha-api-connectors-build-and-automate",
+                  "user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations",
+                  "user-guide/getting-started-with-prospecting/lusha-lookalikes-finding-similar-contacts-and-companies",
+                  "user-guide/csv-enrichment/the-enrich-page-lushas-enrichment-hub",
+                  "user-guide/integrations-basics/lusha-integrations-connect-your-crm",
+                  "user-guide/extension/lusha-extension-prospect-from-anywhere",
+                  "user-guide/getting-started-with-engage/lusha-engage-outreach-built-into-lusha",
+                  "user-guide/getting-started-with-prospecting/the-ultimate-guide-to-prospect-search-with-lusha",
+                  "user-guide/getting-started-with-conversations/lusha-conversations-overview",
+                  "user-guide/getting-started/understanding-data-quality-and-coverage",
+                  "user-guide/shared/features/website-visitors"
+                ]
+              },
+              {
+                "group": "User Setup",
+                "icon": "user-pen",
+                "pages": [
+                  "user-guide/user-setup/how-to-sign-up-to-lusha",
+                  "user-guide/user-setup/two-factor-authentication-2fa",
+                  "user-guide/user-setup/how-to-change-your-password",
+                  "user-guide/user-setup/forgot-your-password",
+                  "user-guide/user-setup/your-lusha-account-settings-a-complete-guide",
+                  "user-guide/user-setup/why-does-my-email-address-appear-as-invalid-or-suspicious",
+                  "user-guide/user-setup/how-to-change-your-login-email-or-transfer-admin-access"
                 ]
               }
             ]

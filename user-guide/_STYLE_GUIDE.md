@@ -37,3 +37,24 @@ Map ad-hoc patterns to real Mintlify components:
 - Fix any Title-Case/URL-encoded/space-containing path segments to plain kebab-case
   (update the actual folder/file only if safe + update docs.json references — otherwise
   leave path alone and just fix the link text/casing shown to the reader).
+
+## Folder map (authoring reference — not a rename plan)
+
+Several logical topics are split across multiple physical folders, a holdover from the
+original Intercom export. The **nav labels in docs.json are the source of truth** for
+what the reader sees; these folders are not renamed/merged (too much link-breakage risk
+for a cosmetic win — see PR discussion). When adding a new article, file it under the
+existing folder for its topic rather than creating a new one:
+
+| Logical topic (nav) | Physical folder(s) |
+| --- | --- |
+| Getting Started | `getting-started/` |
+| Workspace intro | `introduction-and-getting-started/` |
+| Prospecting getting-started | `getting-started-with-prospecting/` |
+| Conversations getting-started | `getting-started-with-conversations/` |
+| Engage getting-started | `getting-started-with-engage/` |
+| Team & admin | `account-and-team-management/`, `team-management/`, `team-and-administration/`, `manage-your-team-capabilities/`, `manage-your-users/` |
+| Billing & plans | `billing-and-plans/`, `billing-and-payments/`, `plans-and-upgrades/` |
+
+If you're about to create a folder starting with `getting-started-*`, `team-*`, or
+`billing-*`/`plans-*`, check this table first — it almost certainly already exists.
