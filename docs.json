@@ -1017,6 +1017,7 @@
             "groups": [
               {
                 "group": "Integrations",
+                "icon": "plug-circle-bolt",
                 "root": "user-guide/native-crm-integrations",
                 "pages": [
                   "user-guide/native-crm-integrations",
@@ -1122,6 +1123,7 @@
               },
               {
                 "group": "Lusha's API",
+                "icon": "code",
                 "root": "user-guide/lushas-api/api-overview",
                 "pages": [
                   "user-guide/lushas-api/api-overview",
