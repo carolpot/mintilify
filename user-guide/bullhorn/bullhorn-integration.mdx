@@ -11,15 +11,27 @@ The Lusha integration with Bullhorn lets you map Lusha data fields directly to y
 
 ## How to connect and configure field mapping
 
-1. Log in to your [Lusha dashboard](https://dashboard.lusha.com/) and go to the **[Integrations tab](https://dashboard.lusha.com/lusha-integrations)**.
-2. Select **Bullhorn** from the table and click **Connect**.
-3. Sign in to Bullhorn when prompted (skipped automatically if you're already logged in).
-4. Click **Continue to field mapping**.
-5. Under Field mapping, you'll see four record types: **Leads**, **Candidates**, **Contacts**, and **Companies**. Map Lusha fields to the corresponding Bullhorn fields for each record type.
+<Steps>
+  <Step title="Open the Integrations tab">
+    Log in to your [Lusha dashboard](https://dashboard.lusha.com/) and go to the **[Integrations tab](https://dashboard.lusha.com/lusha-integrations)**.
+  </Step>
+  <Step title="Connect Bullhorn">
+    Select **Bullhorn** from the table and click **Connect**.
+  </Step>
+  <Step title="Sign in to Bullhorn">
+    Sign in to Bullhorn when prompted (skipped automatically if you're already logged in).
+  </Step>
+  <Step title="Continue to field mapping">
+    Click **Continue to field mapping**.
+  </Step>
+  <Step title="Map fields for each record type">
+    Under Field mapping, you'll see four record types: **Leads**, **Candidates**, **Contacts**, and **Companies**. Map Lusha fields to the corresponding Bullhorn fields for each record type.
 
-<Frame>
-  <img src="https://lusha-eu.intercom-attachments.eu/i/o/13259692/4931f6de28332a7605c15301/Screen%2BShot%2B2022-11-23%2Bat%2B12_58_27.png?expires=1780056000&signature=5fe7eb87b703cf3d8526086385b3fa1f2768dd3877e96b407ba660fd6ff317de&req=0dZtwFH8pTVk2hj99dpg6vcEtklWJGmuawgiSh%2Bpl5qtgxPd0MO2rO7oXdTZ%0AGyVkYy0EESHqveQ7xucxYoFU%0A" alt="Field mapping screen for Bullhorn record types" style={{maxWidth: "100%", height: "auto"}} />
-</Frame>
+    <Frame>
+      <img src="https://lusha-eu.intercom-attachments.eu/i/o/13259692/4931f6de28332a7605c15301/Screen%2BShot%2B2022-11-23%2Bat%2B12_58_27.png?expires=1780056000&signature=5fe7eb87b703cf3d8526086385b3fa1f2768dd3877e96b407ba660fd6ff317de&req=0dZtwFH8pTVk2hj99dpg6vcEtklWJGmuawgiSh%2Bpl5qtgxPd0MO2rO7oXdTZ%0AGyVkYy0EESHqveQ7xucxYoFU%0A" alt="Field mapping screen for Bullhorn record types" style={{maxWidth: "100%", height: "auto"}} />
+    </Frame>
+  </Step>
+</Steps>
 
 To allow Lusha to overwrite data in existing Bullhorn records, enable **Allow Override**.
 
@@ -29,30 +41,50 @@ To allow Lusha to overwrite data in existing Bullhorn records, enable **Allow Ov
 
 ## How to add predefined value fields
 
-1. Select a record type (Leads, Candidates, Contacts, or Companies).
-2. Click **+ Add field** and choose **Predefined Value**.
-3. Select a Bullhorn field from the available options.
-4. Enter your predefined value.
-5. Click **Save changes** before switching tabs.
+<Steps>
+  <Step title="Select a record type">
+    Select a record type (Leads, Candidates, Contacts, or Companies).
+  </Step>
+  <Step title="Add a predefined value field">
+    Click **+ Add field** and choose **Predefined Value**.
+  </Step>
+  <Step title="Select a Bullhorn field">
+    Select a Bullhorn field from the available options.
+  </Step>
+  <Step title="Enter your predefined value">
+    Enter your predefined value.
+  </Step>
+  <Step title="Save your changes">
+    Click **Save changes** before switching tabs.
+  </Step>
+</Steps>
 
 ## Conditional field mapping
 
 Conditional field mapping lets you set secondary field values that update automatically when an email or phone field is enriched - useful for routing leads or flagging record status.
 
-1. In your Lusha account, go to **Field mapping**.
-2. Click **Advanced** next to the **Email 1** or **Phone 1** field.
+<Steps>
+  <Step title="Open Field mapping">
+    In your Lusha account, go to **Field mapping**.
+  </Step>
+  <Step title="Click Advanced next to Email 1 or Phone 1">
+    Click **Advanced** next to the **Email 1** or **Phone 1** field.
 
-<Frame>
-  <img src="https://lusha-eu.intercom-attachments.eu/i/o/13259736/0487d351170a56d66e8b2921/Screen%2BShot%2B2022-11-21%2Bat%2B15_03_27.png?expires=1780056000&signature=dab46de901b7cb506b76a7efffb5c7862149441d561c8e56f6f2ae74fceec937&req=0dZtwFH9rzFk2hj99dpg6qaXg6xVRdTPD12k1WbY7oFnNJkSB5QIqFnzIGzD%0AsOig%2F79QoQI2ivnt%2F3%2FpbImC%0A" alt="Advanced conditional mapping option next to a field" style={{maxWidth: "100%", height: "auto"}} />
-</Frame>
+    <Frame>
+      <img src="https://lusha-eu.intercom-attachments.eu/i/o/13259736/0487d351170a56d66e8b2921/Screen%2BShot%2B2022-11-21%2Bat%2B15_03_27.png?expires=1780056000&signature=dab46de901b7cb506b76a7efffb5c7862149441d561c8e56f6f2ae74fceec937&req=0dZtwFH9rzFk2hj99dpg6qaXg6xVRdTPD12k1WbY7oFnNJkSB5QIqFnzIGzD%0AsOig%2F79QoQI2ivnt%2F3%2FpbImC%0A" alt="Advanced conditional mapping option next to a field" style={{maxWidth: "100%", height: "auto"}} />
+    </Frame>
+  </Step>
+  <Step title="Describe the value in the Map dropdown">
+    In the **Map** dropdown, enter text to describe the value - this creates a predefined field that updates after the parent field is enriched.
+  </Step>
+  <Step title="Apply and save">
+    Click **Apply**, then **Save Changes** at the bottom of the page.
 
-3. In the **Map** dropdown, enter text to describe the value - this creates a predefined field that updates after the parent field is enriched.
-
-4. Click **Apply**, then **Save Changes** at the bottom of the page.
-
-<Frame>
-  <img src="https://lusha-eu.intercom-attachments.eu/i/o/13259773/976be1e8ddc5f397762d4c9b/Screen%2BShot%2B2022-11-22%2Bat%2B14_14_39.png?expires=1780056000&signature=4ef69044ffee3d3b4c94a5492915fde5782177ab260f347d96f08804ca98ccd7&req=0dZtwFH9qzRk2hj99dpg6lq8u3dOoDVHrFuKmffpJ8fyjIXTvtV9IvnYJaWa%0A73irksdk%2BCUfuJdgRAbaxtPu%0A" alt="Conditional mapping dropdown for a predefined field" style={{maxWidth: "100%", height: "auto"}} />
-</Frame>
+    <Frame>
+      <img src="https://lusha-eu.intercom-attachments.eu/i/o/13259773/976be1e8ddc5f397762d4c9b/Screen%2BShot%2B2022-11-22%2Bat%2B14_14_39.png?expires=1780056000&signature=4ef69044ffee3d3b4c94a5492915fde5782177ab260f347d96f08804ca98ccd7&req=0dZtwFH9qzRk2hj99dpg6lq8u3dOoDVHrFuKmffpJ8fyjIXTvtV9IvnYJaWa%0A73irksdk%2BCUfuJdgRAbaxtPu%0A" alt="Conditional mapping dropdown for a predefined field" style={{maxWidth: "100%", height: "auto"}} />
+    </Frame>
+  </Step>
+</Steps>
 
 ## Account export preferences
 

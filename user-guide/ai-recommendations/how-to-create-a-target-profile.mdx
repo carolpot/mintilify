@@ -16,9 +16,17 @@ Already searching in Workspace? If you've built a search using ICP-supported fil
 
 ## Step 1: Open ICP Hub
 
-1. **Log in** to your Lusha account.
-2. Open the **Profile dropdown** at the top right and select **ICP Hub**.
-3. Click **+ New ICP** or, if this is your first time, follow the onboarding prompt to define your first profile.
+<Steps>
+  <Step title="Log in to your account">
+    **Log in** to your Lusha account.
+  </Step>
+  <Step title="Open ICP Hub">
+    Open the **Profile dropdown** at the top right and select **ICP Hub**.
+  </Step>
+  <Step title="Start a new profile">
+    Click **+ New ICP** or, if this is your first time, follow the onboarding prompt to define your first profile.
+  </Step>
+</Steps>
 
 <Note>
 If you haven't set up an ICP yet, you'll already have a feed on your Home page - labeled "Lusha generated" - based on your account history. Creating a Target Profile replaces this with a scored feed tailored to your actual targets.
@@ -82,17 +90,23 @@ The preview shows a limited set of matching contacts and companies so you can ve
 
 Exclusion Rules prevent certain contacts or companies from appearing in your recommendations.
 
-1. Under **Exclusion Rules**, choose what to exclude for contacts:
-   - **Shown contacts** - exclude contacts already shown to you, to any user, or no one (default: shown by me).
-   - **Saved contacts** - exclude contacts already saved (default: none).
-
-2. Choose what to exclude for companies:
-   - **Companies with shown contacts** - exclude companies where a threshold of contacts has already been revealed.
-   - **Saved companies** - exclude companies already saved.
-
-3. To exclude based on CRM records, select the CRM objects you want to use as exclusion criteria. Available objects depend on your connected CRM:
-   - **Salesforce:** Lead, Contact, Opportunity, Account
-   - **HubSpot:** Contacts, Companies, Deals
+<Steps>
+  <Step title="Choose contact exclusions">
+    Under **Exclusion Rules**, choose what to exclude for contacts:
+    - **Shown contacts** - exclude contacts already shown to you, to any user, or no one (default: shown by me).
+    - **Saved contacts** - exclude contacts already saved (default: none).
+  </Step>
+  <Step title="Choose company exclusions">
+    Choose what to exclude for companies:
+    - **Companies with shown contacts** - exclude companies where a threshold of contacts has already been revealed.
+    - **Saved companies** - exclude companies already saved.
+  </Step>
+  <Step title="Select CRM exclusion objects">
+    To exclude based on CRM records, select the CRM objects you want to use as exclusion criteria. Available objects depend on your connected CRM:
+    - **Salesforce:** Lead, Contact, Opportunity, Account
+    - **HubSpot:** Contacts, Companies, Deals
+  </Step>
+</Steps>
 
 <Warning>
 CRM-based exclusions are only available if your account Admin has connected a CRM and provided consent in ICP Hub. If you see a Connect CRM prompt, reach out to your admin.

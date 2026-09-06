@@ -31,9 +31,17 @@ Available on all plans.
 
 ## Step 1: Build your search in Workspace
 
-1. Open Workspace from the left navigation by pressing **+ New table**.
-2. Use AI search or the **Filter** panel on the left to build your search. You can filter by location, industry, job title, signals, and more.
-3. Review the results in the table. Adjust your filters until the contacts or companies shown match what you're looking for.
+<Steps>
+  <Step title="Open Workspace">
+    Open Workspace from the left navigation by pressing **+ New table**.
+  </Step>
+  <Step title="Build your search">
+    Use AI search or the **Filter** panel on the left to build your search. You can filter by location, industry, job title, signals, and more.
+  </Step>
+  <Step title="Review and adjust the results">
+    Review the results in the table. Adjust your filters until the contacts or companies shown match what you're looking for.
+  </Step>
+</Steps>
 
 <Note>
   The table view lets you validate your search results visually - exactly what the API will return - before you run any code.
@@ -41,14 +49,20 @@ Available on all plans.
 
 ## Step 2: Generate the API request
 
-1. Once your search is ready, click **Get API Request** at the top of the page.
-2. Choose your preferred language from the options:
+<Steps>
+  <Step title="Click Get API Request">
+    Once your search is ready, click **Get API Request** at the top of the page.
+  </Step>
+  <Step title="Choose your language">
+    Choose your preferred language from the options:
 
-   - cURL
-   - Python
-   - TypeScript
+    - cURL
+    - Python
+    - TypeScript
 
-3. The generated request updates automatically to match your current search.
+    The generated request updates automatically to match your current search.
+  </Step>
+</Steps>
 
 <Note>
   The **Get API Request** panel stays in sync with your filters. If you change your search, the request updates to reflect it - no need to regenerate manually.
@@ -56,9 +70,17 @@ Available on all plans.
 
 ## Step 3: Copy and use the request
 
-1. Click **Copy** to copy the generated request to your clipboard.
-2. Paste it into your preferred development environment, script, or API client.
-3. If your account has an API key, **Copy** automatically pastes the request with your real, unmasked key already in place - it's ready to run as-is. If your account has no API key, the request keeps the `LUSHA_API_KEY` placeholder; replace it with your own key before running.
+<Steps>
+  <Step title="Copy the generated request">
+    Click **Copy** to copy the generated request to your clipboard.
+  </Step>
+  <Step title="Paste it into your environment">
+    Paste it into your preferred development environment, script, or API client.
+  </Step>
+  <Step title="Confirm or replace the API key">
+    If your account has an API key, **Copy** automatically pastes the request with your real, unmasked key already in place - it's ready to run as-is. If your account has no API key, the request keeps the `LUSHA_API_KEY` placeholder; replace it with your own key before running.
+  </Step>
+</Steps>
 
 <Note>
   The on-screen preview always shows your key masked (prefix + bullets), even though **Copy** pastes the full key. If the key is still loading, **Copy** stays available and pastes the placeholder until the secret is ready.
