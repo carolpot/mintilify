@@ -1,6 +1,4 @@
-> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project.
-> For Mintlify product knowledge (components, configuration, writing standards),
-> install the Mintlify skill: `npx skills add https://mintlify.com/docs`
+> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project. For Mintlify product knowledge (components, configuration, writing standards), install the Mintlify skill: `npx skills add https://mintlify.com/docs`
 
 # Documentation project instructions
 
@@ -15,6 +13,7 @@
 ## Terminology
 
 {/* Add product-specific terms and preferred usage */}
+
 {/* Example: Use "workspace" not "project", "member" not "user" */}
 
 ## Style preferences
@@ -22,8 +21,11 @@
 {/* Add any project-specific style rules below */}
 
 - Use active voice and second person ("you")
-- Keep sentences concise - one idea per sentence
+- Keep sentences concise -- one idea per sentence
 - Use sentence case for headings
+- Use a plain hyphen (`-`), never an em dash (`—`), for parenthetical breaks
+- Don't publish per-endpoint credit costs or credit breakdowns
+- Link to the API key page as `https://dashboard.lusha.com/api/manage-api-keys`
 - Use a plain hyphen (`-`), never an em dash (`—`), for parenthetical breaks
 - Don't publish per-endpoint credit costs or credit breakdowns
 - Link to the API key page as `https://dashboard.lusha.com/api/manage-api-keys`
@@ -33,4 +35,5 @@
 ## Content boundaries
 
 {/* Define what should and shouldn't be documented */}
+
 {/* Example: Don't document internal admin features */}
