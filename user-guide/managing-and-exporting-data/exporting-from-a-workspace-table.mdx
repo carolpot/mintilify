@@ -24,7 +24,7 @@ Selection is no longer capped by page size. The maximum depends on where you are
 | Context | Selection Limit |
 | --- | --- |
 | Search / filter mode | Up to 10,000 rows for **Show** - no plan-based cap. CSV export is not available directly from search; save to a table first. |
-| Saved table | Up to 150 rows (alignment to 10,000 coming soon) |
+| Saved table | Up to 150 rows for CSV export (alignment to 10,000 coming soon). CRM export supports up to 10,000 rows, depending on the connected CRM - see [Export option 2: CRM sync](#export-option-2-crm-sync). |
 
 Once contacts are selected, the export buttons in the toolbar become active.
 
@@ -60,22 +60,39 @@ To push contacts directly to your connected CRM:
 
 <Steps>
   <Step title="Select the contacts">
-    Select the contacts you want to sync
+    Select the contacts you want to sync, then click **Show details**.
   </Step>
   <Step title="Click the CRM button">
-    Click the **CRM** button in the toolbar
+    Click **CRM** in the toolbar. The **Export to CRM** panel opens.
   </Step>
-  <Step title="Select the CRM to export to">
-    Select the CRM you want to export to. Connected integrations appear at the top of the list under **Connected**; other available ones are shown below under **Not Connected**.
+  <Step title="Choose where to export">
+    Under **Export to**, select the connected CRM you want to export to (for example, **Salesforce**). The dropdown shows the maximum number of contacts you can export to each CRM in one go (for example, "Salesforce (up to 10,000)") - this varies by CRM.
   </Step>
-  <Step title="Sync the records">
-    Lusha syncs the selected records to the chosen CRM account
+  <Step title="Confirm the contacts to export">
+    Under **Contacts to export**, confirm the scope - by default this is set to your current selection (for example, "First 10,000 selected contacts").
+  </Step>
+  <Step title="Choose the record type">
+    Under **Export as**, choose the record type to create in your CRM (for example, **Lead**).
+  </Step>
+  <Step title="Set your export preferences">
+    Configure how Lusha should handle contacts you've exported before and contacts with hidden data:
+
+    - **Skip exported contacts from Lusha** - toggle this on to leave out contacts you've already exported from Lusha to this CRM, so you're not charged for them again.
+    - **For contacts with unshown details** - choose whether to reveal emails and phones for contacts whose details aren't shown yet. Revealing costs credits per contact; the estimated cost is shown next to this option.
+    - **For contacts already in your CRM** - choose how to handle contacts that already exist as records in your CRM, for example updating only the details currently shown in your table.
+  </Step>
+  <Step title="Export">
+    Click **Export**. Lusha syncs the selected records to the chosen CRM account, using the latest available contact details.
   </Step>
 </Steps>
 
 Lusha maps contact fields to your CRM objects automatically based on your integration settings. For Salesforce, contacts are pushed as Contact or Lead records depending on your configuration. Read more in the [Salesforce Integration article](https://info.lusha.com/en/articles/163953-salesforce-integration).
 
-**Cost:** 1 credit per export.
+<Note>
+💡 Turning on **Skip exported contacts from Lusha** helps you avoid paying twice for contacts you've already synced to the same CRM.
+</Note>
+
+**Cost:** 1 credit per exported contact. Revealing unshown emails or phones as part of the export costs additional credits per contact, shown in the **Export preferences** panel before you export.
 
 ---
 
