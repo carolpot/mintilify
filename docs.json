@@ -27,7 +27,13 @@
     "dark": "/logo-dark.svg"
   },
   "contextual": {
-    "options": ["copy", "assistant", "chatgpt", "claude"],
+    "options": [
+      "copy",
+      "chatgpt",
+      "claude",
+      "download-pdf",
+      "view"
+    ],
     "display": "header"
   },
   "navbar": {
