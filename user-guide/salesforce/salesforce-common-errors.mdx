@@ -15,17 +15,8 @@ This error means your Salesforce account has hit its daily API call limit, which
 
 To fix this:
 
-<Steps>
-  <Step title="Increase the daily API limit">
-    Ask your Salesforce Admin to increase the daily API limit. They can also adjust it in Lusha via **Settings → Integrations → Salesforce → [API request limit](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesforce/dataEnrichment)**.
-  </Step>
-  <Step title="Disconnect and reconnect the integration">
-    After changing the limit, disconnect and reconnect the Lusha–Salesforce integration for the update to take effect.
-  </Step>
-  <Step title="Or wait for the daily reset">
-    Alternatively, wait 24 hours - the API limit resets daily.
-  </Step>
-</Steps>
+- Ask your Salesforce Admin to increase the daily API limit. They can also adjust it in Lusha via **Settings → Integrations → Salesforce → [API request limit](https://dashboard.lusha.com/lusha-integrations/advancedSettings/salesforce/dataEnrichment)**. After changing the limit, disconnect and reconnect the Lusha–Salesforce integration for the update to take effect.
+- Or, wait 24 hours - the API limit resets daily.
 
 ## Lead assignment rules issue
 
@@ -72,20 +63,9 @@ This error means Salesforce is blocking the Lusha app from connecting. Some Sale
 
 To fix this:
 
-<Steps>
-  <Step title="Open Connected Apps OAuth Usage">
-    In Salesforce Setup, go to **Connected Apps OAuth Usage**.
-  </Step>
-  <Step title="Unblock the Lusha app">
-    Find **Lusha Push to Salesforce** and unblock it.
-  </Step>
-  <Step title="Review OAuth policies">
-    Review your OAuth policies to confirm third-party app connections are permitted.
-  </Step>
-  <Step title="Adjust IP restrictions">
-    Adjust IP restrictions if needed to allow data push from Lusha.
-  </Step>
-</Steps>
+- In Salesforce Setup, go to **Connected Apps OAuth Usage**, find **Lusha Push to Salesforce**, and unblock it.
+- Review your OAuth policies to confirm third-party app connections are permitted.
+- Adjust IP restrictions if needed to allow data push from Lusha.
 
 ## The REST API is not enabled for this organization
 
@@ -151,16 +131,8 @@ If your Salesforce org enforces a session timeout at the profile or org level th
 
 ## How to reconnect after a session drop
 
-<Steps>
-  <Step title="Open Integrations">
-    Go to **[Integrations](https://dashboard.lusha.com/lusha-integrations)** in your Lusha dashboard.
-  </Step>
-  <Step title="Reconnect Salesforce">
-    Click **Connect** next to Salesforce and complete the OAuth flow.
-  </Step>
-  <Step title="Settings are preserved">
-    Your field mapping and settings are preserved - no reconfiguration is needed after reconnecting.
-  </Step>
-</Steps>
+- Go to **[Integrations](https://dashboard.lusha.com/lusha-integrations)** in your Lusha dashboard.
+- Click **Connect** next to Salesforce and complete the OAuth flow.
+- Your field mapping and settings are preserved - no reconfiguration is needed after reconnecting.
 
 If none of the above resolves your issue, contact Lusha Support using the chat icon in your dashboard or email [support@lusha.com](mailto:support@lusha.com).
