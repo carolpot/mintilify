@@ -28,33 +28,51 @@
   font-display: swap;
 }
 
-/* Sticky sidebar dropdown selector */
+/*
+ * Sticky top navbar (tabs + Contact Sales button) so it stays visible on
+ * scroll. No official Mintlify option controls this, so it's targeted by
+ * best-guess selectors against the theme's generated markup.
+ *
+ * IMPORTANT: this must NOT match the `<header>` Mintlify renders around
+ * each page's own title/description inside the article - that was the bug
+ * that made the on-page title stick and overlap the real nav bar. `header`
+ * (bare tag) is deliberately excluded below; only the site-chrome nav is
+ * targeted, and article content is explicitly excluded as a backstop.
+ * Verify after deploy - if the top bar still scrolls away, the real
+ * class/tag needs to be found via browser inspector and this selector
+ * list updated to match it.
+ */
+:root {
+  --lusha-topbar-h: 64px; /* best guess at the rendered navbar height - adjust to match live site */
+}
+
+[data-testid="header"],
+nav[class*="Navbar"],
+div[class*="TopBar"] {
+  position: sticky !important;
+  top: 0;
+  z-index: 30;
+  background: inherit;
+}
+
+[data-testid="header"] :is(article, .prose, [class*="Content"]) {
+  position: static !important;
+}
+
+/*
+ * Sticky sidebar section dropdown (the purple "Getting Started" selector
+ * at the top of the left sidebar) so it stays put while the page list
+ * below it scrolls. Pinned just under the top navbar rather than at
+ * top:0, so the two sticky bars stack instead of overlapping each other.
+ */
 [class*="DropdownButton"],
 [class*="dropdown-button"],
 [class*="SidebarDropdown"] > button,
 [data-testid="sidebar-dropdown-button"],
 nav [class*="dropdown"] > button:first-child {
   position: sticky !important;
-  top: 0;
-  z-index: 10;
-  background: inherit;
-}
-
-/*
- * Sticky top navbar (tabs + Contact Sales button) so it stays visible on
- * scroll, same reasoning as the sidebar-dropdown rule above: no official
- * Mintlify option controls this, so it's targeted by best-guess selectors
- * against the theme's generated markup. Verify after deploy - if the top
- * bar still scrolls away, the real class/tag needs to be found via
- * browser inspector and this selector list updated to match it.
- */
-header,
-[data-testid="header"],
-[class*="Navbar"],
-[class*="TopBar"] {
-  position: sticky !important;
-  top: 0;
-  z-index: 30;
+  top: var(--lusha-topbar-h);
+  z-index: 20;
   background: inherit;
 }
 
@@ -71,4 +89,44 @@ nav [class*="group-header"],
 nav [class*="GroupHeader"],
 nav [class*="sidebar-group-title"] {
   font-weight: 700 !important;
+}
+
+/*
+ * Auto-open the collapsible sidebar categories (e.g. "Explore Key
+ * Features") instead of requiring a click to expand them. Mintlify has no
+ * docs.json option for this - nested groups collapse by default and only
+ * auto-expand around the active page - so this forces every accordion
+ * panel open via CSS.
+ *
+ * This only works if the theme keeps collapsed panels in the DOM and
+ * hides them with `hidden`/`data-state`/height (as most Radix/Headless-UI
+ * style accordions do). If a panel's items are unmounted instead of
+ * hidden, no CSS can bring them back and the fix needs config-level
+ * restructuring of docs.json instead. Verify after deploy.
+ */
+nav [hidden],
+nav [aria-hidden="true"] {
+  display: block !important;
+}
+
+nav [data-state="closed"] {
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  visibility: visible !important;
+}
+
+nav [aria-expanded="false"] + * {
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Chevron/caret icons should still reflect the (now-forced) open state */
+nav [aria-expanded="false"] svg,
+nav [data-state="closed"] > svg,
+nav button[data-state="closed"] svg {
+  transform: rotate(90deg);
 }
