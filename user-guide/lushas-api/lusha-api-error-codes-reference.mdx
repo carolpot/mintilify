@@ -39,20 +39,10 @@ A **401 Unauthorized** error indicates that your request could not be authentica
         -H "Content-Type: application/json"
 ```
 
-<Steps>
-  <Step title="Verify header format">
-    Use the Bearer scheme and include a single space before the API key. Include Content-Type: application/json when required.
-  </Step>
-  <Step title="Validate your API key">
-    Go to **Lusha Dashboard → API Settings**. Copy your active API key and verify it hasn't been revoked or expired. Ensure the key has the necessary permissions for the endpoint you are calling.
-  </Step>
-  <Step title="Check OAuth tokens (if applicable)">
-    Use a valid, non-expired access token. If the token has expired, refresh it using your refresh token before making API calls.
-  </Step>
-  <Step title="Review your request">
-    Confirm the exact request you're sending (endpoint, headers, body) and compare it against the API documentation to ensure proper authentication formatting.
-  </Step>
-</Steps>
+- **Verify header format**: Use the Bearer scheme and include a single space before the API key. Include Content-Type: application/json when required.
+- **Validate your API key**: Go to **Lusha Dashboard → API Settings**. Copy your active API key and verify it hasn't been revoked or expired. Ensure the key has the necessary permissions for the endpoint you are calling.
+- **Check OAuth tokens (if applicable)**: Use a valid, non-expired access token. If the token has expired, refresh it using your refresh token before making API calls.
+- **Review your request**: Confirm the exact request you're sending (endpoint, headers, body) and compare it against the API documentation to ensure proper authentication formatting.
 
 ## Error: 403 forbidden
 
@@ -63,17 +53,9 @@ A **403 Forbidden** error occurs when you attempt to access an API endpoint that
 
 **How to Resolve a 403 Error**
 
-<Steps>
-  <Step title="Verify your subscription plan">
-    Check your current plan in the Lusha Dashboard. Confirm whether the endpoint you are trying to access is included in your plan.
-  </Step>
-  <Step title="Upgrade your plan if needed">
-    If the endpoint is not available in your current plan, consider upgrading to the Scale plan to gain access to Prospecting and Filters APIs.
-  </Step>
-  <Step title="Use supported endpoints">
-    On self-service plans, ensure you are using only the enrichment endpoints for contact and company data.
-  </Step>
-</Steps>
+- **Verify your subscription plan**: Check your current plan in the Lusha Dashboard. Confirm whether the endpoint you are trying to access is included in your plan.
+- **Upgrade your plan if needed**: If the endpoint is not available in your current plan, consider upgrading to the Scale plan to gain access to Prospecting and Filters APIs.
+- **Use supported endpoints**: On self-service plans, ensure you are using only the enrichment endpoints for contact and company data.
 
 ## Error: 422 unprocessable entity
 
