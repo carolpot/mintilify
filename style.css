@@ -124,9 +124,33 @@ nav [aria-expanded="false"] + * {
   overflow: visible !important;
 }
 
-/* Chevron/caret icons should still reflect the (now-forced) open state */
-nav [aria-expanded="false"] svg,
-nav [data-state="closed"] > svg,
-nav button[data-state="closed"] svg {
+/*
+ * Chevron/caret icons should still reflect the (now-forced) open state.
+ *
+ * IMPORTANT: this must target ONLY the chevron/caret toggle icon, never the
+ * category's own leading icon (e.g. the "Getting Started" flag/list-check
+ * icon). Two earlier attempts here picked the wrong svg by DOM *position*
+ * (first matching every svg in the button, then guessing the trailing
+ * `:last-of-type` one) - in this theme's markup the leading content icon
+ * turned out to be the one in that position, so it got rotated 90deg
+ * instead of the chevron, which read as the icon being sideways/"flipped".
+ * That happened both with the section open and, after the last fix, closed
+ * - position-based guessing kept hitting whichever icon is actually last/
+ * first in the real DOM, which we can't verify without a live browser.
+ *
+ * Targeting by what a chevron/caret icon actually IS (class or aria-label
+ * naming it) is DOM-order independent, so it can't accidentally match the
+ * content icon regardless of markup order. If none of these match the real
+ * chevron in this theme, the rule below simply matches nothing - a static
+ * (non-rotating) chevron is a safe no-op, not a new bug. Verify after
+ * deploy and, if still wrong, get the chevron's actual class from browser
+ * devtools so this can target it precisely.
+ */
+nav [aria-expanded="false"] svg[class*="chevron" i],
+nav [aria-expanded="false"] svg[class*="caret" i],
+nav [aria-expanded="false"] [aria-label*="chevron" i] svg,
+nav [aria-expanded="false"] [aria-label*="expand" i] svg,
+nav [data-state="closed"] svg[class*="chevron" i],
+nav [data-state="closed"] svg[class*="caret" i] {
   transform: rotate(90deg);
 }
