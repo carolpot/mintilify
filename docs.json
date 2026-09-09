@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "luma",
-  "name": "Lusha API",
+  "name": "Lusha Knowledge Hub",
   "colors": {
     "primary": "#863fff",
     "light": "#863fff",
@@ -977,7 +977,6 @@
                     "group": "FAQs & Troubleshooting",
                     "icon": "circle-question",
                     "pages": [
-                      "user-guide/faqs-and-troubleshooting/cancel-lusha-extension-auto-open",
                       "user-guide/faqs-and-troubleshooting/how-to-update-your-lusha-extension",
                       "user-guide/faqs-and-troubleshooting/why-is-my-extension-blank-on-chrome",
                       "user-guide/faqs-and-troubleshooting/why-is-lusha-extension-asking-me-to-log-in-when-im-already-logged-in",
