@@ -1368,5 +1368,8 @@
     "intercom": {
       "appId": "dG9rOjdmYzEzNmZhXzJmNTBfNDY3Yl85ZThkXzkxOTdhZGIzM2U1NjoxOjA6ZXUtd2VzdC0x"
     }
+  },
+  "interaction": {
+    "drilldown": true
   }
 }
