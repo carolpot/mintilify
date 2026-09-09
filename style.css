@@ -124,9 +124,19 @@ nav [aria-expanded="false"] + * {
   overflow: visible !important;
 }
 
-/* Chevron/caret icons should still reflect the (now-forced) open state */
-nav [aria-expanded="false"] svg,
-nav [data-state="closed"] > svg,
-nav button[data-state="closed"] svg {
+/*
+ * Chevron/caret icons should still reflect the (now-forced) open state.
+ *
+ * IMPORTANT: scope this to the trailing chevron only (:last-of-type). The
+ * original selectors matched *every* svg inside the button, which also
+ * caught the category's own leading icon (e.g. the "Getting Started" flag)
+ * and rotated it 90deg too - that's the bug where the category icon
+ * appeared flipped/sideways once its section was open. Only the last icon
+ * in the button (the chevron) should rotate; the leading category icon
+ * must stay untouched.
+ */
+nav [aria-expanded="false"] svg:last-of-type,
+nav [data-state="closed"] > svg:last-of-type,
+nav button[data-state="closed"] svg:last-of-type {
   transform: rotate(90deg);
 }
