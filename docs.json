@@ -702,7 +702,9 @@
               {
                 "group": "Explore key features",
                 "icon": "star",
+                "root": "user-guide/explore-key-features",
                 "pages": [
+                  "user-guide/explore-key-features",
                   "user-guide/introduction-and-getting-started/workspace-ai-powered-table-building",
                   "user-guide/automations-connectors/lusha-api-connectors-build-and-automate",
                   "user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations",
@@ -720,12 +722,13 @@
               {
                 "group": "User Setup",
                 "icon": "user-pen",
+                "root": "user-guide/user-setup/your-lusha-account-settings-a-complete-guide",
                 "pages": [
+                  "user-guide/user-setup/your-lusha-account-settings-a-complete-guide",
                   "user-guide/user-setup/how-to-sign-up-to-lusha",
                   "user-guide/user-setup/two-factor-authentication-2fa",
                   "user-guide/user-setup/how-to-change-your-password",
                   "user-guide/user-setup/forgot-your-password",
-                  "user-guide/user-setup/your-lusha-account-settings-a-complete-guide",
                   "user-guide/user-setup/why-does-my-email-address-appear-as-invalid-or-suspicious",
                   "user-guide/user-setup/how-to-change-your-login-email-or-transfer-admin-access"
                 ]
