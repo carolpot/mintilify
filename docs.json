@@ -1349,12 +1349,16 @@
             "href": "https://www.lusha.com/trust-center"
           },
           {
-            "label": "Feature Request ",
-            "href": "https://ideas.lusha.com/forums/966165-lusha-ideas-board?_gl=1*dse9y*_gcl_aw*R0NMLjE3ODcxMjQxNjEuQ2p3S0NBandxSlhVQmhCTkVpd0E4QmdHN2xFRVVLN0p1VWttYTVOcllKQ0RLamtHUVpHUHBScjg5dWJ4Zk1iQjY0aU9ySlpCSXFRQ1Rob0NRSE1RQXZEX0J3RQ..*_gcl_au*MTYzNjMwMDc2NS4xNzg1NzU3ODkx*_ga*MTQ1NTcwOTc0LjE3MzI0NDUyMzE.*_ga_7C6N0WZ5Q3*czE3ODg3NzAxMjEkbzgzOSRnMSR0MTc4ODc3MDIzOSRqMTMkbDAkaDA."
+            "label": "Privacy Notice",
+            "href": "https://www.lusha.com/legal/privacy-notice"
           },
           {
             "label": "Contact Support",
             "href": "mailto:support@lusha.com"
+          },
+          {
+            "label": "Feature Request",
+            "href": "https://dashboard-services.lusha.com/v2/user-voice/goto"
           }
         ]
       }
