@@ -1373,5 +1373,11 @@
   },
   "interaction": {
     "drilldown": false
-  }
+  },
+  "redirects": [
+    {
+      "source": "/user-guide/faqs-and-troubleshooting/cancel-lusha-extension-auto-open",
+      "destination": "/user-guide/extension/getting-started-with-lushas-extension"
+    }
+  ]
 }
