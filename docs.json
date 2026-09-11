@@ -38,19 +38,9 @@
     "display": "header"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Login",
-        "href": "https://dashboard.lusha.com/"
-      },
-      {
-        "label": "Contact sales",
-        "href": "https://www.lusha.com/contact-sales/"
-      }
-    ],
     "primary": {
       "type": "button",
-      "label": "Start for free",
+      "label": "Contact Sales",
       "href": "https://www.lusha.com/signup/"
     }
   },
@@ -77,9 +67,7 @@
     "tabs": [
       {
         "tab": "Home",
-        "pages": [
-          "index"
-        ]
+        "href": "/"
       },
       {
         "tab": "Lusha Data",
