@@ -153,8 +153,6 @@ nav [aria-expanded="false"] [aria-label*="expand" i] svg,
 nav [data-state="closed"] svg[class*="chevron" i],
 nav [data-state="closed"] svg[class*="caret" i] {
   transform: rotate(90deg);
-}
-
 /* ------------------------------------------------------------------
  * Landing page (index.mdx) - ported 1:1 from the Redocly hub homepage.
  * Class names are the original styled-components hashes so the markup
