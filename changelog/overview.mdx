@@ -6,9 +6,60 @@ description: "All notable changes to the Lusha API and MCP. We follow semantic v
 All notable changes to the Lusha API and MCP are documented here. We follow semantic versioning.
 
 <Info>
-  **Current Version: 2.8.0**
+  **Current Version: 2.15.0**
   Status: Production · Released: September 2026 · Stability: Stable (Tables API is Beta)
 </Info>
+
+<Update label="2026-09-17" description="v2.15.0 - Company social links: Instagram, YouTube, TikTok" tags={["Enrichment"]}>
+
+**Added**
+
+**Instagram, YouTube, and TikTok on Enrich Companies** - Added `instagram`, `youtube`, and `tiktok` to the `socialLinks` object returned by `POST /v3/companies/enrich` (alongside the existing `linkedin`, `facebook`, and `x`).
+
+- Included automatically whenever Lusha holds the data - no `reveal` entry needed to unlock them
+- Free field - no additional credits charged
+- Available on all plans
+- Each is returned as a list of URLs rather than a single string, since a company can legitimately hold more than one profile on a network (multiple YouTube channels are common) - every value Lusha holds is returned
+- Omitted from the response entirely when no data is available for that network (never returned as `null` or an empty list)
+- Company-level data, contains no personal information, refreshed monthly
+
+**Notes**
+
+- Nested under `socialLinks` for consistency with the existing `linkedin`, `facebook`, and `x` fields, rather than returned as top-level siblings
+- Extends the pattern introduced for `facebook` and `x` in 2.10.0, with the added list shape to account for networks where a company can hold multiple profiles
+
+</Update>
+
+<Update label="2026-09-10" description="v2.14.0 - Tables: column catalog and add columns" tags={["Tables"]}>
+
+**Added**
+
+**Lusha column catalog** - Added a discovery endpoint listing every Lusha data column that can be added to a table.
+
+- `GET /v3/contacts/tables/columns` - 22 columns
+- `GET /v3/companies/tables/columns` - 46 columns
+
+No request body and no parameters. Each entry returns the column's `category`, `displayName` (e.g. "Job title"), `columnKey` (e.g. `jobTitle` - the key you pass when adding the column) and `type` (`string` / `number` / `object`).
+
+This is **not** the same as `GET /v3/{contacts|companies}/tables/{table_id}/columns`, which lists the columns a specific table already has. The catalog lists what's available to add.
+
+**Add columns to a table** - Added `POST /v3/{contacts|companies}/tables/{table_id}/columns` - adds up to 10 Lusha columns in one call and starts enriching them automatically.
+
+- Body is either `columns: [{ "columnKey": "jobTitle" }, ...]` or a single `columnKey` for one column
+- Keys come straight from the catalog endpoint
+- The response returns one entry per requested column with its own `status` (`added` / `failed`) and new `columnId`
+- Columns are handled independently - if one fails, the rest still go through
+- Most common failure is the column already being on the table, which returns the existing `columnId`, so the call is safe to re-run
+- Enrichment always runs on **all rows** in the table
+
+**Notes**
+
+- **Billing:** both endpoints are free today - credits aren't charged for the catalog or for adding columns yet
+- Enrichment kicked off by an add is asynchronous - poll Get Table for `isProcessing` and per-column row-status counts, then read values via Get Table Entities
+- Supersedes the Add Column pullback in 2.6.0. The endpoint returns in a different shape than the one documented in 2.5.0: it is catalog-key driven (`columnKey`) and accepts up to 10 columns per call, rather than the single-column `name` / `type` / `key` / `meta` body originally published. Since the 2.5.0 version was never functional, no working integration is affected
+- Adding columns is now reflected in the free-operations list on both the Contacts Tables and Companies Tables tag descriptions
+
+</Update>
 
 <Update label="2026-09-04" description="v2.8.0 - Buying Group, Signal Score, and Conversations" tags={["Buying Group", "Signals", "Conversations"]}>
 
@@ -37,6 +88,66 @@ All notable changes to the Lusha API and MCP are documented here. We follow sema
 **Removed**
 
 **Decision Makers API** - `POST /v3/contacts/decision-makers` has been retired and removed from the API reference. Use [Buying Group](/buying-group/overview), which covers the same use case with a broader persona set and per-contact relevance scoring.
+
+</Update>
+
+<Update label="2026-08-18" description="v2.12.0 - Prospecting contacts: per-company cap and exact totals" tags={["Prospecting"]}>
+
+**Added**
+
+**`maxContactsPerCompany` on Prospecting Contacts** - Added optional `options.maxContactsPerCompany` to `POST /v3/contacts/prospecting`.
+
+- Caps how many contacts are returned per company (accepts 1-20); omit for uncapped results
+- Caps contacts per company, **not** the page size - `pagination.size` still controls the page size
+
+**Exact-total pagination fields** - The `pagination` object on the Prospecting Contacts response can now include two optional fields:
+
+- `totalGuaranteed` - `true` when `total` is an exact count rather than an estimate
+- `totalDescription` - human-readable explanation of `total` (e.g. "Exact contact count (up to 2 per company)")
+
+Both keys are omitted from the response when not returned.
+
+**Notes**
+
+- Additive and backward compatible - existing requests are unaffected
+- The two pagination fields are scoped to the Prospecting Contacts response and do not appear on other paginated endpoints
+
+</Update>
+
+<Update label="2026-08-17" description="v2.11.0 - Open job postings on company enrichment" tags={["Enrichment"]}>
+
+**Added**
+
+**Open Job Postings on Enrich Companies** - Added four new independently revealable fields to `POST /v3/companies/enrich`, requested via the existing `reveal` array:
+
+- `openJobsTotal` - reveals the total open job count. In the response, this appears as the `total` field inside the `openJobs` object
+- `openJobsByDepartment` - reveals open job counts broken down by department. In the response, this appears as the `byDepartment` field inside the `openJobs` object
+- `openJobsByLocation` - reveals open job counts broken down by location. In the response, this appears as the `byLocation` field inside the `openJobs` object
+- `openJobsBySeniority` - reveals open job counts broken down by seniority level. In the response, this appears as the `bySeniority` field inside the `openJobs` object
+
+All four values are nested under a single `openJobs` object rather than returned as separate top-level fields, so a result with multiple sub-fields revealed reads as one grouped object. `openJobs` appears in `has[]` when any data exists for the company, and each of the four tokens appears in `canReveal[]`. A sub-field with no data is omitted from the response.
+
+**Notes**
+
+- Follows the same reveal pattern as `estimatedAnnualItSpend` and `monthlyWebsiteTraffic`
+- Department, location, and seniority vocabularies reuse the existing prospecting filter lists
+
+</Update>
+
+<Update label="2026-08-13" description="v2.10.0 - Company social links expansion" tags={["Enrichment"]}>
+
+**Added**
+
+**Facebook and X on Enrich Companies** - Added `facebook` and `x` to the `socialLinks` object returned by `POST /v3/companies/enrich` (alongside the existing `linkedin`).
+
+- Included automatically when available - no `reveal` entry needed to unlock them
+- Omitted from the response when not available (never returned as an empty string)
+- Free field - no additional credits charged
+- Available on all plans
+
+**Notes**
+
+- Nested under `socialLinks` for consistency with the existing `linkedin` field, rather than returned as top-level siblings
 
 </Update>
 

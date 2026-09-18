@@ -1,0 +1,69 @@
+---
+title: "Data Waterfall"
+description: "Fill in missing work emails and phones on Enrich calls by falling through to your enabled third-party providers."
+---
+
+Fill in missing work emails and phones on Enrich calls by falling through to your enabled third-party providers.
+
+Data Waterfall is an enhancement to contact enrichment. When Lusha's own data has no match for a requested field, the request automatically falls through to your enabled third-party providers to fill the gap - extra reach on hard-to-match contacts, on top of standard enrichment.
+
+For Pro+ users: [Enable Data Waterfall](https://dashboard.lusha.com/account/waterfall)
+
+For Free users: Want to use Data Waterfall? [Explore plans](https://www.lusha.com/pricing/)
+
+## Key concepts
+
+- **Waterfall Reveal** - the enrichment behavior itself: Lusha checks its own data first, then falls through to your enabled providers for any missing email or phone.
+- **Provider** - a third-party data vendor you turn on under **Account Settings → Waterfall**. Lusha determines the query order across providers.
+- **Partial Profiles** - contacts the Search API has identified but doesn't yet have contact details for. Pairing Partial Profiles with Data Waterfall gets you more contacts and more complete data.
+
+## Availability
+
+Data Waterfall is currently available for:
+
+- API
+- MCP - enrichment through AI chats
+
+Coming soon: Workspace and Plugin support.
+
+<Note>
+  Data Waterfall is available on Pro plans and above. For Free users: want to use Data Waterfall? [Explore plans](https://www.lusha.com/pricing/)
+</Note>
+
+## Turning it on
+
+An account admin enables and configures Data Waterfall from **Account Settings → Waterfall**. From there, admins can:
+
+- Turn Data Waterfall on or off for the account
+- Choose which additional providers Waterfall can use
+- Disable individual providers at any time
+
+Once enabled, Waterfall runs automatically on every eligible `POST /v3/contacts/enrich` request. No additional configuration is needed in your API or MCP request.
+
+For full parameter reference, see the [Enrich Contacts API documentation](/api-reference/enrich/enrich-contacts).
+
+## How Data Waterfall works
+
+1. Lusha checks its own data first.
+2. If the requested email or phone is missing, Waterfall checks the additional providers enabled on your account.
+3. Providers are checked in an order determined by Lusha.
+4. Waterfall stops at the first successful match.
+5. You pay only for successful matches.
+
+Waterfall works only on contacts Lusha already has. It does not search for new contacts or replace Search or Prospecting.
+
+<Note>
+  For broader coverage, pair Data Waterfall with Partial Profiles. Partial Profiles (Search API) surfaces contacts Lusha has identified but doesn't currently have contact details for. Data Waterfall (Enrich) can then try to fill in the missing email or phone when you enrich those contacts.
+</Note>
+
+## Pricing
+
+Data Waterfall uses standard reveal pricing, flat across every vendor:
+
+- 2 credits per work email successfully revealed
+- 8 credits per phone successfully revealed
+- No charge for unsuccessful lookups - credits are charged only on a match
+
+Use of Data Waterfall is subject to Lusha's Supplementary Terms.
+
+You're all set! Turn on Data Waterfall under **Account Settings → Waterfall** and your enrich calls will start reaching further automatically.

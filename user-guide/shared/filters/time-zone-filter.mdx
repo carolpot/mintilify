@@ -1,0 +1,56 @@
+---
+title: "Time zone filter: reach contacts in working hours"
+description: "How to use Lusha's Time zone filter to find contacts by named time zone or local time, and return only contacts currently inside working hours."
+---
+
+The **Time zone** filter lets you build a contact table around the clock your prospects actually live in. Instead of guessing which contacts are at their desk, you can filter by a named time zone, by the contact's own local time, or return only contacts who are currently inside working hours.
+
+Until now the closest option was filtering by **Location**, which doesn't line up with time zones - one country can span several zones, and one zone can span several countries. Time zone filters by the thing that actually decides whether someone picks up.
+
+## How to use the Time zone filter
+
+<Steps>
+  <Step title="Open the filter panel">
+    Open the Workspace filter panel and click **Filter contacts**.
+  </Step>
+  <Step title="Open the CONTACTS group">
+    In the filter panel, open the **CONTACTS** group.
+  </Step>
+  <Step title="Select Time zone">
+    Select **Time zone**.
+  </Step>
+  <Step title="Choose how you want to filter">
+    - **Timezone** - pick a location, for example **Chicago, Illinois**
+    - **Local time** - filter by the contact's own clock instead of a named zone
+  </Step>
+  <Step title="Narrow to working hours">
+    To return only contacts who are at their desk right now, tick **Working Hours Only** and set a **Start** and **End** range.
+  </Step>
+</Steps>
+
+Results refresh in the table on the right as you apply the filter. Time zone stacks with **Job title**, **Seniority**, **Location** and the rest of your filters, and you can clear it at any time.
+
+## Key concepts
+
+- **Timezone** - a named zone selected by location. Use this when you're building a call block for a specific region.
+- **Local time** - the contact's own clock. Use this when you care about the hour a contact is in, regardless of which named zone produces it.
+- **Working Hours Only** - a toggle that returns only contacts whose current local time falls inside the **Start** and **End** range you set. Lusha does the time-zone math for you, so you don't have to calculate it row by row.
+
+<Note>
+  The **Time zone** filter is currently available in the Workspace search filter panel only. It is not yet available in the Lusha API or the Lusha MCP server.
+</Note>
+
+## How it fits your workflow
+
+Cold calling depends on local time. A rep working a morning block needs contacts who are also in their morning - not people about to sit down to dinner. Use **Time zone** to:
+
+- Build a table for the hours you're actually dialing, so a call block matches your day
+- Prioritize contacts who are reachable now with **Working Hours Only**
+- Target a region precisely, without relying on country or city as a stand-in for the clock
+
+## Related articles
+
+- [Using workspace filters: contact and company filter panel](/user-guide/building-your-workspace-tables/using-workspace-filters-contact-and-company-filter-panel)
+- [Workspace: AI-powered table building](/user-guide/introduction-and-getting-started/workspace-ai-powered-table-building)
+
+Now you're ready to dial the people who are actually at their desk.

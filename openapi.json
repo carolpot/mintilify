@@ -2535,6 +2535,110 @@
             "$ref": "#/components/responses/TableNotFound"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Contacts Tables"
+        ],
+        "summary": "Add Columns to Contacts Table",
+        "operationId": "addContactsTableColumns",
+        "description": "Add up to 10 Lusha columns to a table in one call. Enrichment starts automatically on\n**all rows** in the table as soon as the columns are added.\n\n**Body** — either a list or a single key:\n- `columns: [{ \"columnKey\": \"jobTitle\" }, { \"columnKey\": \"seniority\" }]`\n- `columnKey: \"jobTitle\"` for a single column\n\nKeys come straight from\n[Get Contacts Column Catalog](#operation/getContactsColumnCatalog).\n\n**Partial success:** columns are handled independently. The response returns one entry\nper requested column with its own `status` (`added` / `failed`) and `columnId` — if one\ncolumn fails the rest still go through. The most common failure is the column already\nbeing on the table, in which case the existing `columnId` is returned, so the call is\nsafe to re-run.\n\n> **Billing:** Free today — credits aren't charged for adding columns yet.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TableIdPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ColumnsAddRequest"
+              },
+              "examples": {
+                "multipleColumns": {
+                  "summary": "Add several columns at once",
+                  "value": {
+                    "columns": [
+                      {
+                        "columnKey": "jobTitle"
+                      },
+                      {
+                        "columnKey": "seniority"
+                      },
+                      {
+                        "columnKey": "workEmail"
+                      }
+                    ],
+                    "owner": {
+                      "email": "user@example.com"
+                    }
+                  }
+                },
+                "singleColumn": {
+                  "summary": "Add a single column",
+                  "value": {
+                    "columnKey": "jobTitle",
+                    "owner": {
+                      "email": "user@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Columns processed. Returns one entry per requested column — check each entry's `status`, as some may have failed while others succeeded.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColumnsAddResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "columnKey": "jobTitle",
+                      "columnId": "c_9f2a1b",
+                      "status": "added"
+                    },
+                    {
+                      "columnKey": "seniority",
+                      "columnId": "c_44de07",
+                      "status": "added"
+                    },
+                    {
+                      "columnKey": "workEmail",
+                      "columnId": "c_1c88fa",
+                      "status": "failed",
+                      "error": {
+                        "code": "COLUMN_ALREADY_EXISTS",
+                        "message": "Column already exists on this table"
+                      }
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 0,
+                    "resultsReturned": 2
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/TableNotFound"
+          }
+        }
       }
     },
     "/v3/contacts/tables/{table_id}/columns/{column_id}": {
@@ -3085,6 +3189,110 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/TableNotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Companies Tables"
+        ],
+        "summary": "Add Columns to Companies Table",
+        "operationId": "addCompaniesTableColumns",
+        "description": "Add up to 10 Lusha columns to a table in one call. Enrichment starts automatically on\n**all rows** in the table as soon as the columns are added.\n\n**Body** — either a list or a single key:\n- `columns: [{ \"columnKey\": \"industry\" }, { \"columnKey\": \"yearFounded\" }]`\n- `columnKey: \"industry\"` for a single column\n\nKeys come straight from\n[Get Companies Column Catalog](#operation/getCompaniesColumnCatalog).\n\n**Partial success:** columns are handled independently. The response returns one entry\nper requested column with its own `status` (`added` / `failed`) and `columnId` — if one\ncolumn fails the rest still go through. The most common failure is the column already\nbeing on the table, in which case the existing `columnId` is returned, so the call is\nsafe to re-run.\n\n> **Billing:** Free today — credits aren't charged for adding columns yet.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TableIdPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ColumnsAddRequest"
+              },
+              "examples": {
+                "multipleColumns": {
+                  "summary": "Add several columns at once",
+                  "value": {
+                    "columns": [
+                      {
+                        "columnKey": "industry"
+                      },
+                      {
+                        "columnKey": "yearFounded"
+                      },
+                      {
+                        "columnKey": "employeesByDepartment"
+                      }
+                    ],
+                    "owner": {
+                      "email": "user@example.com"
+                    }
+                  }
+                },
+                "singleColumn": {
+                  "summary": "Add a single column",
+                  "value": {
+                    "columnKey": "industry",
+                    "owner": {
+                      "email": "user@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Columns processed. Returns one entry per requested column — check each entry's `status`, as some may have failed while others succeeded.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColumnsAddResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "columnKey": "industry",
+                      "columnId": "c_31aa90",
+                      "status": "added"
+                    },
+                    {
+                      "columnKey": "yearFounded",
+                      "columnId": "c_77b201",
+                      "status": "added"
+                    },
+                    {
+                      "columnKey": "employeesByDepartment",
+                      "columnId": "c_0ce4d3",
+                      "status": "failed",
+                      "error": {
+                        "code": "COLUMN_ALREADY_EXISTS",
+                        "message": "Column already exists on this table"
+                      }
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 0,
+                    "resultsReturned": 2
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -5476,6 +5684,126 @@
           }
         }
       }
+    },
+    "/v3/contacts/tables/columns": {
+      "get": {
+        "tags": [
+          "Contacts Tables"
+        ],
+        "summary": "Get Contacts Column Catalog",
+        "operationId": "getContactsColumnCatalog",
+        "description": "List every Lusha data column that can be added to a contacts table — 22 columns.\n\nNo request body and no parameters. Each entry returns the column's `category`,\n`displayName` (e.g. \"Job title\"), `columnKey` (e.g. `jobTitle` — the key you pass to\n[Add Columns to Contacts Table](#operation/addContactsTableColumns)), and `type`\n(`string` / `number` / `object`).\n\n> **Not the same as** [List Contacts Table Columns](#operation/listContactsTableColumns).\n> That endpoint lists the columns a *specific table already has*; this one lists\n> what's *available to add*.\n\n> **Billing:** Free — no credits charged.\n",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColumnCatalogResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "category": "Contact details",
+                      "displayName": "Job title",
+                      "columnKey": "jobTitle",
+                      "type": "string"
+                    },
+                    {
+                      "category": "Contact details",
+                      "displayName": "Seniority",
+                      "columnKey": "seniority",
+                      "type": "string"
+                    },
+                    {
+                      "category": "Company",
+                      "displayName": "Company size",
+                      "columnKey": "companyEmployeeCount",
+                      "type": "number"
+                    },
+                    {
+                      "category": "Company",
+                      "displayName": "Location",
+                      "columnKey": "location",
+                      "type": "object"
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 0,
+                    "resultsReturned": 22
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/v3/companies/tables/columns": {
+      "get": {
+        "tags": [
+          "Companies Tables"
+        ],
+        "summary": "Get Companies Column Catalog",
+        "operationId": "getCompaniesColumnCatalog",
+        "description": "List every Lusha data column that can be added to a companies table — 46 columns.\n\nNo request body and no parameters. Each entry returns the column's `category`,\n`displayName` (e.g. \"Industry\"), `columnKey` (e.g. `industry` — the key you pass to\n[Add Columns to Companies Table](#operation/addCompaniesTableColumns)), and `type`\n(`string` / `number` / `object`).\n\n> **Not the same as** [List Companies Table Columns](#operation/listCompaniesTableColumns).\n> That endpoint lists the columns a *specific table already has*; this one lists\n> what's *available to add*.\n\n> **Billing:** Free — no credits charged.\n",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColumnCatalogResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "category": "Firmographics",
+                      "displayName": "Industry",
+                      "columnKey": "industry",
+                      "type": "string"
+                    },
+                    {
+                      "category": "Firmographics",
+                      "displayName": "Year founded",
+                      "columnKey": "yearFounded",
+                      "type": "number"
+                    },
+                    {
+                      "category": "Firmographics",
+                      "displayName": "Employees by department",
+                      "columnKey": "employeesByDepartment",
+                      "type": "object"
+                    },
+                    {
+                      "category": "Funding",
+                      "displayName": "Total funding amount",
+                      "columnKey": "totalFundingAmount",
+                      "type": "number"
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 0,
+                    "resultsReturned": 46
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -7696,6 +8024,49 @@
               "linkedin": {
                 "type": "string",
                 "example": "https://www.linkedin.com/company/lushadata"
+              },
+              "facebook": {
+                "type": "string",
+                "nullable": true,
+                "description": "Company Facebook page URL. Included automatically when available - no `reveal` entry needed. Omitted from the response when not available (never returned empty). Free field - no credits charged. Available on all plans.\n",
+                "example": "https://www.facebook.com/lusha"
+              },
+              "x": {
+                "type": "string",
+                "nullable": true,
+                "description": "Company X (formerly Twitter) profile URL. Included automatically when available - no `reveal` entry needed. Omitted from the response when not available (never returned empty). Free field - no credits charged. Available on all plans.\n",
+                "example": "https://x.com/lusha"
+              },
+              "instagram": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Company Instagram profile URLs. Included automatically when Lusha holds the data - no `reveal` entry needed, no credit cost. Returned as a list because a company can hold more than one profile on this network; every value Lusha holds is returned. Omitted from the response entirely when no data is available (never returned as `null` or an empty list). Company-level data, contains no personal information, refreshed monthly. Available on all plans.\n",
+                "example": [
+                  "https://www.instagram.com/acmecorp"
+                ]
+              },
+              "youtube": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Company YouTube channel URLs. Included automatically when Lusha holds the data - no `reveal` entry needed, no credit cost. Returned as a list because a company can hold more than one channel on this network (multiple YouTube channels are common); every value Lusha holds is returned. Omitted from the response entirely when no data is available (never returned as `null` or an empty list). Company-level data, contains no personal information, refreshed monthly. Available on all plans.\n",
+                "example": [
+                  "https://www.youtube.com/c/acmecorp",
+                  "https://www.youtube.com/channel/UCY23V0it8LSbQhB91Esxrbg"
+                ]
+              },
+              "tiktok": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Company TikTok profile URLs. Included automatically when Lusha holds the data - no `reveal` entry needed, no credit cost. Returned as a list because a company can hold more than one profile on this network; every value Lusha holds is returned. Omitted from the response entirely when no data is available (never returned as `null` or an empty list). Company-level data, contains no personal information, refreshed monthly. Available on all plans.\n",
+                "example": [
+                  "https://www.tiktok.com/@acmecorp"
+                ]
               }
             }
           },
@@ -11822,6 +12193,52 @@
             "nullable": true,
             "description": "Your internal client/tenant identifier, if provided when the contact data was originally revealed. Useful for multi-tenant setups to route the removal to the correct system.\n",
             "example": "acme-crm-tenant-42"
+          }
+        }
+      },
+      "ColumnCatalogResponse": {
+        "type": "object",
+        "description": "The full catalog of Lusha columns available for this entity type — 22 for contacts, 46 for companies.\n",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ColumnCatalogItem"
+            }
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "ColumnCatalogItem": {
+        "type": "object",
+        "description": "One Lusha data column available to add to a table. Returned by the column catalog endpoints.\n",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Grouping the column belongs to in the catalog and in the Workspace UI.",
+            "example": "Contact details"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Human-readable column name, as shown on the table.",
+            "example": "Job title"
+          },
+          "columnKey": {
+            "type": "string",
+            "description": "Stable machine key for this column. Pass this value as `columnKey` when adding the column to a table.\n",
+            "example": "jobTitle"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "string",
+              "number",
+              "object"
+            ],
+            "description": "Data type of the values this column produces.",
+            "example": "string"
           }
         }
       }

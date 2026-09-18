@@ -31,6 +31,7 @@ Click either **Filter contacts** or **Filter companies** to open the filter pane
 | Industry | Technology, Healthcare, Finance, Manufacturing, and more |
 | Sub-industry | Software Development, Financial Services, etc. |
 | Location | Country, state/region, city |
+| Time zone | Named time zone, contact's local time, working hours only |
 | Company size | Headcount ranges (e.g., 51–200, 1K–5K) |
 | Company revenue | Revenue ranges |
 | Technology | Tech stack filters (technographics) |
@@ -41,6 +42,10 @@ Click either **Filter contacts** or **Filter companies** to open the filter pane
 | Languages | Language spoken (e.g., "Spanish", "French") |
 | Professional bio | Certifications and awards (e.g., "PMP", "AWS Certified") |
 | Not in my CRM | Hide contacts already in your connected CRM |
+
+<Note>
+  The **Time zone** filter lets you filter contacts by a named time zone or by their own local time, with a **Working Hours Only** option that returns only contacts currently inside the hours you set. See [Time zone filter: reach contacts in working hours](/user-guide/shared/filters/time-zone-filter).
+</Note>
 
 <Note>
   The Skills, Education, Languages, and Professional bio filters are based on enriched LinkedIn profile data. Not all contacts will have complete profile data - if results are fewer than expected, try broadening your criteria.
@@ -71,12 +76,14 @@ Click either **Filter contacts** or **Filter companies** to open the filter pane
 
 ## The "Not in my CRM" toggle
 
-The **Not in my CRM** toggle is available in both the Contact and Company filter panels. When enabled, Lusha hides any record that already exists in your connected Salesforce account from the results. This prevents you from wasting credits revealing contacts you already have.
+The **Not in my CRM** toggle is available in both the Contact and Company filter panels. When enabled, Lusha hides any record that already exists in your connected CRM from the results. This prevents you from wasting credits revealing contacts you already have.
+
+The filter runs across your entire search, whatever its size - there's no result-count limit on what gets checked.
 
 The filter operates independently on each tab - toggling it on for Contacts does not automatically apply it to Companies, and vice versa.
 
 <Note>
-  Currently supported for Salesforce only. For more details on how this filter works and how Lusha detects duplicates, see the [Not in my CRM](/user-guide/building-your-workspace-tables/Account-Based%20Prospecting%20%28Beta%29/not-in-my-crm-filter) filter article.
+  Supported for **Salesforce** and **HubSpot**. For more details on how this filter works and how Lusha detects duplicates, see the [Not in my CRM](/user-guide/building-your-workspace-tables/Account-Based%20Prospecting%20%28Beta%29/not-in-my-crm-filter) filter article.
 </Note>
 
 ## Combining filters with the AI chat

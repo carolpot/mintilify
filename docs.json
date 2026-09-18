@@ -38,9 +38,19 @@
     "display": "header"
   },
   "navbar": {
+    "links": [
+      {
+        "label": "Login",
+        "href": "https://dashboard.lusha.com/"
+      },
+      {
+        "label": "Contact sales",
+        "href": "https://www.lusha.com/contact-sales/"
+      }
+    ],
     "primary": {
       "type": "button",
-      "label": "Contact Sales",
+      "label": "Start for free",
       "href": "https://www.lusha.com/signup/"
     }
   },
@@ -67,7 +77,9 @@
     "tabs": [
       {
         "tab": "Home",
-        "href": "/"
+        "pages": [
+          "index"
+        ]
       },
       {
         "tab": "Lusha Data",
@@ -347,7 +359,9 @@
                           "GET /v3/contacts/tables/{table_id}/entities",
                           "POST /v3/contacts/tables/{table_id}/entities",
                           "DELETE /v3/contacts/tables/{table_id}/entities",
+                          "GET /v3/contacts/tables/columns",
                           "GET /v3/contacts/tables/{table_id}/columns",
+                          "POST /v3/contacts/tables/{table_id}/columns",
                           "DELETE /v3/contacts/tables/{table_id}/columns/{column_id}",
                           "POST /v3/contacts/tables/{table_id}/columns/{column_id}/run"
                         ],
@@ -364,7 +378,9 @@
                           "GET /v3/companies/tables/{table_id}/entities",
                           "POST /v3/companies/tables/{table_id}/entities",
                           "DELETE /v3/companies/tables/{table_id}/entities",
+                          "GET /v3/companies/tables/columns",
                           "GET /v3/companies/tables/{table_id}/columns",
+                          "POST /v3/companies/tables/{table_id}/columns",
                           "DELETE /v3/companies/tables/{table_id}/columns/{column_id}",
                           "POST /v3/companies/tables/{table_id}/columns/{column_id}/run"
                         ],
@@ -766,7 +782,8 @@
                       "user-guide/shared/filters/technology-filter-technographics",
                       "user-guide/shared/filters/funding-data",
                       "user-guide/shared/filters/sic-and-naics-filters",
-                      "user-guide/shared/filters/hiring-surge-premium-filter"
+                      "user-guide/shared/filters/hiring-surge-premium-filter",
+                      "user-guide/shared/filters/time-zone-filter"
                     ]
                   },
                   {
@@ -788,6 +805,7 @@
                       "user-guide/enriching-with-data-and-signals/workspace-enrichment-lusha-data-vs-ai-data-columns",
                       "user-guide/enriching-with-data-and-signals/workspace-signals-tracking-buying-intent-and-contact-changes",
                       "user-guide/shared/tables/permissions-ownership-and-shared-tables",
+                      "user-guide/shared/tables/access-your-complete-contacts-list",
                       "user-guide/managing-and-exporting-data/exporting-from-a-workspace-table",
                       "user-guide/managing-and-exporting-data/managing-first-and-last-name-fields-in-exports",
                       "user-guide/shared/export/csv-file-opens-in-the-wrong-format"
@@ -823,7 +841,8 @@
                       "user-guide/shared/filters/technology-filter-technographics",
                       "user-guide/shared/filters/funding-data",
                       "user-guide/shared/filters/sic-and-naics-filters",
-                      "user-guide/shared/filters/email-confidence-ratings"
+                      "user-guide/shared/filters/email-confidence-ratings",
+                      "user-guide/shared/filters/time-zone-filter"
                     ]
                   },
                   {
@@ -840,7 +859,8 @@
                     "pages": [
                       "user-guide/shared/tables/working-inside-a-saved-workspace-table",
                       "user-guide/managing-and-exporting-data/adding-contacts-to-an-existing-workspace-table",
-                      "user-guide/shared/tables/permissions-ownership-and-shared-tables"
+                      "user-guide/shared/tables/permissions-ownership-and-shared-tables",
+                      "user-guide/shared/tables/access-your-complete-contacts-list"
                     ]
                   },
                   {
@@ -879,7 +899,9 @@
                       "user-guide/ai-recommendations/how-ai-recommendations-work",
                       "user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations",
                       "user-guide/ai-recommendations/how-to-create-a-target-profile",
-                      "user-guide/ai-recommendations/decision-makers-find-the-right-contacts-fast",
+                      "user-guide/ai-recommendations/buying-group-find-the-right-contacts-fast",
+                      "user-guide/ai-recommendations/signal-score-and-icp-fit-score",
+                      "user-guide/ai-recommendations/opportunity-conversion-score-beta",
                       "user-guide/ai-recommendations/credits-and-unified-recommendations-table"
                     ]
                   },
@@ -1177,6 +1199,8 @@
                   "user-guide/lushas-api/website-visitors-api",
                   "user-guide/lushas-api/decision-makers-api",
                   "user-guide/lushas-api/tables-api",
+                  "user-guide/lushas-api/conversation-intelligence-api",
+                  "user-guide/lushas-api/data-waterfall",
                   "user-guide/lushas-api/industry-taxonomy-update-for-prospecting-api",
                   "user-guide/lushas-api/lusha-api-error-codes-reference",
                   {
@@ -1373,5 +1397,11 @@
   },
   "interaction": {
     "drilldown": false
-  }
+  },
+  "redirects": [
+    {
+      "source": "/user-guide/ai-recommendations/decision-makers-find-the-right-contacts-fast",
+      "destination": "/user-guide/ai-recommendations/buying-group-find-the-right-contacts-fast"
+    }
+  ]
 }
