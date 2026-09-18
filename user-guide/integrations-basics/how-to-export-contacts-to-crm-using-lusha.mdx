@@ -3,9 +3,25 @@ title: "How to export contacts to CRM using Lusha"
 description: "How to export contacts from Lusha to your CRM from Lusha Search, the extension, or your contact tables."
 ---
 
-You can push contacts revealed in Lusha directly to your CRM from three places: Lusha Search, the Lusha extension, and your Contact tables.
+You can push contacts revealed in Lusha directly to your CRM from three places: Lusha Search, the Lusha extension, and your tables.
 
-Export limits vary by CRM - up to 150 contacts to Salesforce, 100 to HubSpot, and 25 to all other supported CRMs.
+Exports within the real-time threshold complete instantly. Larger selections are processed in the background - up to 10,000 records for Salesforce, and 1,000 for other CRMs. These limits are set by each CRM platform and cannot be changed. Async export beyond the real-time threshold is available for contacts export only - company exports are limited to the real-time threshold.
+
+### Per-CRM export limits
+
+| CRM | Real-Time Limit | Max Per Async Export | Notes |
+| --- | --- | --- | --- |
+| Salesforce | Up to 150 | 10,000 | Sandbox included, [Identifier](/user-guide/salesforce/salesforce-identifier-indicator) available |
+| HubSpot | Up to 100 | 1,000 | [Identifier](/user-guide/hubspot/hubspot-identifier-indicator) available |
+| Bullhorn | Up to 25 | 1,000 | [Identifier](/user-guide/bullhorn/bullhorn-identifier-indicator) available |
+| Pipedrive | Up to 25 | 1,000 | |
+| Zoho | Up to 50 | 1,000 | |
+| Outreach | Up to 25 | - | Save to sequence available |
+| SalesLoft | Up to 25 | - | Save to cadence available |
+| MS Dynamics | Up to 25 | 1,000 | |
+| [Capsule](/user-guide/capsule/capsule-integration) | Up to 25 | - | Pushes enriched contacts and organizations, field mapping configurable |
+
+For the full breakdown, see [Available CRM integrations](/user-guide/integrations-basics/available-crm-integrations).
 
 <Note>
 Each CRM export costs 1 credit, charged at the time of export and separate from the original reveal cost.
@@ -57,25 +73,57 @@ HubSpot now also supports pushing companies directly from Lusha. When exporting 
   </Step>
 </Steps>
 
-## From Contact tables
+## Export from a table
 
-<Steps>
-  <Step title="Open a contact table">
-    Open a table from the left navigation panel.
-  </Step>
-  <Step title="Select the contacts to export">
-    Select the number of contacts you would like to export.
-  </Step>
-  <Step title="Export via CRM">
-    Click **CRM** and follow the same steps as above.
-  </Step>
-</Steps>
+Open a table, select the rows to export (or leave none checked to target the whole view), then click the **CRM** button in the toolbar to open the export drawer. From there you choose the CRM to export to, the record type (**Export as**), and your export preferences - skipping already-exported contacts, how to handle contacts with unshown details, and whether to update contacts already in your CRM.
 
-Please note that each integration has export limits.
+See [Exporting from a workspace table](/user-guide/managing-and-exporting-data/exporting-from-a-workspace-table#export-option-2-crm-sync) for the full walkthrough.
 
-Up to 150 contacts to Salesforce, 100 to HubSpot, and 25 to all other supported CRMs.
+## When your export runs in the background
+
+Large table exports run asynchronously. While the job runs:
+
+- A floating progress window shows batch-by-batch progress. Closing or minimizing it does not cancel the job.
+- You can keep working in Lusha.
+- When the export is complete, a banner appears in the table and you'll receive an in-app notification. You can see the full details in the export list, and check the status on the integration page.
+
+<Note>
+Only one export can run at a time per user. The CRM button is disabled while a job is in flight - hover over it to see the status.
+</Note>
+
+### Export state on your table
+
+Each row displays a status pill - **Exported** or **Not exported** - showing whether a record was pushed in a completed job. After a successful export, rows flip to **Exported**. If a contact fails or the export is truncated (scope exceeds the CRM cap), it stays **Not exported** and will be picked up automatically on your next run.
+
+<Warning>
+Export state reflects whether a record was sent from Lusha. It does not reflect the record's status inside your CRM - such as any edits, deletions, or status changes made after the export.
+</Warning>
+
+## Reviewing your CRM exports
+
+To see a history of all exports, go to **Settings → Integrations → the relevant integration → Manage → Integration tab**.
+
+The CRM export tab lists every table pushed to a connected CRM in the last 90 days, with these columns:
+
+| Column | What It Shows |
+| --- | --- |
+| CRM | The destination platform |
+| Source table | The Lusha table the export came from |
+| Time | Date and time the job ran |
+| Status | Done / In progress / Completed with errors / Failed |
+| Exported / total | How many records were successfully pushed |
+| Failed | How many records failed (shown in red when non-zero) |
+
+Select any job to see which contacts failed and why.
+
+<Note>
+The CRM export tab shows export-level results from Lusha. To see exactly which contacts are now in your CRM, go to your CRM directly and filter records by source - look for contacts where the source is set to Lusha.
+</Note>
 
 ## Troubleshooting
 
-- **Mapping errors** - check your field mapping configuration in Integrations settings.
-- **Integration issues** - go to Integrations and reauthenticate your CRM connection.
+- **Mapping errors** - check your field mapping in **Settings → Integrations → the relevant integration → Manage → Integration tab**.
+- **Integration issues** - go to **Settings → Integrations → the relevant integration → Manage → Integration tab** and reauthenticate your CRM connection. A disconnected token will cause a full job failure, shown as **Failed** in the CRM export tab.
+- **Contacts not appearing in CRM after export** - check the CRM export tab under Account to confirm the job status. If the job shows **Completed with errors**, select it to see how many contacts failed.
+
+You're all set - your contacts are on their way to your CRM.

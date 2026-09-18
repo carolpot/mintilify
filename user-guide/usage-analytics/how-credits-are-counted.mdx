@@ -1,9 +1,13 @@
 ---
 title: "How credits are counted"
-description: "A complete breakdown of how Lusha deducts credits across every feature - Platform, Extension, API, Workspace, CSV Enrichment, and Recommendations."
+description: "A complete breakdown of how Lusha deducts credits across every feature - Platform, Extension, API, Workspace, CSV Enrichment, Recommendations, and Buying Group."
 ---
 
 Every time you reveal contact information in Lusha, credits are deducted from your balance. The exact cost depends on **what data you reveal** and **which feature you use**. This article covers every credit event across all Lusha features so there are no surprises.
+
+<Note>
+New to credits? Start with [How credits work in Lusha](/user-guide/getting-started/how-credits-work-in-lusha) for the basics - plan allowances, rollover, and reset dates. This article is the complete per-feature reference.
+</Note>
 
 <Warning>
 Prices are subject to change across different pricing versions, per our [Terms & Conditions](https://www.lusha.com/legal/terms_and_conditions-2/).
@@ -45,9 +49,18 @@ Credits are charged based on the type of data revealed and the feature used. Use
 | **Recommendations table** | Show contact email | 1 credit |
 | **Recommendations table** | Show contact phone number | 5 credits |
 | **Recommendations table** | Browsing / filtering / viewing the table | 0 credits |
+| **Buying Group** | Reveal a Decision Maker contact | 1 credit per contact |
+| **Buying Group** | Reveal a Champion contact | 1 credit per contact |
+| **Buying Group** | Reveal an End User contact | 1 credit per 3 contacts |
+| **Buying Group** | Reveal a multi-role contact (e.g. Decision Maker + Champion) | 1 credit (charged once, not per role) |
+| **Buying Group** | Browsing the Buying Group table (masked names, title, company, score) | 0 credits |
 
 <Note>
 When you click **Reveal**, Lusha shows all available data for that contact at once. This is why a single reveal can deduct more than 1 credit - you're paying for each piece of contact data surfaced, not just one click.
+</Note>
+
+<Note>
+Buying Group credit costs are currently in effect for MCP/API usage only and will be gradually extended to the rest of the platform. You'll get 1 week's advance notice before any credit changes go into effect. See [Buying Group: find the right contacts fast](/user-guide/ai-recommendations/buying-group-find-the-right-contacts-fast) for the full feature guide.
 </Note>
 
 ---

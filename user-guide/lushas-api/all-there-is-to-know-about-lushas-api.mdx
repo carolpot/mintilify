@@ -55,6 +55,20 @@ Uses machine learning to find contacts and companies that mirror your best-perfo
 
 Enriches contacts and companies with timely sales intelligence like job moves, promotions, and company growth signals. Useful for triggering outreach at moments of change. See the [Signals API documentation](https://docs.lusha.com/apis/openapi/signals).
 
+## Signal Score
+
+Signal Score is a 0-100 ranking that tells you who to work first. It combines buying signals - hiring, funding, tech installs, job changes, website visits, intent - into a single score per contact or company, so a raw list becomes a prioritized one.
+
+Signal Score used to be available only inside the AI Recommendations table. It now works on any list - bring your own contacts or companies (a CRM export, a saved search, a custom table) and get a Signal Score back on every row.
+
+<Note>
+Signal Score is available via the API, MCP, and directly in the Platform - add it as a column on any Saved Table (companies or contacts) via the Enrich flow.
+</Note>
+
+See [Signal Score and ICP Fit Score](/user-guide/ai-recommendations/signal-score-and-icp-fit-score) for how the score is calculated.
+
+For full parameter reference, see the [Signals API documentation](/signals/overview).
+
 ## Credit usage API
 
 Returns current credit consumption by type. Rate limit: 5 requests per minute.
@@ -73,11 +87,21 @@ Admins turn Data Waterfall on and manage individual vendors under **Account Sett
   Rollout is staged - live now for self-serve paid accounts on the API, with Scale accounts on the API following shortly after, and MCP, Workspace, and Plugin support coming soon. Vendor coverage starts with 2 providers covering the US, with global vendors being added over time.
 </Note>
 
-For full parameter reference, see the [Enrich Contacts API documentation](https://docs.lusha.com/apis/openapi/enrich).
+See [Data Waterfall](/user-guide/lushas-api/data-waterfall) for full details on setup, how it works, and pricing, or the [Enrich Contacts API documentation](/api-reference/enrich/enrich-contacts) for parameters.
 
 ## MCP
 
 **API Hub** includes a dedicated **MCP** tab. Grab your personal MCP URL there and follow the ready-made setup guides for ChatGPT, Claude, Cursor, and n8n to connect Lusha to any AI tool. See the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) article for full setup instructions.
+
+## Conversation Intelligence
+
+Search your account's recorded Lusha Conversations calls and retrieve their transcripts programmatically, through two endpoints: Conversations Search and Transcript. Search returns each call's summary, coaching scores, chapters, and participants; fetch the transcript separately.
+
+<Note>
+Only completed conversations are returned, and there's no built-in way to roll up action items, competitor mentions, or risks across multiple calls - pull the calls you want with Search and aggregate them yourself.
+</Note>
+
+See [Conversation Intelligence API](/user-guide/lushas-api/conversation-intelligence-api) for full credit costs and what each endpoint returns, or the [Conversations API documentation](/conversations/overview) for parameters.
 
 ## Credit consumption
 
@@ -166,3 +190,9 @@ If the key has no credit limit set and you're still seeing the error, contact [L
 ## Error handling
 
 Lusha's API uses standard HTTP response codes. See the full table in the [API documentation](https://docs.lusha.com) or the [API Error Code Reference](/user-guide/lushas-api/lusha-api-error-codes-reference).
+
+## Legal notices
+
+(a) Data brokers and other third-party platforms may not embed, expose, or otherwise provide access to the Lusha API, or to Data obtained through it, on or through their own website, product, or service, without Lusha's prior written consent.
+
+(b) Data obtained through the API may not be used to train or develop AI/ML systems, subject to the terms and exceptions outlined in the [Terms and Conditions](https://lusha.com/legal/terms).

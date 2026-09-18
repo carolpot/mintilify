@@ -12,9 +12,11 @@ The Lusha MCP Server brings enterprise-grade B2B contact and company data direct
 - Build targeted prospect tables inside your AI chat
 - Run full prospecting workflows - from ICP to outreach - in a single conversation
 - Pull AI-driven **Recommendations** - contacts and companies tailored to your ICP - directly inside your AI conversation
+- Rank any contact or company list on a 0-100 buying-signal scale with **Signal Score**, using the `signal_score_contacts` and `signal_score_companies` tools - see [Signal Score and ICP Fit Score](/user-guide/ai-recommendations/signal-score-and-icp-fit-score) for how scores are calculated
 - Score how likely a company is to become a sales opportunity with **Opportunity Conversion Score (Beta)**, using the `predictive_score_companies` tool, and get the reasons behind the score - see [Opportunity Conversion Score (Beta) explained](/user-guide/ai-recommendations/opportunity-conversion-score-beta) for what the score means and which CRMs are supported
 - Find **Lookalikes** of your best customers and pipe them straight into Enrich for full contact details
 - Query **Website Visitors** data to see which companies are browsing your site and act on them directly inside your AI conversation
+- Search your account's recorded sales calls with **Conversation Intelligence** - by date, company, participant, or keyword - then pull a call's summary, coaching scores, chapters, or transcript, using the `conversations_search` and `conversations_transcript_get` tools; see [Conversation Intelligence API](/user-guide/lushas-api/conversation-intelligence-api) for credit costs and what's included
 
 <Note>
 **In Claude**, contacts and companies render as interactive cards instead of plain text - with one-click copy and one-click signal pulls (buying signals, hiring, headcount shifts, website traffic, LinkedIn activity intent, and more). If you run out of credits mid-search, you can top up right from the card without leaving the conversation.
@@ -47,3 +49,9 @@ For complete setup instructions, available tools, example prompts, troubleshooti
 <Tip>
 👉 [MCP Server documentation on docs.lusha.com](https://docs.lusha.com/mcp-docs)
 </Tip>
+
+## Legal notices
+
+(a) Data brokers and other third-party platforms may not embed, expose, or otherwise provide access to the Lusha API, or to Data obtained through it, on or through their own website, product, or service, without Lusha's prior written consent.
+
+(b) Data obtained through the API may not be used to train or develop AI/ML systems, subject to the terms and exceptions outlined in the [Terms and Conditions](https://lusha.com/legal/terms).

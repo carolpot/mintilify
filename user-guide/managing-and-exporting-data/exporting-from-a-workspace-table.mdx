@@ -92,7 +92,26 @@ Lusha maps contact fields to your CRM objects automatically based on your integr
 💡 Turning on **Skip exported contacts from Lusha** helps you avoid paying twice for contacts you've already synced to the same CRM.
 </Note>
 
-**Cost:** 1 credit per exported contact. Revealing unshown emails or phones as part of the export costs additional credits per contact, shown in the **Export preferences** panel before you export.
+### Per-export limits by CRM
+
+| CRM | Max Records Per Export |
+| --- | --- |
+| Salesforce | 10,000 |
+| HubSpot, Pipedrive, Bullhorn, Zoho, Dynamics | 1,000 |
+
+<Note>
+These limits are set by each CRM platform. You can select more than the limit - Lusha exports up to the cap and leaves the rest **Not exported** for your next run. Only one export can run at a time per user.
+</Note>
+
+**Cost:** 1 credit per updated export row (unchanged CRM rows are free). Revealing unshown emails or phones as part of the export costs additional credits per contact, shown in the **Export preferences** panel before you export.
+
+### Export state on your table
+
+Each row shows a status pill - **Exported** or **Not exported** - after a job runs. Rows flip to **Exported** once successfully pushed. Failed or truncated rows stay **Not exported** and are automatically included in your next run.
+
+<Warning>
+Export state shows whether a record was sent from Lusha. It does not reflect the record's current status inside your CRM.
+</Warning>
 
 ---
 
@@ -118,6 +137,22 @@ To push contacts directly into an Engage email sequence:
 The contacts will appear in that sequence in Engage, ready for outreach.
 
 **Requirement:** You must have at least one active Engage sequence set up before using this option.
+
+---
+
+## Tracking your CRM exports
+
+Go to **Settings → Integrations → the relevant integration → Manage → Integration tab** to see a history of every table pushed to a connected CRM in the last 90 days.
+
+Columns: CRM · Source table · Time · Status · Exported / total · Failed
+
+Status values: **Done** (green) · **Completed with errors** (amber) · **In progress** (blue) · **Failed** (red)
+
+Select any job to see which contacts failed and why.
+
+<Note>
+To see exactly which contacts are now in your CRM, go to your CRM and filter by source - look for records where the source is set to Lusha.
+</Note>
 
 ---
 
