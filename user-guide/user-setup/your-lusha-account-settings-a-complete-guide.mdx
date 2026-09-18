@@ -76,6 +76,22 @@ Configure SSO so all team members sign in using your company identity provider.
 - See [Set up SSO (Okta/Azure)](/user-guide/security/how-to-set-up-sso-single-sign-on)
 - See [Custom SAML single sign-on](/user-guide/security/custom-saml-single-sign-on)
 
+## Waterfall tab
+
+(Available for paid accounts, on the API and MCP)
+
+Data Waterfall is its own top-level tab in your account settings - navigate to **Settings → Waterfall** to access it.
+
+Waterfall fills in phone numbers and emails Lusha doesn't have, by automatically checking a stack of third-party vendors whenever Lusha itself comes up short on a match.
+
+- Turn Waterfall on for your account - once it's on, it runs automatically whenever Lusha is missing a phone number or email.
+- Turn individual vendors on or off at any time.
+- Users can opt out of Waterfall on a per-request basis.
+
+<Note>
+Charged only on a match - Lusha data costs 1 credit per work email and 5 credits per phone number; a Waterfall vendor match costs 2 credits per work email and 8 credits per phone number. See [Data Waterfall](/user-guide/lushas-api/data-waterfall) for the full technical reference.
+</Note>
+
 ## Report settings
 
 (Available for Admins only)

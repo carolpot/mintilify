@@ -3,18 +3,27 @@ title: "Available integrations"
 description: "The following table covers Lusha-CRM integrations, export limits, and platform-specific details."
 ---
 
-The following table shows each CRM Lusha integrates with, how many contacts you can export at once, and any platform-specific details.
+The following table shows each CRM Lusha integrates with, the real-time export threshold per CRM, and the maximum records per async export. Async export (beyond the real-time threshold) is available for contacts export only.
 
-| CRM | Export capabilities | Notes |
-| --- | --- | --- |
-| Salesforce | Up to 150 at once | Sandbox included, Identifier available |
-| HubSpot | Up to 100 at once | [Identifier](/user-guide/hubspot/hubspot-identifier-indicator) available |
-| Bullhorn | Up to 25 at once | Identifier available |
-| Pipedrive | Up to 25 at once |  |
-| Zoho | Up to 50 at once |  |
-| Outreach | Up to 25 at once | Save to sequence available |
-| SalesLoft | Up to 25 at once | Save to cadence available |
-| MS Dynamics | Up to 25 at once |  |
+| CRM | Real-Time Limit | Max Per Async Export | Notes |
+| --- | --- | --- | --- |
+| Salesforce | Up to 150 | 10,000 | Sandbox included, [Identifier](/user-guide/salesforce/salesforce-identifier-indicator) available |
+| HubSpot | Up to 100 | 1,000 | [Identifier](/user-guide/hubspot/hubspot-identifier-indicator) available |
+| Bullhorn | Up to 25 | 1,000 | [Identifier](/user-guide/bullhorn/bullhorn-identifier-indicator) available |
+| Pipedrive | Up to 25 | 1,000 | |
+| Zoho | Up to 50 | 1,000 | |
+| Outreach | Up to 25 | - | Save to sequence available |
+| SalesLoft | Up to 25 | - | Save to cadence available |
+| MS Dynamics | Up to 25 | 1,000 | |
+| [Capsule](/user-guide/capsule/capsule-integration) | Up to 25 | - | Pushes enriched contacts and organizations, field mapping configurable |
+
+<Note>
+These caps are set by each CRM platform, not by Lusha. If your selection exceeds a CRM's cap, Lusha exports the first N contacts and leaves the rest marked **Not exported** - so your next run picks up exactly where this one stopped. Only one export can run at a time per user.
+</Note>
+
+<Note>
+Async export beyond the real-time threshold is available for **contacts export only**. Company exports are limited to the real-time threshold shown above and cannot run as a background/async job.
+</Note>
 
 ---
 
@@ -22,12 +31,12 @@ The following table shows each CRM Lusha integrates with, how many contacts you 
 
 In addition to native CRM integrations, Lusha partners with third-party platforms that connect to Lusha via API. These are not direct CRM push integrations - they embed Lusha data into their own workflows (enrichment pipelines, AI agents, outreach sequences, and more). Each partner manages the connection on their side.
 
-| Partner | Type | What it does |
+| Partner | Type | What It Does |
 | --- | --- | --- |
-| Scalestack | GTM orchestration | Enriches, scores, and routes records across your CRM and engagement tools using AI agents |
-| SourceWhale | Outreach & recruitment automation | Pulls verified contact data into multi-channel sequences and syncs activity back to your CRM |
-| Chili Piper | Form enrichment & scheduling | Enriches inbound form submissions with contact and company data using just an email address |
-| Monday.com | Work management | Automatically enriches contact and company records in your Monday.com boards |
-| Wyzard.ai | Revenue intelligence | Triggers real-time contact enrichment based on prospect behavior, with automatic CRM sync |
-| Webmetic | Website visitor identification | Enriches anonymous B2B website visitors with verified decision-maker contact details |
-| Augmented 4 | AI agent platform | Feeds verified contact data into AI agents for automated lead qualification and outreach |
+| [Scalestack](/user-guide/lusha-partners/scalestack-integration) | GTM orchestration | Enriches, scores, and routes records across your CRM and engagement tools using AI agents |
+| [SourceWhale](/user-guide/lusha-partners/sourcewhale-integration) | Outreach & recruitment automation | Pulls verified contact data into multi-channel sequences and syncs activity back to your CRM |
+| [Chili Piper](/user-guide/lusha-partners/chilipiper-integration) | Form enrichment & scheduling | Enriches inbound form submissions with contact and company data using just an email address |
+| [Monday.com](/user-guide/lusha-partners/mondaycom-integration) | Work management | Automatically enriches contact and company records in your Monday.com boards |
+| [Wyzard.ai](/user-guide/lusha-partners/wyzardai-integration) | Revenue intelligence | Triggers real-time contact enrichment based on prospect behavior, with automatic CRM sync |
+| [Webmetic](/user-guide/lusha-partners/webmetic-integration) | Website visitor identification | Enriches anonymous B2B website visitors with verified decision-maker contact details |
+| [Augmented 4](/user-guide/lusha-partners/augmented-4-integration) | AI agent platform | Feeds verified contact data into AI agents for automated lead qualification and outreach |
