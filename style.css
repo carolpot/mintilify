@@ -289,3 +289,117 @@ div:has(> .lp-root) {
 #topbar-cta-button > a svg {
   display: none;
 }
+
+/* ------------------------------------------------------------------
+ * Landing page footer - ported 1:1 from the Redocly hub footer.
+ * mode:"custom" removes all chrome except the navbar, so the docs.json
+ * footer never renders on index.mdx. This reproduces the Redocly footer
+ * (Terms + copyright) inside the page instead. Class names are the
+ * original styled-components hashes so the markup can be copied as-is;
+ * the Redocly theme variables are resolved to their computed values.
+ * ------------------------------------------------------------------ */
+
+.lp-footer {
+  /* --footer-bg-color: --bg-color-raised -> --color-white */
+  --lp-footer-bg: #ffffff;
+  /* --footer-border-color: --border-color-secondary -> --color-warm-grey-2 */
+  --lp-footer-border: #ededf2;
+  /* --footer-text-color / --footer-link-text-color: --color-warm-grey-8 */
+  --lp-footer-ink: #3b3c45;
+  /* --footer-link-color-hover: --color-warm-grey-11 */
+  --lp-footer-ink-hover: #1a1c21;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  /* --mobile-footer-padding-*: --spacing-base (4px * 4) */
+  padding: 16px;
+  /* wrapper gap: --spacing-md (4px * 5) */
+  gap: 20px;
+  border-top: 1px solid var(--lp-footer-border);
+  background-color: var(--lp-footer-bg);
+  color: var(--lp-footer-ink);
+  /* --footer-font-size: --font-size-base */
+  font-size: 14px;
+  /* --footer-font-weight: --font-weight-regular */
+  font-weight: 400;
+  font-family: 'ABC Social', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root.dark .lp-footer {
+  --lp-footer-bg: #000000;
+  --lp-footer-border: #3b3c45;
+  --lp-footer-ink: #c4c6d1;
+  --lp-footer-ink-hover: #fbfbfc;
+}
+
+.lp-footer .gTuGtl {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  /* --footer-column-gap: --spacing-lg (4px * 6) */
+  gap: 24px;
+}
+
+/* --footer-link-padding-vertical: --spacing-xs (4px * 2); horizontal: 0 */
+.lp-footer .jHMgmr {
+  margin: 8px 0;
+}
+
+.lp-footer .cOxuwY {
+  color: var(--lp-footer-ink);
+  text-decoration: none;
+  text-align: center;
+}
+
+.lp-footer .cOxuwY:hover {
+  color: var(--lp-footer-ink-hover);
+}
+
+.lp-footer .idCJFc {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  align-self: center;
+}
+
+.lp-footer .dkRCjj {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* --footer-copyright-font-size: --footer-font-size */
+  font-size: 14px;
+  background-color: var(--lp-footer-bg);
+  color: var(--lp-footer-ink);
+  /* --footer-copyright-text-align */
+  text-align: start;
+  /* --spacing-xs */
+  gap: 8px;
+}
+
+/* --footer-container-max-width: --container-width */
+.lp-footer .dkRCjj span {
+  max-width: 1200px;
+}
+
+.lp-footer .gOUsPl {
+  padding: 8px 0;
+}
+
+@media screen and (min-width: 672px) {
+  .lp-footer {
+    /* --footer-padding-vertical: --spacing-xl (4px * 8);
+       --footer-padding-horizontal: calc(--spacing-unit * 10) */
+    padding: 32px 40px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .lp-footer .idCJFc {
+    margin-top: 0;
+  }
+}
