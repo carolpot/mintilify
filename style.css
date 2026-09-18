@@ -403,3 +403,40 @@ div:has(> .lp-root) {
     margin-top: 0;
   }
 }
+
+/* ------------------------------------------------------------------
+ * Landing page in mode:"wide".
+ *
+ * mode:"custom" strips every element except the navbar, which also
+ * removes the docs.json footer. mode:"wide" keeps the real footer (and
+ * its working theme switcher, and it stays in sync with docs.json), but
+ * it also renders Mintlify's own page header from the frontmatter -
+ * duplicating the title and description above the hero - plus the
+ * page context menu ("Copy page") and a constrained content column.
+ *
+ * These rules remove only that chrome, scoped to the landing page via
+ * :has(.lp-root) so no other page is affected.
+ * ------------------------------------------------------------------ */
+
+/* Duplicate title + description + "Copy page" menu */
+body:has(.lp-root) #header {
+  display: none;
+}
+
+/* The sidebar is only hidden by Mintlify's .is-custom peer class, so in
+ * wide mode it reappears at lg and offsets the content by its width. */
+body:has(.lp-root) #sidebar-content {
+  display: none !important;
+}
+
+body:has(.lp-root) #body-content {
+  padding-left: 0 !important;
+  max-width: none !important;
+}
+
+/* Let the landing page run full width, as it does in custom mode */
+body:has(.lp-root) #content-area {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
