@@ -50,7 +50,11 @@ OAuth and token-based callers are already identified by their token, so `owner.e
 
 ## Credit usage
 
-Adding contacts or companies to a table is free. Credits are only used when you trigger enrichment or data columns to run across a table's rows.
+- **Adding contacts** to a table is free.
+- **Adding companies** to a table is charged per newly-added company (deduped by row-count delta - duplicates and companies already in the table aren't charged again).
+- **Reading rows** (`GET .../entities`) is charged per row returned.
+- **Creating, listing, updating, and deleting tables** is free, as is **listing and removing columns**.
+- **Running a column** is charged per row, per that column's credit tier - company-enrichment columns charge once per company per table, so re-running an already-paid company is free.
 
 ## Error codes
 
