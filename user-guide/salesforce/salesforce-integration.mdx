@@ -9,6 +9,16 @@ The Salesforce integration lets you push contacts revealed in Lusha directly int
 Only Lusha Admins and Managers can configure the integration. Admins must complete the initial setup first. After that, each team member needs to connect their own Lusha account to Salesforce to enable export. You must also be a Salesforce Admin to authorise the connection.
 </Note>
 
+## Export size and background processing
+
+You can export up to 10,000 contacts to Salesforce in a single job. Exports of up to 150 contacts process in real time. Larger exports run in the background in 20 batches - you can keep working while the job runs.
+
+If your selection exceeds 10,000 contacts, Lusha exports the first 10,000 and leaves the rest marked **Not exported**, so your next run picks up automatically. The 10,000-record cap is a Salesforce platform limit and cannot be changed.
+
+<Note>
+Only one CRM export can run at a time per user. To track export status and review any failed contacts, go to **Account → CRM export**.
+</Note>
+
 ## Step 1: Connect Salesforce to Lusha
 
 <Steps>
