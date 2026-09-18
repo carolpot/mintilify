@@ -11,7 +11,17 @@ Lusha's API gives you programmatic access to contact and company data for enrich
 
 ## Authentication
 
-Find your API key in **API Hub** (left sidebar). Click **Copy API key** in the top right, or open the **Manage API Keys** tab to view and manage all your keys. Pass the key in the request header to authenticate. The key is shared at the account level and you can create several keys by pressing **+Create new Key**.
+Find your API key in **API Hub** (left sidebar). Click **Copy API key** in the top right, or open the **Manage API Keys** tab to view and manage your key. Pass the key in the request header to authenticate.
+
+Every key is tied to the user who generated it - Users get one key each; Admins and Managers can generate as many as they need. A key authenticates as its owner and draws from the account's shared credit pool. How it's capped depends on who generated it: a key a **User** generates is capped only by that user's own personal credit limit (uncapped if they have none), while each key an **Admin or Manager** generates can also carry its own credit limit, set independently for that key and independently of their personal one.
+
+<Note>
+Every user gets their own API key by default, on every plan including Free - API access is no longer limited to Admins and Managers.
+</Note>
+
+<Note>
+Admins and Managers can turn a user's API access off from **Account Settings → Permissions**. This suspends - rather than deletes - any key that user owns; turning access back on reactivates it automatically. If a user leaves the account, their key transfers to an Admin and keeps working. Admins and Managers can see every key in the account, and who owns each one, from the **Manage API Keys** tab.
+</Note>
 
 ## Rate limits
 
@@ -91,7 +101,11 @@ See [Data Waterfall](/user-guide/lushas-api/data-waterfall) for full details on 
 
 ## MCP
 
-**API Hub** includes a dedicated **MCP** tab. Grab your personal MCP URL there and follow the ready-made setup guides for ChatGPT, Claude, Cursor, and n8n to connect Lusha to any AI tool. See the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) article for full setup instructions.
+**API Hub** includes a dedicated **MCP** tab. Grab your personal MCP URL there and follow the ready-made setup guides for Claude, ChatGPT, Codex, Cursor, and VS Code (plus Gong AI Briefer) to connect Lusha to any AI tool. See the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) article for the full, current client list and setup instructions.
+
+<Note>
+MCP connects over OAuth, not an API key, so it isn't affected by a user's API access permission. Admins can control MCP separately via a dedicated **MCP access** permission in **Account Settings → Permissions** - on by default; turn it off to restrict MCP connections to Admins and Managers only.
+</Note>
 
 ## Conversation Intelligence
 
@@ -132,9 +146,11 @@ Example: revealing an email and phone for one contact costs 7 credits total (5 f
 
 **Key rules:** A minimum of 1 credit applies per request even if no data is returned. Maximum 100 contacts or companies per request. Each contact's data point is only charged once - re-querying the same contact won't incur additional charges for already-revealed data.
 
-## Managing API key credit limits
+## Managing credit consumption per key
 
-You can set monthly credit limits per API key to control consumption per workflow (e.g. Zapier, Make, or internal tools).
+How you cap a key's spending depends on who generated it.
+
+**A key an Admin or Manager generated** can carry its own monthly credit limit, on top of their personal limit. Admins and Managers can generate as many keys as they need, and each one gets its own limit, set independently of the others.
 
 <Steps>
   <Step title="Open Manage API Keys">
@@ -151,15 +167,34 @@ You can set monthly credit limits per API key to control consumption per workflo
   </Step>
 </Steps>
 
+**A key a User generated for themselves** has no limit of its own - an Admin or Manager can't cap that specific key the way they can a key they generated themselves. To cap how much a workflow using that key can spend (Zapier, Make, an internal script, and so on), set a credit limit on the **user** instead:
+
+<Steps>
+  <Step title="Open Team Management">
+    Go to **Settings → Team Management**.
+  </Step>
+  <Step title="Select the user">
+    Select the user whose key you want to cap.
+  </Step>
+  <Step title="Set their credit limit">
+    Set their credit limit the same way you would for any team member - see [How to limit credits per user or group](/user-guide/manage-your-team-capabilities/how-to-limit-credits-per-user-or-group).
+  </Step>
+</Steps>
+
 <Note>
-  Only Admins can set or edit credit limits. The sum of all individual API key limits cannot exceed your total account credit allowance. Limits reset automatically at the start of each billing cycle.
+Only Admins and Managers can set or edit a credit limit - on a key they generated themselves, or on a user's account. If a user has no personal credit limit, their key is uncapped and can draw on the full account credit balance. Limits reset automatically at the start of each billing cycle.
 </Note>
 
 ## Troubleshooting: API shows "credit limit reached" but I still have credits
 
 If your API calls are being rejected with a "credit limit reached" error but your Lusha dashboard shows credits remaining, the issue is almost always a **per-API-key credit limit** - not your account balance.
 
-Each API key can have its own monthly credit cap set independently of your total account balance. When a key's cap is reached, all requests using that key are blocked - even if the account still has plenty of credits available.
+Check which kind of key is failing:
+
+- **A key an Admin or Manager generated** (they can generate more than one) may have its own monthly limit, separate from their personal credit limit - check it under **API Hub → Manage API Keys**.
+- **A key a User generated for themselves** has no limit of its own - the block is coming from that user's own credit limit, set under **Settings → Team Management**.
+
+When a cap is reached, all requests using that key are blocked - even if the account still has plenty of credits available.
 
 **To check and fix the limit on your API key:**
 
@@ -182,10 +217,10 @@ Each API key can have its own monthly credit cap set independently of your total
 </Steps>
 
 <Note>
-  Only **Admins** can view and edit API key credit limits. If you don't have Admin access, ask your Lusha Admin to check the key's limit for you.
+Only **Admins and Managers** can view and edit credit limits, whether per-key or per-user. If you don't have that access, ask your Lusha Admin or Manager to check it for you.
 </Note>
 
-If the key has no credit limit set and you're still seeing the error, contact [Lusha Support](https://www.lusha.com/contact/) with the API key name and the error message you received.
+If there's no limit anywhere and you're still seeing the error, the account's shared credit balance itself may be exhausted - check your plan's credit balance, or contact [Lusha Support](https://www.lusha.com/contact/) with the API key name and the error message you received.
 
 ## Error handling
 
