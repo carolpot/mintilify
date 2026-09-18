@@ -392,7 +392,7 @@ div:has(> .lp-root) {
   .lp-footer {
     /* --footer-padding-vertical: --spacing-xl (4px * 8);
        --footer-padding-horizontal: calc(--spacing-unit * 10) */
-    padding: 32px 40px;
+    padding: 14px 40px;
     flex-direction: row;
     justify-content: space-between;
   }
@@ -439,4 +439,25 @@ body:has(.lp-root) #content-area {
   max-width: none;
   padding: 0;
   margin: 0;
+}
+
+/* ------------------------------------------------------------------
+ * Tighten the site footer on the landing page.
+ *
+ * Mintlify's footer is built for a docs page, where it sits well below
+ * the content: its inner wrapper carries lg:py-28 (112px top and bottom)
+ * plus gap-12, and the logo column adds md:gap-y-24 (another 96px). On
+ * the landing page, stacked under the Redocly Terms bar, that reads as a
+ * few hundred pixels of dead space.
+ * ------------------------------------------------------------------ */
+
+body:has(.lp-root) #footer > div {
+  padding-top: 12px !important;
+  padding-bottom: 20px !important;
+  gap: 12px !important;
+}
+
+/* The logo column reserves 96px of row gap for the docs layout */
+body:has(.lp-root) #footer [class*="gap-y-24"] {
+  row-gap: 0 !important;
 }
