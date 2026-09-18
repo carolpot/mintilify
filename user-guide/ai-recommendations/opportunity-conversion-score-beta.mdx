@@ -1,0 +1,146 @@
+---
+title: "Opportunity Conversion Score (Beta) explained"
+description: "Learn about the Opportunity Conversion score, now in beta: a predictive score (0-100) that shows how likely a company is to become a sales opportunity, trained on your own CRM data."
+---
+
+Opportunity Conversion is a predictive score, from 0 to 100, that shows how likely a company is to convert into a sales opportunity. It's trained on your own CRM data, so it reflects how conversion actually looks for your business, not a generic industry benchmark.
+
+This article covers everything included in the Opportunity Conversion (TOF) beta: what the score means, where to find it, how it works, and what to expect while it's in beta.
+
+<Note>
+  This article covers the Opportunity Conversion score only (top-of-funnel: lead to opportunity). Deal Conversion (opportunity to closed-won) is a separate score, planned for a later beta phase, and will get its own article when it opens.
+</Note>
+
+## Key concepts
+
+- **Score:** a number from 0-100 showing how likely a company is to become an opportunity.
+- **Reasons:** plain-language statements explaining what changed for a company and likely influenced its score.
+- **Personalized model:** the score is trained on your account's own CRM history - it isn't shared with, or trained on, other customers' data.
+
+## How to join the beta
+
+*(Shown only to accounts where the model is applicable - you can't request early access if you don't see this row)*
+
+<Steps>
+  <Step title="Open the Add Enrichment panel">
+    Enrich a contact or company as you normally would, and open the **Add Enrichment** panel.
+  </Step>
+  <Step title="Find the Opportunity conversion row">
+    Go to the **Scores** section and find the **Opportunity conversion** row, marked with a **Beta** tag.
+  </Step>
+  <Step title="Request access">
+    Click **Join beta**.
+  </Step>
+</Steps>
+
+<Note>
+  After you click **Join beta**, the button changes to a green **Requested** pill - that's your confirmation it went through. You'll then get an automated email to book a short feedback session (or complete a 3-question async form if a live session doesn't work for you).
+</Note>
+
+## Where to find the score
+
+*(Available once your account has joined the beta and has a connected CRM)*
+
+<Steps>
+  <Step title="Enrich a company">
+    Enrich a company as you normally would.
+  </Step>
+  <Step title="Run the enrichment">
+    Click **Enrich**.
+  </Step>
+  <Step title="Open the Scores section">
+    Find the score under the **Scores** section, in the **Opportunity conversion** row, marked with a **Beta** tag.
+  </Step>
+</Steps>
+
+<Note>
+  Viewing the Opportunity Conversion score does not use credits during the beta period.
+</Note>
+
+## How it works
+
+The model looks at how companies in your CRM history behaved before they became opportunities, then compares new companies against that pattern. It considers signals such as:
+
+- Headcount growth or shrinkage, overall and by department (e.g. Sales, Engineering, Marketing)
+- LinkedIn follower and employee growth
+- Revenue changes
+- HQ or office location changes, including opening a new office in a hub city
+- Industry or company-type changes
+- New presence on social platforms, or expanding internationally
+
+Alongside the score, you'll usually see a short list of reasons - plain-language statements about what changed for that company. For example:
+
+> "The Sales headcount in the recent month has changed by 12, and currently is 340."
+> "The company gained a presence in Austin in the recent month."
+> "LinkedIn followers have changed by 8% and currently it is 4,210."
+
+## What "beta" means right now
+
+This is an early version, and a few things are still being refined - worth knowing upfront:
+
+- Some high-scoring companies may show no reasons yet, or fewer than expected. The score is still valid - the explanation layer is catching up.
+- Reasons describe what changed, not always whether that change is good or bad for conversion. We're working on making that direction clearer.
+- Reasons don't yet cover news or intent signals (e.g. hiring for a specific role, funding news) - only firmographic and technographic changes today.
+
+<Note>
+  If something looks off or confusing, that's useful feedback, not a wasted report. Tell us about it in your feedback session (see the FAQ below).
+</Note>
+
+## What you need to use it
+
+*(Beta only - available to accounts that joined the Join Beta campaign)*
+
+- A connected CRM - **Salesforce** or **HubSpot**. The model trains on your CRM history, so it needs a connected CRM to work.
+- Your account must have joined the beta.
+
+<Note>
+  HubSpot and Salesforce store CRM records differently, so Lusha maps your HubSpot objects to the model's inputs before scoring. What you see is the same either way - the same score and the same reasons.
+</Note>
+
+If you enrich a company and don't see a score, your account may not yet be initialized. Reach out to your Lusha contact and we'll check.
+
+## Frequently asked questions
+
+**How is this different from a lead score I already have?**
+
+Most lead-scoring tools score against a generic model or firmographic checklist. Opportunity Conversion is trained specifically on your CRM's own lead-to-opportunity patterns so it reflects what conversion actually looks like for your business - not a one-size-fits-all benchmark.
+
+**Is my CRM data used to train models for other customers?**
+
+No. The model is trained per account, on that account's own CRM data. Your data isn't used to score or train models for other customers.
+
+**Which CRMs are supported?**
+
+Salesforce and HubSpot. Nothing changes in the experience between the two - the same score and the same reasons, both in the platform and over MCP. Lusha maps HubSpot's CRM objects to the model's inputs behind the scenes.
+
+**Why does a company have a score but no reasons listed?**
+
+Reasons only show when a specific signal clearly stands out for that company. If nothing crossed that bar, the score still reflects the model's full analysis - the reasons list is a summary of the most notable factors, not the complete picture. We're actively improving coverage here during the beta.
+
+**What counts as a "good" score?**
+
+There's no universal cutoff. As a rule of thumb from early design-partner data, focusing on the top 10% of scored companies has produced a 5-6x lift in conversion rate versus an unprioritized list. Use the score to rank and prioritize, not as a hard yes/no gate.
+
+**Will this affect my billing or credits?**
+
+No. Viewing the Opportunity Conversion score does not consume credits during the beta period. Credit charges may apply after general release, and we'll communicate that clearly before it changes.
+
+**What do I need for this to work?**
+
+Your account needs a connected CRM - Salesforce or HubSpot - and to have joined the beta. If you enrich a company and don't see a score, your account may not yet be initialized - reach out and we'll check.
+
+**Does this include the Deal Conversion score too?**
+
+Not yet. This beta is focused on Opportunity Conversion (top-of-funnel: lead to opportunity). Deal Conversion (opportunity to closed-won) is a separate score planned for a later phase.
+
+**How often does the score update?**
+
+Scores refresh as the underlying company and CRM signals change. If a company's headcount, location, or other tracked signals shift, expect the score and reasons to update accordingly rather than staying static.
+
+**How do I give feedback or report something that looks wrong?**
+
+After joining the beta, you'll get an email with a link to book a short feedback session (15-20 minutes), with an async form alternative if a live session doesn't work for you. You can also flag issues directly to your Lusha contact at any time.
+
+---
+
+You're all set! Enrich a company and check the **Scores** section to see your first Opportunity Conversion score.

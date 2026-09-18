@@ -1,0 +1,50 @@
+---
+title: "Signal Score and ICP Fit Score"
+description: "What Signal Score and ICP Fit Score measure, how they're calculated, and where each one is available today."
+---
+
+Every lead Lusha surfaces is ranked using two underlying scores - **Signal Score** and **ICP Fit Score**. Together they make up the overall **Lead Score** you see on recommended contacts and companies. Understanding what each one measures helps you know why a lead surfaced, and which to prioritize first.
+
+## Signal Score
+
+Signal Score is a 0-100 ranking of how much real-world buying activity is happening around a contact or company right now: the number of qualifying signals present, divided by the maximum signals available. Every signal counts equally.
+
+**Company signals** include:
+
+- Surge in Hiring (overall, and by location or department when a matching Target Profile is configured)
+- Headcount Increase (1, 3, 6, and 12-month windows)
+- Website Traffic Increase
+- IT Spend Increase
+- Buying Intent (LinkedIn Activity Intent, when a matching Target Profile is configured)
+
+**Contact signals** include:
+
+- Moved to a New Company
+- Promotion
+- All of the company signals above, inherited from the contact's current employer
+
+If a contact or company has no qualifying signals, it shows as **"No active signals"** rather than a blank cell or a 0 - so you can always tell a true zero-signal record from missing data.
+
+Signals refresh from Lusha's signal data periodically (not real-time), so scores can lag slightly behind the underlying event.
+
+### Where Signal Score is available
+
+| Surface | Availability |
+| --- | --- |
+| Recommendations Home table | Live - shown in the Signals column today |
+| API & MCP | Live - score any contact or company list you bring, not just Recommendations |
+| Workspace Saved Tables | Live - add Signal Score to any Saved Table (companies or contacts) via the Enrich flow |
+
+See the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) and [Signals API](/user-guide/lushas-api/signals-api) articles for how to pull Signal Score for your own lists.
+
+## ICP Fit Score
+
+ICP Fit Score measures how closely a contact or company matches the Account Criteria and Persona Criteria in your [Target Profile](/user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations). The more precisely your Target Profile is configured, the more accurate the fit score.
+
+ICP Fit Score is available on the Recommendations Home table and in Workspace today. It is not yet available via the API or MCP.
+
+See [ICP Hub: setup, scoring, and recommendations](/user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations) for the full guide to Target Profiles, Inclusion Rules, and Exclusion Rules.
+
+## How they combine
+
+Signal Score and ICP Fit Score are combined into a single **Lead Score**, which determines the ranking order in your Recommendations Home table - see [Credits and the unified recommendations list](/user-guide/ai-recommendations/credits-and-unified-recommendations-table) for how Lead Score and Signals appear there. A lead with strong signals but a weak ICP match, or vice versa, will rank differently than one that's strong on both.

@@ -1,0 +1,58 @@
+---
+title: "Conversation Intelligence API"
+description: "Search your recorded sales calls and retrieve their transcripts through the API or an MCP-connected AI client."
+---
+
+Search your account's Lusha Conversations call history and pull call data directly into your own code or an AI assistant, instead of opening the Conversations dashboard.
+
+Lusha Conversations already records, transcribes, and analyzes your sales calls - see [Lusha Conversations overview](/user-guide/getting-started-with-conversations/lusha-conversations-overview) for what the product does. This article covers the two ways to reach that same data programmatically: a **Conversations Search** endpoint and a **Transcript** endpoint, both available through the API and through Lusha's MCP Server.
+
+## Key concepts
+
+- **Conversations Search** - finds calls matching filters (date range, company, participant, keyword) and returns everything about each one *except* the transcript: summary, coaching scores, chapters, topics, and participants.
+- **Transcript** - a separate request that returns the speaker-by-speaker transcript for one call.
+- **Coaching** - four fixed sections per call: opening, qualification, demo, and closing, each with what happened, what to keep, and what to improve, plus an overall score.
+- **Completed conversations only** - a call only appears once its recording and analysis have finished processing. An empty summary or coaching section on a recent call means analysis isn't ready yet, not that nothing was found.
+
+## How to access it
+
+- **API** - `POST /v3/account/conversations/search` and `GET /v3/account/conversations/{conversationId}/transcript`. See the [Conversations API documentation](/conversations/overview) for full parameters and response schemas.
+- **MCP** - the same two capabilities are exposed as the `conversations_search` and `conversations_transcript_get` tools on the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server). Ask your connected AI client to find a call or pull a transcript, and it calls these tools for you.
+
+<Note>
+  There's no separate endpoint or tool to fetch a single conversation by itself - search with just that conversation's ID to retrieve it.
+</Note>
+
+## What you get back
+
+Each result from Search includes the call's title, date, duration, meeting type, company, participants, topics, coaching scores, summary (highlights, action items, next steps, risks and objections, competitor mentions), and chapters. The transcript is never included in Search results - fetch it separately with the Transcript request.
+
+<Note>
+  Rolling up action items, competitor mentions, or risks across multiple calls or a whole account isn't built in yet - pull the calls you want with Search and aggregate them on your side.
+</Note>
+
+## Credits
+
+<Note>
+  This is currently available via the API and MCP only. Platform support may follow in a future update.
+</Note>
+
+| Action | Cost |
+| --- | --- |
+| Conversations Search | 1 credit per block of up to 25 results returned (1-25 results = 1 credit, 26-50 = 2, and so on) |
+| Search returning zero results | Free |
+| Transcript | 1 credit per request |
+
+<Note>
+  Both actions are billed via pricebook entries (`ci_meeting_data_export` for Search, `ci_transcript_analysis` for Transcript). While either action isn't yet seeded on your account's pricebook, that endpoint stays free - `billing.creditsCharged` comes back as `0`. Check your response's `billing` object if you're unsure which state your account is in.
+</Note>
+
+<Warning>
+  Every transcript request charges a credit - including re-fetching a transcript you already pulled, and each page of a multi-page transcript. A long call's transcript may span several pages, so pulling it repeatedly adds up.
+</Warning>
+
+## Who is it for
+
+Available on the API and MCP, for any account with API access enabled. See [All there is to know about Lusha's API](/user-guide/lushas-api/all-there-is-to-know-about-lushas-api) for how API access and credit limits work today.
+
+Now you can bring your call data wherever you already build.
