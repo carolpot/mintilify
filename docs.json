@@ -1402,6 +1402,10 @@
     {
       "source": "/user-guide/ai-recommendations/decision-makers-find-the-right-contacts-fast",
       "destination": "/user-guide/ai-recommendations/buying-group-find-the-right-contacts-fast"
+    },
+    {
+      "source": "/user-guide/faqs-and-troubleshooting/cancel-lusha-extension-auto-open",
+      "destination": "/user-guide/extension/getting-started-with-lushas-extension"
     }
   ]
 }
