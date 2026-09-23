@@ -1,116 +1,376 @@
 ---
-title: "Salesforce Contact Enrichment"
-description: "The integration between Salesforce and Lusha's Person API enables efficient contact data enrichment by pulling accurate and detailed information directly into Salesforce."
+title: "Salesforce Lead Enrichment"
+description: "Build a record-triggered Salesforce Flow that automatically enriches every newly created Lead using the Lusha v3 Search & Enrich API. No Apex required."
 ---
 
-## Overview
-The integration between Salesforce and Lusha's Person API enables efficient contact data enrichment by pulling accurate and detailed information directly into Salesforce.
+## Description
 
-## Use Case
-This feature is particularly valuable for enhancing CRM data with verified details such as job titles, phone numbers, and emails, ensuring sales and outreach teams have the most up-to-date information.
+This guide walks through building a record-triggered Salesforce Flow that automatically enriches every newly created Lead using the Lusha v3 API. When a Lead is created, the Flow sends whatever identifiers are available to Lusha, receives the matching contact profile, and writes the returned data back onto the Lead record.
 
-By automating the process through workflows and API calls, users can save time, reduce manual data entry errors, and boost productivity. Ideal for organizations on Lusha's Scale plans, this integration streamlines data enrichment, improves targeting accuracy, and equips teams with the insights needed for personalized and effective engagement.
+The integration is entirely declarative. No Apex is written or deployed at any point.
 
-## Requirements
-This workflow requires an active Salesforce subscription with the necessary Flow function enabled, along with the inclusion of Lusha resources (such as an API token for the account and available bulk credits).
+<Warning>
+  v2 endpoints stop responding in November 2026. Any integration still calling a `/v2/` URL will break on that date.
+</Warning>
 
-- A credit will be consumed only when a match is successfully found
-- Lusha's API key can be found [here](https://dashboard.lusha.com/api/manage-api-keys) (visible only by Lusha admins or managers)
+## Prerequisites
 
-## How it Works?
+### 1. Get your Lusha API Key
 
-### Step 1: Create a Named Credential
+Visit [dashboard.lusha.com](https://dashboard.lusha.com) → **API Hub** → **Manage API Keys** → **+ Create new Key**. Copy it - you'll paste it once below. Auth is via an `api_key` HTTP header (not Bearer).
 
-1. **Navigate to Named Credentials**: From the Salesforce Setup, go to the Named Credentials section.
+### 2. Salesforce Named and External Credential Setup
 
-2. **Create an External Credential**: Set up an external credential with no authentication needed.
+| Step | Configuration |
+|---|---|
+| **Setup → Named Credentials → External Credentials → New** | Label/Name: `Lusha v3` / `Lusha_v3`. Auth Protocol: **Custom**. Save. |
+| **On that record → Principals → New** | Parameter Name `Admin`, Sequence `1`, Identity Type **Named Principal**. Under Authentication Parameters → Add: Name `LushaApiKey`, Value = your API key. Save. |
+| **Same record → Custom Headers → New** | Name `api_key`, Value `{!$Credential.Lusha_v3.LushaApiKey}`, Sequence `1`. |
+| **Setup → Named Credentials → Named Credentials tab → New** | Label/Name: `Lusha v3` / `Lusha_v3`. URL: `https://api.lusha.com`. External Credential: the one above. Uncheck **Generate Authorization Header**. Check **Allow Formulas in HTTP Header**. Save. |
 
-3. **Use Lusha's Person v2 API**: Input the Person V2 API URL from Lusha's [documentation](https://www.lusha.com/docs/?_gl=1*uf3wfj*_ga*MTU3Mzg5MTI5Ni4xNzI2ODE5NDg4*_up*MQ..*_ga_7C6N0WZ5Q3*MTcyNjgxOTQ4Ny4xLjAuMTcyNjgxOTQ4Ny4wLjAuMA..#company-api) ([https://api.lusha.com/v2/person](https://api.lusha.com/v2/person)) while creating the named credential.
+Access to the Principal is granted from the **Permission Set** side only: the External Credential page itself has no working "grant access" control, despite appearing to.
 
-4. **Add Headers**:
-   - Add a header named `api_key` with your actual Lusha API key as the value
-   - Add a second header named `Accept` with the value set as `*/*`
+### 3. Create Permission Sets
 
-![API Headers Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979293/474bf92e8cea5d0eb5483e856bcf/1023fe68-a5a3-4a91-a0d3-b64c4cad6303.png?expires=1750089600&signature=cb845fe28d5a4623d47913aad93486554b3869076a4097127c26c0ccbc8d6dd7&req=0tNmwlH4pTRk2hL085Zhof85ALDaWs5LfzFwNxS50owDsfByIsurTE4TB3eq%0A0k4LBiiU5FOhhf9%2B%0A)
+Creating the credential is not sufficient on its own. Salesforce requires an explicit grant before any user can invoke it.
 
-### Step 2: Build the Flow for Contact Enrichment
+#### 1. Create a Permission Set
 
-1. **Start a New Workflow**: In Salesforce, create a new screen flow with a Free Form layout.
+- **Label:** Lusha API Access
+- Open the permission set and click **External Credential Principal Access**
+- Click **Edit**, move your Lusha external credential principal from **Available** to **Enabled**, and click **Save**
 
-2. Under the Toolbox Manager, create a new Variable and name it `recordId`. Choose the Data Type to be Text, and then go to the Get Contact Records, and choose the Get Record ID. This way we will have a variable that will automatically get the Contact ID to enrich.
+#### 2. Assign the Permission Set
 
-3. Choose the **Get Records** element and drag it to your layout. In the Get Records element, choose the Contact object.
+Assign it to every user who will create Leads - not only to yourself.
 
-4. Under the **Filter Contact Records**, make sure you choose the All Conditions Are Met requirement, then choose the ID field on your Contact object > Equals operator > recordId variable that we created.
+<Warning>
+  **This is the most common cause of a silent 401.** Record-triggered Flows run in system context, but the External Credential principal still resolves against the running user. If the user who created the Lead lacks this permission set, the callout fails with 401 and - because it runs asynchronously - produces no visible error anywhere in the UI.
+</Warning>
 
-![Get Records Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979304/b62f8b20d163ccefab707dd8a70c/cab609b7-2e40-45ef-8981-34819508c3ff.png?expires=1750089600&signature=32060fe9b85094f8113b3c758bfe1fab46508ca9c6363de147c67b0103cf4085&req=0tNmwlH5rDNk2hL085ZhocW9g1OWdKg1QkXJGqdxjW9l9nHr76yxJQXCYGsn%0AJunJvOwCJ%2BqgaST4%0A)
+## Flow Configuration
 
-5. Next, drag an **Action** element onto the layout. Give the Action a name you will remember (LushaContactAPI for example), and connect the Named Credential we created in Step 1, with the Person v2 API URL.
+There are 4 core sets of elements to configure within your new Flow. They are organized below to help you visualize the complete structure:
 
-6. Under the **Query Parameter Values**, choose Contact from get_related_contact and then choose the field that stores the relevant contact details - First Name, Last Name, and Company Name/Domain (or email + LinkedIn URL for higher match accuracy).
+| Part | Purpose | Elements |
+|---|---|---|
+| 1. Trigger and callout | Assemble the request and call Lusha | Build Lusha Request, Enrich Contact via Lusha, Each Result Loop |
+| 2. Set Email | Select the first work email | Error Capture Attempt, Email Loop, Email Capture Attempt |
+| 3. Set Phones | Select mobile and other numbers | Phone Loop, Phone Capture Attempt |
+| 4. Update Lead | Commit the record | Found a Match Attempt, Update Record |
 
-![Action Element Setup](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979316/887bc0215399ccabed29a1707698/aaafcb16-c4de-4061-b9f0-6e3aaacb954c.png?expires=1750089600&signature=ee495b3e5ed70d05df7ae2bd489ad5b783d23a0030cecad47c5f6e42c921c7b5&req=0tNmwlH5rTFk2hL085ZhoX5bE2JmYeIVLMF%2BoAUUT1wHzRIWSlVq5rZWhbrR%0AHwtXxtzLTqp3%2FU4C%0A)
+To build this flow, you must begin with a **Record-Triggered Flow**, and the HTTP Callout Action element, otherwise you will encounter inconsistencies when configuring your Apex Defined Variables items. Once created, you will build and connect all remaining steps around the Callout Action.
 
-### Step 3: Create Formulas for Data Points
+<Frame>
+  <img src="/images/tutorials/salesforce-lead-enrichment-flow.png" alt="Salesforce Lead enrichment Flow structure" />
+</Frame>
 
-For each API field you wish to populate (e.g., job title, email, phone), create a formula to extract the data from the API response:
+### 1. Begin by creating a new Flow
 
-#### Create a Formula for Each Data Point:
+- Within the Salesforce Setup menu, search for **Flows**.
+- Click the **New Flow** button.
+- Choose your automation type. We recommend **Record-Triggered Flow** for automatic enrichment on creation, or **Screen Flow** if you would prefer to trigger enrichment manually via a button.
 
-1. In **Toolbox > New Resource > Formula**, select the corresponding data from the API response (e.g., [LushaPersonAPI]>2xx>Data>jobTitle).
-2. Set the correct data type (e.g., Text for job_title).
-3. Continue to create Formulas this way for each data point that you will want to use in your Update Records stage.
+### 2. Configure the start of your Flow
 
-![Formula Creation](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979336/01ab8fd3d389bb28ca241810127b/89627e7b-46a8-4943-9f79-900bff900abb.png?expires=1750089600&signature=477830682c14a53bab30c0031b2fadb361059e61b0ed2fb97ff176aafbbeaf20&req=0tNmwlH5rzFk2hL085ZhoWo05EFqPRIS0zgqv4RJIFAm7ASnthZFY2SX5WOL%0AeG9z0%2BNTS6hkfH0n%0A)
+- **Select an Object:** Lead
+- **Trigger the flow when:** A record is created
+- **Set Entry Conditions:**
+  - Condition Requirements: **none** [see Appendix C if you'd like requirements]
+- **Optimize the Flow for:** Actions and Related Records
+- Enable **Add Asynchronous Path**
 
-#### Update Contact Records:
+For the rest of this guide, remember these two important details:
 
-1. Use the **Update Records** element to specify which Contact fields to update.
-2. Under **How to Find Records to Update** choose the Specify conditions option, and then choose the Contact object.
-3. Choose the **All Conditions Are Met (AND)** option, then choose your Contact ID field > Operator Equals > under the value select the recordId variable we created in part 2.
-4. Map each contact field to the respective formula created from the API response (e.g., map the Job Title formula to the Contact's Job Title field).
+<Warning>
+  **Connect everything to the asynchronous path only.** All following steps connect to the **Run Asynchronously** path. Do not connect any step to the **Run Immediately** path. Salesforce forbids HTTP callouts in the same transaction as the triggering DML, so a callout placed on the immediate path fails at activation.
+</Warning>
 
-![Update Records Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979360/af0f73c0d9e80a1f88fa31987320/8eea7640-440f-4f3c-bec6-d2e08a3523c8.png?expires=1750089600&signature=5e1cb8878f351f5de40bed383887b04cba4e658df3dcb18f0dbab37790a4652b&req=0tNmwlH5qjdk2hL085ZhoayiUMfkGzQ4Wh65RD4ESVU98xfiavihhFzjOUdJ%0AP6ewUsFk9maNLNNm%0A)
+<Note>
+  **Scheduled Paths will always read "2".** This is expected. The count includes the built-in Run Immediately path plus your asynchronous path. Run Immediately cannot be deleted, so simply leave it unconnected.
+</Note>
 
-### Step 4: Create a Screen Interaction
+### 3. Configure the Action Element (HTTP Callout)
 
-Every time a user chooses to enrich the Contact with the Person API action, this will give a screen pop-up, that will show which data points were enriched through the workflow.
+#### Add an Action element
 
-1. Drag the **Screen** element to the layout, and name label "Done".
+- Click the **Create HTTP Callout** button
+  - **Name:** Lushav3
+  - **Named Credential:** Lusha v3
+- Click **Next**
+  - **Label:** Enrich
+  - **Method:** POST
+  - **Path:** `/v3/contacts/search-and-enrich`
+- Click **Next**
+  - **Sample JSON Request:** [see Appendix A]
+- Click **Review**, then click **Next**
+- Choose **Use Example Response**
+  - **Sample JSON Response:** [see Appendix B]
+- Click **Review**
+- Within the Data Structure section, change the following elements to **String** type:
+  - `jobTitle.startDate`
+  - `emails.updateDate`
+  - `phones.updateDate`
+  - `results.updateDate`
+- Click **Save**
+- **New Action Label:** "Enrich Contact via Lusha Action"
+- **API Name:** "Lusha"
+- **Set the Request Body:**
+  - Click **+ New Resource**
+  - API Name: `varRequestBody`
+  - Click **Done**
+- Click **Done**, then connect Build Request Body to Lusha Enrich
 
-2. In the **Display Text** you can write down each datapoint followed by a dash (-), and then Insert a resource and choose the respective formula.Continue with each field that you wish to enrich with the process. This will ensure that for every field that gets enriched, the user will see it in the pop-up screen first.
+### 4. Create the Build Request Step
 
-![Screen Element Setup](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979370/b17919a28c7a69d4d77f18a8de82/4a4e58f3-4abc-4751-8fcc-cded53bf4f44.png?expires=1750089600&signature=60b693a0f21da81326cc376d10a43345496cef5ec2ce6f0362f45e8eebc12a91&req=0tNmwlH5qzdk2hL085ZhoVwuSBr1I1t9E%2BYdPhKeMw0cpFe1QdlAhpeZNvz%2F%0Af6Z16P6Fu0fCzv86%0A)
+#### Add an Assignment element ABOVE the Action Step
 
-3. **Save and Debug**: After designing the screen, save your flow and run a debug using a Contact ID to test the API call and see the response.
+- **Label:** Build Contact
+- Map the following:
 
-**The end result should look similar to this:**
+| Variable | Operator | Value |
+|---|---|---|
+| `varRequestItem > firstName` | Equals | Triggering Record > First Name |
+| `varRequestItem > lastName` | Equals | Triggering Record > Last Name |
+| `varRequestItem > companyName` | Equals | Triggering Record > Company |
+| `varRequestItem > companyDomain` | Equals | `{!formCompanyDomain}` [see Appendix D] |
+| `varRequestItem > email` | Equals | Triggering Record > Email |
+| `varRequestItem > linkedinUrl` | Equals | Triggering Record > LinkedIn URL |
+| `varRequestItem > clientReferenceId` | Equals | Triggering Record > Lead ID |
+| `varRequestBody > contacts` | ADD | `varRequestItem` |
 
-![Complete Flow Layout](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979379/7bcad884c92842c70e57ccbc2061/3243d7c7-de98-4e95-80b2-1f85beeb5b4a.png?expires=1750089600&signature=9d8cf7a47b2db51d4f17edcc9e488c25dbc654964a23b5f218ba33319ff8c268&req=0tNmwlH5qz5k2hL085ZhofbfS6e1w07RKlA2i7um47cyZaKTeLe6WfCAI30Q%0AYJZhRWjxtRwe30cb%0A)
+<Note>
+  **Where did the `varRequestBody` and `varRequestItem` variables come from?** The `varRequestBody` variable was created during your configuration of the HTTP Callout step. It is an Apex-defined variable which contains the API request structure you'll be sending to Lusha. The `varRequestItem` variable will need to be created now: Click **+ New Resource** → Resource Type: **Variable** → API Name: `varRequestItem` → Data Type: **Apex-Defined** → Apex Class: you must search for your external service classes containing "Lushav3" and select the one ending in `_IN_body_contacts` → Click **Done**.
+</Note>
 
-### Step 5: Add a Button to Trigger the Flow
+### 5. Loop through the API Response from Lusha (For Each)
 
-1. Go to **Setup > Object Manager > Contact > Buttons, Links, and Actions**.
+#### Add a Loop element BELOW the Action Step
 
-2. Create a new action that triggers the flow created earlier.
+- **Label:** "For Each"
+- **Collection Variable:** `{!Lusha.2XX.results}`
+- **Specify Direction:** First item to last item
 
-3. Under the **Contact Page Layout**, you can choose where to position the button on the Contact page so that the users can have access to enrich the Contact with the person data from Lusha.
+### 6. Capture any Error Code
 
-![Button Configuration](https://downloads.intercomcdn.eu/i/o/yu27vhse/26979388/188c81d61aae2d07147b52e933b2/23ff756f-e91a-47b2-b404-cec02fb5d0d2.png?expires=1750089600&signature=a442df22f9031f43d7e3772f3531e4ea4a7c278a052e99d2efdfc7b76d15737a&req=0tNmwlH5pD9k2hL085ZhoT%2BH0CbFHKdD8ZZfftK0%2B92ibTOHGgSCmeSQgIem%0Ae%2B972HPS97WdhzIq%0A)
+#### Add an Assignment element BELOW the Loop Step
 
-### Step 6: Monitor Workflow Activity (Adjust and Optimize as Needed)
+- **Label:** "Error Code Capture Attempt"
+- **Map Variable/Value Pair:** `varAttemptTitle` EQUALS `{!For_Each.jobTitle.title}`
+- **Map Variable/Value Pair:** `varAttemptErrorCode` EQUALS `{!For_Each.error.code}`
 
-1. After deploying the workflow, monitor its performance through workflow history and error logs.
-2. Make adjustments as needed to optimize performance and fix any issues.
+<Note>
+  **Where did the `varAttemptTitle` and `varAttemptErrorCode` variables come from?** Both of these variables will need to be created now, but thankfully they will be simple Text variables. For both, do the following: Click **+ New Resource** → Resource Type: **Variable** → API Name: `varAttemptTitle` or `varAttemptErrorCode` → Data Type: **Text** → Default Value: leave this field blank → Click **Done**. If you would like to map any additional data coming from Lusha's API response, simply follow this same logic to create more text variables.
+</Note>
 
-#### The flow is now finished 🔥
+### 7. Loop through the Emails (Emails Loop Attempt)
 
-> ## Additional Resources
->
-> If you have any questions on the above feel free to reach out the support team:
->
-> • Via live chat from the [Lusha website](http://www.lusha.com/)
->
-> • Your [Lusha Dashboard](http://dashboard.lusha.com/dashboard)
->
-> • Via email: [support@lusha.com](mailto:support@lusha.com)
+#### Add a Loop element BELOW the Capture Step
+
+- **Label:** "Emails Loop Attempt"
+- **Collection Variable:** `{!For_Each.emails}`
+- **Specify Direction:** First item to last item
+
+### 8. Capture any Email
+
+#### Add an Assignment element BELOW the Loop Step
+
+- **Label:** "Emails Capture"
+- **Map Variable/Value Pair:** `varAttemptEmail` EQUALS `{!Loop_Attempt_Emails.email}` [create this text variable]
+
+### 9. Loop through the Phones (Phones Loop Attempt)
+
+#### Add a Loop element BELOW the Capture Step
+
+- **Label:** "Phones Loop Attempt"
+- **Collection Variable:** `{!For_Each.phones}`
+- **Specify Direction:** First item to last item
+
+### 10. Capture any Phone
+
+#### Add an Assignment element BELOW the Loop Step
+
+- **Label:** "Phones Capture"
+- **Map Variable/Value Pair:** `varAttemptPhone` EQUALS `{!Loop_Attempt_Phones.z0number}` [create this text variable]
+
+At this point, you've created all the loops necessary to process any incoming Lusha data. Now you will close out the loops, update the triggering Lead, and log any error messages.
+
+### 11. Map your Variables to the Lead (Map to Lead)
+
+#### Add an Assignment element on the "After Last" path of the Phone Loop Attempt
+
+- **Label:** "Map to Lead"
+- **Map Variable/Value Pair:** `{!$Record.Title}` EQUALS `{!varAttemptTitle}`
+- **Map Variable/Value Pair:** `{!$Record.Email}` EQUALS `{!varAttemptEmail}`
+- **Map Variable/Value Pair:** `{!$Record.Phone}` EQUALS `{!varAttemptPhone}`
+
+### 12. Confirm Any Matches (Match Found)
+
+#### Add a Decision element on the "After Last" path of the For Each Loop element
+
+- **Label:** "Found a Match?"
+- **Add a new Outcome:**
+  - Outcome Label: "Success?"
+  - Condition Requirements: All Conditions Are Met (AND)
+  - Map Resource/Value Pair: `{!varAttemptErrorCode}` Is Null `{!$GlobalConstant.True}`
+
+### 13. Update the Lead (Update Records)
+
+- **Label:** "Update Records"
+- **How to Find Records:** Use the IDs and all field values from a record or record collection
+- **Record or Record Collection:** `{!$Record}`
+
+At this point, you have completed configuring the full flow. All steps should be nested under the Asynchronous Path, and the concluding "Success?" path will lead to the Update Records step, while the "Default Outcome" should be left empty.
+
+## Testing and Activation
+
+### Debug
+
+Save the Flow, click **Debug**, and tick **Run Asynchronous Paths**. Without this option the entire branch you have just built is skipped and it will appear that nothing happened.
+
+<Note>
+  **Debug runs in rollback mode.** Field values shown in the debug output will not persist to the record. A message reading "ready to be updated when the interview finishes" is expected and does not indicate a problem. Only a real trigger proves the write.
+</Note>
+
+### Activate and test
+
+Activate the Flow, then create a Lead manually. The asynchronous path runs a few seconds after the insert commits, so fields will not populate instantly.
+
+## Appendix and Reference Information
+
+### Appendix A - Sample JSON Request
+
+Paste this as the Sample JSON Request when configuring the HTTP Callout. Flow generates Apex properties only for keys present in this sample, so it must include every identifier you might ever send.
+
+```json
+{
+  "contacts": [
+    {
+      "clientReferenceId": "sfdc-lead",
+      "firstName": "Orit",
+      "lastName": "Shilvock",
+      "companyName": "Lusha",
+      "companyDomain": "lusha.com",
+      "email": "orit.shilvock@lusha.com",
+      "linkedinUrl": "https://www.linkedin.com/in/orit-shilvock-6243bb5"
+    }
+  ]
+}
+```
+
+<Note>
+  **The `reveal` field is deliberately omitted.** The API accepts an optional `reveal` array to control whether emails, phones, or both are unlocked. It is an array of primitive strings, which Flow's schema generator cannot type - including it prevents the callout from saving. Omitting it returns both emails and phones, which is the desired behaviour here.
+</Note>
+
+### Appendix B - Sample JSON Response
+
+Paste this as the Sample JSON Response. Select **Use Example Response** rather than Connect.
+
+```json
+{
+  "requestId": "d2c14f20-3f35-430c-a71e-56ae51993af9",
+  "results": [
+    {
+      "clientReferenceId": "sfdc-lead",
+      "id": "v1.P47N0kkZlu-dq2E9I0HADOTv6XT5zlvT-g",
+      "firstName": "Orit",
+      "lastName": "Shilvock",
+      "fullName": "Orit Shilvock",
+      "jobTitle": {
+        "title": "Vice President of Partnerships",
+        "seniority": "Vice President",
+        "startDate": "2025-01-20"
+      },
+      "company": {
+        "id": "v1.A1gXjPYd63SSPjSvxO4uwqXqE5ilJV9S",
+        "name": "Lusha",
+        "domain": "www.lusha.com",
+        "industry": "Technology, Information & Media"
+      },
+      "location": {
+        "country": "Israel",
+        "countryIso2": "IL",
+        "state": "Tel Aviv District",
+        "city": "Tel Aviv",
+        "continent": "Asia",
+        "isEuContact": false
+      },
+      "socialLinks": {
+        "linkedin": "https://www.linkedin.com/in/orit-shilvock-6243bb5"
+      },
+      "partialProfile": false,
+      "emails": [
+        {
+          "email": "orit.shilvock@lusha.com",
+          "type": "work",
+          "confidence": "A+",
+          "updateDate": "2026-08-13"
+        }
+      ],
+      "phones": [
+        {
+          "number": "+14155551234",
+          "type": "mobile",
+          "doNotCall": false,
+          "countryIso2": "US",
+          "updateDate": "2026-08-13"
+        }
+      ],
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Contact not found"
+      },
+      "updateDate": "2026-08-13"
+    }
+  ],
+  "billing": { "creditsCharged": 2, "resultsReturned": 1 }
+}
+```
+
+### Appendix C - Add an Entry Condition Formula
+
+Set Condition Requirements to **Formula Evaluates to True** and paste the following. [See Appendix E for Suggested Custom Fields]
+
+```
+NOT({!$Record.Lusha_Enriched__c})
+&& (
+     NOT(ISBLANK({!$Record.Email}))
+  || NOT(ISBLANK({!$Record.LinkedIn_URL__c}))
+  || NOT(ISBLANK({!$Record.Website}))
+  || (NOT(ISBLANK({!$Record.FirstName}))
+      && NOT(ISBLANK({!$Record.LastName}))
+      && NOT(ISBLANK({!$Record.Company})))
+)
+```
+
+This makes the Flow identifier-agnostic. It fires whenever any combination of identifiers that Lusha accepts is present, and skips Leads that could not be matched anyway - which avoids spending credits on requests that cannot succeed.
+
+### Appendix D - Clean Up Input Domains/Websites
+
+If your organization frequently captures inconsistent websites and domains, you can create a formula variable to automatically clean up URLs before adding them to your Lusha HTTP request.
+
+Create the following Variable Formula:
+
+**formCompanyDomain**
+
+```
+IF(ISBLANK({!$Record.Website}), "",
+  LOWER(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
+    {!$Record.Website}, "https://", ""), "http://", ""), "www.", ""))
+)
+```
+
+This formula resource strips the protocol and `www.` prefix from the Lead's Website field so it can be sent as `companyDomain`.
+
+### Appendix E - Suggested Custom Fields
+
+There are a number of custom fields you could create within Salesforce to measure this flow's effectiveness. All are optional, but see below for reference:
+
+| Field Label | API Name | Type | Purpose |
+|---|---|---|---|
+| Lusha Enriched | `Lusha_Enriched__c` | Checkbox (default unchecked) | Prevents re-enrichment; audit flag |
+| Lusha Contact ID | `Lusha_Contact_Id__c` | Text (255) | Stable v3 entity ID for cheaper re-enrichment later |
+| Lusha Industry | `Lusha_Industry__c` | Text (255) | Lusha industry taxonomy value |
+| Lusha LinkedIn URL | `Lusha_LinkedIn_URL__c` | URL | Returned `socialLinks.linkedin` value |
+| Lusha Error | `Lusha_Error__c` | Long Text Area (32768) | Stores the fault message if the callout fails |
+| LinkedIn URL | `LinkedIn_URL__c` | URL | Optional input identifier, if your org captures one on the Lead |
