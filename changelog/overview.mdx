@@ -6,9 +6,45 @@ description: "All notable changes to the Lusha API and MCP. We follow semantic v
 All notable changes to the Lusha API and MCP are documented here. We follow semantic versioning.
 
 <Info>
-  **Current Version: 2.15.0**
+  **Current Version: 2.16.0**
   Status: Production · Released: September 2026 · Stability: Stable (Tables API is Beta)
 </Info>
+
+<Update label="2026-09-23" description="v2.16.0 - Company ownership: direct and ultimate parent" tags={["Enrichment", "Lookalikes"]}>
+
+**Added**
+
+**`directParent` and `ultimateParent` on Company Enrichment** - Added two premium reveal fields exposing a company's ownership tree: its immediate parent, and the company at the top of the tree.
+
+- `POST /v3/companies/enrich` - request via `reveal: ["directParent", "ultimateParent"]`
+- `POST /v3/companies/search-and-enrich` - returned automatically; this endpoint takes no `reveal` field
+- Each returns an object with `lushaCompanyId`, `name`, `domain`, and (where held) `hqCountry`
+- Pass the returned `lushaCompanyId` back to Enrich Companies to retrieve the parent's full firmographic profile
+- Charged 1 credit per field when non-null; no charge when the company has no known parent
+- `null` when the company is independent or is itself the ultimate parent. For a company with a single level of ownership, `ultimateParent` matches `directParent`
+- Both fields are listed in the `has` and `canReveal` arrays on the enrich response
+
+**Changed**
+
+**Data Waterfall available on all paid plans** - Data Waterfall was previously limited to Pro plans and above. It is now available on every paid plan. No API change - this is a packaging change only, and the feature is still enabled per account under **Account Settings → Waterfall**.
+
+**Fixed**
+
+**Lookalikes: seed requirements corrected** - The 5–100 seed requirement on `POST /v3/contacts/lookalike` and `POST /v3/companies/lookalike` was documented only in prose and was absent from the schema, and the request examples on both endpoints sent fewer than 5 seeds, so copying them produced a `400`.
+
+- The minimum and maximum are now stated on the operation and on the `seeds` property, including that the count is across all identifier types combined
+- Request examples on both endpoints now send 6 seeds
+- `ContactIdentifiersBatch` was marked `nullable: true` while `seeds` was `required`, which is contradictory. `nullable` has been removed and `minProperties: 1` added, matching `CompanyIdentifiersBatch`
+- Behavior is unchanged - only the documentation was wrong
+
+**Search & Enrich: `reveal` field description corrected** - The Search & Enrich tag description stated that both contact and company endpoints control output via a `reveal` field. That is true only for `POST /v3/contacts/search-and-enrich`. `POST /v3/companies/search-and-enrich` has no `reveal` field and reveals all available premium data points automatically. Behavior is unchanged - only the documentation was wrong.
+
+**Notes**
+
+- `ipoDate` and `stockSymbol` remain Tables-only columns and are still not returned by Enrich Companies
+- Ownership data is company-level and contains no personal information
+
+</Update>
 
 <Update label="2026-09-17" description="v2.15.0 - Company social links: Instagram, YouTube, TikTok" tags={["Enrichment"]}>
 

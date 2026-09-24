@@ -46,7 +46,7 @@
     },
     {
       "name": "Search & Enrich",
-      "description": "**Search & Enrich APIs:** Find and retrieve full contact or company data in a single call.\n\nCombines Search and Enrich into one request. Provide identifiers and control what gets revealed via the `reveal` field.\n\n> **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field.\n",
+      "description": "**Search & Enrich APIs:** Find and retrieve full contact or company data in a single call.\n\nCombines Search and Enrich into one request. For contacts, control what gets revealed via the `reveal` field. For companies, all available premium data points are revealed automatically - there is no `reveal` field on Search & Enrich Companies.\n\n> **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field.\n",
       "x-tag-expanded": true
     },
     {
@@ -754,7 +754,7 @@
         ],
         "summary": "Enrich Companies",
         "operationId": "enrichCompanies",
-        "description": "Reveal full company data for companies you've already found via Search Companies.\n\nPass up to 100 company `ids` (from the search response). Each enriched result includes:\n- Firmographics: size, revenue range, year founded, company type\n- Industry: primary industry, sub-industry, SIC/NAICS codes\n- Locations: HQ and additional office sites\n- Technologies, funding rounds, buyer intent topics\n- LinkedIn followers, logo URL, social links (LinkedIn, Facebook, X, Instagram, YouTube, TikTok)\n- Open job posting counts: total and breakdowns by department, location, and seniority\n\n> **Billing:** Charged per successful result via the `reveal_company` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these companies to an existing table and populate the relevant enrichment columns. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Reveal full company data for companies you've already found via Search Companies.\n\nPass up to 100 company `ids` (from the search response). Each enriched result includes:\n- Firmographics: size, revenue range, year founded, company type\n- Industry: primary industry, sub-industry, SIC/NAICS codes\n- Locations: HQ and additional office sites\n- Technologies, funding rounds, buyer intent topics\n- LinkedIn followers, logo URL, social links (LinkedIn, Facebook, X, Instagram, YouTube, TikTok)\n- Open job posting counts: total and breakdowns by department, location, and seniority\n- Ownership: immediate parent (`directParent`) and top of the ownership tree (`ultimateParent`)\n\n> **Billing:** Charged per successful result via the `reveal_company` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these companies to an existing table and populate the relevant enrichment columns. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -765,7 +765,8 @@
               "example": {
                 "ids": [
                   "16303253",
-                  "12790225"
+                  "12790225",
+                  "18654301"
                 ],
                 "reveal": [
                   "employeesByLocation",
@@ -774,7 +775,9 @@
                   "competitors",
                   "intent",
                   "openJobsTotal",
-                  "openJobsByDepartment"
+                  "openJobsByDepartment",
+                  "directParent",
+                  "ultimateParent"
                 ]
               }
             }
@@ -1075,7 +1078,9 @@
                             "count": 9
                           }
                         ]
-                      }
+                      },
+                      "directParent": null,
+                      "ultimateParent": null
                     },
                     {
                       "id": "12790225",
@@ -1281,12 +1286,31 @@
                         {
                           "email": "datasubjectrequest@salesforce.com"
                         }
-                      ]
+                      ],
+                      "directParent": null,
+                      "ultimateParent": null
+                    },
+                    {
+                      "id": "18654301",
+                      "name": "4D",
+                      "domain": "4d.com",
+                      "companyType": "Subsidiary",
+                      "directParent": {
+                        "lushaCompanyId": "v1.XyZw...",
+                        "name": "Volaris Group",
+                        "domain": "volarisgroup.com"
+                      },
+                      "ultimateParent": {
+                        "lushaCompanyId": "v1.QrSt...",
+                        "name": "Constellation Software Inc.",
+                        "domain": "csisoftware.com",
+                        "hqCountry": "Canada"
+                      }
                     }
                   ],
                   "billing": {
-                    "creditsCharged": 12,
-                    "resultsReturned": 2
+                    "creditsCharged": 14,
+                    "resultsReturned": 3
                   }
                 }
               }
@@ -1317,7 +1341,7 @@
         ],
         "summary": "Search and Enrich Companies",
         "operationId": "searchAndEnrichCompanies",
-        "description": "Find companies and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide company identifiers the same way you would for Search Companies. Up to 100 companies per request.\n\n> **Billing:** Same as Enrich Companies - charged per successful result via the `reveal_company` action.\n",
+        "description": "Find companies and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide company identifiers the same way you would for Search Companies. Up to 100 companies per request.\n\nUnlike Enrich Companies, this endpoint takes no `reveal` field. Every premium data point available on your account - including `directParent` and `ultimateParent` - is revealed automatically for each matched company.\n\n> **Billing:** Same as Enrich Companies - charged per successful result via the `reveal_company` action.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1334,6 +1358,10 @@
                   {
                     "clientReferenceId": "comp-ref-2",
                     "domain": "salesforce.com"
+                  },
+                  {
+                    "clientReferenceId": "comp-ref-3",
+                    "domain": "4d.com"
                   }
                 ],
                 "options": {
@@ -1565,12 +1593,32 @@
                         {
                           "email": "datasubjectrequest@salesforce.com"
                         }
-                      ]
+                      ],
+                      "directParent": null,
+                      "ultimateParent": null
+                    },
+                    {
+                      "clientReferenceId": "comp-ref-3",
+                      "id": "18654301",
+                      "name": "4D",
+                      "domain": "4d.com",
+                      "companyType": "Subsidiary",
+                      "directParent": {
+                        "lushaCompanyId": "v1.XyZw...",
+                        "name": "Volaris Group",
+                        "domain": "volarisgroup.com"
+                      },
+                      "ultimateParent": {
+                        "lushaCompanyId": "v1.QrSt...",
+                        "name": "Constellation Software Inc.",
+                        "domain": "csisoftware.com",
+                        "hqCountry": "Canada"
+                      }
                     }
                   ],
                   "billing": {
-                    "creditsCharged": 3,
-                    "resultsReturned": 2
+                    "creditsCharged": 5,
+                    "resultsReturned": 3
                   }
                 }
               }
@@ -1902,7 +1950,7 @@
         ],
         "summary": "Contact Lookalikes",
         "operationId": "getContactLookalikes",
-        "description": "Find contacts similar to a set of seed contacts using AI-powered recommendations.\n\nProvide 5-100 seed contacts via LinkedIn URLs, emails, Lusha IDs, or name + company. The API returns contacts who share similar roles, seniority, and company profiles.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` - the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific contacts (e.g. existing customers).\n\nResults are lightweight previews. Use Enrich Contacts with the returned `id` to get emails and phones.\n\n> **Billing:** Charged per result via the `lookalikeContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Find contacts similar to a set of seed contacts using AI-powered recommendations.\n\nProvide seed contacts via LinkedIn URLs, emails, Lusha IDs, or name + company. The API returns contacts who share similar roles, seniority, and company profiles.\n\n> **Required: 5–100 seeds.** `seeds` must contain **at least 5** and **at most 100** contacts in total, counted across *all* identifier types combined (`linkedinUrls` + `emails` + `ids` + `contactIds` + `contacts`). A request with fewer than 5 total seeds is rejected with `400`. Fewer than 5 seeds does not give the model enough signal to produce useful lookalikes.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` - the server generates one and returns it. Pass it on every subsequent request to get more results without repeating contacts already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific contacts (e.g. existing customers).\n\nResults are lightweight previews. Use Enrich Contacts with the returned `id` to get emails and phones.\n\n> **Billing:** Charged per result via the `lookalikeContact` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1912,17 +1960,20 @@
               },
               "examples": {
                 "firstRequest": {
-                  "summary": "First request (server generates dedupeSessionId)",
+                  "summary": "First request - 6 seeds across three identifier types (server generates dedupeSessionId)",
                   "value": {
                     "seeds": {
                       "linkedinUrls": [
-                        "https://www.linkedin.com/in/orit-shilvock-6243bb5"
+                        "https://www.linkedin.com/in/orit-shilvock-6243bb5",
+                        "https://www.linkedin.com/in/shmulikwillinger"
                       ],
                       "emails": [
-                        "gal.ashkelon@lusha.com"
+                        "gal.ashkelon@lusha.com",
+                        "miri.tamir@lusha.com"
                       ],
                       "ids": [
-                        "1234"
+                        "1234",
+                        "4567"
                       ]
                     },
                     "exclude": {
@@ -1934,12 +1985,21 @@
                   }
                 },
                 "secondRequest": {
-                  "summary": "Second request (get more using dedupeSessionId)",
+                  "summary": "Second request - same 6 seeds, paginating with dedupeSessionId",
                   "value": {
                     "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
                     "seeds": {
                       "linkedinUrls": [
+                        "https://www.linkedin.com/in/orit-shilvock-6243bb5",
                         "https://www.linkedin.com/in/shmulikwillinger"
+                      ],
+                      "emails": [
+                        "gal.ashkelon@lusha.com",
+                        "miri.tamir@lusha.com"
+                      ],
+                      "ids": [
+                        "1234",
+                        "4567"
                       ]
                     },
                     "limit": 25
@@ -2010,7 +2070,7 @@
         ],
         "summary": "Company Lookalikes",
         "operationId": "getCompanyLookalikes",
-        "description": "Find companies similar to a set of seed companies using AI-powered recommendations.\n\nProvide 5-100 seed companies via domains or LinkedIn URLs. The API returns companies with similar size, industry, and profile.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` - the server generates one and returns it. Pass it on every subsequent request to get more results without repeating companies already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific companies (e.g. existing customers or competitors).\n\nResults are lightweight previews. Use Enrich Companies with the returned `id` to get full firmographic data.\n\n> **Billing:** Charged per result via the `lookalikeCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Find companies similar to a set of seed companies using AI-powered recommendations.\n\nProvide seed companies via domains or LinkedIn URLs. The API returns companies with similar size, industry, and profile.\n\n> **Required: 5–100 seeds.** `seeds` must contain **at least 5** and **at most 100** companies in total, counted across *all* identifier types combined (`domains` + `linkedinUrls`). A request with fewer than 5 total seeds is rejected with `400`.\n\n**Pagination without duplicates:**\nOn your first request, omit `dedupeSessionId` - the server generates one and returns it. Pass it on every subsequent request to get more results without repeating companies already seen. Sessions are retained for 30 days.\n\nUse the `exclude` field to always filter out specific companies (e.g. existing customers or competitors).\n\nResults are lightweight previews. Use Enrich Companies with the returned `id` to get full firmographic data.\n\n> **Billing:** Charged per result via the `lookalikeCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also persist matching results into an existing table. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -2020,15 +2080,18 @@
               },
               "examples": {
                 "firstRequest": {
-                  "summary": "First request (server generates dedupeSessionId)",
+                  "summary": "First request - 6 seeds across both identifier types (server generates dedupeSessionId)",
                   "value": {
                     "seeds": {
                       "domains": [
                         "sap.com",
-                        "oracle.com"
+                        "oracle.com",
+                        "workday.com",
+                        "servicenow.com"
                       ],
                       "linkedinUrls": [
-                        "https://www.linkedin.com/company/google"
+                        "https://www.linkedin.com/company/google",
+                        "https://www.linkedin.com/company/microsoft"
                       ]
                     },
                     "exclude": {
@@ -2040,12 +2103,19 @@
                   }
                 },
                 "secondRequest": {
-                  "summary": "Second request (get more using dedupeSessionId)",
+                  "summary": "Second request - same 6 seeds, paginating with dedupeSessionId",
                   "value": {
                     "dedupeSessionId": "58adaa77-7a6e-4c9b-8c2d-820a6538e613",
                     "seeds": {
                       "domains": [
-                        "sap.com"
+                        "sap.com",
+                        "oracle.com",
+                        "workday.com",
+                        "servicenow.com"
+                      ],
+                      "linkedinUrls": [
+                        "https://www.linkedin.com/company/google",
+                        "https://www.linkedin.com/company/microsoft"
                       ]
                     },
                     "limit": 100
@@ -8016,7 +8086,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Available data points that can be revealed via Enrich Companies. Includes base firmographic fields plus new revealable fields: employeesByDepartment, employeesByLocation, employeesBySeniority, competitors, businessModel, phones, emails, keywords, socialLinks, estimatedAnnualItSpend, monthlyWebsiteTraffic, openJobs.\n",
+            "description": "Available data points that can be revealed via Enrich Companies. Includes base firmographic fields plus new revealable fields: employeesByDepartment, employeesByLocation, employeesBySeniority, competitors, businessModel, phones, emails, keywords, socialLinks, estimatedAnnualItSpend, monthlyWebsiteTraffic, openJobs, directParent, ultimateParent.\n",
             "example": [
               "alternativeName",
               "alternativeDomains",
@@ -8042,7 +8112,9 @@
               "socialLinks",
               "estimatedAnnualItSpend",
               "monthlyWebsiteTraffic",
-              "openJobs"
+              "openJobs",
+              "directParent",
+              "ultimateParent"
             ]
           },
           "canReveal": {
@@ -8095,6 +8167,14 @@
               {
                 "field": "openJobsBySeniority",
                 "credits": 1
+              },
+              {
+                "field": "directParent",
+                "credits": 1
+              },
+              {
+                "field": "ultimateParent",
+                "credits": 1
               }
             ]
           },
@@ -8109,6 +8189,30 @@
           },
           "error": {
             "$ref": "#/components/schemas/V3ItemError"
+          }
+        }
+      },
+      "V3CompanyParent": {
+        "type": "object",
+        "description": "A company in an ownership tree, returned by the `directParent` and `ultimateParent` premium reveal fields. Pass `lushaCompanyId` back to Enrich Companies to retrieve the parent's full firmographic profile.",
+        "properties": {
+          "lushaCompanyId": {
+            "type": "string",
+            "description": "Lusha company ID of the parent. Use this with Enrich Companies to look up the parent.",
+            "example": "v1.QrSt..."
+          },
+          "name": {
+            "type": "string",
+            "example": "Constellation Software Inc."
+          },
+          "domain": {
+            "type": "string",
+            "example": "csisoftware.com"
+          },
+          "hqCountry": {
+            "type": "string",
+            "description": "Country of the parent's headquarters. Not always present.",
+            "example": "Canada"
           }
         }
       },
@@ -8413,6 +8517,26 @@
           },
           "openJobs": {
             "$ref": "#/components/schemas/V3OpenJobs"
+          },
+          "directParent": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/V3CompanyParent"
+              }
+            ],
+            "description": "The company's immediate parent in its ownership tree. Revealed via reveal: [\"directParent\"] in Enrich Companies, and returned automatically by Search & Enrich Companies. Charged 1 credit when non-null. `null` when the company has no known parent (for example, it is independent or is itself the ultimate parent).",
+            "nullable": true
+          },
+          "ultimateParent": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/V3CompanyParent"
+              }
+            ],
+            "description": "The company at the top of its ownership tree. Revealed via reveal: [\"ultimateParent\"] in Enrich Companies, and returned automatically by Search & Enrich Companies. Charged 1 credit when non-null. For a company with a single level of ownership, this matches `directParent`. `null` when the company has no known parent.",
+            "nullable": true
           },
           "location": {
             "$ref": "#/components/schemas/V3CompanyLocation"
@@ -8747,10 +8871,20 @@
             "example": "58adaa77-7a6e-4c9b-8c2d-820a6538e613"
           },
           "seeds": {
-            "$ref": "#/components/schemas/ContactIdentifiersBatch"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContactIdentifiersBatch"
+              }
+            ],
+            "description": "**Required. Minimum 5, maximum 100 seed contacts in total**, counted across all identifier types combined (`linkedinUrls` + `emails` + `ids` + `contactIds` + `contacts`). Fewer than 5 total seeds is rejected with `400`. Cannot be null."
           },
           "exclude": {
-            "$ref": "#/components/schemas/ContactIdentifiersBatch"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContactIdentifiersBatch"
+              }
+            ],
+            "description": "Optional. Contacts to always filter out of the results (for example, existing customers). Omit the field entirely if you have nothing to exclude. Subject to the same 100-per-identifier-type cap as `seeds`, but has no minimum."
           },
           "limit": {
             "type": "integer",
@@ -8823,7 +8957,7 @@
             ]
           }
         },
-        "nullable": true
+        "minProperties": 1
       },
       "ContactItem": {
         "type": "object",
@@ -8941,10 +9075,20 @@
             "example": "58adaa77-7a6e-4c9b-8c2d-820a6538e613"
           },
           "seeds": {
-            "$ref": "#/components/schemas/CompanyIdentifiersBatch"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CompanyIdentifiersBatch"
+              }
+            ],
+            "description": "**Required. Minimum 5, maximum 100 seed companies in total**, counted across all identifier types combined (`domains` + `linkedinUrls`). Fewer than 5 total seeds is rejected with `400`."
           },
           "exclude": {
-            "$ref": "#/components/schemas/CompanyIdentifiersBatch"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CompanyIdentifiersBatch"
+              }
+            ],
+            "description": "Optional. Companies to always filter out of the results (for example, existing customers or competitors). Omit the field entirely if you have nothing to exclude. Subject to the same 100-per-identifier-type cap as `seeds`, but has no minimum."
           },
           "limit": {
             "type": "integer",
@@ -11335,10 +11479,12 @@
                 "openJobsTotal",
                 "openJobsByDepartment",
                 "openJobsByLocation",
-                "openJobsBySeniority"
+                "openJobsBySeniority",
+                "directParent",
+                "ultimateParent"
               ]
             },
-            "description": "Additional data fields to reveal. Each field is charged separately per result.\n- `employeesByDepartment` - breakdown of employees by department\n- `employeesByLocation` - breakdown of employees by country/state\n- `employeesBySeniority` - breakdown of employees by seniority level\n- `competitors` - list of competitor company IDs\n- `intent` - buyer intent topics\n- `estimatedAnnualItSpend` - estimated annual IT spend.\n- `monthlyWebsiteTraffic` - monthly website traffic and month-over-month change.\n- `openJobsTotal` - reveals the total open job count. In the response, this appears as the `total` field inside the `openJobs` object.\n- `openJobsByDepartment` - reveals open job counts broken down by department. In the response, this appears as the `byDepartment` field inside the `openJobs` object.\n- `openJobsByLocation` - reveals open job counts broken down by location. In the response, this appears as the `byLocation` field inside the `openJobs` object.\n- `openJobsBySeniority` - reveals open job counts broken down by seniority level. In the response, this appears as the `bySeniority` field inside the `openJobs` object.\n",
+            "description": "Additional data fields to reveal. Each field is charged separately per result.\n- `employeesByDepartment` - breakdown of employees by department\n- `employeesByLocation` - breakdown of employees by country/state\n- `employeesBySeniority` - breakdown of employees by seniority level\n- `competitors` - list of competitor company IDs\n- `intent` - buyer intent topics\n- `estimatedAnnualItSpend` - estimated annual IT spend.\n- `monthlyWebsiteTraffic` - monthly website traffic and month-over-month change.\n- `openJobsTotal` - reveals the total open job count. In the response, this appears as the `total` field inside the `openJobs` object.\n- `openJobsByDepartment` - reveals open job counts broken down by department. In the response, this appears as the `byDepartment` field inside the `openJobs` object.\n- `openJobsByLocation` - reveals open job counts broken down by location. In the response, this appears as the `byLocation` field inside the `openJobs` object.\n- `openJobsBySeniority` - reveals open job counts broken down by seniority level. In the response, this appears as the `bySeniority` field inside the `openJobs` object.\n- `directParent` - the company's immediate parent in its ownership tree.\n- `ultimateParent` - the company at the top of its ownership tree.\n",
             "example": [
               "employeesByDepartment",
               "employeesByLocation",
@@ -11350,7 +11496,9 @@
               "openJobsTotal",
               "openJobsByDepartment",
               "openJobsByLocation",
-              "openJobsBySeniority"
+              "openJobsBySeniority",
+              "directParent",
+              "ultimateParent"
             ]
           },
           "tableId": {
