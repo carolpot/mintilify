@@ -46,7 +46,7 @@
     },
     {
       "name": "Search & Enrich",
-      "description": "**Search & Enrich APIs:** Find and retrieve full contact or company data in a single call.\n\nCombines Search and Enrich into one request. For contacts, control what gets revealed via the `reveal` field. For companies, all available premium data points are revealed automatically - there is no `reveal` field on Search & Enrich Companies.\n\n> **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field.\n",
+      "description": "**Search & Enrich APIs:** Find and retrieve full contact or company data in a single call.\n\nCombines Search and Enrich into one request. Provide identifiers and control what gets revealed via the `reveal` field. Premium data points are never returned unless you request them explicitly in `reveal`.\n\n> **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field.\n",
       "x-tag-expanded": true
     },
     {
@@ -1341,7 +1341,7 @@
         ],
         "summary": "Search and Enrich Companies",
         "operationId": "searchAndEnrichCompanies",
-        "description": "Find companies and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide company identifiers the same way you would for Search Companies. Up to 100 companies per request.\n\nUnlike Enrich Companies, this endpoint takes no `reveal` field. Every premium data point available on your account - including `directParent` and `ultimateParent` - is revealed automatically for each matched company.\n\n> **Billing:** Same as Enrich Companies - charged per successful result via the `reveal_company` action.\n",
+        "description": "Find companies and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide company identifiers the same way you would for Search Companies. Up to 100 companies per request.\n\nUse the `reveal` field to control which premium data points are unlocked, exactly as you would on Enrich Companies. Premium fields - including `directParent` and `ultimateParent` - are returned only when you name them in `reveal`; they are never included by default.\n\n> **Billing:** Same as Enrich Companies - charged per successful result via the `reveal_company` action, plus one charge per revealed field.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1363,6 +1363,10 @@
                     "clientReferenceId": "comp-ref-3",
                     "domain": "4d.com"
                   }
+                ],
+                "reveal": [
+                  "directParent",
+                  "ultimateParent"
                 ],
                 "options": {
                   "includePartialProfiles": true
@@ -8525,7 +8529,7 @@
                 "$ref": "#/components/schemas/V3CompanyParent"
               }
             ],
-            "description": "The company's immediate parent in its ownership tree. Revealed via reveal: [\"directParent\"] in Enrich Companies, and returned automatically by Search & Enrich Companies. Charged 1 credit when non-null. `null` when the company has no known parent (for example, it is independent or is itself the ultimate parent).",
+            "description": "The company's immediate parent in its ownership tree. Revealed via reveal: [\"directParent\"] on Enrich Companies and Search & Enrich Companies - it is not returned unless requested. Charged 1 credit when non-null. `null` when the company has no known parent (for example, it is independent or is itself the ultimate parent).",
             "nullable": true
           },
           "ultimateParent": {
@@ -8535,7 +8539,7 @@
                 "$ref": "#/components/schemas/V3CompanyParent"
               }
             ],
-            "description": "The company at the top of its ownership tree. Revealed via reveal: [\"ultimateParent\"] in Enrich Companies, and returned automatically by Search & Enrich Companies. Charged 1 credit when non-null. For a company with a single level of ownership, this matches `directParent`. `null` when the company has no known parent.",
+            "description": "The company at the top of its ownership tree. Revealed via reveal: [\"ultimateParent\"] on Enrich Companies and Search & Enrich Companies - it is not returned unless requested. Charged 1 credit when non-null. For a company with a single level of ownership, this matches `directParent`. `null` when the company has no known parent.",
             "nullable": true
           },
           "location": {
@@ -11542,6 +11546,32 @@
             },
             "minItems": 1,
             "maxItems": 100
+          },
+          "reveal": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "employeesByDepartment",
+                "employeesByLocation",
+                "employeesBySeniority",
+                "competitors",
+                "intent",
+                "estimatedAnnualItSpend",
+                "monthlyWebsiteTraffic",
+                "openJobsTotal",
+                "openJobsByDepartment",
+                "openJobsByLocation",
+                "openJobsBySeniority",
+                "directParent",
+                "ultimateParent"
+              ]
+            },
+            "description": "Additional data fields to reveal, using the same tokens as Enrich Companies.\nEach field is charged separately per result. Premium fields are returned only\nwhen named here - omitting `reveal` returns base firmographics alone.\nSee [Enrich Companies](#operation/enrichCompanies) for what each token unlocks.\n",
+            "example": [
+              "directParent",
+              "ultimateParent"
+            ]
           },
           "options": {
             "$ref": "#/components/schemas/V3SearchOptions"
