@@ -1077,8 +1077,6 @@
                 "pages": [
                   "user-guide/native-crm-integrations",
                   "user-guide/integrations-basics/available-crm-integrations",
-                  "user-guide/salesforce",
-                  "user-guide/hubspot",
                   "user-guide/other-integrations",
                   "user-guide/getting-started-with-slack",
                   {
@@ -1097,6 +1095,7 @@
                   {
                     "group": "Salesforce",
                     "icon": "cloud",
+                    "root": "user-guide/salesforce",
                     "pages": [
                       "user-guide/salesforce/salesforce-integration",
                       "user-guide/salesforce/salesforce-identifier-indicator",
@@ -1108,6 +1107,7 @@
                   {
                     "group": "HubSpot",
                     "icon": "circle-nodes",
+                    "root": "user-guide/hubspot",
                     "pages": [
                       "user-guide/hubspot/hubspot-integration",
                       "user-guide/hubspot/hubspot-identifier-indicator",
