@@ -34,12 +34,12 @@ Send your top customer companies as seeds and get back a lookalike account table
 
 You provide a set of "seed" contacts or companies - people or accounts you already know perform well. The API returns a table of recommended matches that share similar characteristics.
 
-You can fetch additional pages of results from the same query using the `requestId` returned in the initial response, without starting a new search.
+You can fetch additional pages of results from the same query using the `dedupeSessionId` returned in the initial response, without starting a new search.
 
 There are two types of lookalike:
 
-- **Contact Lookalike** - finds contacts similar to your seed contacts, matched by role, seniority, and company profile.
-- **Company Lookalike** - finds companies similar to your seed accounts, matched by firmographics and characteristics.
+- **Contact Lookalike** - `POST /v3/contacts/lookalike` - finds contacts similar to your seed contacts, matched by role, seniority, and company profile.
+- **Company Lookalike** - `POST /v3/companies/lookalike` - finds companies similar to your seed accounts, matched by firmographics and characteristics.
 
 You can also exclude contacts or companies you've already engaged, so results stay fresh and relevant.
 
@@ -58,7 +58,7 @@ Credits are charged per successful lookalike result returned.
 ## FAQs
 
 **Q: How do I get more results after the first call?**
-Use the `requestId` returned in the initial response as part of your next request. The API continues from the previous set instead of starting fresh.
+Use the `dedupeSessionId` returned in the initial response as part of your next request. The API continues from the previous set instead of starting fresh. Sessions are retained for 30 days.
 
 **Q: Can I exclude contacts or companies I've already reached?**
 Yes. Both the contact and company endpoints accept an `exclude` table, so you can filter out existing customers or previously contacted prospects.
