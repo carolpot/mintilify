@@ -1390,11 +1390,6 @@
       }
     ]
   },
-  "integrations": {
-    "intercom": {
-      "appId": "yu27vhse"
-    }
-  },
   "interaction": {
     "drilldown": false
   },
