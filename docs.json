@@ -51,7 +51,7 @@
     "primary": {
       "type": "button",
       "label": "Start for free",
-      "href": "https://www.lusha.com/signup/"
+      "href": "https://auth.lusha.com/signup"
     }
   },
   "api": {
