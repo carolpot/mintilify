@@ -5,47 +5,116 @@ description: "AI-driven recommendation engines, buying committee identification,
 
 Deep Intelligence pairs your data with AI to deliver recommendations, buying committee identification, and predictive scores tailored to your ICP - three recommendation engines, a Buying Committee suite, and three predictive models, all available through the v3 API.
 
-<Warning>
-  Coverage figures marked with * are not yet published by the data team; treat those numbers as placeholders, not confirmed figures.
-</Warning>
+<Info>
+  The **Platform** column lists where each feature is currently live. A platform listed as **Planned** isn't available yet - use the group filter below to see what's shipping next.
+</Info>
 
-## Recommendation engines
+export const deepIntelligenceFeatures = [
+  { feature: 'Recommendations', group: 'Recommendation engines', description: 'AI-driven contact and company recommendations tailored to your ICP. Refreshes as your usage patterns evolve - the more you engage, the sharper the recommendations get.', endpoint: 'POST /v3/contacts/lookalike, POST /v3/companies/lookalike', live: ['API', 'MCP', 'WS Enrich'], planned: [], coverageConfirmed: true, coverage: { global: '86%', na: '94%', emea: '82%', apac: '68%' } },
+  { feature: 'ICP Hub', group: 'Recommendation engines', description: 'Ideal Customer Profile matching and scoring hub. Consolidates fit signals into a single workspace and ranks accounts by likelihood-to-buy so reps work the right list first.', endpoint: 'Dashboard only', live: ['WS Enrich', 'WS Search'], planned: ['API', 'MCP'], coverageConfirmed: true, coverage: { global: '82%', na: '91%', emea: '78%', apac: '62%' } },
+  { feature: 'Lookalikes', group: 'Recommendation engines', description: 'AI-powered discovery of contacts and companies similar to your best existing customers. Returns paginated results that can be piped directly into Enrich for full data.', endpoint: 'POST /v3/contacts/lookalike, POST /v3/companies/lookalike', live: ['API', 'MCP', 'WS Enrich'], planned: ['API Search'], coverageConfirmed: true, coverage: { global: '88%', na: '95%', emea: '85%', apac: '72%' } },
+  { feature: 'Buying Committee - End User', group: 'Buying Committee', description: 'AI-identified end users within a target account - the people who will actually use your product day to day.', endpoint: 'POST /v3/contacts/buying-committee (beta)', live: ['API', 'MCP', 'WS Enrich'], planned: [], coverageConfirmed: false, coverage: { global: null, na: null, emea: null, apac: null } },
+  { feature: 'Buying Committee - Decision Makers', group: 'Buying Committee', description: 'AI-identified decision makers within a target account - the people with budget authority or sign-off power.', endpoint: 'POST /v3/contacts/buying-committee (beta)', live: ['API', 'MCP', 'WS Enrich'], planned: [], coverageConfirmed: false, coverage: { global: null, na: null, emea: null, apac: null } },
+  { feature: 'Buying Committee - Potential Champion', group: 'Buying Committee', description: 'AI-identified potential champions within a target account - internal advocates likely to support your deal.', endpoint: 'POST /v3/contacts/buying-committee (beta)', live: ['API', 'MCP', 'WS Enrich'], planned: [], coverageConfirmed: false, coverage: { global: null, na: null, emea: null, apac: null } },
+  { feature: 'Website Visitors', group: 'Predictive models', description: 'Intent signal derived from website visit activity matched to known companies in our identity graph. Surface accounts showing interest before they fill out a form.', endpoint: 'POST /v3/companies/website-visits (beta)', live: ['API', 'MCP', 'WS Enrich'], planned: ['WS Search'], coverageConfirmed: true, coverage: { global: '74%', na: '86%', emea: '70%', apac: '52%' } },
+  { feature: 'Predictive Scoring (TOF/MOF)', group: 'Predictive models', description: 'Top-of-funnel and mid-of-funnel likelihood-to-convert scores based on historical conversion patterns from the Lusha network and your own pipeline data.', endpoint: 'Dashboard only', live: ['WS Enrich', 'MCP'], planned: ['API'], coverageConfirmed: true, coverage: { global: '68%', na: '82%', emea: '64%', apac: '45%' } },
+  { feature: 'Scoring - Signal', group: 'Predictive models', description: 'Composite score derived from real-time buying signals - headcount changes, hiring surges, news events, and more - ranking accounts by signal strength.', endpoint: 'POST /v3/companies/scoring/signal (beta)', live: ['API', 'MCP', 'WS Enrich'], planned: [], coverageConfirmed: false, coverage: { global: null, na: null, emea: null, apac: null } },
+]
 
-| Feature | Description | Coverage (Global) | Platform | Endpoint |
-| --- | --- | --- | --- | --- |
-| **Recommendations** | AI-driven contact and company recommendations tailored to your ICP. Refreshes as your usage patterns evolve — the more you engage, the sharper the recommendations get. | 86% | API, MCP, WS Enrich | `POST /v3/contacts/lookalike`<br/>`POST /v3/companies/lookalike` |
-| **ICP Hub** | Ideal Customer Profile matching and scoring hub. Consolidates fit signals into a single workspace and ranks accounts by likelihood-to-buy so reps work the right list first. | 82% | WS Enrich<br/>*Planned:* API, MCP, WS Search | Dashboard only |
-| **Lookalikes** | AI-powered discovery of contacts and companies similar to your best existing customers. Returns paginated results that can be piped directly into Enrich for full data. | 88% | API, MCP, WS Enrich<br/>*Planned:* WS Search, API Search | `POST /v3/contacts/lookalike`<br/>`POST /v3/companies/lookalike` |
+export const DeepIntelligenceExplorer = () => {
+  const [query, setQuery] = useState('')
+  const [group, setGroup] = useState('All')
+  const [platform, setPlatform] = useState('All')
 
-## Buying Committee
+  const uniq = (values) => Array.from(new Set(values))
+  const groups = ['All', ...uniq(deepIntelligenceFeatures.map((f) => f.group))]
+  const platforms = ['All', ...uniq(deepIntelligenceFeatures.flatMap((f) => [...f.live, ...f.planned]))]
 
-| Feature | Description | Coverage (Global) | Platform | Endpoint |
-| --- | --- | --- | --- | --- |
-| **Buying Committee — End User** | AI-identified end users within a target account — the people who will actually use your product day to day. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
-| **Buying Committee — Decision Makers** | AI-identified decision makers within a target account — the people with budget authority or sign-off power. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
-| **Buying Committee — Potential Champion** | AI-identified potential champions within a target account — internal advocates likely to support your deal. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
+  const filtered = deepIntelligenceFeatures.filter((f) => {
+    if (group !== 'All' && f.group !== group) return false
+    if (platform !== 'All' && !f.live.includes(platform) && !f.planned.includes(platform)) return false
+    if (query && !f.feature.toLowerCase().includes(query.toLowerCase())) return false
+    return true
+  })
 
-## Predictive models
+  const selectStyle = {
+    padding: '0.4rem 0.6rem',
+    borderRadius: '6px',
+    border: '1px solid var(--gray-a6, #d1d5db)',
+    fontSize: '0.85rem',
+    background: 'var(--background, transparent)',
+  }
 
-| Feature | Description | Coverage (Global) | Platform | Endpoint |
-| --- | --- | --- | --- | --- |
-| **Website Visitors** | Intent signal derived from website visit activity matched to known companies in our identity graph. Surface accounts showing interest before they fill out a form. | 74% | API, MCP, WS Enrich<br/>*Planned:* WS Search | `POST /v3/companies/website-visits` (beta) |
-| **Predictive Scoring (TOF/MOF)** | Top-of-funnel and mid-of-funnel likelihood-to-convert scores based on historical conversion patterns from the Lusha network and your own pipeline data. | 68% | WS Enrich<br/>*Planned:* API, MCP | Dashboard only |
-| **Scoring — Signal** | Composite score derived from real-time buying signals — headcount changes, hiring surges, news events, and more — ranking accounts by signal strength. | 86%* | API, MCP, WS Enrich | `POST /v3/companies/scoring/signal` (beta) |
+  const coverageCell = (feature, value) => {
+    if (!feature.coverageConfirmed) {
+      return <span style={{ opacity: 0.6 }}>Not yet published</span>
+    }
+    return value
+  }
 
-## Coverage by region
+  return (
+    <div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+        <input
+          type="text"
+          placeholder="Search feature..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          style={{ ...selectStyle, flex: '1 1 220px' }}
+        />
+        <select value={group} onChange={(e) => setGroup(e.target.value)} style={selectStyle}>
+          {groups.map((g) => (
+            <option key={g} value={g}>{g === 'All' ? 'All groups' : g}</option>
+          ))}
+        </select>
+        <select value={platform} onChange={(e) => setPlatform(e.target.value)} style={selectStyle}>
+          {platforms.map((p) => (
+            <option key={p} value={p}>{p === 'All' ? 'All platforms' : p}</option>
+          ))}
+        </select>
+      </div>
+      <p style={{ fontSize: '0.85rem', opacity: 0.7, margin: '0 0 0.5rem' }}>
+        Showing {filtered.length} of {deepIntelligenceFeatures.length} features
+      </p>
+      <div style={{ overflowX: 'auto' }}>
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Group</th>
+              <th>Description</th>
+              <th>Live on</th>
+              <th>Planned</th>
+              <th>Endpoint</th>
+              <th>Coverage (Global)</th>
+              <th>NA</th>
+              <th>EMEA</th>
+              <th>APAC</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((f) => (
+              <tr key={f.feature}>
+                <td><strong>{f.feature}</strong></td>
+                <td>{f.group}</td>
+                <td>{f.description}</td>
+                <td>{f.live.join(', ')}</td>
+                <td>{f.planned.length ? f.planned.join(', ') : '-'}</td>
+                <td><code>{f.endpoint}</code></td>
+                <td>{coverageCell(f, f.coverage.global)}</td>
+                <td>{coverageCell(f, f.coverage.na)}</td>
+                <td>{coverageCell(f, f.coverage.emea)}</td>
+                <td>{coverageCell(f, f.coverage.apac)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
 
-| Feature | Global | NA | EMEA | APAC |
-| --- | --- | --- | --- | --- |
-| **Recommendations** | 86% | 94% | 82% | 68% |
-| **ICP Hub** | 82% | 91% | 78% | 62% |
-| **Lookalikes** | 88% | 95% | 85% | 72% |
-| **Website Visitors** | 74% | 86% | 70% | 52% |
-| **Predictive Scoring (TOF/MOF)** | 68% | 82% | 64% | 45% |
-| **Scoring — Signal** | 86%* | 94%* | 82%* | 68%* |
-| **Buying Committee — End User** | 86%* | 94%* | 82%* | 68%* |
-| **Buying Committee — Decision Makers** | 86%* | 94%* | 82%* | 68%* |
-| **Buying Committee — Potential Champion** | 86%* | 94%* | 82%* | 68%* |
+<DeepIntelligenceExplorer />
 
 <Info>
   All endpoints are under `https://api.lusha.com` and require an `api_key` header.
