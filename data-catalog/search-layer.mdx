@@ -132,6 +132,37 @@ export const searchLayerFields = [
   { field: 'Website Traffic Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'websiteTrafficIncrease', dataType: 'Object', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
 ]
 
+export const categoryColors = {
+  'Contact identity': '#863FFF',
+  'Emails & phones': '#3A91FF',
+  'Employment & seniority': '#0D9488',
+  'LinkedIn enrichment': '#6366F1',
+  'Company firmographics': '#16A34A',
+  'Company web & locations': '#F59E0B',
+  'Real-time signals': '#DB2777',
+}
+
+export const Chip = ({ label, color }) => {
+  const c = color || '#6B7280'
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '0.15rem 0.6rem',
+        borderRadius: '999px',
+        fontSize: '0.78rem',
+        fontWeight: 500,
+        color: c,
+        background: `${c}1a`,
+        border: `1px solid ${c}40`,
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {label}
+    </span>
+  )
+}
+
 export const SearchLayerExplorer = () => {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('All')
@@ -219,7 +250,7 @@ export const SearchLayerExplorer = () => {
                 <td><strong>{f.field}</strong></td>
                 <td>{f.entity}</td>
                 <td>{f.type}</td>
-                <td>{f.category}</td>
+                <td><Chip label={f.category} color={categoryColors[f.category]} /></td>
                 <td><code>{f.path}</code></td>
                 <td>{f.dataType}</td>
                 <td>{f.refresh}</td>
