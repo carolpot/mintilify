@@ -132,48 +132,6 @@ export const searchLayerFields = [
   { field: 'Website Traffic Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'websiteTrafficIncrease', dataType: 'Object', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
 ]
 
-export const entityColors = {
-  Contact: '#3A91FF',
-  Company: '#863FFF',
-}
-
-export const typeColors = {
-  Static: '#6B7280',
-  Signal: '#F59E0B',
-}
-
-export const platformColors = {
-  API: '#863FFF',
-  MCP: '#3A91FF',
-  'WS Enrich': '#16A34A',
-  'WS Search': '#0D9488',
-  'API Search': '#DB2777',
-}
-
-export const Pill = ({ label, color }) => (
-  <span
-    style={{
-      display: 'inline-block',
-      padding: '0.1rem 0.55rem',
-      borderRadius: '999px',
-      fontSize: '0.75rem',
-      fontWeight: 600,
-      color: '#fff',
-      background: color || '#6B7280',
-      whiteSpace: 'nowrap',
-    }}
-  >
-    {label}
-  </span>
-)
-
-export const Dot = ({ label, color }) => (
-  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', marginRight: '0.6rem', fontSize: '0.85rem' }}>
-    <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: color || '#6B7280', flexShrink: 0 }} />
-    {label}
-  </span>
-)
-
 export const SearchLayerExplorer = () => {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('All')
@@ -202,10 +160,9 @@ export const SearchLayerExplorer = () => {
   const selectStyle = {
     padding: '0.4rem 0.6rem',
     borderRadius: '6px',
-    border: '1px solid rgba(134, 63, 255, 0.35)',
+    border: '1px solid var(--gray-a6, #d1d5db)',
     fontSize: '0.85rem',
     background: 'var(--background, transparent)',
-    accentColor: '#863FFF',
   }
 
   return (
@@ -239,22 +196,17 @@ export const SearchLayerExplorer = () => {
           ))}
         </select>
       </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0 1rem', margin: '0 0 0.75rem' }}>
-        {Object.entries(platformColors).map(([name, color]) => (
-          <Dot key={name} label={name} color={color} />
-        ))}
-      </div>
       <p style={{ fontSize: '0.85rem', opacity: 0.7, margin: '0 0 0.5rem' }}>
         Showing {filtered.length} of {searchLayerFields.length} fields
       </p>
-      <div style={{ overflowX: 'auto', borderRadius: '10px', border: '1px solid rgba(134, 63, 255, 0.18)' }}>
-        <table style={{ margin: 0 }}>
+      <div style={{ overflowX: 'auto' }}>
+        <table>
           <thead>
-            <tr style={{ background: 'rgba(134, 63, 255, 0.1)' }}>
+            <tr>
               <th>Field</th>
               <th>Entity</th>
               <th>Type</th>
-              <th style={{ color: '#863FFF' }}>Category</th>
+              <th>Category</th>
               <th>Path</th>
               <th>Data type</th>
               <th>Refresh</th>
@@ -262,23 +214,16 @@ export const SearchLayerExplorer = () => {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((f, i) => (
-              <tr
-                key={`${f.category}-${f.field}`}
-                style={{ background: i % 2 === 1 ? 'rgba(134, 63, 255, 0.035)' : 'transparent' }}
-              >
+            {filtered.map((f) => (
+              <tr key={`${f.category}-${f.field}`}>
                 <td><strong>{f.field}</strong></td>
-                <td><Pill label={f.entity} color={entityColors[f.entity]} /></td>
-                <td><Pill label={f.type} color={typeColors[f.type]} /></td>
-                <td style={{ color: '#863FFF', fontWeight: 500 }}>{f.category}</td>
+                <td>{f.entity}</td>
+                <td>{f.type}</td>
+                <td>{f.category}</td>
                 <td><code>{f.path}</code></td>
                 <td>{f.dataType}</td>
                 <td>{f.refresh}</td>
-                <td>
-                  {f.platform.map((p) => (
-                    <Dot key={p} label={p} color={platformColors[p]} />
-                  ))}
-                </td>
+                <td>{f.platform.join(', ')}</td>
               </tr>
             ))}
           </tbody>
