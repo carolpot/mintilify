@@ -142,6 +142,28 @@ export const categoryColors = {
   'Real-time signals': '#DB2777',
 }
 
+export const dataTypeColors = {
+  String: '#3A91FF',
+  Array: '#863FFF',
+  Object: '#0D9488',
+  Number: '#16A34A',
+  Boolean: '#F59E0B',
+}
+
+export const refreshColors = {
+  Weekly: '#16A34A',
+  Monthly: '#F59E0B',
+  '—': '#6B7280',
+}
+
+export const platformColors = {
+  API: '#863FFF',
+  MCP: '#3A91FF',
+  'WS Enrich': '#0D9488',
+  'WS Search': '#6366F1',
+  'API Search': '#DB2777',
+}
+
 export const Chip = ({ label, color }) => {
   const c = color || '#6B7280'
   return (
@@ -252,9 +274,15 @@ export const SearchLayerExplorer = () => {
                 <td>{f.type}</td>
                 <td><Chip label={f.category} color={categoryColors[f.category]} /></td>
                 <td><code>{f.path}</code></td>
-                <td>{f.dataType}</td>
-                <td>{f.refresh}</td>
-                <td>{f.platform.join(', ')}</td>
+                <td><Chip label={f.dataType} color={dataTypeColors[f.dataType]} /></td>
+                <td><Chip label={f.refresh} color={refreshColors[f.refresh]} /></td>
+                <td>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
+                    {f.platform.map((p) => (
+                      <Chip key={p} label={p} color={platformColors[p]} />
+                    ))}
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
