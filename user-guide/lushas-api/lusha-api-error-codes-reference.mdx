@@ -89,7 +89,7 @@ Something went wrong on Lusha's side.
 A 200 response with an empty result set means Lusha couldn't find a match for your query - not that the request failed. This is expected behavior for contacts not in Lusha's database.
 
 <Warning>
-  A minimum of 1 credit is charged per API request, even if no results are returned. A 200 with no results still counts as a request.
+  No credit is charged when a 200 response returns an empty result set. Credits are only deducted for successful requests that return matched data - the same principle that applies to 429 responses above.
 </Warning>
 
 ## Best practices for avoiding API errors

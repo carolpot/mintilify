@@ -1077,8 +1077,6 @@
                 "pages": [
                   "user-guide/native-crm-integrations",
                   "user-guide/integrations-basics/available-crm-integrations",
-                  "user-guide/salesforce",
-                  "user-guide/hubspot",
                   "user-guide/other-integrations",
                   "user-guide/getting-started-with-slack",
                   {
@@ -1097,6 +1095,7 @@
                   {
                     "group": "Salesforce",
                     "icon": "cloud",
+                    "root": "user-guide/salesforce",
                     "pages": [
                       "user-guide/salesforce/salesforce-integration",
                       "user-guide/salesforce/salesforce-identifier-indicator",
@@ -1108,6 +1107,7 @@
                   {
                     "group": "HubSpot",
                     "icon": "circle-nodes",
+                    "root": "user-guide/hubspot",
                     "pages": [
                       "user-guide/hubspot/hubspot-integration",
                       "user-guide/hubspot/hubspot-identifier-indicator",
@@ -1406,6 +1406,358 @@
     {
       "source": "/user-guide/faqs-and-troubleshooting/cancel-lusha-extension-auto-open",
       "destination": "/user-guide/extension/getting-started-with-lushas-extension"
+    },
+    {
+      "source": "/apis/openapi/account/getaccountusage",
+      "destination": "/api-reference/account/get-account-usage"
+    },
+    {
+      "source": "/apis/openapi/companies-tables/createcompaniestable",
+      "destination": "/api-reference/companies-tables/create-companies-table"
+    },
+    {
+      "source": "/apis/openapi/companies-tables/deletecompaniestable",
+      "destination": "/api-reference/companies-tables/delete-companies-table"
+    },
+    {
+      "source": "/apis/openapi/companies-tables/getcompaniestable",
+      "destination": "/api-reference/companies-tables/get-companies-table"
+    },
+    {
+      "source": "/apis/openapi/companies-tables/getcompaniestableentities",
+      "destination": "/api-reference/companies-tables/get-companies-table-entities"
+    },
+    {
+      "source": "/apis/openapi/companies-tables/listcompaniestablecolumns",
+      "destination": "/api-reference/companies-tables/list-companies-table-columns"
+    },
+    {
+      "source": "/apis/openapi/companies-tables/listcompaniestables",
+      "destination": "/api-reference/companies-tables/list-companies-tables"
+    },
+    {
+      "source": "/apis/openapi/companies-tables/updatecompaniestable",
+      "destination": "/api-reference/companies-tables/update-companies-table"
+    },
+    {
+      "source": "/apis/openapi/contacts-tables/createcontactstable",
+      "destination": "/api-reference/contacts-tables/create-contacts-table"
+    },
+    {
+      "source": "/apis/openapi/contacts-tables/deletecontactstable",
+      "destination": "/api-reference/contacts-tables/delete-contacts-table"
+    },
+    {
+      "source": "/apis/openapi/contacts-tables/getcontactstable",
+      "destination": "/api-reference/contacts-tables/get-contacts-table"
+    },
+    {
+      "source": "/apis/openapi/contacts-tables/getcontactstableentities",
+      "destination": "/api-reference/contacts-tables/get-contacts-table-entities"
+    },
+    {
+      "source": "/apis/openapi/contacts-tables/listcontactstablecolumns",
+      "destination": "/api-reference/contacts-tables/list-contacts-table-columns"
+    },
+    {
+      "source": "/apis/openapi/contacts-tables/listcontactstables",
+      "destination": "/api-reference/contacts-tables/list-contacts-tables"
+    },
+    {
+      "source": "/apis/openapi/contacts-tables/updatecontactstable",
+      "destination": "/api-reference/contacts-tables/update-contacts-table"
+    },
+    {
+      "source": "/apis/openapi/conversations/getconversationtranscript",
+      "destination": "/api-reference/conversations/get-conversation-transcript"
+    },
+    {
+      "source": "/apis/openapi/conversations/searchconversations",
+      "destination": "/api-reference/conversations/search-conversations"
+    },
+    {
+      "source": "/apis/openapi/enrich/enrichcompanies",
+      "destination": "/api-reference/enrich/enrich-companies"
+    },
+    {
+      "source": "/apis/openapi/enrich/enrichcontacts",
+      "destination": "/api-reference/enrich/enrich-contacts"
+    },
+    {
+      "source": "/apis/openapi/filters/getcompanyfiltervalues",
+      "destination": "/api-reference/filters/get-company-filter-values"
+    },
+    {
+      "source": "/apis/openapi/filters/getcontactfiltervalues",
+      "destination": "/api-reference/filters/get-contact-filter-values"
+    },
+    {
+      "source": "/apis/openapi/prospecting/prospectingcompanies",
+      "destination": "/api-reference/prospecting/prospecting-companies"
+    },
+    {
+      "source": "/apis/openapi/prospecting/prospectingcontacts",
+      "destination": "/api-reference/prospecting/prospecting-contacts"
+    },
+    {
+      "source": "/apis/openapi/search-and-enrich/searchandenrichcompanies",
+      "destination": "/api-reference/search-&-enrich/search-and-enrich-companies"
+    },
+    {
+      "source": "/apis/openapi/search-and-enrich/searchandenrichcontacts",
+      "destination": "/api-reference/search-&-enrich/search-and-enrich-contacts"
+    },
+    {
+      "source": "/apis/openapi/search/searchcompanies",
+      "destination": "/api-reference/search/search-companies"
+    },
+    {
+      "source": "/apis/openapi/search/searchcontacts",
+      "destination": "/api-reference/search/search-contacts"
+    },
+    {
+      "source": "/apis/openapi/section/authentication",
+      "destination": "/authentication"
+    },
+    {
+      "source": "/apis/openapi/section/available-endpoints",
+      "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/apis/openapi/section/data-source-and-privacy",
+      "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/apis/openapi/section/error-codes",
+      "destination": "/error-codes"
+    },
+    {
+      "source": "/apis/openapi/section/legal-notices",
+      "destination": "/legal/terms"
+    },
+    {
+      "source": "/apis/openapi/section/rate-limiting",
+      "destination": "/rate-limiting"
+    },
+    {
+      "source": "/apis/openapi/signals",
+      "destination": "/tutorials/signals"
+    },
+    {
+      "source": "/apis/openapi/signals/getcompanysignalfiltervalues",
+      "destination": "/api-reference/signals/get-company-signal-filter-values"
+    },
+    {
+      "source": "/apis/openapi/signals/getcompanysignaltypes",
+      "destination": "/api-reference/signals/get-company-signal-types"
+    },
+    {
+      "source": "/apis/openapi/signals/getcontactsignaltypes",
+      "destination": "/api-reference/signals/get-contact-signal-types"
+    },
+    {
+      "source": "/apis/openapi/webhooks/createoptoutsubscription",
+      "destination": "/api-reference/webhooks/create-opt-out-subscription"
+    },
+    {
+      "source": "/apis/openapi/webhooks/createsubscription",
+      "destination": "/api-reference/webhooks/create-subscription"
+    },
+    {
+      "source": "/apis/openapi/webhooks/deletesubscriptions",
+      "destination": "/api-reference/webhooks/delete-subscriptions"
+    },
+    {
+      "source": "/apis/openapi/webhooks/getaccountsecret",
+      "destination": "/api-reference/webhooks/get-account-secret"
+    },
+    {
+      "source": "/apis/openapi/webhooks/getauditlogs",
+      "destination": "/api-reference/webhooks/get-audit-logs"
+    },
+    {
+      "source": "/apis/openapi/webhooks/getsubscriptionbyid",
+      "destination": "/api-reference/webhooks/get-subscription-by-id"
+    },
+    {
+      "source": "/apis/openapi/webhooks/listsubscriptions",
+      "destination": "/api-reference/webhooks/list-subscriptions"
+    },
+    {
+      "source": "/apis/openapi/webhooks/regenerateaccountsecret",
+      "destination": "/api-reference/webhooks/regenerate-account-secret"
+    },
+    {
+      "source": "/apis/openapi/webhooks/testsubscription",
+      "destination": "/api-reference/webhooks/test-subscription"
+    },
+    {
+      "source": "/apis/openapi/webhooks/updatesubscription",
+      "destination": "/api-reference/webhooks/update-subscription"
+    },
+    {
+      "source": "/apis/v2/openapi/enrichment/searchmultiplecontacts",
+      "destination": "/api-reference/enrichment/search-multiple-contacts"
+    },
+    {
+      "source": "/apis/v2/openapi/enrichment/searchsinglecontact",
+      "destination": "/api-reference/enrichment/search-single-contact"
+    },
+    {
+      "source": "/apis/v2/openapi/section/authentication",
+      "destination": "/v2/authentication"
+    },
+    {
+      "source": "/apis/v2/openapi/section/error-codes",
+      "destination": "/v2/error-codes"
+    },
+    {
+      "source": "/apis/v2/openapi/section/rate-limiting",
+      "destination": "/v2/rate-limiting"
+    },
+    {
+      "source": "/apis/v2/openapi/signals",
+      "destination": "/tutorials/signals"
+    },
+    {
+      "source": "/apis/v2/openapi/signals/getsignaloptions",
+      "destination": "/api-reference/signals/get-signal-options"
+    },
+    {
+      "source": "/apis/v2/openapi/signals/searchcompanysignals",
+      "destination": "/api-reference/signals/search-company-signals"
+    },
+    {
+      "source": "/apis/v2/openapi/signals/searchcontactsignals",
+      "destination": "/api-reference/signals/search-contact-signals"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/createsubscription",
+      "destination": "/api-reference/webhooks/create-subscription"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/deletesubscriptions",
+      "destination": "/api-reference/webhooks/delete-subscriptions"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/getaccountsecret",
+      "destination": "/api-reference/webhooks/get-account-secret"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/getauditlogs",
+      "destination": "/api-reference/webhooks/get-audit-logs"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/getsubscriptionbyid",
+      "destination": "/api-reference/webhooks/get-subscription-by-id"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/listsubscriptions",
+      "destination": "/api-reference/webhooks/list-subscriptions"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/regenerateaccountsecret",
+      "destination": "/api-reference/webhooks/regenerate-account-secret"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/testsubscription",
+      "destination": "/api-reference/webhooks/test-subscription"
+    },
+    {
+      "source": "/apis/v2/openapi/webhooks/updatesubscription",
+      "destination": "/api-reference/webhooks/update-subscription"
+    },
+    {
+      "source": "/changelog",
+      "destination": "/changelog/overview"
+    },
+    {
+      "source": "/data-coverage",
+      "destination": "/user-guide/getting-started/understanding-data-quality-and-coverage"
+    },
+    {
+      "source": "/deep-intelligence",
+      "destination": "/data-catalog/deep-intelligence"
+    },
+    {
+      "source": "/guides",
+      "destination": "/tutorials"
+    },
+    {
+      "source": "/guides/advanced-topics",
+      "destination": "/tutorials"
+    },
+    {
+      "source": "/guides/advanced-topics/data-catalog",
+      "destination": "/data-catalog/search-layer"
+    },
+    {
+      "source": "/guides/advanced-topics/data-catalog-v2",
+      "destination": "/data-catalog/deep-intelligence"
+    },
+    {
+      "source": "/guides/advanced-topics/new-getting-started",
+      "destination": "/tutorials/api_fundamentals"
+    },
+    {
+      "source": "/mcp-docs",
+      "destination": "/mcp/overview"
+    },
+    {
+      "source": "/qa",
+      "destination": "/"
+    },
+    {
+      "source": "/search-layer",
+      "destination": "/data-catalog/search-layer"
+    },
+    {
+      "source": "/search-layer-standalone",
+      "destination": "/data-catalog/search-layer"
+    },
+    {
+      "source": "/tools",
+      "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/tools/cli",
+      "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/tools/replay",
+      "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/tools/sdks",
+      "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/user-guide/building-your-workspace-tables/account-based-prospecting-beta/account-based-prospecting-filters-overview",
+      "destination": "/user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/account-based-prospecting-filters-overview"
+    },
+    {
+      "source": "/user-guide/building-your-workspace-tables/account-based-prospecting-beta/how-to-target-existing-crm-records-in-lusha",
+      "destination": "/user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/how-to-target-existing-crm-records-in-lusha"
+    },
+    {
+      "source": "/user-guide/building-your-workspace-tables/account-based-prospecting-beta/importing-from-crm-into-workspace",
+      "destination": "/user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/importing-from-crm-into-workspace"
+    },
+    {
+      "source": "/user-guide/building-your-workspace-tables/account-based-prospecting-beta/not-in-my-crm-filter",
+      "destination": "/user-guide/building-your-workspace-tables/Account-Based Prospecting (Beta)/not-in-my-crm-filter"
+    },
+    {
+      "source": "/apis/v2/openapi/:slug*",
+      "destination": "/v2/api-reference/overview"
+    },
+    {
+      "source": "/apis/openapi/:slug*",
+      "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/apis/:slug*",
+      "destination": "/api-reference/overview"
     }
   ]
 }

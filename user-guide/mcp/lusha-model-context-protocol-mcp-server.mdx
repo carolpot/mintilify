@@ -28,11 +28,13 @@ The Lusha MCP Server is a [Model Context Protocol](https://modelcontextprotocol.
 
 ## Requirements
 
-- A valid Lusha API key (Admin or Manager role required)
-- A Lusha plan with sufficient credits
-- An MCP-compatible AI client (Claude, ChatGPT, Codex, Cursor, VS Code, and others)
+- A Lusha account on any plan - every user can connect their own Lusha MCP Server, subject to your account's MCP access permission. Admins can restrict MCP access separately: a dedicated **MCP access** permission in **Account Settings → Permissions** is on by default - turn it off and only Admins and Managers can connect.
+- Available API credits - MCP calls consume credits from your account's credit pool
+- An MCP-compatible AI client. Lusha supports two connection methods, depending on your client:
+  - **OAuth** - one-click authentication via Lusha's official connector, for **Claude**, **ChatGPT**, and **Codex**. Not gated by Admin/Manager role or by your account's API key permission settings.
+  - **API Key** - pass your Lusha API key via the `x-api-key` request header, for **VS Code**, **Cursor**, **n8n**, **Gemini CLI**, **Gong AI Briefer**, and any other MCP-compatible client. Subject to your account's API key permission settings.
 
-Your API key and personal MCP URL are available in [API Hub](https://dashboard.lusha.com/api/mcp).
+**MCP Server URL** (for API Key clients): `https://mcp.lusha.com`. Get your API key from [API Hub → Manage API Keys](https://dashboard.lusha.com/api/manage-api-keys).
 
 <Note>
 **Starter prompt included:** Every Lusha MCP connection now ships with a ready-to-use starter prompt right on the consent screen - copy it in one click to try a real example (find a person, verify they still work there, and pull their title and verified contact details) the moment you connect. This ships across every MCP client we connect to, not just Claude.
@@ -40,15 +42,17 @@ Your API key and personal MCP URL are available in [API Hub](https://dashboard.l
 
 ## Connect Lusha now
 
-[Connect via Claude](https://claude.ai/marketplace) - go to Settings > Connectors, add `https://mcp.lusha.com`, and authenticate.
+[Connect via Claude](https://claude.ai/directory/connectors/lusha) - click **Add to Claude** and complete OAuth authentication.
 
-[Connect via ChatGPT](https://chatgpt.com/marketplace) - find Lusha in the Marketplace and click **Start chat**.
+[Connect via ChatGPT](https://chatgpt.com/apps?q=lusha) - find Lusha in the app directory and click **Connect**.
 
 [Connect via Codex](https://docs.lusha.com/mcp-docs) - find Lusha in the Codex plugin directory and click **Connect**.
 
+[Connect via Gong](https://collective.gong.io/integrations/lusha-systems-inc) - in Gong, go to **Settings → MCP connections**, select Lusha, authenticate, and enable the tools you want for AI Briefer.
+
 ## Full setup guide and documentation
 
-For complete setup instructions, available tools, example prompts, troubleshooting, and security guidance, visit the full MCP documentation on the Lusha developer portal:
+For complete setup instructions, available tool schemas, example prompts, troubleshooting, and security guidance, visit the full MCP documentation on the Lusha developer portal:
 
 <Tip>
 👉 [MCP Server documentation on docs.lusha.com](https://docs.lusha.com/mcp-docs)

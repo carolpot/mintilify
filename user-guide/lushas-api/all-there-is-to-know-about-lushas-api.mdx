@@ -39,7 +39,7 @@ Free and Starter plans do not have an hourly limit - only per-minute and per-day
 
 Rate limits are enforced per API key. Exceeding a limit will result in a `429 Too Many Requests` response. To avoid a 429 error, implement retry logic with exponential backoff when hitting rate limits.
 
-Legacay users will keep the same limits they always had; 300/minute, 600/hour, 6000/day.
+Legacy users will keep the same limits they always had; 300/minute, 600/hour, 6000/day.
 
 ## Available endpoints
 
@@ -83,21 +83,11 @@ For full parameter reference, see the [Signals API documentation](/signals/overv
 
 Returns current credit consumption by type. Rate limit: 5 requests per minute.
 
-## Waterfall Reveal
+## Data Waterfall (Waterfall Reveal)
 
-Waterfall Reveal is an enhancement to the Enrich Contacts endpoint. When Lusha's own data has no match for a requested field, the request automatically falls through to your enabled third-party providers to fill the gap - extra reach on hard-to-match contacts, on top of standard enrichment.
+Data Waterfall enhances contact enrichment by falling through to your enabled third-party providers when Lusha's own data has no match for a requested email or phone - extra reach on hard-to-match contacts, on top of standard enrichment. Available on Pro plans and above, for both API and MCP.
 
-Admins turn Data Waterfall on and manage individual vendors under **Account Settings > Waterfall**. Once enabled, the waterfall runs automatically on every `POST /v3/contacts/enrich` call for the fields (`emails`, `phones`) you requested via `reveal` - you don't need to pass anything to trigger it. To opt a specific call out, pass `waterfallEnabled: false` alongside `reveal`.
-
-<Note>
-  Waterfall Reveal requires Data Waterfall to be enabled on your account, with at least one provider turned on, under **Account Settings > Waterfall** in the Lusha dashboard. Lusha determines the provider query order - it isn't caller-configurable. Pricing is flat and the same across every vendor: 2 credits per work email, 8 credits per phone, charged only on a match. Use of Data Waterfall is subject to Lusha's Supplementary Terms.
-</Note>
-
-<Note>
-  Rollout is staged - live now for self-serve paid accounts on the API, with Scale accounts on the API following shortly after, and MCP, Workspace, and Plugin support coming soon. Vendor coverage starts with 2 providers covering the US, with global vendors being added over time.
-</Note>
-
-See [Data Waterfall](/user-guide/lushas-api/data-waterfall) for full details on setup, how it works, and pricing, or the [Enrich Contacts API documentation](/api-reference/enrich/enrich-contacts) for parameters.
+See [Data Waterfall](/user-guide/lushas-api/data-waterfall) for full details on setup, how it works, and pricing.
 
 ## MCP
 
@@ -182,37 +172,27 @@ How you cap a key's spending depends on who generated it.
 </Steps>
 
 <Note>
-Only Admins and Managers can set or edit a credit limit - on a key they generated themselves, or on a user's account. If a user has no personal credit limit, their key is uncapped and can draw on the full account credit balance. Limits reset automatically at the start of each billing cycle.
+Only Admins and Managers can set or edit a credit limit - on a key they generated themselves, or on a user's account. If a user has no personal credit limit, their key is uncapped and can draw on the full account credit balance.
 </Note>
 
-## Troubleshooting: API shows "credit limit reached" but I still have credits
+## Troubleshooting: my API calls are rejected with a credit limit error
 
-If your API calls are being rejected with a "credit limit reached" error but your Lusha dashboard shows credits remaining, the issue is almost always a **per-API-key credit limit** - not your account balance.
-
-Check which kind of key is failing:
+If your API calls fail with a credit limit error, check which kind of key is failing:
 
 - **A key an Admin or Manager generated** (they can generate more than one) may have its own monthly limit, separate from their personal credit limit - check it under **API Hub → Manage API Keys**.
 - **A key a User generated for themselves** has no limit of its own - the block is coming from that user's own credit limit, set under **Settings → Team Management**.
 
-When a cap is reached, all requests using that key are blocked - even if the account still has plenty of credits available.
-
-**To check and fix the limit on your API key:**
+**To check and fix it:**
 
 <Steps>
-  <Step title="Open Manage API Keys">
-    Go to **API Hub → Manage API Keys**.
+  <Step title="Find the key's owner">
+    Find out who owns the key that's failing, and whether it's a key an Admin/Manager generated or a User's key - Admins and Managers can see every key and its owner under **API Hub → Manage API Keys**.
   </Step>
-  <Step title="Check the key's credit usage">
-    Find the key you're using and check the **Credit usage** column. If a limit is set and you've reached it, you'll see the cap amount here.
+  <Step title="Edit an Admin/Manager key's limit">
+    If it's an Admin/Manager-generated key with its own limit, edit or remove that limit from the same tab.
   </Step>
-  <Step title="Edit the key">
-    Click the **edit (pencil) icon** next to the key.
-  </Step>
-  <Step title="Increase or remove the limit">
-    In the Edit Key panel, either increase the monthly credit limit or toggle the limit **off** to remove it entirely.
-  </Step>
-  <Step title="Save your changes">
-    Click **Continue** to save your changes.
+  <Step title="Check a User's credit limit">
+    Otherwise, go to **Settings → Team Management** and check that user's credit limit - raise it, remove it, or free up some of their allowance.
   </Step>
 </Steps>
 

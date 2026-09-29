@@ -166,6 +166,28 @@ The autocomplete setting matches the account name in Lusha to an existing accoun
   <img src="https://lusha-eu.intercom-attachments.eu/i/o/13260047/d48f92c8364c35cb05f5a945/Screen%2BShot%2B2022-12-06%2Bat%2B14_02_02.png?expires=1780056000&signature=b808c85636163f0f63c00043ae0b158edf4270ed5a5d3cce123ae7b70b6d21d0&req=0dZtw1j6qDBk2hj99dpg6v0ByvYQ15QdYqNd3jo89o8haVz8o4LVcO8CZGTi%0AhlOgla7uBmHnn%2F4Kgwd%2FOkHS%0A" alt="Autocomplete matching Lusha account names to existing Salesforce accounts" style={{maxWidth: "100%", height: "auto"}} />
 </Frame>
 
+## Sync opt-out contacts to Salesforce
+
+(Available for Admins only)
+
+Lusha can automatically sync a contact's opt-out status to Salesforce, so your CRM data stays consistent with Lusha's suppression list without any manual list management.
+
+<Steps>
+  <Step title="Open Salesforce integration settings">
+    Go to **Settings → Integrations** and select **Salesforce**.
+  </Step>
+  <Step title="Enable the sync">
+    Toggle on **Sync opt-out contacts**.
+  </Step>
+  <Step title="Choose the target field">
+    Choose which Salesforce field to map the opt-out status to. This defaults to the standard **Email Opt Out** field, or you can select a custom field instead.
+  </Step>
+</Steps>
+
+Going forward, any contact marked as opted-out in Lusha automatically syncs to the mapped field in Salesforce - standard and custom fields are both supported. This keeps unsubscribe status consistent across platforms and removes the need to manually manage opt-out lists between Lusha and Salesforce.
+
+For background on how Lusha handles opt-outs generally, see [Opt-Out Contacts](/user-guide/privacy-and-compliance/opt-out-contacts).
+
 ## Troubleshooting: Salesforce authentication issues
 
 ### My team is being logged out of Salesforce / lost Salesforce authentication
