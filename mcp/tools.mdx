@@ -3,7 +3,7 @@ title: "MCP tools reference"
 description: "Every tool the Lusha MCP server exposes, grouped by category."
 ---
 
-The Lusha MCP server exposes 22 tools. Most map closely to the underlying Lusha API, so the same plan, credit, and rate-limit rules that apply to the REST API apply to MCP tool calls - see the [API FAQ](/faq/api) and [credits FAQ](/faq/billing).
+The Lusha MCP server exposes 50 tools. Most map closely to the underlying Lusha API, so the same plan, credit, and rate-limit rules that apply to the REST API apply to MCP tool calls - see the [API FAQ](/faq/api) and [credits FAQ](/faq/billing).
 
 <Note>
   Available tools may vary depending on the client used to connect. Tool names and behavior can also change as Lusha ships new capabilities - ask your MCP client to list its available Lusha tools for the exact, current set.
@@ -29,6 +29,21 @@ The Lusha MCP server exposes 22 tools. Most map closely to the underlying Lusha 
 | `prospecting_company_enrich` | Enrich companies by ID for detailed firmographic data. |
 </Accordion>
 
+<Accordion title="Buying group (2)">
+| Tool | What it does |
+|---|---|
+| `buying_group_search` | Find the buying committee at a target account. |
+| `decision_makers_buying_group_search` | Identify the decision makers within that committee. |
+</Accordion>
+
+<Accordion title="Bulk enrichment jobs (3)">
+| Tool | What it does |
+|---|---|
+| `contacts_enrich_job_list` | List background bulk contact enrichment jobs. |
+| `contacts_enrich_job_status` | Check the status of a bulk enrichment job. |
+| `contacts_enrich_job_results` | Retrieve the results of a completed bulk enrichment job. |
+</Accordion>
+
 <Accordion title="Lookalikes (2)">
 | Tool | What it does |
 |---|---|
@@ -36,35 +51,77 @@ The Lusha MCP server exposes 22 tools. Most map closely to the underlying Lusha 
 | `lookalike_companies` | Find companies similar to a seed company. |
 </Accordion>
 
-<Accordion title="Signals (6)">
+<Accordion title="Signals and intent (9)">
 | Tool | What it does |
 |---|---|
 | `signals_contact_filters` | Get available filter values for contact signals (no credits charged). |
-| `signals_contacts_search` | Resolve contacts and return recent activity signals. |
+| `signals_contacts_search` | Find people by trigger events such as promotions and job changes. |
 | `signals_contacts_get` | Get signals for known contacts by ID. |
 | `signals_company_filters` | Get available filter values for company signals (no credits charged). |
-| `signals_companies_search` | Resolve companies and return recent activity signals. |
+| `signals_companies_search` | Find accounts by trigger events such as funding, hiring surges, and headcount growth. |
 | `signals_companies_get` | Get signals for known companies by ID. |
+| `signal_score_contacts` | Score contacts by signal strength. |
+| `signal_score_companies` | Score companies by signal strength. |
+| `website_visits_search` | See which companies are visiting your website. |
 </Accordion>
 
-<Accordion title="Recommendations (5)">
+<Accordion title="Recommendations and scoring (5)">
 | Tool | What it does |
 |---|---|
-| `recommendations_contacts_get` | Get paginated, scored contact recommendations with signals and Target Profile attribution. |
-| `recommendations_companies_get` | Get paginated, scored company recommendations with signals and Target Profile attribution. |
-| `recommendations_status_get` | Check whether a user's recommendations are `none`, `computing`, or `done`. |
+| `recommendations_contacts` | Get paginated, scored contact recommendations with signals and Target Profile attribution. |
+| `recommendations_companies` | Get paginated, scored company recommendations with signals and Target Profile attribution. |
 | `recommendations_contacts_filters` | Get valid signal types and Target Profiles for filtering contact recommendations. |
 | `recommendations_companies_filters` | Get valid signal types and Target Profiles for filtering company recommendations. |
+| `predictive_score_companies` | Score companies by how well they fit your Target Profile. |
 
 <Note>
   Results are drawn from the authenticated user's own Target Profiles (plus any shared account-level profiles) - user and account IDs are inferred from the session, never passed as inputs. If you haven't set up a Target Profile in ICP Hub yet, you'll be nudged to do so with each recommendations request. Recommendations refresh daily and recalculate within minutes of an ICP change.
 </Note>
 </Accordion>
 
-<Accordion title="Account (1)">
+<Accordion title="Tables (13)">
+| Tool | What it does |
+|---|---|
+| `table_create` | Create a workspace table. |
+| `table_list` | List the tables in your workspace. |
+| `table_update` | Rename a table or change its settings. |
+| `table_delete` | Delete a table. |
+| `table_status` | Check whether a table's columns have finished running. |
+| `table_add_entities` | Add contacts or companies as rows. |
+| `table_get_entities` | Read the rows in a table. |
+| `table_remove_entities` | Remove rows from a table. |
+| `table_columns_catalog` | List the columns available to add (no credits charged). |
+| `table_add_columns` | Add enrichment or AI columns to a table. |
+| `table_list_columns` | List the columns currently on a table. |
+| `table_remove_column` | Remove a column from a table. |
+| `table_run_column` | Run a column across every row in the table. |
+
+<Note>
+  These mirror the Tables REST endpoints - see the [Contact Tables](/api-reference/contacts-tables/create-contacts-table) and [Company Tables](/api-reference/companies-tables/create-companies-table) reference for full schemas.
+</Note>
+</Accordion>
+
+<Accordion title="CRM (4)">
+| Tool | What it does |
+|---|---|
+| `get_supported_integrations` | List the CRMs Lusha can connect to. |
+| `connect_crm` | Connect a CRM to your Lusha account. |
+| `export_contacts_to_crm` | Push enriched contacts into your CRM. |
+| `export_companies_to_crm` | Push enriched companies into your CRM. |
+</Accordion>
+
+<Accordion title="Conversations (2)">
+| Tool | What it does |
+|---|---|
+| `conversations_search` | Search call recordings. |
+| `conversations_transcript_get` | Pull the transcript for a specific call. |
+</Accordion>
+
+<Accordion title="Account (2)">
 | Tool | What it does |
 |---|---|
 | `account_usage` | Check credit balance, rate-limit status, and plan info. |
+| `purchase_options` | See available plans and credit packs. |
 </Accordion>
 
 </AccordionGroup>
