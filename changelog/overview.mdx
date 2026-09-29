@@ -17,7 +17,8 @@ All notable changes to the Lusha API and MCP are documented here. We follow sema
 **`directParent` and `ultimateParent` on Company Enrichment** - Added two premium reveal fields exposing a company's ownership tree: its immediate parent, and the company at the top of the tree.
 
 - `POST /v3/companies/enrich` - request via `reveal: ["directParent", "ultimateParent"]`
-- `POST /v3/companies/search-and-enrich` - returned automatically; this endpoint takes no `reveal` field
+- `POST /v3/companies/search-and-enrich` - same `reveal` field, same tokens. Both fields must be requested explicitly; neither is returned by default
+- `POST /v3/companies/search` - both appear in the `canReveal` array, alongside fields like `monthlyWebsiteTraffic`, so you can check availability and cost before paying to reveal
 - Each returns an object with `lushaCompanyId`, `name`, `domain`, and (where held) `hqCountry`
 - Pass the returned `lushaCompanyId` back to Enrich Companies to retrieve the parent's full firmographic profile
 - Charged 1 credit per field when non-null; no charge when the company has no known parent
@@ -37,7 +38,11 @@ All notable changes to the Lusha API and MCP are documented here. We follow sema
 - `ContactIdentifiersBatch` was marked `nullable: true` while `seeds` was `required`, which is contradictory. `nullable` has been removed and `minProperties: 1` added, matching `CompanyIdentifiersBatch`
 - Behavior is unchanged - only the documentation was wrong
 
-**Search & Enrich: `reveal` field description corrected** - The Search & Enrich tag description stated that both contact and company endpoints control output via a `reveal` field. That is true only for `POST /v3/contacts/search-and-enrich`. `POST /v3/companies/search-and-enrich` has no `reveal` field and reveals all available premium data points automatically. Behavior is unchanged - only the documentation was wrong.
+**Search & Enrich Companies: `reveal` field documented** - `POST /v3/companies/search-and-enrich` accepts the same `reveal` field and the same tokens as Enrich Companies, but the request schema did not document it at all. `reveal` has been added to `V3CompaniesSearchAndEnrichRequest`. Behavior is unchanged - only the documentation was wrong.
+
+**Corrected**
+
+**2026-09-25** - This entry originally stated that `POST /v3/companies/search-and-enrich` takes no `reveal` field and returns every available premium data point automatically. That is not how the endpoint works: it accepts `reveal` exactly as Enrich Companies does, and `directParent` / `ultimateParent` are returned **only** when named in `reveal`. Any integration expecting ownership data without passing `reveal` will get none. The spec, the Search & Enrich tag description, and the request example have all been corrected.
 
 **Notes**
 

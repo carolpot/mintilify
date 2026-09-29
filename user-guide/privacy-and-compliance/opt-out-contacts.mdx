@@ -24,3 +24,13 @@ The opt-out process is designed to support your privacy compliance obligations. 
 Rather than waiting for the monthly report, you can receive an instant notification every time a contact opts out by setting up an **Opt Out webhook**. This lets you update your CRM or suppression lists automatically the moment an opt-out occurs.
 
 See [How to Set Up Webhooks in Lusha](/user-guide/webhooks/how-to-set-up-webhooks-in-lusha) for setup instructions.
+
+<Note>
+  There is no API endpoint to query opted-out contacts by date range. The opt-out webhook and the monthly CSV report are the only two ways to retrieve opt-out data - to reconstruct a full historical suppression list, keep every monthly report or log every webhook delivery on your side.
+</Note>
+
+## Sync opt-out contacts directly to your CRM
+
+If you use Salesforce, you can skip reports and webhooks entirely for opt-out status by enabling **Sync opt-out contacts** in your CRM integration settings. This automatically pushes a contact's opt-out status to a mapped Salesforce field - standard or custom - every time it changes in Lusha.
+
+See [Salesforce integration: Sync opt-out contacts to Salesforce](/user-guide/salesforce/salesforce-integration) for setup steps.

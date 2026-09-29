@@ -24,7 +24,7 @@ Selection is no longer capped by page size. The maximum depends on where you are
 | Context | Selection Limit |
 | --- | --- |
 | Search / filter mode | Up to 10,000 rows for **Show** - no plan-based cap. CSV export is not available directly from search; save to a table first. |
-| Saved table | Up to 10,000 rows for both **Show** and CSV export. Selections above 150 rows are processed offline, the same as in search/filter mode. CRM export supports up to 10,000 rows, depending on the connected CRM - see [Export option 2: CRM sync](#export-option-2-crm-sync). |
+| Saved table | Up to 10,000 rows for both **Show** and CSV export. Selections above 150 rows are processed offline, the same as in search/filter mode. |
 
 Once contacts are selected, the export buttons in the toolbar become active.
 
@@ -50,51 +50,41 @@ Click the **CSV** button in the toolbar. A dialog appears with three scope optio
 
 **Cost:** 1 credit per 25 rows exported
 
-**Legacy export format:** If you need the simplified export format from classic Lusha tables (fewer columns), click the **three dots (⋮)** next to the table name and select the legacy export option.
-
 ---
 
 ## Export option 2: CRM sync
 
-To push contacts directly to your connected CRM:
+To push contacts from a table directly to your connected CRM:
 
 <Steps>
   <Step title="Select the contacts">
-    Select the contacts you want to sync, then click **Show details**.
+    Select the rows you want to export, or leave nothing checked to target all contacts in the current view.
   </Step>
   <Step title="Click the CRM button">
-    Click **CRM** in the toolbar. The **Export to CRM** panel opens.
+    Click the **CRM** button in the toolbar. The export drawer opens. You can select specific contacts to export, or click **CRM** without selecting any to include the whole list in scope.
   </Step>
-  <Step title="Choose where to export">
-    Under **Export to**, select the connected CRM you want to export to (for example, **Salesforce**). The dropdown shows the maximum number of contacts you can export to each CRM in one go (for example, "Salesforce (up to 10,000)") - this varies by CRM.
+  <Step title="Review the contacts scope">
+    Review the **Contacts scope**. Check **Skip already exported** to exclude contacts already sent to your CRM in a previous job.
   </Step>
-  <Step title="Confirm the contacts to export">
-    Under **Contacts to export**, confirm the scope - by default this is set to your current selection (for example, "First 10,000 selected contacts").
-  </Step>
-  <Step title="Choose the record type">
-    Under **Export as**, choose the record type to create in your CRM (for example, **Lead**).
-  </Step>
-  <Step title="Set your export preferences">
-    Configure how Lusha should handle contacts you've exported before and contacts with hidden data:
+  <Step title="Choose a platform">
+    Select a platform from the **Platform** dropdown. Each CRM shows its per-export limit.
 
-    - **Skip exported contacts from Lusha** - toggle this on to leave out contacts you've already exported from Lusha to this CRM, so you're not charged for them again.
-    - **For contacts with unshown details** - choose whether to reveal emails and phones for contacts whose details aren't shown yet. Revealing costs credits per contact; the estimated cost is shown next to this option.
-    - **For contacts already in your CRM** - choose how to handle contacts that already exist as records in your CRM, for example updating only the details currently shown in your table.
+    - If your scope is within the limit: the CTA shows the full count.
+    - If your scope exceeds the limit: an amber warning appears - *Lusha will export the first N contacts and leave the rest Not exported, ready for your next run.*
   </Step>
   <Step title="Export">
-    Click **Export**. Lusha syncs the selected records to the chosen CRM account, using the latest available contact details.
+    Review the batching notice, then click **Export \{N\} contacts**.
+  </Step>
+  <Step title="Track progress">
+    The drawer closes. A floating progress window appears in the bottom-right and runs in 20 batches. You can close or minimize the window - the job continues running in the background.
   </Step>
 </Steps>
 
 Lusha maps contact fields to your CRM objects automatically based on your integration settings. For Salesforce, contacts are pushed as Contact or Lead records depending on your configuration. Read more in the [Salesforce Integration article](https://info.lusha.com/en/articles/163953-salesforce-integration).
 
-<Note>
-💡 Turning on **Skip exported contacts from Lusha** helps you avoid paying twice for contacts you've already synced to the same CRM.
-</Note>
-
 ### Per-export limits by CRM
 
-| CRM | Max Records Per Export |
+| CRM | Max records per export |
 | --- | --- |
 | Salesforce | 10,000 |
 | HubSpot, Pipedrive, Bullhorn, Zoho, Dynamics | 1,000 |
@@ -103,7 +93,11 @@ Lusha maps contact fields to your CRM objects automatically based on your integr
 These limits are set by each CRM platform. You can select more than the limit - Lusha exports up to the cap and leaves the rest **Not exported** for your next run. Only one export can run at a time per user.
 </Note>
 
-**Cost:** 1 credit per updated export row (unchanged CRM rows are free). Revealing unshown emails or phones as part of the export costs additional credits per contact, shown in the **Export preferences** panel before you export.
+**Cost:** 1 credit per updated export row (unchanged CRM rows are free). Reveal costs apply separately.
+
+<Note>
+For Salesforce, the CRM export drawer also includes an **Opt-Out** field mapping option, controlled by the **Sync opt-out contacts** setting in your Salesforce integration settings. See [Salesforce integration: Sync opt-out contacts to Salesforce](/user-guide/salesforce/salesforce-integration#sync-opt-out-contacts-to-salesforce).
+</Note>
 
 ### Export state on your table
 
@@ -182,3 +176,11 @@ Columns you have removed from your table view will not appear in the CSV export.
 **Is there a row limit for CSV exports?**
 
 There is no hard limit on rows per export, but very large exports (thousands of rows) may take a moment to generate.
+
+**Is there a limit on how many contacts I can push to CRM?**
+
+Each CRM has a maximum per export - 10,000 for Salesforce, and 1,000 for HubSpot, Pipedrive, Bullhorn, Zoho, and Dynamics. These are platform limits, not Lusha limits. If your selection is larger, Lusha exports up to the cap and leaves the rest **Not exported** for your next run.
+
+**What if some contacts fail during export?**
+
+Failed contacts stay **Not exported** and are automatically included in your next export run. Go to **Settings → Integrations → the relevant integration → Manage → Integration tab** to see which contacts failed and why.
