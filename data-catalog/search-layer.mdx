@@ -19,161 +19,218 @@ Both types are available across the same four endpoints: `/search`, `/enrich`, `
   The **Platform** column lists where each field is currently live: **API** and **MCP** are always available; **WS Enrich** / **WS Search** (Workspace) and **API Search** vary by field and are still rolling out for some attributes - a blank platform column means it is not yet available there.
 </Info>
 
-<Accordion title="Contact identity (12)">
+export const searchLayerFields = [
+  { field: 'EU Contact', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'location.isEuContact', dataType: 'Boolean', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'First Name', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'firstName', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Full Name', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'fullName', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Last Name', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'lastName', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'LinkedIn URL', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'socialLinks.linkedin', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Location City', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'location.city', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Location Continent', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'location.continent', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Location Coordinates', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'location.coordinates', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Location Country', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'location.country', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Location State', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'location.state', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Previous Company', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'previousEmployment[].company', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'] },
+  { field: 'Twitter URL (X)', entity: 'Contact', type: 'Static', category: 'Contact identity', path: 'socialLinks.xUrl', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Do Not Call Flag', entity: 'Contact', type: 'Static', category: 'Emails & phones', path: 'phones[].doNotCall', dataType: 'Boolean', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Emails + Emails Type', entity: 'Contact', type: 'Static', category: 'Emails & phones', path: 'emails[].email', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Emails Score', entity: 'Contact', type: 'Static', category: 'Emails & phones', path: 'emails[].confidence', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Emails Update Date', entity: 'Contact', type: 'Static', category: 'Emails & phones', path: 'emails[].updateDate', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Phones + Phone Type', entity: 'Contact', type: 'Static', category: 'Emails & phones', path: 'phones[].number', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Phones Update Date', entity: 'Contact', type: 'Static', category: 'Emails & phones', path: 'phones[].updateDate', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Current Company', entity: 'Contact', type: 'Static', category: 'Employment & seniority', path: 'company', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Department', entity: 'Contact', type: 'Static', category: 'Employment & seniority', path: 'jobTitle.departments', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Job Start Date', entity: 'Contact', type: 'Static', category: 'Employment & seniority', path: 'jobStartDate', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Job Title', entity: 'Contact', type: 'Static', category: 'Employment & seniority', path: 'jobTitle.title', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Seniority', entity: 'Contact', type: 'Static', category: 'Employment & seniority', path: 'jobTitle.seniority', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'LinkedIn Awards', entity: 'Contact', type: 'Static', category: 'LinkedIn enrichment', path: 'linkedinAwards', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'LinkedIn Certifications', entity: 'Contact', type: 'Static', category: 'LinkedIn enrichment', path: 'linkedinCertifications', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'LinkedIn Connection Count', entity: 'Contact', type: 'Static', category: 'LinkedIn enrichment', path: 'linkedinConnectionsCount', dataType: 'Number', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'LinkedIn Courses', entity: 'Contact', type: 'Static', category: 'LinkedIn enrichment', path: 'linkedinCourses', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'LinkedIn Followers Count', entity: 'Contact', type: 'Static', category: 'LinkedIn enrichment', path: 'linkedinFollowersCount', dataType: 'Number', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Previous Emails', entity: 'Contact', type: 'Static', category: 'LinkedIn enrichment', path: 'previousEmails', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Skills', entity: 'Contact', type: 'Static', category: 'LinkedIn enrichment', path: 'linkedinSkills', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Additional Description', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'additionalDescriptions', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Alternative Name', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'alternativeName', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Business Model', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'businessModel', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'] },
+  { field: 'Company Email', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'email', dataType: 'String', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Company Offering', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'offering', dataType: 'String', refresh: '—', platform: ['API', 'MCP'] },
+  { field: 'Company Phone', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'phone', dataType: 'String', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Company Size (Range)', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'companySize', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Company Type', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'companyType', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'] },
+  { field: 'Competitors', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'competitors', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Crunchbase URL', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'crunchbase', dataType: 'String', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Description', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'description', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Employees by Department', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'employeeCount.byDepartment', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Employees by Location', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'employeeCount.byLocation', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Employees by Seniority', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'employeeCount.bySeniority', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Employees in LinkedIn', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'employeeCount.exact', dataType: 'Number', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Estimated Annual IT Spend', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'estimatedAnnualItSpend', dataType: 'Object', refresh: '—', platform: ['API', 'MCP'] },
+  { field: 'Funding - Full Detail', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'funding', dataType: 'Object', refresh: '—', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'IPO Date / IPO Status', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'funding.isIpo', dataType: 'Object', refresh: '—', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Industry - NAICS Code', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'industryPrimaryGroupDetails.naics', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Search', 'API Search'] },
+  { field: 'Industry - NAICS Description', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'industryPrimaryGroupDetails.naicsDescription', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Industry - SIC Code', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'industryPrimaryGroupDetails.sic', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Search', 'API Search'] },
+  { field: 'Industry - SIC Description', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'industryPrimaryGroupDetails.sicDescription', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Industry Cluster - Main', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'mainIndustry', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Industry Cluster - Sub', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'subIndustry', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Industry Primary - Main', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'mainIndustry', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Industry Primary - Sub', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'subIndustry', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Keywords', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'keywords', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'] },
+  { field: 'LinkedIn Followers Count', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'linkedinFollowers', dataType: 'Number', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Monthly Website Traffic', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'monthlyWebsiteTraffic', dataType: 'Number', refresh: '—', platform: ['API', 'MCP'] },
+  { field: 'Name', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'name', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Open Jobs by Department', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'openJobs.byDepartment', dataType: 'Object', refresh: '—', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Open Jobs by Location', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'openJobs.byLocation', dataType: 'Object', refresh: '—', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Open Jobs by Seniority', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'openJobs.bySeniority', dataType: 'Object', refresh: '—', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Revenue Range', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'revenueRange', dataType: 'Array', refresh: '—', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Specialties', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'specialities', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Technographics', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'specialities', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Total Open Jobs', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'openJobs.total', dataType: 'Number', refresh: '—', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Year Founded', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'founded', dataType: 'Number', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'] },
+  { field: 'Additional Locations', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'additionalLocations.zipCode', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Company Locations', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'additionalLocations', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Email Domain', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'email', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Facebook URL (Company Social Link)', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'socialLinks.facebook', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'] },
+  { field: 'HQ City', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'city', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'HQ Continent', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'continent', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'HQ Country', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'country', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'HQ State', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'state', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'HQ Zip Code', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'zipCode', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'LinkedIn URL (Company)', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'linkedin', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'] },
+  { field: 'Logo URL', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'logoUrl', dataType: 'String', refresh: '—', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Twitter URL (Company Social Link)', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'socialLinks.xUrl', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'] },
+  { field: 'Website - Alternative Domains', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'homepageUrl', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Website - Domain', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'homepageUrl', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Website - FQDN', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'homepageUrl', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Website - Homepage URL', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'homepageUrl', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search', 'API Search'] },
+  { field: 'Commercial Activity News', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'commercialActivityNews', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'Corporate Strategy News', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'corporateStrategyNews', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'Financial Events News', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'financialEventsNews', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'Headcount 12M Decrease', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'headcountDecrease12m', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Headcount 12M Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'headcountIncrease12m', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Headcount 1M Decrease', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'headcountDecrease1m', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Headcount 1M Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'headcountIncrease1m', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Headcount 3M Decrease', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'headcountDecrease3m', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Headcount 3M Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'headcountIncrease3m', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Headcount 6M Decrease', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'headcountDecrease6m', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Headcount 6M Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'headcountIncrease6m', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'IT Spend Decrease', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'itSpendDecrease', dataType: 'Object', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'IT Spend Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'itSpendIncrease', dataType: 'Object', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'LinkedIn Activity Intent', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'linkedinActivityIntent', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'Market Intelligence News', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'marketIntelligenceNews', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'Moved to a New Company', entity: 'Contact', type: 'Signal', category: 'Real-time signals', path: 'companyChange', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'New Job Post', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'newJobPost', dataType: 'Object', refresh: '—', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'People News', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'peopleNews', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'Product Activity News', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'productActivityNews', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'Promotion', entity: 'Contact', type: 'Signal', category: 'Real-time signals', path: 'promotion', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'] },
+  { field: 'Risk News', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'riskNews', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'API Search'] },
+  { field: 'Surge in Hiring Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'surgeInHiring', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Surge in Hiring by Department', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'surgeInHiringByDepartment', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Surge in Hiring by Location', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'surgeInHiringByLocation', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'] },
+  { field: 'Website Traffic Decrease', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'websiteTrafficDecrease', dataType: 'Object', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+  { field: 'Website Traffic Increase', entity: 'Company', type: 'Signal', category: 'Real-time signals', path: 'websiteTrafficIncrease', dataType: 'Object', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich', 'API Search'] },
+]
 
-| Field | Entity | Type | Path | Data type | Refresh | Platform |
-| --- | --- | --- | --- | --- | --- | --- |
-| **EU Contact** | Contact | Static | `location.isEuContact` | Boolean | Weekly | API, MCP |
-| **First Name** | Contact | Static | `firstName` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Full Name** | Contact | Static | `fullName` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Last Name** | Contact | Static | `lastName` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **LinkedIn URL** | Contact | Static | `socialLinks.linkedin` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Location City** | Contact | Static | `location.city` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Location Continent** | Contact | Static | `location.continent` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Location Coordinates** | Contact | Static | `location.coordinates` | Array | Weekly | API, MCP, WS Enrich |
-| **Location Country** | Contact | Static | `location.country` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Location State** | Contact | Static | `location.state` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Previous Company** | Contact | Static | `previousEmployment[].company` | Object | Weekly | API, MCP, WS Enrich, WS Search |
-| **Twitter URL (X)** | Contact | Static | `socialLinks.xUrl` | String | Weekly | API, MCP |
+export const SearchLayerExplorer = () => {
+  const [query, setQuery] = useState('')
+  const [category, setCategory] = useState('All')
+  const [entity, setEntity] = useState('All')
+  const [type, setType] = useState('All')
+  const [platform, setPlatform] = useState('All')
 
-</Accordion>
+  const uniq = (values) => Array.from(new Set(values))
+  const categories = ['All', ...uniq(searchLayerFields.map((f) => f.category))]
+  const entities = ['All', ...uniq(searchLayerFields.map((f) => f.entity))]
+  const types = ['All', ...uniq(searchLayerFields.map((f) => f.type))]
+  const platforms = ['All', ...uniq(searchLayerFields.flatMap((f) => f.platform))]
 
-<Accordion title="Emails & phones (6)">
+  const filtered = searchLayerFields.filter((f) => {
+    if (category !== 'All' && f.category !== category) return false
+    if (entity !== 'All' && f.entity !== entity) return false
+    if (type !== 'All' && f.type !== type) return false
+    if (platform !== 'All' && !f.platform.includes(platform)) return false
+    if (query) {
+      const q = query.toLowerCase()
+      if (!f.field.toLowerCase().includes(q) && !f.path.toLowerCase().includes(q)) return false
+    }
+    return true
+  })
 
-| Field | Entity | Type | Path | Data type | Refresh | Platform |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Do Not Call Flag** | Contact | Static | `phones[].doNotCall` | Boolean | Weekly | API, MCP, WS Enrich |
-| **Emails + Emails Type** | Contact | Static | `emails[].email` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Emails Score** | Contact | Static | `emails[].confidence` | String | Weekly | API, MCP |
-| **Emails Update Date** | Contact | Static | `emails[].updateDate` | String | Weekly | API, MCP |
-| **Phones + Phone Type** | Contact | Static | `phones[].number` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Phones Update Date** | Contact | Static | `phones[].updateDate` | String | Weekly | API, MCP |
+  const selectStyle = {
+    padding: '0.4rem 0.6rem',
+    borderRadius: '6px',
+    border: '1px solid var(--gray-a6, #d1d5db)',
+    fontSize: '0.85rem',
+    background: 'var(--background, transparent)',
+  }
 
-</Accordion>
+  return (
+    <div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+        <input
+          type="text"
+          placeholder="Search field name or JSON path..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          style={{ ...selectStyle, flex: '1 1 220px' }}
+        />
+        <select value={category} onChange={(e) => setCategory(e.target.value)} style={selectStyle}>
+          {categories.map((c) => (
+            <option key={c} value={c}>{c === 'All' ? 'All categories' : c}</option>
+          ))}
+        </select>
+        <select value={entity} onChange={(e) => setEntity(e.target.value)} style={selectStyle}>
+          {entities.map((c) => (
+            <option key={c} value={c}>{c === 'All' ? 'All entities' : c}</option>
+          ))}
+        </select>
+        <select value={type} onChange={(e) => setType(e.target.value)} style={selectStyle}>
+          {types.map((c) => (
+            <option key={c} value={c}>{c === 'All' ? 'All types' : c}</option>
+          ))}
+        </select>
+        <select value={platform} onChange={(e) => setPlatform(e.target.value)} style={selectStyle}>
+          {platforms.map((c) => (
+            <option key={c} value={c}>{c === 'All' ? 'All platforms' : c}</option>
+          ))}
+        </select>
+      </div>
+      <p style={{ fontSize: '0.85rem', opacity: 0.7, margin: '0 0 0.5rem' }}>
+        Showing {filtered.length} of {searchLayerFields.length} fields
+      </p>
+      <div style={{ overflowX: 'auto' }}>
+        <table>
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Entity</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Path</th>
+              <th>Data type</th>
+              <th>Refresh</th>
+              <th>Platform</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((f) => (
+              <tr key={`${f.category}-${f.field}`}>
+                <td><strong>{f.field}</strong></td>
+                <td>{f.entity}</td>
+                <td>{f.type}</td>
+                <td>{f.category}</td>
+                <td><code>{f.path}</code></td>
+                <td>{f.dataType}</td>
+                <td>{f.refresh}</td>
+                <td>{f.platform.join(', ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
 
-<Accordion title="Employment & seniority (5)">
-
-| Field | Entity | Type | Path | Data type | Refresh | Platform |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Current Company** | Contact | Static | `company` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Department** | Contact | Static | `jobTitle.departments` | Array | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Job Start Date** | Contact | Static | `jobStartDate` | String | Weekly | API, MCP, WS Enrich |
-| **Job Title** | Contact | Static | `jobTitle.title` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Seniority** | Contact | Static | `jobTitle.seniority` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-
-</Accordion>
-
-<Accordion title="LinkedIn enrichment (7)">
-
-| Field | Entity | Type | Path | Data type | Refresh | Platform |
-| --- | --- | --- | --- | --- | --- | --- |
-| **LinkedIn Awards** | Contact | Static | `linkedinAwards` | Array | Weekly | API, MCP, WS Enrich |
-| **LinkedIn Certifications** | Contact | Static | `linkedinCertifications` | Array | Weekly | API, MCP, WS Enrich |
-| **LinkedIn Connection Count** | Contact | Static | `linkedinConnectionsCount` | Number | Weekly | API, MCP, WS Enrich |
-| **LinkedIn Courses** | Contact | Static | `linkedinCourses` | Array | Weekly | API, MCP, WS Enrich |
-| **LinkedIn Followers Count** | Contact | Static | `linkedinFollowersCount` | Number | Weekly | API, MCP, WS Enrich |
-| **Previous Emails** | Contact | Static | `previousEmails` | Array | Weekly | API, MCP |
-| **Skills** | Contact | Static | `linkedinSkills` | Array | Weekly | API, MCP, WS Enrich |
-
-</Accordion>
-
-<Accordion title="Company firmographics (38)">
-
-| Field | Entity | Type | Path | Data type | Refresh | Platform |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Additional Description** | Company | Static | `additionalDescriptions` | Array | Weekly | API, MCP, WS Enrich |
-| **Alternative Name** | Company | Static | `alternativeName` | String | Weekly | API, MCP |
-| **Business Model** | Company | Static | `businessModel` | String | Weekly | API, MCP, WS Enrich, WS Search |
-| **Company Email** | Company | Static | `email` | String | Monthly | API, MCP, WS Enrich |
-| **Company Offering** | Company | Static | `offering` | String | — | API, MCP |
-| **Company Phone** | Company | Static | `phone` | String | Monthly | API, MCP, WS Enrich |
-| **Company Size (Range)** | Company | Static | `companySize` | Object | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Company Type** | Company | Static | `companyType` | String | Weekly | API, MCP, WS Enrich, WS Search |
-| **Competitors** | Company | Static | `competitors` | Array | Weekly | API, MCP |
-| **Crunchbase URL** | Company | Static | `crunchbase` | String | Monthly | API, MCP, WS Enrich |
-| **Description** | Company | Static | `description` | String | Weekly | API, MCP, WS Enrich |
-| **Employees by Department** | Company | Static | `employeeCount.byDepartment` | Object | Weekly | API, MCP |
-| **Employees by Location** | Company | Static | `employeeCount.byLocation` | Object | Weekly | API, MCP |
-| **Employees by Seniority** | Company | Static | `employeeCount.bySeniority` | Object | Weekly | API, MCP |
-| **Employees in LinkedIn** | Company | Static | `employeeCount.exact` | Number | Weekly | API, MCP, WS Enrich |
-| **Estimated Annual IT Spend** | Company | Static | `estimatedAnnualItSpend` | Object | — | API, MCP |
-| **Funding - Full Detail** | Company | Static | `funding` | Object | — | API, MCP, WS Enrich, WS Search, API Search |
-| **IPO Date / IPO Status** | Company | Static | `funding.isIpo` | Object | — | API, MCP, WS Enrich, WS Search, API Search |
-| **Industry - NAICS Code** | Company | Static | `industryPrimaryGroupDetails.naics` | Object | Weekly | API, MCP, WS Search, API Search |
-| **Industry - NAICS Description** | Company | Static | `industryPrimaryGroupDetails.naicsDescription` | Object | Weekly | API, MCP |
-| **Industry - SIC Code** | Company | Static | `industryPrimaryGroupDetails.sic` | Object | Weekly | API, MCP, WS Search, API Search |
-| **Industry - SIC Description** | Company | Static | `industryPrimaryGroupDetails.sicDescription` | Object | Weekly | API, MCP |
-| **Industry Cluster - Main** | Company | Static | `mainIndustry` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Industry Cluster - Sub** | Company | Static | `subIndustry` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Industry Primary - Main** | Company | Static | `mainIndustry` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Industry Primary - Sub** | Company | Static | `subIndustry` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Keywords** | Company | Static | `keywords` | Array | Weekly | API, MCP, WS Enrich, WS Search |
-| **LinkedIn Followers Count** | Company | Static | `linkedinFollowers` | Number | Weekly | API, MCP, WS Enrich |
-| **Monthly Website Traffic** | Company | Static | `monthlyWebsiteTraffic` | Number | — | API, MCP |
-| **Name** | Company | Static | `name` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Open Jobs by Department** | Company | Static | `openJobs.byDepartment` | Object | — | API, MCP, WS Enrich |
-| **Open Jobs by Location** | Company | Static | `openJobs.byLocation` | Object | — | API, MCP, WS Enrich |
-| **Open Jobs by Seniority** | Company | Static | `openJobs.bySeniority` | Object | — | API, MCP, WS Enrich |
-| **Revenue Range** | Company | Static | `revenueRange` | Array | — | API, MCP, WS Enrich, WS Search, API Search |
-| **Specialties** | Company | Static | `specialities` | Array | Weekly | API, MCP, WS Enrich |
-| **Technographics** | Company | Static | `specialities` | Array | Weekly | API, MCP, WS Enrich |
-| **Total Open Jobs** | Company | Static | `openJobs.total` | Number | — | API, MCP, WS Enrich |
-| **Year Founded** | Company | Static | `founded` | Number | Weekly | API, MCP, WS Enrich, WS Search |
-
-</Accordion>
-
-<Accordion title="Company web & locations (16)">
-
-| Field | Entity | Type | Path | Data type | Refresh | Platform |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Additional Locations** | Company | Static | `additionalLocations.zipCode` | Array | Weekly | API, MCP |
-| **Company Locations** | Company | Static | `additionalLocations` | Array | Weekly | API, MCP |
-| **Email Domain** | Company | Static | `email` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Facebook URL (Company Social Link)** | Company | Static | `socialLinks.facebook` | String | Weekly | API, MCP, WS Enrich, WS Search |
-| **HQ City** | Company | Static | `city` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **HQ Continent** | Company | Static | `continent` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **HQ Country** | Company | Static | `country` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **HQ State** | Company | Static | `state` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **HQ Zip Code** | Company | Static | `zipCode` | String | Weekly | API, MCP |
-| **LinkedIn URL (Company)** | Company | Static | `linkedin` | String | Weekly | API, MCP, WS Enrich, WS Search |
-| **Logo URL** | Company | Static | `logoUrl` | String | — | API, MCP, WS Enrich |
-| **Twitter URL (Company Social Link)** | Company | Static | `socialLinks.xUrl` | String | Weekly | API, MCP, WS Enrich, WS Search |
-| **Website - Alternative Domains** | Company | Static | `homepageUrl` | String | Weekly | API, MCP, WS Enrich |
-| **Website - Domain** | Company | Static | `homepageUrl` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Website - FQDN** | Company | Static | `homepageUrl` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-| **Website - Homepage URL** | Company | Static | `homepageUrl` | String | Weekly | API, MCP, WS Enrich, WS Search, API Search |
-
-</Accordion>
-
-<Accordion title="Real-time signals (26)">
-
-| Field | Entity | Type | Path | Data type | Refresh | Platform |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Commercial Activity News** | Company | Signal | `commercialActivityNews` | Object | Weekly | API, MCP, API Search |
-| **Corporate Strategy News** | Company | Signal | `corporateStrategyNews` | Object | Weekly | API, MCP, API Search |
-| **Financial Events News** | Company | Signal | `financialEventsNews` | Object | Weekly | API, MCP, API Search |
-| **Headcount 12M Decrease** | Company | Signal | `headcountDecrease12m` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **Headcount 12M Increase** | Company | Signal | `headcountIncrease12m` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **Headcount 1M Decrease** | Company | Signal | `headcountDecrease1m` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **Headcount 1M Increase** | Company | Signal | `headcountIncrease1m` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **Headcount 3M Decrease** | Company | Signal | `headcountDecrease3m` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **Headcount 3M Increase** | Company | Signal | `headcountIncrease3m` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **Headcount 6M Decrease** | Company | Signal | `headcountDecrease6m` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **Headcount 6M Increase** | Company | Signal | `headcountIncrease6m` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **IT Spend Decrease** | Company | Signal | `itSpendDecrease` | Object | Monthly | API, MCP, WS Enrich, API Search |
-| **IT Spend Increase** | Company | Signal | `itSpendIncrease` | Object | Monthly | API, MCP, WS Enrich, API Search |
-| **LinkedIn Activity Intent** | Company | Signal | `linkedinActivityIntent` | Object | Weekly | API, MCP, API Search |
-| **Market Intelligence News** | Company | Signal | `marketIntelligenceNews` | Object | Weekly | API, MCP, API Search |
-| **Moved to a New Company** | Contact | Signal | `companyChange` | Object | Weekly | API, MCP, WS Enrich |
-| **New Job Post** | Company | Signal | `newJobPost` | Object | — | API, MCP, API Search |
-| **People News** | Company | Signal | `peopleNews` | Object | Weekly | API, MCP, API Search |
-| **Product Activity News** | Company | Signal | `productActivityNews` | Object | Weekly | API, MCP, API Search |
-| **Promotion** | Contact | Signal | `promotion` | Object | Weekly | API, MCP, WS Enrich |
-| **Risk News** | Company | Signal | `riskNews` | Object | Weekly | API, MCP, API Search |
-| **Surge in Hiring Increase** | Company | Signal | `surgeInHiring` | Object | Weekly | API, MCP, WS Enrich, API Search |
-| **Surge in Hiring by Department** | Company | Signal | `surgeInHiringByDepartment` | Object | Weekly | API, MCP |
-| **Surge in Hiring by Location** | Company | Signal | `surgeInHiringByLocation` | Object | Weekly | API, MCP |
-| **Website Traffic Decrease** | Company | Signal | `websiteTrafficDecrease` | Object | Monthly | API, MCP, WS Enrich, API Search |
-| **Website Traffic Increase** | Company | Signal | `websiteTrafficIncrease` | Object | Monthly | API, MCP, WS Enrich, API Search |
-
-</Accordion>
+<SearchLayerExplorer />
