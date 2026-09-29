@@ -6,104 +6,46 @@ description: "AI-driven recommendation engines, buying committee identification,
 Deep Intelligence pairs your data with AI to deliver recommendations, buying committee identification, and predictive scores tailored to your ICP - three recommendation engines, a Buying Committee suite, and three predictive models, all available through the v3 API.
 
 <Warning>
-  Coverage figures for **Scoring - Signal** and the three **Buying Committee** features are not yet published by the data team; treat those numbers as placeholders, not confirmed figures.
+  Coverage figures marked with * are not yet published by the data team; treat those numbers as placeholders, not confirmed figures.
 </Warning>
 
 ## Recommendation engines
 
-### Recommendations
-
-AI-driven contact and company recommendations tailored to your ICP. Refreshes as your usage patterns evolve — the more you engage, the sharper the recommendations get.
-
-**Coverage:** Global 86% &middot; NA 94% &middot; EMEA 82% &middot; APAC 68% - Records we can recommend with high confidence based on your seed list and recent engagement signals.
-
-**Platform availability:** Live: API, MCP, WS Enrich
-
-**Available via:** `POST /v3/contacts/lookalike`, `POST /v3/companies/lookalike`
-
-### ICP Hub
-
-Ideal Customer Profile matching and scoring hub. Consolidates fit signals into a single workspace and ranks accounts by likelihood-to-buy so reps work the right list first.
-
-**Coverage:** Global 82% &middot; NA 91% &middot; EMEA 78% &middot; APAC 62% - Accounts where we have enough firmographic and contact data to score against your ICP criteria.
-
-**Platform availability:** Live: WS Enrich; Planned: API, MCP, WS Search
-
-**Available via:** Not yet available via API - currently surfaced in the Lusha dashboard only.
-
-### Lookalikes
-
-AI-powered discovery of contacts and companies similar to your best existing customers. Returns paginated results that can be piped directly into Enrich for full data.
-
-**Coverage:** Global 88% &middot; NA 95% &middot; EMEA 85% &middot; APAC 72% - Records where similarity matching returns at least 100 high-confidence matches against your seed.
-
-**Platform availability:** Live: API, MCP, WS Enrich; Planned: WS Search, API Search
-
-**Available via:** `POST /v3/contacts/lookalike`, `POST /v3/companies/lookalike`
+| Feature | Description | Coverage (Global) | Platform | Endpoint |
+| --- | --- | --- | --- | --- |
+| **Recommendations** | AI-driven contact and company recommendations tailored to your ICP. Refreshes as your usage patterns evolve — the more you engage, the sharper the recommendations get. | 86% | API, MCP, WS Enrich | `POST /v3/contacts/lookalike`<br/>`POST /v3/companies/lookalike` |
+| **ICP Hub** | Ideal Customer Profile matching and scoring hub. Consolidates fit signals into a single workspace and ranks accounts by likelihood-to-buy so reps work the right list first. | 82% | WS Enrich<br/>*Planned:* API, MCP, WS Search | Dashboard only |
+| **Lookalikes** | AI-powered discovery of contacts and companies similar to your best existing customers. Returns paginated results that can be piped directly into Enrich for full data. | 88% | API, MCP, WS Enrich<br/>*Planned:* WS Search, API Search | `POST /v3/contacts/lookalike`<br/>`POST /v3/companies/lookalike` |
 
 ## Buying Committee
 
-### Buying Committee — End User
-
-AI-identified end users within a target account — the people who will actually use your product day to day.
-
-**Coverage:** Global 86% &middot; NA 94% &middot; EMEA 82% &middot; APAC 68% - Coverage data not yet published for this feature; confirm with the data team before relying on these figures.
-
-**Platform availability:** Live: API, MCP, WS Enrich
-
-**Available via:** `POST /v3/contacts/buying-committee` (beta)
-
-### Buying Committee — Decision Makers
-
-AI-identified decision makers within a target account — the people with budget authority or sign-off power.
-
-**Coverage:** Global 86% &middot; NA 94% &middot; EMEA 82% &middot; APAC 68% - Coverage data not yet published for this feature; confirm with the data team before relying on these figures.
-
-**Platform availability:** Live: API, MCP, WS Enrich
-
-**Available via:** `POST /v3/contacts/buying-committee` (beta)
-
-### Buying Committee — Potential Champion
-
-AI-identified potential champions within a target account — internal advocates likely to support your deal.
-
-**Coverage:** Global 86% &middot; NA 94% &middot; EMEA 82% &middot; APAC 68% - Coverage data not yet published for this feature; confirm with the data team before relying on these figures.
-
-**Platform availability:** Live: API, MCP, WS Enrich
-
-**Available via:** `POST /v3/contacts/buying-committee` (beta)
+| Feature | Description | Coverage (Global) | Platform | Endpoint |
+| --- | --- | --- | --- | --- |
+| **Buying Committee — End User** | AI-identified end users within a target account — the people who will actually use your product day to day. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
+| **Buying Committee — Decision Makers** | AI-identified decision makers within a target account — the people with budget authority or sign-off power. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
+| **Buying Committee — Potential Champion** | AI-identified potential champions within a target account — internal advocates likely to support your deal. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
 
 ## Predictive models
 
-### Website Visitors
+| Feature | Description | Coverage (Global) | Platform | Endpoint |
+| --- | --- | --- | --- | --- |
+| **Website Visitors** | Intent signal derived from website visit activity matched to known companies in our identity graph. Surface accounts showing interest before they fill out a form. | 74% | API, MCP, WS Enrich<br/>*Planned:* WS Search | `POST /v3/companies/website-visits` (beta) |
+| **Predictive Scoring (TOF/MOF)** | Top-of-funnel and mid-of-funnel likelihood-to-convert scores based on historical conversion patterns from the Lusha network and your own pipeline data. | 68% | WS Enrich<br/>*Planned:* API, MCP | Dashboard only |
+| **Scoring — Signal** | Composite score derived from real-time buying signals — headcount changes, hiring surges, news events, and more — ranking accounts by signal strength. | 86%* | API, MCP, WS Enrich | `POST /v3/companies/scoring/signal` (beta) |
 
-Intent signal derived from website visit activity matched to known companies in our identity graph. Surface accounts showing interest before they fill out a form.
+## Coverage by region
 
-**Coverage:** Global 74% &middot; NA 86% &middot; EMEA 70% &middot; APAC 52% - Visitor-to-company resolution rate from anonymous web traffic on enrolled domains.
-
-**Platform availability:** Live: API, MCP, WS Enrich; Planned: WS Search
-
-**Available via:** `POST /v3/companies/website-visits` (beta)
-
-### Predictive Scoring (TOF/MOF)
-
-Top-of-funnel and mid-of-funnel likelihood-to-convert scores based on historical conversion patterns from the Lusha network and your own pipeline data.
-
-**Coverage:** Global 68% &middot; NA 82% &middot; EMEA 64% &middot; APAC 45% - Records where we have enough conversion signal to assign a confident TOF or MOF score.
-
-**Platform availability:** Live: WS Enrich; Planned: API, MCP
-
-**Available via:** Not yet available via API - currently surfaced in the Lusha dashboard only.
-
-### Scoring — Signal
-
-Composite score derived from real-time buying signals — headcount changes, hiring surges, news events, and more — ranking accounts by signal strength.
-
-**Coverage:** Global 86% &middot; NA 94% &middot; EMEA 82% &middot; APAC 68% - Coverage data not yet published for this feature; confirm with the data team before relying on these figures.
-
-**Platform availability:** Live: API, MCP, WS Enrich
-
-**Available via:** `POST /v3/companies/scoring/signal` (beta)
+| Feature | Global | NA | EMEA | APAC |
+| --- | --- | --- | --- | --- |
+| **Recommendations** | 86% | 94% | 82% | 68% |
+| **ICP Hub** | 82% | 91% | 78% | 62% |
+| **Lookalikes** | 88% | 95% | 85% | 72% |
+| **Website Visitors** | 74% | 86% | 70% | 52% |
+| **Predictive Scoring (TOF/MOF)** | 68% | 82% | 64% | 45% |
+| **Scoring — Signal** | 86%* | 94%* | 82%* | 68%* |
+| **Buying Committee — End User** | 86%* | 94%* | 82%* | 68%* |
+| **Buying Committee — Decision Makers** | 86%* | 94%* | 82%* | 68%* |
+| **Buying Committee — Potential Champion** | 86%* | 94%* | 82%* | 68%* |
 
 <Info>
   All endpoints are under `https://api.lusha.com` and require an `api_key` header.
