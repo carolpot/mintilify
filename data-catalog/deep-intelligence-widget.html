@@ -310,12 +310,12 @@ html.dark .di-page .mp-plan { background: #2d1e08; color: #fbbf24; }
     });
   }
 
-  fetch('deep-intelligence-data.json')
-    .then(function (r) { return r.json(); })
-    .then(function (json) { DATA = json; render(); })
-    .catch(function (err) {
-      document.getElementById('root').innerHTML = '<div class="di-loading">Could not load Deep Intelligence data (' + esc(err.message) + ').</div>';
-    });
+  try {
+    DATA = JSON.parse(document.getElementById('di-data').textContent);
+    render();
+  } catch (err) {
+    document.getElementById('root').innerHTML = '<div class="di-loading">Could not load Deep Intelligence data (' + esc(err.message) + ').</div>';
+  }
 })();
 </script>
 </body>

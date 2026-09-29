@@ -640,15 +640,12 @@ html.dark .sl-page .mp-plan { background: #2d1e08; color: #fbbf24; }
     } catch (e) {}
   }
 
-  fetch('search-layer-data.json')
-    .then(function (r) { return r.json(); })
-    .then(function (json) {
-      DATA = json;
-      render();
-    })
-    .catch(function (err) {
-      document.getElementById('root').innerHTML = '<div class="sl-loading">Could not load Search Layer data (' + esc(err.message) + ').</div>';
-    });
+  try {
+    DATA = JSON.parse(document.getElementById('sl-data').textContent);
+    render();
+  } catch (err) {
+    document.getElementById('root').innerHTML = '<div class="sl-loading">Could not load Search Layer data (' + esc(err.message) + ').</div>';
+  }
 
   window.addEventListener('resize', resizeParent);
 })();
