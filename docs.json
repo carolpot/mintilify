@@ -1392,7 +1392,8 @@
   },
   "integrations": {
     "intercom": {
-      "appId": "yu27vhse"
+      "appId": "yu27vhse",
+      "region": "eu"
     }
   },
   "interaction": {
