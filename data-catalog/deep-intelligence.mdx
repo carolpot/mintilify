@@ -1,181 +1,52 @@
 ---
 title: "Deep Intelligence"
-description: "AI-driven recommendation engines and predictive scoring models available through the Lusha API - coverage, endpoints, and platform availability."
+description: "AI-driven recommendation engines, buying committee identification, and predictive scoring models available through the Lusha API - coverage, endpoints, and platform availability."
 ---
 
-Deep Intelligence pairs your data with AI to deliver recommendations and predictive scores tailored to your ICP. Three recommendation engines and two predictive models, all available through the V3 API.
+Deep Intelligence pairs your data with AI to deliver recommendations, buying committee identification, and predictive scores tailored to your ICP - three recommendation engines, a Buying Committee suite, and three predictive models, all available through the v3 API.
 
-## Platform availability
-
-<Tabs>
-  <Tab title="All platforms">
-    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", marginTop: "12px" }}>
-      <thead>
-        <tr>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>Feature</th>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>API</th>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>MCP</th>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>WS Enrich</th>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>WS Search</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Recommendations</td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#F3F4F6", color: "#9CA3AF", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>N/A</span></td>
-        </tr>
-        <tr>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>ICP Hub</td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td>
-        </tr>
-        <tr>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Lookalikes</td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td>
-        </tr>
-        <tr>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Website Visitors</td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td>
-        </tr>
-        <tr>
-          <td style={{ padding: "10px 14px", fontWeight: 500 }}>Predictive Scoring (TOF/MOF)</td>
-          <td style={{ padding: "10px 14px" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td>
-          <td style={{ padding: "10px 14px" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td>
-          <td style={{ padding: "10px 14px" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td>
-          <td style={{ padding: "10px 14px" }}><span style={{ background: "#FEE2E2", color: "#991B1B", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Not available</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </Tab>
-  <Tab title="API">
-    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", marginTop: "12px" }}>
-      <thead>
-        <tr>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>Feature</th>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>API status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Recommendations</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>ICP Hub</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Lookalikes</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Website Visitors</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", fontWeight: 500 }}>Predictive Scoring (TOF/MOF)</td><td style={{ padding: "10px 14px" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td></tr>
-      </tbody>
-    </table>
-  </Tab>
-  <Tab title="MCP">
-    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", marginTop: "12px" }}>
-      <thead>
-        <tr>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>Feature</th>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>MCP status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Recommendations</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>ICP Hub</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Lookalikes</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Website Visitors</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", fontWeight: 500 }}>Predictive Scoring (TOF/MOF)</td><td style={{ padding: "10px 14px" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td></tr>
-      </tbody>
-    </table>
-  </Tab>
-  <Tab title="WS Enrich">
-    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", marginTop: "12px" }}>
-      <thead>
-        <tr>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>Feature</th>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>WS Enrich status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Recommendations</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>ICP Hub</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Lookalikes</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Website Visitors</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", fontWeight: 500 }}>Predictive Scoring (TOF/MOF)</td><td style={{ padding: "10px 14px" }}><span style={{ background: "#DCFCE7", color: "#166534", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Live</span></td></tr>
-      </tbody>
-    </table>
-  </Tab>
-  <Tab title="WS Search">
-    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", marginTop: "12px" }}>
-      <thead>
-        <tr>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>Feature</th>
-          <th style={{ textAlign: "left", padding: "10px 14px", fontWeight: 600, borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}>WS Search status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Recommendations</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#F3F4F6", color: "#9CA3AF", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>N/A</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>ICP Hub</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Lookalikes</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)", fontWeight: 500 }}>Website Visitors</td><td style={{ padding: "10px 14px", borderBottom: "1px solid var(--colors-border, #e5e7eb)" }}><span style={{ background: "#FEF9C3", color: "#854D0E", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Planned</span></td></tr>
-        <tr><td style={{ padding: "10px 14px", fontWeight: 500 }}>Predictive Scoring (TOF/MOF)</td><td style={{ padding: "10px 14px" }}><span style={{ background: "#FEE2E2", color: "#991B1B", borderRadius: "99px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 600 }}>Not available</span></td></tr>
-      </tbody>
-    </table>
-  </Tab>
-</Tabs>
+<Warning>
+  Coverage figures marked with * are not yet published by the data team; treat those numbers as placeholders, not confirmed figures.
+</Warning>
 
 ## Recommendation engines
 
-<CardGroup cols={1}>
+| Feature | Description | Coverage (Global) | Platform | Endpoint |
+| --- | --- | --- | --- | --- |
+| **Recommendations** | AI-driven contact and company recommendations tailored to your ICP. Refreshes as your usage patterns evolve — the more you engage, the sharper the recommendations get. | 86% | API, MCP, WS Enrich | `POST /v3/contacts/lookalike`<br/>`POST /v3/companies/lookalike` |
+| **ICP Hub** | Ideal Customer Profile matching and scoring hub. Consolidates fit signals into a single workspace and ranks accounts by likelihood-to-buy so reps work the right list first. | 82% | WS Enrich<br/>*Planned:* API, MCP, WS Search | Dashboard only |
+| **Lookalikes** | AI-powered discovery of contacts and companies similar to your best existing customers. Returns paginated results that can be piped directly into Enrich for full data. | 88% | API, MCP, WS Enrich<br/>*Planned:* WS Search, API Search | `POST /v3/contacts/lookalike`<br/>`POST /v3/companies/lookalike` |
 
-<Card title="Recommendations" icon="lightbulb" href="/user-guide/ai-recommendations/how-ai-recommendations-work">
-  AI-driven contact and company recommendations tailored to your ICP. Refreshes as your usage patterns evolve - the more you engage, the sharper the recommendations get.
+## Buying Committee
 
-  **Global coverage:** 86% - records we can recommend with high confidence based on your seed list and recent engagement signals.
-
-  **Endpoints:** `POST /v3/contacts/lookalike` · `POST /v3/companies/lookalike`
-</Card>
-
-<Card title="ICP Hub" icon="bullseye" href="/user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations">
-  Ideal Customer Profile matching and scoring hub. Consolidates fit signals into a single workspace and ranks accounts by likelihood-to-buy so reps work the right list first.
-
-  **Global coverage:** 82% - accounts where we have enough firmographic and contact data to score against your ICP criteria.
-</Card>
-
-<Card title="Lookalikes" icon="users" href="/lookalikes/overview">
-  AI-powered discovery of contacts and companies similar to your best existing customers. Returns paginated results that can be piped directly into Enrich for full data.
-
-  **Global coverage:** 88% - records where similarity matching returns at least 100 high-confidence matches against your seed.
-
-  **Endpoints:** `POST /v3/contacts/lookalike` · `POST /v3/companies/lookalike`
-</Card>
-
-</CardGroup>
+| Feature | Description | Coverage (Global) | Platform | Endpoint |
+| --- | --- | --- | --- | --- |
+| **Buying Committee — End User** | AI-identified end users within a target account — the people who will actually use your product day to day. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
+| **Buying Committee — Decision Makers** | AI-identified decision makers within a target account — the people with budget authority or sign-off power. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
+| **Buying Committee — Potential Champion** | AI-identified potential champions within a target account — internal advocates likely to support your deal. | 86%* | API, MCP, WS Enrich | `POST /v3/contacts/buying-committee` (beta) |
 
 ## Predictive models
 
-<CardGroup cols={1}>
+| Feature | Description | Coverage (Global) | Platform | Endpoint |
+| --- | --- | --- | --- | --- |
+| **Website Visitors** | Intent signal derived from website visit activity matched to known companies in our identity graph. Surface accounts showing interest before they fill out a form. | 74% | API, MCP, WS Enrich<br/>*Planned:* WS Search | `POST /v3/companies/website-visits` (beta) |
+| **Predictive Scoring (TOF/MOF)** | Top-of-funnel and mid-of-funnel likelihood-to-convert scores based on historical conversion patterns from the Lusha network and your own pipeline data. | 68% | WS Enrich<br/>*Planned:* API, MCP | Dashboard only |
+| **Scoring — Signal** | Composite score derived from real-time buying signals — headcount changes, hiring surges, news events, and more — ranking accounts by signal strength. | 86%* | API, MCP, WS Enrich | `POST /v3/companies/scoring/signal` (beta) |
 
-<Card title="Website Visitors" icon="globe" href="/website-visits/overview">
-  Intent signal derived from website visit activity matched to known companies in our identity graph. Surface accounts showing interest before they fill out a form.
+## Coverage by region
 
-  **Global coverage:** 74% - visitor-to-company resolution rate from anonymous web traffic on enrolled domains.
-
-  **Endpoints:** `POST /v3/companies/website-visits` <span style={{ background: "#FEF3E0", color: "#92400E", borderRadius: "5px", padding: "2px 8px", fontSize: "0.72rem", fontWeight: 600, marginLeft: "6px" }}>BETA</span>
-</Card>
-
-<Card title="Predictive Scoring (TOF/MOF)" icon="chart-line">
-  Top-of-funnel and mid-of-funnel likelihood-to-convert scores based on historical conversion patterns from the Lusha network and your own pipeline data.
-
-  **Global coverage:** 68% - records where we have enough conversion signal to assign a confident TOF or MOF score.
-</Card>
-
-</CardGroup>
+| Feature | Global | NA | EMEA | APAC |
+| --- | --- | --- | --- | --- |
+| **Recommendations** | 86% | 94% | 82% | 68% |
+| **ICP Hub** | 82% | 91% | 78% | 62% |
+| **Lookalikes** | 88% | 95% | 85% | 72% |
+| **Website Visitors** | 74% | 86% | 70% | 52% |
+| **Predictive Scoring (TOF/MOF)** | 68% | 82% | 64% | 45% |
+| **Scoring — Signal** | 86%* | 94%* | 82%* | 68%* |
+| **Buying Committee — End User** | 86%* | 94%* | 82%* | 68%* |
+| **Buying Committee — Decision Makers** | 86%* | 94%* | 82%* | 68%* |
+| **Buying Committee — Potential Champion** | 86%* | 94%* | 82%* | 68%* |
 
 <Info>
-  All endpoints are under `https://api.lusha.com` and require an `api_key` header. See [authentication](/introduction).
+  All endpoints are under `https://api.lusha.com` and require an `api_key` header.
 </Info>
