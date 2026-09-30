@@ -678,6 +678,12 @@
               "mcp/tools",
               "mcp/examples"
             ]
+          },
+          {
+            "group": "Recruiting",
+            "pages": [
+              "mcp/talent-sourcing"
+            ]
           }
         ]
       },
