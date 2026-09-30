@@ -11,7 +11,7 @@ Both types are available across the same four endpoints: `/search`, `/enrich`, `
 
 <CardGroup cols={3}>
   <Card title="32 contact fields" icon="user" />
-  <Card title="78 company fields" icon="building" />
+  <Card title="80 company fields" icon="building" />
   <Card title="26 real-time signals" icon="bolt" />
 </CardGroup>
 
@@ -61,6 +61,7 @@ export const searchLayerFields = [
   { field: 'Competitors', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'competitors', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP'], description: 'List of known competitors for the company.' },
   { field: 'Crunchbase URL', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'crunchbase', dataType: 'String', refresh: 'Monthly', platform: ['API', 'MCP', 'WS Enrich'], description: 'Canonical Crunchbase profile URL for the company.' },
   { field: 'Description', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'description', dataType: 'String', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'], description: 'Primary descriptive summary of the company and what it does.' },
+  { field: 'Direct Parent', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'directParent', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'], description: 'The company\'s immediate owner, one layer up. Includes the parent\'s company name, domain, and HQ country.' },
   { field: 'Employees by Department', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'employeeCount.byDepartment', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'], description: 'Breakdown of employee count by functional department.' },
   { field: 'Employees by Location', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'employeeCount.byLocation', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'], description: 'Breakdown of employee count by geographic location.' },
   { field: 'Employees by Seniority', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'employeeCount.bySeniority', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'], description: 'Breakdown of employee count by seniority level.' },
@@ -87,6 +88,7 @@ export const searchLayerFields = [
   { field: 'Specialties', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'specialities', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'], description: 'Specialties and focus areas as listed by the company.' },
   { field: 'Technographics', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'specialities', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich'], description: 'Technologies used by the company across its stack.' },
   { field: 'Total Open Jobs', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'openJobs.total', dataType: 'Number', refresh: '—', platform: ['API', 'MCP', 'WS Enrich'], description: 'Total count of currently open job listings for the company.' },
+  { field: 'Ultimate Parent', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'ultimateParent', dataType: 'Object', refresh: 'Weekly', platform: ['API', 'MCP'], description: 'The top level of the company\'s global corporate tree. Includes the parent\'s company name, domain, and HQ country.' },
   { field: 'Year Founded', entity: 'Company', type: 'Static', category: 'Company firmographics', path: 'founded', dataType: 'Number', refresh: 'Weekly', platform: ['API', 'MCP', 'WS Enrich', 'WS Search'], description: 'Year the company was founded.' },
   { field: 'Additional Locations', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'additionalLocations.zipCode', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP'], description: 'Secondary office and operational locations including zip codes.' },
   { field: 'Company Locations', entity: 'Company', type: 'Static', category: 'Company web & locations', path: 'additionalLocations', dataType: 'Array', refresh: 'Weekly', platform: ['API', 'MCP'], description: 'All known office and operational locations for the company.' },
