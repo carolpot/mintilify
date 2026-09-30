@@ -247,6 +247,7 @@
                         "pages": [
                           "tutorials/albato",
                           "tutorials/make",
+                          "tutorials/make-prospecting-workflow",
                           "tutorials/n8n",
                           "tutorials/pipedream",
                           "tutorials/workato1",
