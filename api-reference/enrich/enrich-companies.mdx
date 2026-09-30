@@ -34,7 +34,7 @@ POST https://api.lusha.com/v3/companies/enrich
 <ParamField body="reveal" type="string[]">
   Additional data to include for each company.
 
-  Allowed values: `employeesByDepartment`, `employeesByLocation`, `employeesBySeniority`, `competitors`, `intent`
+  Allowed values: `employeesByDepartment`, `employeesByLocation`, `employeesBySeniority`, `competitors`, `intent`, `directParent`, `ultimateParent`
 </ParamField>
 
 ## Response
@@ -231,6 +231,42 @@ POST https://api.lusha.com/v3/companies/enrich
       </Expandable>
     </ResponseField>
 
+    <ResponseField name="results[].directParent" type="object">
+      The company's immediate owner, one layer up. Present when `reveal` includes `directParent`.
+
+      <Expandable title="properties">
+        <ResponseField name="name" type="string">
+          Example: `Lusha Holdings`
+        </ResponseField>
+
+        <ResponseField name="domain" type="string">
+          Example: `lushaholdings.com`
+        </ResponseField>
+
+        <ResponseField name="hqCountry" type="string">
+          Example: `US`
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].ultimateParent" type="object">
+      The top level of the company's global corporate tree. Present when `reveal` includes `ultimateParent`.
+
+      <Expandable title="properties">
+        <ResponseField name="name" type="string">
+          Example: `Lusha Group`
+        </ResponseField>
+
+        <ResponseField name="domain" type="string">
+          Example: `lushagroup.com`
+        </ResponseField>
+
+        <ResponseField name="hqCountry" type="string">
+          Example: `US`
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+
     <ResponseField name="results[].error" type="object">
       Present instead of profile data when enrichment fails for this `id`.
 
@@ -284,14 +320,14 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --data '{
     "ids": ["16303253", "12790225"],
-    "reveal": ["employeesByLocation", "employeesByDepartment", "employeesBySeniority", "competitors", "intent"]
+    "reveal": ["employeesByLocation", "employeesByDepartment", "employeesBySeniority", "competitors", "intent", "directParent", "ultimateParent"]
   }'
 ```
 
 ```json Request body
 {
   "ids": ["16303253", "12790225"],
-  "reveal": ["employeesByLocation", "employeesByDepartment", "employeesBySeniority", "competitors", "intent"]
+  "reveal": ["employeesByLocation", "employeesByDepartment", "employeesBySeniority", "competitors", "intent", "directParent", "ultimateParent"]
 }
 ```
 

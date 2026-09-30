@@ -1,0 +1,100 @@
+---
+title: "Lusha Talent Sourcing"
+description: "Source and track candidates from inside your AI assistant using the Lusha Talent Sourcing plugin."
+---
+
+**Lusha Talent Sourcing** is a recruiting-focused plugin that connects Lusha's candidate data to your AI assistant. It runs on its own MCP server, separate from the general [Lusha MCP](/mcp/overview), with tools and skills built specifically for sourcing and tracking candidates rather than sales prospecting.
+
+## What you can do with it
+
+- Ask for candidates who fit a role and are likely open to a move right now, with a reason to approach each one
+- Come back to a saved candidate list later and ask what's changed - who moved, who was promoted, or whose employer had news worth acting on
+- Ask who's likely in play after a leadership change at a company you're hiring from
+- Search by role, seniority, department, location, current employer, previous employer, and certifications
+- Save candidates to a list without revealing any contact details, then reveal details only for the candidates you choose
+
+## The skills
+
+Lusha Talent Sourcing ships with three built-in skills that guide your assistant through a recruiting workflow rather than a single tool call:
+
+<CardGroup cols={3}>
+  <Card title="Source movable talent" icon="magnifying-glass">
+    Describe a role in your own words, or paste a job description, and get back candidates who fit and are approachable now.
+  </Card>
+  <Card title="Keep a list live" icon="table">
+    Revisit a saved candidate list and get a summary of what's changed since you last checked it.
+  </Card>
+  <Card title="Leadership change sourcing" icon="bolt">
+    Find people likely to be in play after a leadership change at a company you're sourcing from.
+  </Card>
+</CardGroup>
+
+## How it's different from Lusha MCP
+
+| | Lusha MCP | Lusha Talent Sourcing |
+|---|---|---|
+| Audience | Sales and GTM teams | Recruiters and talent acquisition teams |
+| Tool names | Sales-oriented (for example, `prospecting_contact_search`) | Recruiting-oriented (for example, `talent_search`) |
+| Skills | General enrichment and prospecting | Source movable talent, keep a list live, leadership change sourcing |
+| Contact reveal | Default behavior varies by tool | Off by default - a search returns candidates first; you choose who to reveal |
+
+If your workflow is sales prospecting rather than candidate sourcing, use [Lusha MCP](/mcp/overview) instead.
+
+## Setup
+
+1. Find **Lusha Talent Sourcing** in your AI assistant's plugin or connector directory
+2. Add or connect the plugin and complete the authentication flow
+3. Confirm the Lusha Talent Sourcing tools appear in your conversation's tools menu
+
+<Note>
+  You need an active Lusha account to reveal enriched candidate data. Search and list-management tools work without revealing contact details.
+</Note>
+
+Tool calls draw from the same Lusha credit pool as your other Lusha usage - see your [API keys page](https://dashboard.lusha.com/api/manage-api-keys) to check your account.
+
+## Example prompts
+
+<CardGroup cols={2}>
+
+<Card title="Source candidates" icon="magnifying-glass">
+```
+Find senior engineers in Germany who have been in their
+current role for at least two years.
+```
+</Card>
+
+<Card title="Search by certification" icon="award">
+```
+Find senior engineers in Germany with an AWS Solutions
+Architect certification.
+```
+</Card>
+
+<Card title="Source from a signal" icon="chart-line">
+```
+Which of these companies has cut headcount in the last six
+months, and who are their senior engineers?
+```
+</Card>
+
+<Card title="Check a saved list" icon="table">
+```
+What's changed on my Berlin backend candidate list since I
+last checked it?
+```
+</Card>
+
+<Card title="Reveal contact details" icon="address-book">
+```
+Open the emails for the top five candidates on that list.
+```
+</Card>
+
+<Card title="Source after a leadership change" icon="bolt">
+```
+Who's likely in play at Acme Corp now that their VP of
+Engineering has left?
+```
+</Card>
+
+</CardGroup>
