@@ -23,6 +23,10 @@ Pass any of these to add deeper breakdowns to the response:
 - `employeesBySeniority` - headcount by seniority level
 - `competitors` - companies Lusha identifies as competitors
 - `intent` - buyer intent topics
+- `directParent` - the company's immediate owner, one layer up
+- `ultimateParent` - the top level of the company's global corporate tree
+
+`directParent` and `ultimateParent` are independent data points - request either or both. Each returns the parent's company name, domain, and HQ country.
 
 <Tip>
   Check each company's `canReveal` array from your Search Companies response before enriching to confirm the credit cost.
