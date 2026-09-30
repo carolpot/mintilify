@@ -1,0 +1,127 @@
+---
+title: "Build an Automated Prospecting Workflow with Lusha and Make"
+description: "Find contacts that match your ICP, enrich them with verified emails and phone numbers, and send them straight to Google Sheets - automatically."
+---
+
+Find the right contacts with Lusha, enrich them with verified emails and phone numbers, and send them straight to Google Sheets, automatically. Setup takes about 10 minutes.
+
+In this guide you'll build a three-step workflow:
+
+| Step | Module | What it does |
+|---|---|---|
+| 1 | Lusha - Prospect Contacts by ICP | Finds contacts that match your ICP |
+| 2 | Lusha - Enrich Contacts | Reveals their verified emails and phone numbers |
+| 3 | Google Sheets - Add a Row | Writes each contact to your spreadsheet |
+
+<Note>
+  **Before you start.** You'll need a Lusha account with API access, a Make account, and a Google Sheets spreadsheet with a header row (for example: First name, Email, Phone) so Make can detect your columns.
+</Note>
+
+---
+
+## Step 1: Open your Lusha API settings
+
+Go to the [Manage API keys](https://dashboard.lusha.com/api/manage-api-keys) page in Lusha.
+
+![Manage API Keys tab in the Lusha dashboard](/tutorials/images/make-prospecting-01-manage-api-keys.png)
+
+## Step 2: Create an API key
+
+Create a new key, give it a clear name (for example, "Make integration"), and copy it. You'll need it in Step 6.
+
+![Create API key dialog with the key named Make integration](/tutorials/images/make-prospecting-02-create-api-key.png)
+
+<Warning>
+  Copy the key now and store it somewhere safe - you won't be able to view it again after you close the dialog.
+</Warning>
+
+## Step 3: Create a new scenario in Make
+
+In [Make](https://www.make.com/), click **Scenarios** in the left sidebar, then **Create a new scenario**.
+
+![The Create scenario button in Make](/tutorials/images/make-prospecting-03-create-scenario.png)
+
+## Step 4: Add the Lusha app
+
+Click the large **+** button and search for **Lusha**.
+
+![Searching for the Lusha app in Make's module picker](/tutorials/images/make-prospecting-04-add-lusha-app.png)
+
+## Step 5: Select the module you want to use
+
+In this example, select **Prospect Contacts by ICP**.
+
+![Selecting the Prospect Contacts by ICP module](/tutorials/images/make-prospecting-05-select-module.png)
+
+<Note>
+  Each Lusha module takes different parameters, so the fields you see in the next step depend on the module you pick here.
+</Note>
+
+## Step 6: Connect your Lusha account
+
+In the **Connection** field, click **Add** and paste the API key you created in Step 2.
+
+![The Create a connection dialog with the API Key field](/tutorials/images/make-prospecting-06-connect-account.png)
+
+## Step 7: Define what you want to search
+
+Fill in the parameters you want to search by. In this example we're searching for marketing directors in the US.
+
+![Prospect Contacts by ICP configured with job title, seniority and country filters](/tutorials/images/make-prospecting-07-search-filters.png)
+
+<Tip>
+  Add each job title as a **separate item**, and use **two-letter country codes** (for example, `US`). To target specific roles, enter their job titles - if you don't get results, try rephrasing them.
+</Tip>
+
+## Step 8: Test your search
+
+Click **Run once** and check whether you received results. If you did, you're ready to enrich these contacts to get their emails and phone numbers.
+
+## Step 9: Add the Lusha Enrich Contacts module
+
+Click the **+** icon and search for **Lusha - Enrich contacts**. In the **Item 1** field under **Contact IDs**, select **Contact ID**, then choose the details you want under **Reveal**, such as emails and phone numbers.
+
+![Enrich Contacts module with Contact ID mapped and Emails, Phones selected](/tutorials/images/make-prospecting-08-enrich-contacts.png)
+
+<Warning>
+  Enriching contacts consumes Lusha credits. Prospecting searches do not - you're only charged when data is revealed.
+</Warning>
+
+## Step 10: Connect your spreadsheet and add a row
+
+Click the **+** icon, search for **Google Sheets**, and select **Add a Row**. This adds a new row every time a contact's details come in.
+
+![Selecting the Add a Row module for Google Sheets](/tutorials/images/make-prospecting-09-add-a-row.png)
+
+Connect your spreadsheet, then map each field to a column. In this example the Contact ID goes to column A, emails to column B, and phones to column C.
+
+![Mapping Lusha fields to spreadsheet columns](/tutorials/images/make-prospecting-10-map-columns.png)
+
+## Step 11: Run the flow
+
+Run the scenario and check your spreadsheet. You should now see a row for each contact with their details.
+
+![The completed three-module scenario with scheduling options](/tutorials/images/make-prospecting-11-run-and-schedule.png)
+
+<Tip>
+  Use the toggle at the bottom of the scenario editor to schedule the automation to run at regular intervals.
+</Tip>
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Lusha Connect on Make" icon="plug" href="/tutorials/make">
+    Connector overview, available actions, and other use cases.
+  </Card>
+  <Card title="Prospecting filters" icon="filter" href="/api-reference/filters/get-contact-filter-values">
+    Every filter you can search by, and its valid values.
+  </Card>
+  <Card title="Enrich Contacts" icon="address-book" href="/api-reference/enrich/enrich-contacts">
+    The endpoint behind the Enrich Contacts module.
+  </Card>
+  <Card title="Credits and billing" icon="coins" href="/faq/billing">
+    How prospecting and enrichment consume credits.
+  </Card>
+</CardGroup>
