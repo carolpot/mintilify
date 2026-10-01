@@ -1078,7 +1078,6 @@
                 "pages": [
                   "user-guide/native-crm-integrations",
                   "user-guide/integrations-basics/available-crm-integrations",
-                  "user-guide/getting-started-with-slack",
                   {
                     "group": "Integration Basics",
                     "icon": "book",

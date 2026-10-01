@@ -1,6 +1,7 @@
 ---
 title: "Getting started with Lusha for Slack"
 description: "Learn how to install the Lusha Slack app and use it to find contacts and company data without leaving your workspace."
+noindex: true
 ---
 
 The Lusha Slack app brings contact and company data directly into Slack. You can run quick lookups with slash commands or have a conversation with the Lusha Agent to find decision-makers, enrich contacts, and push data to your CRM - all without switching tabs.
@@ -20,11 +21,36 @@ The app has two capabilities in a single install:
 
 ## How to install Lusha for Slack
 
-The **Add to Slack** button is available directly on the Lusha for Slack listing in the [Slack App Directory](https://slack.com/apps). No Lusha account is required to access the button.
+No Lusha account is required to click the button below.
+
+<a
+  href="https://slack.com/apps"
+  style={{
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "10px",
+    padding: "10px 18px",
+    border: "1px solid #D5D5D5",
+    borderRadius: "8px",
+    textDecoration: "none",
+    color: "#1D1C1D",
+    fontWeight: 700,
+    fontSize: "16px",
+  }}
+>
+  <img
+    src="/images/user-guide/getting-started-with-slack/slack-icon.webp"
+    alt=""
+    width="24"
+    height="24"
+    style={{ width: "24px", height: "24px" }}
+  />
+  Add to Slack
+</a>
 
 <Steps>
   <Step title="Click Add to Slack">
-    **Click Add to Slack** on the Lusha listing in the Slack App Directory. This opens the standard Slack OAuth authorization flow.
+    **Click Add to Slack** above. This opens the standard Slack OAuth authorization flow.
   </Step>
   <Step title="Authorize the app">
     **Authorize the app** in your Slack workspace. One admin install covers the entire workspace - no per-user setup required.
@@ -93,7 +119,7 @@ The Lusha Agent is powered by a large language model (LLM). Like all AI systems,
 ## Privacy & security
 
 - **No PII stored** - Contact data passes through in memory only. Nothing is logged or persisted in the Slack app layer.
-- **Minimal OAuth scopes** - Only `chat:write`, `commands`, and `im:history`. No access to workspace message history.
+- **Minimal OAuth scopes** - Only `chat:write`, `commands`, `im:history`, and `assistant:write`. No access to workspace message history.
 - **Encrypted API tokens** - Your Lusha API token is encrypted at rest and revocable from App Home → Settings at any time.
 - **Regional compliance** - US contact data restrictions are enforced at the API level.
 
