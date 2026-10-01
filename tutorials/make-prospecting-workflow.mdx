@@ -1,11 +1,11 @@
 ---
 title: "Build an Automated Prospecting Workflow with Lusha and Make"
-description: "Find contacts that match your ICP, enrich them with verified emails and phone numbers, and send them straight to Google Sheets - automatically."
+description: "Find contacts that match your ICP, enrich them with verified emails and phone numbers, and send them straight to Google Sheets automatically."
 ---
 
 Find the right contacts with Lusha, enrich them with verified emails and phone numbers, and send them straight to Google Sheets, automatically. Setup takes about 10 minutes.
 
-In this guide you'll build a three-step workflow:
+In this guide, you'll build a three-step workflow:
 
 | Step | Module | What it does |
 |---|---|---|
@@ -32,7 +32,7 @@ Create a new key, give it a clear name (for example, "Make integration"), and co
 ![Create API key dialog with the key named Make integration](/tutorials/images/make-prospecting-02-create-api-key.png)
 
 <Warning>
-  Copy the key now and store it somewhere safe - you won't be able to view it again after you close the dialog.
+  Copy the key now and store it somewhere safe. You won't be able to view it again after you close the dialog.
 </Warning>
 
 ## Step 3: Create a new scenario in Make
@@ -65,12 +65,12 @@ In the **Connection** field, click **Add** and paste the API key you created in 
 
 ## Step 7: Define what you want to search
 
-Fill in the parameters you want to search by. In this example we're searching for marketing directors in the US.
+Fill in the parameters you want to search by. In this example, you search for marketing directors in the US.
 
 ![Prospect Contacts by ICP configured with job title, seniority and country filters](/tutorials/images/make-prospecting-07-search-filters.png)
 
 <Tip>
-  Add each job title as a **separate item**, and use **two-letter country codes** (for example, `US`). To target specific roles, enter their job titles - if you don't get results, try rephrasing them.
+  Add each job title as a **separate item**, and use **two-letter country codes** (for example, `US`). To target specific roles, enter their job titles. If you don't get results, try rephrasing them.
 </Tip>
 
 ## Step 8: Test your search
@@ -79,12 +79,12 @@ Click **Run once** and check whether you received results. If you did, you're re
 
 ## Step 9: Add the Lusha Enrich Contacts module
 
-Click the **+** icon and search for **Lusha - Enrich contacts**. In the **Item 1** field under **Contact IDs**, select **Contact ID**, then choose the details you want under **Reveal**, such as emails and phone numbers.
+Click the **+** icon and search for **Lusha - Enrich contacts**. In the **Item 1** field under **Contact IDs**, select **Contact ID**, then select the details you want under **Reveal**, such as emails and phone numbers.
 
 ![Enrich Contacts module with Contact ID mapped and Emails, Phones selected](/tutorials/images/make-prospecting-08-enrich-contacts.png)
 
 <Warning>
-  Enriching contacts consumes Lusha credits. Prospecting searches do not - you're only charged when data is revealed.
+  Enriching contacts consumes Lusha credits. Prospecting searches do not. You're only charged when data is revealed.
 </Warning>
 
 ## Step 10: Connect your spreadsheet and add a row
@@ -93,7 +93,7 @@ Click the **+** icon, search for **Google Sheets**, and select **Add a Row**. Th
 
 ![Selecting the Add a Row module for Google Sheets](/tutorials/images/make-prospecting-09-add-a-row.png)
 
-Connect your spreadsheet, then map each field to a column. In this example the Contact ID goes to column A, emails to column B, and phones to column C.
+Connect your spreadsheet, then map each field to a column. In this example, the Contact ID goes to column A, emails to column B, and phones to column C.
 
 ![Mapping Lusha fields to spreadsheet columns](/tutorials/images/make-prospecting-10-map-columns.png)
 
