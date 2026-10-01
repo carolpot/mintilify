@@ -1396,6 +1396,10 @@
   },
   "redirects": [
     {
+      "source": "/data",
+      "destination": "https://www.lusha.com/data"
+    },
+    {
       "source": "/user-guide/ai-recommendations/decision-makers-find-the-right-contacts-fast",
       "destination": "/user-guide/ai-recommendations/buying-group-find-the-right-contacts-fast"
     },
