@@ -1152,8 +1152,7 @@
                     "icon": "grip",
                     "pages": [
                       "user-guide/zoho/zoho-integration",
-                      "user-guide/zoho/zoho-common-errors",
-                      "user-guide/zoho/api-usage-analytics"
+                      "user-guide/zoho/zoho-common-errors"
                     ]
                   },
                   {
@@ -1394,6 +1393,10 @@
     "drilldown": false
   },
   "redirects": [
+    {
+      "source": "/user-guide/zoho/api-usage-analytics",
+      "destination": "/user-guide/lushas-api/api-usage-analytics"
+    },
     {
       "source": "/data",
       "destination": "https://www.lusha.com/data"
