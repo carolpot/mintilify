@@ -1,0 +1,28 @@
+---
+title: "Why does my Outlook sender address look different in Engage?"
+description: "Why emails sent from Lusha Engage show a different sender address when the mailbox is an alias on a personal Outlook.com account."
+---
+
+If a sequence sends from an address that doesn't match what you configured, this usually happens because the sender address is added as an alias on a personal Outlook.com account instead of being its own Microsoft 365 mailbox. Outlook.com only supports sending from aliases on Microsoft domains (`outlook.com`, `hotmail.com`, `live.com`), so it sends as the account's internal address instead.
+
+## How to identify the problem
+
+Confirm whether your email address is a Microsoft 365 / Exchange mailbox, or an alias on a personal Outlook.com account.
+
+## How to resolve this issue
+
+### If it's an alias on a personal Outlook.com account
+
+Connect a full Microsoft 365 (or Google Workspace) mailbox on your domain to Lusha, so emails send directly from your domain.
+
+Alternatively, you can make an `@outlook.com` address the primary alias, but then emails will show that address instead of your domain.
+
+### If it's already a Microsoft 365 mailbox
+
+<Note>
+Send our support team a sample email header and the time it was sent, and we'll look into it on our side.
+</Note>
+
+<Note>
+If you have any questions, feel free to reach out to the support team via live chat from the [Lusha website](http://www.lusha.com/), your [Lusha Dashboard](http://dashboard.lusha.com/dashboard), or via email at [support@lusha.com](mailto:support@lusha.com).
+</Note>
