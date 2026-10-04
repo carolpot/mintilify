@@ -1,6 +1,7 @@
 ---
 title: "Search Layer"
 description: "Every contact and company data point and real-time signal available through the Lusha API - field names, JSON paths, data types, and refresh cadence."
+mode: "wide"
 ---
 
 The Search Layer exposes two categories of data. **Data Points** are static, verified attributes - contact identity, employment history, emails, phones, and company firmographics. These are refreshed continuously and returned as structured JSON fields on every enrich or search response.
@@ -278,7 +279,18 @@ export const SearchLayerExplorer = () => {
         Showing {filtered.length} of {searchLayerFields.length} fields
       </p>
       <div style={{ overflowX: 'auto' }}>
-        <table>
+        <table style={{ tableLayout: 'fixed', width: '100%', fontSize: '0.82rem' }}>
+          <colgroup>
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '24%' }} />
+            <col style={{ width: '7%' }} />
+            <col style={{ width: '7%' }} />
+            <col style={{ width: '11%' }} />
+            <col style={{ width: '14%' }} />
+            <col style={{ width: '7%' }} />
+            <col style={{ width: '7%' }} />
+            <col style={{ width: '11%' }} />
+          </colgroup>
           <thead>
             <tr>
               <th>Field</th>
@@ -295,12 +307,12 @@ export const SearchLayerExplorer = () => {
           <tbody>
             {filtered.map((f) => (
               <tr key={`${f.category}-${f.field}`}>
-                <td><strong>{f.field}</strong></td>
-                <td style={{ minWidth: '220px' }}>{f.description}</td>
+                <td style={{ wordBreak: 'break-word' }}><strong>{f.field}</strong></td>
+                <td style={{ wordBreak: 'break-word' }}>{f.description}</td>
                 <td>{f.entity}</td>
                 <td><Chip label={f.type} color={typeColors[f.type]} /></td>
                 <td><Chip label={f.category} color={categoryColors[f.category]} /></td>
-                <td><code>{f.path}</code></td>
+                <td style={{ wordBreak: 'break-word' }}><code style={{ fontSize: '0.78rem' }}>{f.path}</code></td>
                 <td><Chip label={f.dataType} color={dataTypeColors[f.dataType]} /></td>
                 <td><Chip label={f.refresh} color={refreshColors[f.refresh]} /></td>
                 <td>
