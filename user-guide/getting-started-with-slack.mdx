@@ -102,9 +102,21 @@ The Lusha Agent is powered by a large language model (LLM). Like all AI systems,
 ## Privacy & security
 
 - **No PII stored** - Contact data passes through in memory only. Nothing is logged or persisted in the Slack app layer.
-- **Minimal OAuth scopes** - Only `chat:write`, `commands`, `im:history`, and `assistant:write`. No access to workspace message history.
+- **Minimal OAuth scopes** - The app requests only the scopes it needs to operate. No access to workspace message history.
 - **Encrypted API tokens** - Your Lusha API token is encrypted at rest and revocable from App Home → Settings at any time.
 - **Regional compliance** - US contact data restrictions are enforced at the API level.
+
+### OAuth scopes
+
+| Scope | What it's for |
+| --- | --- |
+| `app_mentions:read` | Lets you invoke the Lusha Agent by @mentioning it in any Slack channel |
+| `assistant:write` | Lets Lusha act as an app agent so it can respond to @mentions and handle contact search |
+| `chat:write` | Lets the Lusha Agent post and display results in the Slack channel |
+| `commands` | Enables slash commands so you can interact directly with `/lusha` and `/lusha_company` |
+| `im:history` | Lets the app read the history of messages it sends in direct messages |
+| `im:write` | Lets the app start direct messages to deliver results directly to you |
+| `reactions:write` | Lets the Lusha Agent add emoji reactions while it's analyzing your request |
 
 ---
 
