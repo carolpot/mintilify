@@ -322,7 +322,7 @@
         ],
         "summary": "Enrich Contacts",
         "operationId": "enrichContacts",
-        "description": "Reveal full contact data for contacts you've already found via Search Contacts.\n\nPass up to 100 contact `ids` (from the search response). Use the `reveal` field to control what gets unlocked:\n- `emails` - work and personal email addresses\n- `phones` - mobile and direct phone numbers\n- Omit `reveal` to get both by default\n\n---\n\n###  Waterfall Reveal\nFall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts.\n\nIf **Data Waterfall** is enabled on your account, with specific providers turned on under **Account > Waterfall**, the waterfall runs automatically on every Enrich Contacts call - you don't need to pass anything to trigger it.\n\n\nPass `waterfallEnabled: false` to opt a specific call out:\n\n  ```json\n                  \"reveal\": [\"emails\", \"phones\"],\n                  \"waterfallEnabled\": false\n  ```\n\n- `reveal` controls **which fields** come back.\n- `waterfallEnabled` controls whether the waterfall runs for this call at all. Defaults to `true` whenever Data Waterfall is enabled on your account; pass `false` to disable it just for this call.\n- Provider order isn't configurable - Lusha manages that internally.\n- If Data Waterfall is off or no providers are enabled on your account, `waterfallEnabled` has no effect either way.\n---\n> **Tip:** If `canReveal.credits` is `0` in the search response, that data has already been revealed for your account - re-enriching it is free.\n\n> **Billing:** Charged per revealed field (email or phone) via per-datapoint pricing.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Work email / Phone columns. See [Contacts Tables](#tag/Contacts-Tables).\n",
+        "description": "Reveal full contact data for contacts you've already found via Search Contacts.\n\nPass up to 100 contact `ids` (from the search response). Use the `reveal` field to control what gets unlocked:\n- `emails` - work and personal email addresses\n- `phones` - mobile and direct phone numbers\n- Omit `reveal` to get both by default\n\n---\n\n###  Waterfall Reveal\nFall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts.\n\nIf **Data Waterfall** is enabled on your account, with specific providers turned on under **Account > Waterfall**, the waterfall runs automatically on every Enrich Contacts call - you don't need to pass anything to trigger it.\n\n\nPass `waterfallEnabled: false` to opt a specific call out:\n\n  ```json\n                  \"reveal\": [\"emails\", \"phones\"],\n                  \"waterfallEnabled\": false\n  ```\n\n- `reveal` controls **which fields** come back.\n- `waterfallEnabled` controls whether the waterfall runs for this call at all. Defaults to `true` whenever Data Waterfall is enabled on your account; pass `false` to disable it just for this call.\n- Provider order isn't configurable - Lusha manages that internally.\n- If Data Waterfall is off or no providers are enabled on your account, `waterfallEnabled` has no effect either way.\n\nWhen the waterfall runs, the response adds `status`, `statusDescription` and (when a field is empty because the waterfall did not run) `statusReason`. Each email and phone carries `dataSource` (`lusha` or `vendor:<providerId>`), plus `credits` when an external provider delivered it. Contacts with unresolved data points list them in `missingDataPoints`. These fields are omitted when the waterfall did not run, so a Lusha-only response keeps its usual shape.\n\n### Async results (`job`)\nFast providers answer inside this call. A slower provider does not hold the request open: the response returns what is already known, plus a `job`.\n\n1. If the response has no `job`, it is final.\n2. If `job` is present, wait `job.retryAfter` seconds, then call [Get Contacts Enrich Job](#operation/getContactsEnrichJob) with `job.id`.\n3. While the job `status` is `processing`, wait `retryAfter` seconds and poll again.\n4. On `complete`, merge the job's `contacts` into your enrich results by `id`. Do not replace the whole enrich payload.\n5. On `expired` or `failed`, stop and keep what Enrich Contacts already returned.\n\nBranch on whether `job` is present, and then on the job `status`. Don't infer that work is still running because an email or phone is empty.\n\nPolling is free. A data point is billed once, by whichever call delivered it.\n---\n> **Tip:** If `canReveal.credits` is `0` in the search response, that data has already been revealed for your account - re-enriching it is free.\n\n> **Billing:** Charged per revealed field (email or phone) via per-datapoint pricing.\n\n> **Persisting to a table:** Pass `tableId` to also add these contacts to an existing table and populate the Work email / Phone columns. See [Contacts Tables](#tag/Contacts-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -370,58 +370,96 @@
                 "schema": {
                   "$ref": "#/components/schemas/V3ContactsEnrichResponse"
                 },
-                "example": {
-                  "requestId": "71581363-f73d-46e1-9115-ecbd771b964b",
-                  "results": [
-                    {
-                      "id": "4389064654",
-                      "firstName": "Daniel",
-                      "lastName": "Turgeman",
-                      "fullName": "Daniel Turgeman",
-                      "jobTitle": {
-                        "title": "Technical Product Manager",
-                        "departments": [
-                          "Product"
-                        ],
-                        "seniority": "Manager"
-                      },
-                      "location": {
-                        "country": "Israel",
-                        "countryIso2": "IL",
-                        "city": "Tel Aviv",
-                        "continent": "Asia",
-                        "coordinates": [
-                          34.78057098388672,
-                          32.08087921142578
-                        ],
-                        "isEuContact": false
-                      },
-                      "tags": [],
-                      "emails": [
+                "examples": {
+                  "final": {
+                    "summary": "Final response (no job)",
+                    "value": {
+                      "requestId": "71581363-f73d-46e1-9115-ecbd771b964b",
+                      "results": [
                         {
-                          "email": "daniel.t@lusha.com",
-                          "type": "work",
-                          "confidence": "A+",
+                          "id": "4389064654",
+                          "firstName": "Daniel",
+                          "lastName": "Turgeman",
+                          "fullName": "Daniel Turgeman",
+                          "jobTitle": {
+                            "title": "Technical Product Manager",
+                            "departments": [
+                              "Product"
+                            ],
+                            "seniority": "Manager"
+                          },
+                          "location": {
+                            "country": "Israel",
+                            "countryIso2": "IL",
+                            "city": "Tel Aviv",
+                            "continent": "Asia",
+                            "coordinates": [
+                              34.78057098388672,
+                              32.08087921142578
+                            ],
+                            "isEuContact": false
+                          },
+                          "tags": [],
+                          "emails": [
+                            {
+                              "email": "daniel.t@lusha.com",
+                              "type": "work",
+                              "confidence": "A+",
+                              "updateDate": "2026-04-23"
+                            }
+                          ],
+                          "phones": [],
+                          "company": {
+                            "id": "16303253",
+                            "name": "Lusha",
+                            "domain": "www.lusha.com",
+                            "industry": "Technology, Information & Media"
+                          },
+                          "socialLinks": {
+                            "linkedin": "https://www.linkedin.com/in/daniel-turgeman-49676b161"
+                          },
+                          "previousEmployment": [],
                           "updateDate": "2026-04-23"
                         }
                       ],
-                      "phones": [],
-                      "company": {
-                        "id": "16303253",
-                        "name": "Lusha",
-                        "domain": "www.lusha.com",
-                        "industry": "Technology, Information & Media"
-                      },
-                      "socialLinks": {
-                        "linkedin": "https://www.linkedin.com/in/daniel-turgeman-49676b161"
-                      },
-                      "previousEmployment": [],
-                      "updateDate": "2026-04-23"
+                      "billing": {
+                        "creditsCharged": 2,
+                        "resultsReturned": 2
+                      }
                     }
-                  ],
-                  "billing": {
-                    "creditsCharged": 2,
-                    "resultsReturned": 2
+                  },
+                  "asyncJob": {
+                    "summary": "Partial response with an async job to poll",
+                    "value": {
+                      "requestId": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+                      "results": [
+                        {
+                          "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                          "firstName": "John",
+                          "lastName": "Doe",
+                          "emails": [
+                            {
+                              "email": "john.doe@example.com",
+                              "type": "work",
+                              "confidence": "A+",
+                              "dataSource": "lusha"
+                            }
+                          ]
+                        }
+                      ],
+                      "billing": {
+                        "creditsCharged": 1,
+                        "resultsReturned": 1
+                      },
+                      "status": "partial",
+                      "statusDescription": "Some requested data points are still being retrieved.",
+                      "job": {
+                        "id": "wf_3f2b9c1e-4a7d-4f3b-9c2e-1d6a5b8c7e90",
+                        "status": "processing",
+                        "expiresAt": "2026-01-15T10:30:00Z",
+                        "retryAfter": 5
+                      }
+                    }
                   }
                 }
               }
@@ -452,7 +490,7 @@
         ],
         "summary": "Search and Enrich Contacts",
         "operationId": "searchAndEnrichContacts",
-        "description": "Find contacts and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide contact identifiers the same way you would for Search Contacts. Use the `reveal` field to control what gets unlocked (`emails`, `phones`, or both).\n\nUp to 100 contacts per request.\n\n> **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field. The `billing.creditsCharged` in the response reflects the total.\n",
+        "description": "Find contacts and reveal their full data in a single call. Combines Search and Enrich into one request.\n\nProvide contact identifiers the same way you would for Search Contacts. Use the `reveal` field to control what gets unlocked (`emails`, `phones`, or both).\n\nUp to 100 contacts per request.\n\n> **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field. The `billing.creditsCharged` in the response reflects the total.\n\n> **Data Waterfall:** runs automatically for the requested `reveal` fields when enabled on your account. There is no `waterfallEnabled` flag on this request. The response can include the same `status`, `statusDescription` and `statusReason` values as Enrich Contacts, plus `dataSource`, `credits` and `missingDataPoints`. It never returns a `job`, so there is nothing to poll.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -5913,6 +5951,120 @@
           }
         }
       }
+    },
+    "/v3/contacts/jobs/{jobId}": {
+      "get": {
+        "tags": [
+          "Enrich"
+        ],
+        "summary": "Get Contacts Enrich Job",
+        "operationId": "getContactsEnrichJob",
+        "description": "Poll the async Data Waterfall job returned in the `job` field of [Enrich Contacts](#operation/enrichContacts). No body and no query parameters.\n\n- While `status` is `processing`, wait `retryAfter` seconds and poll again. `covers` lists what is still outstanding.\n- On `complete`, merge `contacts` into your enrich results by `id`. The job returns only the contacts it was still working on - contacts already returned by Enrich Contacts are not repeated.\n- On `expired` or `failed`, stop and keep what Enrich Contacts already returned.\n\n> **Billing:** Polling does not charge credits. `creditsCharged` is the async charge only - Enrich Contacts already reported its own in `billing.creditsCharged`.\n\n> **Errors:** `404` means the job does not exist, has expired, or belongs to another account (these are not distinguished) - stop polling. `503` means the job store could not be reached - retry. A `503` does not mean the job is gone.\n",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The `job.id` returned by Enrich Contacts.",
+            "schema": {
+              "type": "string",
+              "example": "wf_3f2b9c1e-4a7d-4f3b-9c2e-1d6a5b8c7e90"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3ContactsJobResponse"
+                },
+                "examples": {
+                  "processing": {
+                    "summary": "Still processing",
+                    "value": {
+                      "jobId": "wf_3f2b9c1e-4a7d-4f3b-9c2e-1d6a5b8c7e90",
+                      "status": "processing",
+                      "requestId": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+                      "expiresAt": "2026-01-15T10:30:00Z",
+                      "retryAfter": 5,
+                      "covers": [
+                        {
+                          "contactId": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                          "dataPoints": [
+                            "phone"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "complete": {
+                    "summary": "Complete",
+                    "value": {
+                      "jobId": "wf_3f2b9c1e-4a7d-4f3b-9c2e-1d6a5b8c7e90",
+                      "status": "complete",
+                      "requestId": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+                      "expiresAt": "2026-01-15T10:30:00Z",
+                      "contacts": [
+                        {
+                          "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                          "firstName": "John",
+                          "lastName": "Doe",
+                          "phones": [
+                            {
+                              "number": "+14155551234",
+                              "type": "mobile",
+                              "doNotCall": false,
+                              "dataSource": "vendor:wiza",
+                              "credits": 8
+                            }
+                          ]
+                        }
+                      ],
+                      "creditsCharged": 8
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "No such job, it has expired, or it belongs to another account. Stop polling.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Resource not found"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "503": {
+            "description": "Job store unreachable. Retry - this does not mean the job is gone.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 503,
+                  "message": "Service unavailable"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -7397,6 +7549,15 @@
             "type": "string",
             "format": "date",
             "example": "2026-04-23"
+          },
+          "dataSource": {
+            "type": "string",
+            "description": "Where this data point came from. `lusha` for Lusha data, or `vendor:<providerId>` when an external Data Waterfall provider delivered it (for example `vendor:wiza`). Omitted when the waterfall did not run.",
+            "example": "lusha"
+          },
+          "credits": {
+            "type": "number",
+            "description": "Credits charged for this one data point. Present only when an external provider delivered it. Omitted for Lusha-sourced data points."
           }
         }
       },
@@ -7425,6 +7586,15 @@
             "type": "string",
             "format": "date",
             "example": "2026-04-23"
+          },
+          "dataSource": {
+            "type": "string",
+            "description": "Where this data point came from. `lusha` for Lusha data, or `vendor:<providerId>` when an external Data Waterfall provider delivered it (for example `vendor:wiza`). Omitted when the waterfall did not run.",
+            "example": "lusha"
+          },
+          "credits": {
+            "type": "number",
+            "description": "Credits charged for this one data point. Present only when an external provider delivered it. Omitted for Lusha-sourced data points."
           }
         }
       },
@@ -7621,6 +7791,14 @@
           },
           "error": {
             "$ref": "#/components/schemas/V3ItemError"
+          },
+          "missingDataPoints": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/components/schemas/V3MissingDataPoint"
+            },
+            "description": "Present when the waterfall ran and at least one requested data point is still unresolved. At most one entry for `email` and one for `phone`."
           }
         }
       },
@@ -11327,7 +11505,7 @@
           "waterfallEnabled": {
             "type": "boolean",
             "default": true,
-            "description": "Whether this call is allowed to fall through to your enabled\nthird-party providers when Lusha's own data has no match, for the fields\nrequested via `reveal`. Defaults to `true` whenever Data Waterfall is\nenabled on your account (Account > Waterfall) - pass `false` to opt this\nspecific call out. Has no effect if Data Waterfall or no providers are\nenabled on your account. Provider order isn't configurable - Lusha manages\nthat internally.\n",
+            "description": "Whether this call is allowed to fall through to your enabled\nthird-party providers when Lusha's own data has no match, for the fields\nrequested via `reveal`. Defaults to `true` whenever Data Waterfall is\nenabled on your account (Account > Waterfall) - pass `false` to opt this\nspecific call out. Has no effect if Data Waterfall or no providers are\nenabled on your account. Provider order isn't configurable - Lusha manages\nthat internally.\n`false` means Lusha data only. If Lusha does not have a requested field, the response sets `statusReason: WATERFALL_DISABLED`.\n",
             "example": false
           },
           "tableId": {
@@ -11355,6 +11533,40 @@
           },
           "billing": {
             "$ref": "#/components/schemas/V3Billing"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "completed",
+              "partial",
+              "halted",
+              "OUT_OF_CREDITS",
+              "PARTIAL_OUT_OF_CREDITS"
+            ],
+            "description": "Waterfall outcome for the request. Omitted when the waterfall did not run.\n\n- `completed` - every requested data point was resolved.\n- `partial` - at least one requested data point is still missing, or still in progress when `job` is present.\n- `halted` - the run stopped before it finished the provider list.\n- `OUT_OF_CREDITS` - the run stopped because the account could not pay.\n- `PARTIAL_OUT_OF_CREDITS` - some data was returned, then credits ran out.",
+            "example": "partial"
+          },
+          "statusDescription": {
+            "type": "string",
+            "description": "Human-readable text, present whenever `status` is set. Do not parse it - branch on `status` and `statusReason`.",
+            "example": "Some requested data points are still being retrieved."
+          },
+          "statusReason": {
+            "type": "string",
+            "enum": [
+              "WATERFALL_NOT_CONFIGURED",
+              "WATERFALL_NOT_IN_PLAN",
+              "WATERFALL_DISABLED"
+            ],
+            "description": "Stable reason a requested field is empty because the waterfall did not run. When set, `status` is `partial`.\n\n- `WATERFALL_NOT_CONFIGURED` - Data Waterfall is on the plan, but no providers are connected.\n- `WATERFALL_NOT_IN_PLAN` - Data Waterfall is not on the account's plan.\n- `WATERFALL_DISABLED` - the request set `waterfallEnabled` to `false`, and Lusha did not have the field."
+          },
+          "job": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/V3JobRef"
+              }
+            ],
+            "description": "Present only when an async provider is still working. Absent means the response is final."
           }
         }
       },
@@ -11406,6 +11618,32 @@
           },
           "billing": {
             "$ref": "#/components/schemas/V3Billing"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "completed",
+              "partial",
+              "halted",
+              "OUT_OF_CREDITS",
+              "PARTIAL_OUT_OF_CREDITS"
+            ],
+            "description": "Waterfall outcome for the request. Omitted when the waterfall did not run.\n\n- `completed` - every requested data point was resolved.\n- `partial` - at least one requested data point is still missing, or still in progress when `job` is present.\n- `halted` - the run stopped before it finished the provider list.\n- `OUT_OF_CREDITS` - the run stopped because the account could not pay.\n- `PARTIAL_OUT_OF_CREDITS` - some data was returned, then credits ran out.",
+            "example": "partial"
+          },
+          "statusDescription": {
+            "type": "string",
+            "description": "Human-readable text, present whenever `status` is set. Do not parse it - branch on `status` and `statusReason`.",
+            "example": "Some requested data points are still being retrieved."
+          },
+          "statusReason": {
+            "type": "string",
+            "enum": [
+              "WATERFALL_NOT_CONFIGURED",
+              "WATERFALL_NOT_IN_PLAN",
+              "WATERFALL_DISABLED"
+            ],
+            "description": "Stable reason a requested field is empty because the waterfall did not run. When set, `status` is `partial`.\n\n- `WATERFALL_NOT_CONFIGURED` - Data Waterfall is on the plan, but no providers are connected.\n- `WATERFALL_NOT_IN_PLAN` - Data Waterfall is not on the account's plan.\n- `WATERFALL_DISABLED` - the request set `waterfallEnabled` to `false`, and Lusha did not have the field."
           }
         }
       },
@@ -13371,6 +13609,150 @@
           },
           "billing": {
             "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "V3MissingDataPoint": {
+        "type": "object",
+        "description": "A requested data point the waterfall could not resolve. Describes the waterfall as a whole, not a single provider.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "email",
+              "phone"
+            ],
+            "example": "phone"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "NOT_FOUND",
+              "BILLING_FAILED"
+            ],
+            "description": "`NOT_FOUND` - every source was searched and nothing was found.\n`BILLING_FAILED` - the run stopped on credits before the field was fully searched.",
+            "example": "NOT_FOUND"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable text. Do not parse it."
+          }
+        }
+      },
+      "V3JobRef": {
+        "type": "object",
+        "description": "Pointer to the rest of an Enrich Contacts result that a slower Data Waterfall provider is still working on. Poll it with `GET /v3/contacts/jobs/{jobId}`.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Pass this as `jobId` to `GET /v3/contacts/jobs/{jobId}`.",
+            "example": "wf_3f2b9c1e-4a7d-4f3b-9c2e-1d6a5b8c7e90"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "processing"
+            ],
+            "description": "Always `processing` on the Enrich Contacts response."
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "After this time the job is gone.",
+            "example": "2026-01-15T10:30:00Z"
+          },
+          "retryAfter": {
+            "type": "number",
+            "description": "Seconds to wait before the first poll.",
+            "example": 5
+          }
+        }
+      },
+      "V3JobCover": {
+        "type": "object",
+        "description": "Work the job is still doing for one contact.",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+          },
+          "refId": {
+            "type": "string",
+            "description": "Echo of the request line reference, when the enrich line had one."
+          },
+          "dataPoints": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "email",
+                "phone"
+              ]
+            },
+            "description": "Data points still being fetched.",
+            "example": [
+              "phone"
+            ]
+          }
+        }
+      },
+      "V3ContactsJobResponse": {
+        "type": "object",
+        "required": [
+          "jobId",
+          "status",
+          "requestId",
+          "expiresAt"
+        ],
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "example": "wf_3f2b9c1e-4a7d-4f3b-9c2e-1d6a5b8c7e90"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "processing",
+              "complete",
+              "expired",
+              "failed"
+            ],
+            "description": "Branch on this.\n\n- `processing` - poll again after `retryAfter` seconds. `covers` lists what is still open.\n- `complete` - final. Merge `contacts` into your enrich results by `id`.\n- `expired` - final. The provider did not answer in time. Keep the enrich results.\n- `failed` - final. `reason` is set. Keep the enrich results."
+          },
+          "requestId": {
+            "type": "string",
+            "description": "Correlation id of the Enrich Contacts call that started the job."
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "After this time the job is gone."
+          },
+          "retryAfter": {
+            "type": "number",
+            "description": "`processing` only. Seconds to wait before polling again."
+          },
+          "covers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3JobCover"
+            },
+            "description": "`processing` only. What is still outstanding."
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3EnrichedContact"
+            },
+            "description": "Final states only. Only the contacts this job covered, each complete. Contacts already returned by Enrich Contacts are not repeated. Merge by `id`."
+          },
+          "creditsCharged": {
+            "type": "number",
+            "description": "Final states only. Credits charged by the async phase only - Enrich Contacts already reported its own charge in `billing.creditsCharged`."
+          },
+          "reason": {
+            "type": "string",
+            "description": "`failed` only. Why the job failed."
           }
         }
       }

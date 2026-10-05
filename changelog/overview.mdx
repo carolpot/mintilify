@@ -6,9 +6,40 @@ description: "All notable changes to the Lusha API and MCP. We follow semantic v
 All notable changes to the Lusha API and MCP are documented here. We follow semantic versioning.
 
 <Info>
-  **Current Version: 2.16.0**
-  Status: Production · Released: September 2026 · Stability: Stable (Tables API is Beta)
+  **Current Version: 2.17.0**
+  Status: Production · Released: October 2026 · Stability: Stable (Tables API is Beta)
 </Info>
+
+<Update label="2026-10-05" description="v2.17.0 - Data Waterfall: async enrich results and provenance" tags={["Enrichment"]}>
+
+**Added**
+
+**Async Data Waterfall results on Enrich Contacts** - Fast providers still answer inside the enrich call. A slower provider no longer holds the request open: the response returns what is already known, plus a `job` to poll for the rest.
+
+- `POST /v3/contacts/enrich` - can now return a `job` object (`id`, `status`, `expiresAt`, `retryAfter`). No `job` means the response is final. On this route, `job.status` is always `processing`
+- `GET /v3/contacts/jobs/{jobId}` - new. Poll every `retryAfter` seconds while `status` is `processing`. Stop on `complete`, `expired`, or `failed`
+- On `complete`, merge the job's `contacts` into your enrich results by `id`. The job returns only the contacts it was still working on - contacts already returned by enrich are not repeated
+- While `processing`, `covers` lists the contacts and data points (`email`, `phone`) still outstanding
+- `404` means the job does not exist, has expired, or belongs to another account - stop polling. `503` means the job store could not be reached - retry
+- Polling does not charge credits. A data point is billed once, by whichever call delivered it. The job's `creditsCharged` is the async charge only
+
+**Waterfall status fields** - Added to `POST /v3/contacts/enrich` and `POST /v3/contacts/search-and-enrich` responses when the waterfall runs:
+
+- `status` - `completed`, `partial`, `halted`, `OUT_OF_CREDITS`, or `PARTIAL_OUT_OF_CREDITS`
+- `statusDescription` - human-readable text. Do not parse it
+- `statusReason` - `WATERFALL_NOT_CONFIGURED`, `WATERFALL_NOT_IN_PLAN`, or `WATERFALL_DISABLED`, when a requested field is empty because the waterfall did not run. When set, `status` is `partial`
+
+**Provenance on emails and phones** - Each email and phone now carries `dataSource`: `lusha`, or `vendor:<providerId>` (for example `vendor:wiza`). Vendor-delivered data points also carry `credits`.
+
+**`missingDataPoints` on contacts** - Lists requested data points the waterfall could not resolve, at most one each for `email` and `phone`, with a status of `NOT_FOUND` or `BILLING_FAILED`.
+
+**Notes**
+
+- All new fields are omitted when the waterfall did not run, so Lusha-only responses keep their existing shape
+- `POST /v3/contacts/search-and-enrich` returns the new status and provenance fields but never a `job` - there is nothing to poll after search-and-enrich
+- `waterfallEnabled` remains available on Enrich Contacts only
+
+</Update>
 
 <Update label="2026-09-23" description="v2.16.0 - Company ownership: direct and ultimate parent" tags={["Enrichment", "Lookalikes"]}>
 

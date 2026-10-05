@@ -326,6 +326,7 @@
                     "group": "Enrich",
                     "pages": [
                       "POST /v3/contacts/enrich",
+                      "GET /v3/contacts/jobs/{jobId}",
                       "POST /v3/companies/enrich"
                     ],
                     "icon": "address-book"

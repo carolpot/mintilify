@@ -29,9 +29,51 @@ Each enriched contact includes full name, job title, seniority, department, loca
 
 If enrichment fails for a contact `id`, the result contains an `error` with a code of `NOT_FOUND`, `COMPLIANCE_RESTRICTED`, or `ENRICH_FAILED` instead of profile data.
 
+## Data Waterfall and async results
+
+If [Data Waterfall](/user-guide/lushas-api/data-waterfall) is enabled on your account, a requested email or phone that Lusha doesn't have can be filled by your connected external providers. Pass `waterfallEnabled: false` to keep a call to Lusha data only.
+
+When the waterfall runs, the response also includes:
+
+- `status` and `statusDescription` - the outcome of the request. Branch on `status`, never on `statusDescription`.
+- `statusReason` - why a requested field is empty when the waterfall didn't run: `WATERFALL_NOT_CONFIGURED`, `WATERFALL_NOT_IN_PLAN`, or `WATERFALL_DISABLED`.
+- `dataSource` on each email and phone - `lusha`, or `vendor:<providerId>` (for example `vendor:wiza`). Vendor-delivered data points also carry `credits`.
+- `missingDataPoints` on a contact - requested data points still unresolved, with a status of `NOT_FOUND` or `BILLING_FAILED`.
+
+These fields are omitted when the waterfall didn't run, so a Lusha-only response keeps its usual shape.
+
+### Polling a job
+
+Fast providers answer inside the Enrich Contacts call. A slower provider doesn't hold the request open. Instead, the response returns what's already known, plus a `job`:
+
+<Steps>
+  <Step title="Check for a job">
+    If the response has no `job`, it's final. You're done.
+  </Step>
+  <Step title="Wait, then poll">
+    Wait `job.retryAfter` seconds, then call [`GET /v3/contacts/jobs/{jobId}`](/api-reference/enrich/get-contacts-enrich-job) with `job.id`.
+  </Step>
+  <Step title="Keep polling while processing">
+    While the job `status` is `processing`, wait `retryAfter` seconds and poll again. `covers` lists what's still outstanding.
+  </Step>
+  <Step title="Merge or stop">
+    On `complete`, merge the job's `contacts` into your enrich results by `id` - the job returns only the contacts it was still working on, so don't replace the whole enrich payload. On `expired` or `failed`, stop and keep what Enrich Contacts already returned.
+  </Step>
+</Steps>
+
+<Warning>
+  Branch on whether `job` is present, and then on the job `status`. Don't infer that work is still running because an email or phone is empty.
+</Warning>
+
+A `404` from the poll means the job doesn't exist, has expired, or belongs to another account - stop polling. A `503` means the job store couldn't be reached - retry, since the job isn't gone.
+
+Only Enrich Contacts returns a `job`. [Search and Enrich Contacts](/enrichment/search-and-enrich-contacts) returns the same waterfall fields, but never a `job`, so there's nothing to poll.
+
 ## Billing
 
 Enrich Contacts is charged per revealed field (email or phone) via per-datapoint pricing - not per contact. A contact with two revealed emails and one revealed phone is billed for three data points.
+
+Polling a job is free. Each data point is billed once, by whichever call delivered it: `billing.creditsCharged` on Enrich Contacts is the synchronous charge, and `creditsCharged` on the job is the async charge only.
 
 ## Related
 
