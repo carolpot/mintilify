@@ -37,7 +37,7 @@ When the waterfall runs, the response also includes:
 
 - `status` and `statusDescription` - the outcome of the request. Branch on `status`, never on `statusDescription`.
 - `statusReason` - why a requested field is empty when the waterfall didn't run: `WATERFALL_NOT_CONFIGURED`, `WATERFALL_NOT_IN_PLAN`, or `WATERFALL_DISABLED`.
-- `dataSource` on each email and phone - `lusha`, or `vendor:<providerId>` (for example `vendor:wiza`). Vendor-delivered data points also carry `credits`.
+- `dataSource` on each email and phone - `lusha`, or `<providerId>` (for example `wiza`). Vendor-delivered data points also carry `credits`.
 - `missingDataPoints` on a contact - requested data points still unresolved, with a status of `NOT_FOUND` or `BILLING_FAILED`.
 
 These fields are omitted when the waterfall didn't run, so a Lusha-only response keeps its usual shape.
