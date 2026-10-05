@@ -25,6 +25,10 @@ description: "Common questions about using Lusha with the Model Context Protocol
   No. MCP tool calls translate into the same underlying Lusha API requests, and credits are deducted the same way - generally per successful, matched result. Filter-lookup tools and a few read-only tools (like checking your account usage) don't consume credits. See [available tools](/mcp/tools) for which tools do and don't charge credits.
 </Accordion>
 
+<Accordion title="Can I export contacts or companies to my CRM via MCP?">
+  Yes. Ask your MCP client to connect your CRM - `connect_crm` generates a secure OAuth link (Admin-only; a non-admin is told to involve their account admin) - then use `export_contacts_to_crm` or `export_companies_to_crm` to push records. Salesforce, HubSpot, Zoho, Pipedrive, and SalesLoft are supported today; export is contacts-first, with company export limited to the CRMs that support it. This is Phase 1: exports run synchronously with a per-run cap per CRM, so larger lists go across multiple runs. Async large-batch export is planned for a later phase. See [available tools](/mcp/tools) for the full CRM tool set.
+</Accordion>
+
 <Accordion title="Is the MCP server open source?">
   {/* VERIFY: not confirmed on the live docs.lusha.com/mcp-docs page. Confirm license/open-source status with Product before publishing a claim either way. */}
   Not confirmed yet - check with Product or DevRel before publishing an answer here.

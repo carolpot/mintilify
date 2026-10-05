@@ -104,10 +104,18 @@ The Lusha MCP server exposes 50 tools. Most map closely to the underlying Lusha 
 <Accordion title="CRM (4)">
 | Tool | What it does |
 |---|---|
-| `get_supported_integrations` | List the CRMs Lusha can connect to. |
-| `connect_crm` | Connect a CRM to your Lusha account. |
-| `export_contacts_to_crm` | Push enriched contacts into your CRM. |
-| `export_companies_to_crm` | Push enriched companies into your CRM. |
+| `get_supported_integrations` | List the CRMs Lusha can connect to, your connection state, and per-platform export limits. |
+| `connect_crm` | Generates a secure OAuth link to connect (or reconnect) a CRM. Admin-only - if a non-admin asks, the agent points them to their account admin instead of generating a link. |
+| `export_contacts_to_crm` | Push selected or enriched contacts into the connected CRM. |
+| `export_companies_to_crm` | Push selected or enriched companies into the connected CRM, where the CRM supports it. |
+
+Supported CRMs: Salesforce, HubSpot, Zoho, Pipedrive, and SalesLoft. Export is contacts-first - company/account export is currently limited to the CRMs that support it.
+
+Every export returns a per-row result: which records exported, which failed and why, a direct CRM link per created record, and the credits used. Connecting is free; export charges standard per-record export credits, and only for records the CRM actually writes - already-present, unchanged, or duplicate records cost nothing.
+
+<Note>
+This is Phase 1 - synchronous export, with a per-run cap per CRM (for example, Salesforce up to 150, HubSpot up to 100 per export). Larger lists are pushed across multiple runs for now; async large-batch export is planned for a later phase.
+</Note>
 </Accordion>
 
 <Accordion title="Conversations (2)">
