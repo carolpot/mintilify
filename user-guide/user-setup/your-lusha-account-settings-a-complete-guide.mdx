@@ -80,15 +80,15 @@ Configure SSO so all team members sign in using your company identity provider.
 
 ## Waterfall tab
 
-(Available for paid accounts, on the API and MCP)
+(Visible to all users, on every plan - enrichment itself runs on paid plans, via the API and MCP)
 
-Data Waterfall is its own top-level tab in your account settings - navigate to **Settings → Waterfall** to access it.
+Data Waterfall is its own top-level tab in your account settings - navigate to **Settings → Waterfall** to access it. The tab shows the full vendor list to everyone, but what you can do from it depends on your plan and role:
 
-Waterfall fills in phone numbers and emails Lusha doesn't have, by automatically checking a stack of third-party vendors whenever Lusha itself comes up short on a match.
+- **Paid plan admins** - turn Waterfall on for the account, turn individual vendors on or off at any time, and let it run automatically whenever Lusha is missing a phone number or email.
+- **Paid plan non-admins** - can view the Waterfall settings, but are prompted to contact their account admin to turn it on.
+- **Free users** - can view the Waterfall settings and are shown a guided upgrade flow to unlock Waterfall enrichment.
 
-- Turn Waterfall on for your account - once it's on, it runs automatically whenever Lusha is missing a phone number or email.
-- Turn individual vendors on or off at any time.
-- Users can opt out of Waterfall on a per-request basis.
+Once enabled, users can still opt out of Waterfall on a per-request basis.
 
 <Note>
 Charged only on a match - Lusha data costs 1 credit per work email and 5 credits per phone number; a Waterfall vendor match costs 2 credits per work email and 8 credits per phone number. See [Data Waterfall](/user-guide/lushas-api/data-waterfall) for the full technical reference.
