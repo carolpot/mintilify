@@ -131,7 +131,7 @@ These capabilities are not available in V2. Migrating early gives you access to 
 ## Common Questions
 
 **Will my integration break?**
-Not immediately. V2 stays fully live until November 18, 2026. You have six months to migrate. Sunset headers will be added to V2 responses from May 18 so you can track the timeline in your tooling.
+Not immediately. V2 stays fully live until November 30, 2026. You have six months to migrate. Sunset headers will be added to V2 responses from May 18 so you can track the timeline in your tooling.
 
 **How much work is the migration?**
 For most use cases, very little. The `search-and-enrich` endpoint is close to a drop-in replacement for `GET /v2/person` and `GET /v2/company` - the main change is switching from `GET` to `POST` and moving parameters into a request body. Prospecting migrations are mainly URL changes with a small request body update.
@@ -139,7 +139,7 @@ For most use cases, very little. The `search-and-enrich` endpoint is close to a 
 **Do Signals and Lookalikes change?**
 No. Those endpoints are unchanged in V3. If you're only using Signals or Lookalikes, there is nothing for you to do.
 
-**What happens if I don't migrate by November 18?**
+**What happens if I don't migrate by November 30?**
 V2 endpoints will stop responding. Any workflow calling a V2 URL directly will break. You'll receive warning communications at the 60-day and 30-day marks before sunset.
 
 **Can I test V3 before switching?**
