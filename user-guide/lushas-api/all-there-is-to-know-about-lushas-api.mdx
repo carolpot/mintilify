@@ -175,6 +175,21 @@ How you cap a key's spending depends on who generated it.
 Only Admins and Managers can set or edit a credit limit - on a key they generated themselves, or on a user's account. If a user has no personal credit limit, their key is uncapped and can draw on the full account credit balance.
 </Note>
 
+### Default credit limit for new user keys
+
+Instead of capping users one at a time, Admins can set a default credit limit that automatically applies to every new API key a user creates:
+
+<Steps>
+  <Step title="Open Account settings">
+    Go to **Account Settings**, next to **API access**.
+  </Step>
+  <Step title="Set the default limit">
+    Enter the default monthly credit cap to apply to every API key a user creates.
+  </Step>
+</Steps>
+
+Leave it set to **No limit** and nothing changes. This default doesn't affect Admin keys, and it doesn't change the limit on a key that already exists - it only applies going forward, to new keys users create.
+
 ## Troubleshooting: my API calls are rejected with a credit limit error
 
 If your API calls fail with a credit limit error, check which kind of key is failing:

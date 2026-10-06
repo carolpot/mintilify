@@ -14,7 +14,8 @@ Don't have a plan yet? [Explore plans](https://www.lusha.com/pricing/) to access
 ## Key concepts
 
 - **Waterfall Reveal** - the enrichment behavior itself: Lusha checks its own data first, then falls through to your enabled providers for any missing email or phone.
-- **Provider** - a third-party data vendor you turn on under **Account Settings → Waterfall**. Lusha determines the query order across providers.
+- **Provider** - a third-party data vendor you turn on under **Account Settings → Waterfall**. Lusha determines the query order across providers. Waterfall currently spans 6 providers.
+- **Async provider** - a provider that processes the request in the background instead of returning a result instantly. Results are retrieved once the job completes - see [Async providers](#async-providers) below.
 - **Partial Profiles** - contacts the Search API has identified but doesn't yet have contact details for. Pairing Partial Profiles with Data Waterfall gets you more contacts and more complete data.
 
 ## Availability
@@ -56,6 +57,17 @@ Waterfall works only on contacts Lusha already has. It does not search for new c
 
 <Note>
   For broader coverage, pair Data Waterfall with Partial Profiles. Partial Profiles (Search API) surfaces contacts Lusha has identified but doesn't currently have contact details for. Data Waterfall (Enrich) can then try to fill in the missing email or phone when you enrich those contacts.
+</Note>
+
+## Async providers
+
+Most providers answer inside the original Enrich call. Some providers process requests in the background instead, and return their results a short time later.
+
+- **MCP** handles this automatically - no extra steps needed.
+- **API** users get a `job` back in the Enrich response when an async provider is still working. Wait `job.retryAfter` seconds, then poll [Get Contacts Enrich Job](https://docs.lusha.com/api-reference/enrich/get-contacts-enrich-job) with the job ID until it completes, and merge the returned contacts into your results by `id`.
+
+<Note>
+  Polling for a job's results is free - a data point is only billed once, by whichever call delivers it.
 </Note>
 
 ## Pricing
