@@ -111,10 +111,10 @@ The Lusha MCP server exposes 50 tools. Most map closely to the underlying Lusha 
 
 Supported CRMs: Salesforce, HubSpot, Zoho, Pipedrive, and SalesLoft. Export is contacts-first - company/account export is currently limited to the CRMs that support it.
 
-Every export returns a per-row result: which records exported, which failed and why, a direct CRM link per created record, and the credits used. Connecting is free; export charges standard per-record export credits, and only for records the CRM actually writes - already-present, unchanged, or duplicate records cost nothing.
+Every export returns a per-row result: which records exported, which failed and why, a direct CRM link per created record, and the credits used. Connecting is free. Export charges standard per-record export credits, and only for records the CRM actually writes. Already-present, unchanged, or duplicate records cost nothing.
 
 <Note>
-This is Phase 1 - synchronous export, with a per-run cap per CRM (for example, Salesforce up to 150, HubSpot up to 100 per export). Larger lists are pushed across multiple runs for now; async large-batch export is planned for a later phase.
+This is Phase 1 - synchronous export, with a per-run cap per CRM (for example, Salesforce up to 150, HubSpot up to 100 per export). For now, push larger lists across multiple runs. Async large-batch export is planned for a later phase.
 </Note>
 </Accordion>
 

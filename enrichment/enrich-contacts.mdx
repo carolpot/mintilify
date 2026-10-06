@@ -57,7 +57,7 @@ Fast providers answer inside the Enrich Contacts call. A slower provider doesn't
     While the job `status` is `processing`, wait `retryAfter` seconds and poll again. `covers` lists what's still outstanding.
   </Step>
   <Step title="Merge or stop">
-    On `complete`, merge the job's `contacts` into your enrich results by `id` - the job returns only the contacts it was still working on, so don't replace the whole enrich payload. On `expired` or `failed`, stop and keep what Enrich Contacts already returned.
+    On `complete`, merge the job's `contacts` into your enrich results by `id`. The job returns only the contacts it was still working on, so don't replace the whole enrich payload. On `expired` or `failed`, stop and keep what Enrich Contacts already returned.
   </Step>
 </Steps>
 
