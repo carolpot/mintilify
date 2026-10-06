@@ -84,7 +84,7 @@ Each contact in the `contacts` array needs **one** of the following:
     <ResponseField name="results[].lastName" type="string" />
     <ResponseField name="results[].fullName" type="string" />
     <ResponseField name="results[].jobTitle" type="object">Title, departments, and seniority.</ResponseField>
-    <ResponseField name="results[].location" type="object">Country, state, city, continent, coordinates, and EU flag.</ResponseField>
+    <ResponseField name="results[].location" type="object">Country, state, city, continent, city-level coordinates (not street or neighborhood), and EU flag.</ResponseField>
 
     <ResponseField name="results[].emails" type="object[]">
       Present when `reveal` includes (or omits) `emails`. Each entry has `email`, `type`, `confidence`, and `updateDate`.

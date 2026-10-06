@@ -67,7 +67,7 @@ POST https://api.lusha.com/v3/contacts/enrich
         <ResponseField name="state" type="string">Example: `Tel Aviv District`</ResponseField>
         <ResponseField name="city" type="string">Example: `Tel Aviv`</ResponseField>
         <ResponseField name="continent" type="string">Example: `Asia`</ResponseField>
-        <ResponseField name="coordinates" type="number[]">`[longitude, latitude]`. Example: `[34.78057, 32.08088]`</ResponseField>
+        <ResponseField name="coordinates" type="number[]">City location coordinates: `[longitude, latitude]` of the city the contact is based in. City-level only - not a street address or neighborhood. Example: `[34.78057, 32.08088]`</ResponseField>
         <ResponseField name="isEuContact" type="boolean">Whether the contact is located in the EU.</ResponseField>
       </Expandable>
     </ResponseField>

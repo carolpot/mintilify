@@ -5041,7 +5041,7 @@
             "example": "123 Main St"
           },
           "locationCoordinates": {
-            "description": "The coordinates of the person.",
+            "description": "City location coordinates: `[longitude, latitude]` of the city the contact is based in. City-level only - not a street address or neighborhood.",
             "example": [
               32.0853,
               34.7818
