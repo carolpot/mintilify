@@ -68,7 +68,7 @@ const BASE_URL = 'https://api.lusha.com/v3';
 // AG=32 (Location State)
 // AH=33 (Location City)
 // AI=34 (Location Continent)
-// AJ=35 (Location Coordinates)
+// AJ=35 (City Location Coordinates)
 // AK=36 (Is EU Contact)
 // AL=37 (LinkedIn URL)
 // AM=38 (X (Twitter) URL)
@@ -300,7 +300,7 @@ function setupHeaders(sheet) {
     'Location State',        // AG
     'Location City',         // AH
     'Location Continent',    // AI
-    'Location Coordinates',  // AJ
+    'City Location Coordinates',  // AJ
     'Is EU Contact',         // AK
     'LinkedIn URL',          // AL
     'X (Twitter) URL',       // AM
@@ -678,7 +678,7 @@ function writeEnrichedData(sheet, enrichedContacts, rowMap) {
       locState,                    // AG - Location State
       locCity,                     // AH - Location City
       locContinent,                // AI - Location Continent
-      locCoords,                   // AJ - Location Coordinates
+      locCoords,                   // AJ - City Location Coordinates
       isEU,                        // AK - Is EU Contact
       linkedIn,                    // AL - LinkedIn URL
       twitter,                     // AM - X (Twitter) URL

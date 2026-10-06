@@ -7706,7 +7706,8 @@
                 "example": [
                   34.78057098388672,
                   32.08087921142578
-                ]
+                ],
+                "description": "City location coordinates: `[longitude, latitude]` of the city the contact is based in. City-level only - not a street address or neighborhood."
               },
               "isEuContact": {
                 "type": "boolean",
