@@ -80,6 +80,8 @@ POST https://api.lusha.com/v3/contacts/enrich
         <ResponseField name="type" type="string">One of `work`, `private`, `unknown`.</ResponseField>
         <ResponseField name="confidence" type="string">Confidence score. Example: `A+`</ResponseField>
         <ResponseField name="updateDate" type="string">Last-updated date, `YYYY-MM-DD`.</ResponseField>
+        <ResponseField name="dataSource" type="string">Where this data point came from: `lusha`, or the provider id when a Data Waterfall provider delivered it (for example `wiza`). Omitted when the waterfall didn't run.</ResponseField>
+        <ResponseField name="credits" type="number">Credits charged for this data point. Present only when a Data Waterfall provider delivered it.</ResponseField>
       </Expandable>
     </ResponseField>
 
@@ -91,6 +93,8 @@ POST https://api.lusha.com/v3/contacts/enrich
         <ResponseField name="type" type="string">One of `mobile`, `direct`, `work`, `unknown`.</ResponseField>
         <ResponseField name="doNotCall" type="boolean">Whether this number is on the Do Not Call list.</ResponseField>
         <ResponseField name="updateDate" type="string">Last-updated date, `YYYY-MM-DD`.</ResponseField>
+        <ResponseField name="dataSource" type="string">Where this data point came from: `lusha`, or the provider id when a Data Waterfall provider delivered it (for example `wiza`). Omitted when the waterfall didn't run.</ResponseField>
+        <ResponseField name="credits" type="number">Credits charged for this data point. Present only when a Data Waterfall provider delivered it.</ResponseField>
       </Expandable>
     </ResponseField>
 
@@ -181,6 +185,16 @@ POST https://api.lusha.com/v3/contacts/enrich
       Date the record was last updated, `YYYY-MM-DD`.
     </ResponseField>
 
+    <ResponseField name="results[].missingDataPoints" type="object[]">
+      Present when the waterfall ran and at least one requested data point is still unresolved. At most one entry for `email` and one for `phone`.
+
+      <Expandable title="properties">
+        <ResponseField name="type" type="string">`email` or `phone`.</ResponseField>
+        <ResponseField name="status" type="string">`NOT_FOUND` - every source was searched and nothing was found. `BILLING_FAILED` - the run stopped on credits before the field was fully searched.</ResponseField>
+        <ResponseField name="description" type="string">Human-readable text. Don't parse it.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
     <ResponseField name="results[].error" type="object">
       Present instead of profile data when enrichment fails for this `id`.
 
@@ -196,6 +210,44 @@ POST https://api.lusha.com/v3/contacts/enrich
   <Expandable title="properties">
     <ResponseField name="creditsCharged" type="integer">Credits charged for this request.</ResponseField>
     <ResponseField name="resultsReturned" type="integer">Number of successful results.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Data Waterfall outcome for the request. Omitted when the waterfall didn't run. One of `completed`, `partial`, `halted`, `OUT_OF_CREDITS`, `PARTIAL_OUT_OF_CREDITS`.
+</ResponseField>
+
+<ResponseField name="statusDescription" type="string">
+  Human-readable text, present whenever `status` is set. Don't parse it - branch on `status` and `statusReason`.
+</ResponseField>
+
+<ResponseField name="statusReason" type="string">
+  Why a requested field is empty when the waterfall didn't run: `WATERFALL_NOT_CONFIGURED`, `WATERFALL_NOT_IN_PLAN`, or `WATERFALL_DISABLED`. When set, `status` is `partial`.
+</ResponseField>
+
+<ResponseField name="job" type="object">
+  Present only when a slower Data Waterfall provider is still working. Absent means the response is final. Poll it with [Get Contacts Enrich Job](/api-reference/enrich/get-contacts-enrich-job).
+
+  <Expandable title="properties">
+    <ResponseField name="id" type="string">Pass this as `jobId` to `GET /v3/contacts/jobs/{jobId}`. Example: `wf_3f2b9c1e-4a7d-4f3b-9c2e-1d6a5b8c7e90`</ResponseField>
+    <ResponseField name="status" type="string">Always `processing` on this response.</ResponseField>
+    <ResponseField name="expiresAt" type="string">ISO timestamp. After this, the job is gone.</ResponseField>
+    <ResponseField name="retryAfter" type="number">Seconds to wait before the first poll.</ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="tableWrite" type="object">
+  Present only when you pass `tableId` on the request. Summarizes what was written to the table. The rest of the response is unaffected even if the table write fails.
+
+  <Expandable title="properties">
+    <ResponseField name="tableId" type="string">The table that was written to. Example: `482910`</ResponseField>
+    <ResponseField name="added" type="integer">New entities added to the table by this call.</ResponseField>
+    <ResponseField name="alreadyPresent" type="integer">Entities from this call that were already in the table.</ResponseField>
+    <ResponseField name="columnsCreated" type="integer">Columns auto-created by this call, for example a Signals column created on first use.</ResponseField>
+    <ResponseField name="rowsProcessed" type="integer">Rows the column run touched as part of this call.</ResponseField>
+    <ResponseField name="rowsCharged" type="integer">Rows that incurred a credit charge.</ResponseField>
+    <ResponseField name="rowsAlreadyPaidInTable" type="integer">Rows already paid for in this table, which were not charged again.</ResponseField>
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this table write.</ResponseField>
   </Expandable>
 </ResponseField>
 

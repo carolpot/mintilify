@@ -92,11 +92,11 @@ Each contact in the `contacts` array needs **one** of the following:
     <ResponseField name="results[].partialProfile" type="boolean">Whether this is a partial profile.</ResponseField>
 
     <ResponseField name="results[].emails" type="object[]">
-      Present when `reveal` includes (or omits) `emails`. Each entry has `email`, `type`, `confidence`, and `updateDate`.
+      Present when `reveal` includes (or omits) `emails`. Each entry has `email`, `type`, `confidence`, and `updateDate`, plus `dataSource` and `credits` when Data Waterfall ran.
     </ResponseField>
 
     <ResponseField name="results[].phones" type="object[]">
-      Present when `reveal` includes (or omits) `phones`. Each entry has `number`, `type`, `doNotCall`, and `updateDate`.
+      Present when `reveal` includes (or omits) `phones`. Each entry has `number`, `type`, `doNotCall`, and `updateDate`, plus `dataSource` and `credits` when Data Waterfall ran.
     </ResponseField>
 
     <ResponseField name="results[].company" type="object">Company `id`, `name`, `domain`, and `industry`.</ResponseField>
@@ -104,6 +104,8 @@ Each contact in the `contacts` array needs **one** of the following:
     <ResponseField name="results[].previousEmployment" type="object[]">Prior roles.</ResponseField>
     <ResponseField name="results[].tags" type="object[]">Tags applied to this contact in Lusha.</ResponseField>
     <ResponseField name="results[].updateDate" type="string">Date the record was last updated, `YYYY-MM-DD`.</ResponseField>
+
+    <ResponseField name="results[].missingDataPoints" type="object[]">Requested data points the waterfall couldn't resolve, each with `type` (`email` or `phone`), `status` (`NOT_FOUND` or `BILLING_FAILED`), and `description`. Present only when the waterfall ran. See [Enrich Contacts](/api-reference/enrich/enrich-contacts) for details.</ResponseField>
 
     <ResponseField name="results[].error" type="object">
       Present instead of profile data when the lookup or reveal fails for this contact.
@@ -122,6 +124,22 @@ Each contact in the `contacts` array needs **one** of the following:
     <ResponseField name="resultsReturned" type="integer">Number of successful results.</ResponseField>
   </Expandable>
 </ResponseField>
+
+<ResponseField name="status" type="string">
+  Data Waterfall outcome for the request. Omitted when the waterfall didn't run. One of `completed`, `partial`, `halted`, `OUT_OF_CREDITS`, `PARTIAL_OUT_OF_CREDITS`.
+</ResponseField>
+
+<ResponseField name="statusDescription" type="string">
+  Human-readable text, present whenever `status` is set. Don't parse it - branch on `status` and `statusReason`.
+</ResponseField>
+
+<ResponseField name="statusReason" type="string">
+  Why a requested field is empty when the waterfall didn't run: `WATERFALL_NOT_CONFIGURED`, `WATERFALL_NOT_IN_PLAN`, or `WATERFALL_DISABLED`. When set, `status` is `partial`.
+</ResponseField>
+
+<Info>
+  Search and Enrich Contacts never returns a `job`. Only [Enrich Contacts](/api-reference/enrich/enrich-contacts) can hand off to an async Data Waterfall job.
+</Info>
 
 <Info>
   **Billing:** Two charges apply - one for the search (`api_search`) and one per revealed field.

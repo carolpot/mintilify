@@ -83,11 +83,42 @@ Each company in the `companies` array needs **at least one** of the following:
     <ResponseField name="results[].subIndustry" type="string" />
     <ResponseField name="results[].location" type="object">HQ location.</ResponseField>
     <ResponseField name="results[].additionalLocations" type="object[]">All other known company sites.</ResponseField>
-    <ResponseField name="results[].socialLinks" type="object">LinkedIn URL.</ResponseField>
+    <ResponseField name="results[].socialLinks" type="object">`linkedin`, `facebook`, and `x` URLs, plus `instagram`, `youtube`, and `tiktok` URL lists. Each is omitted when Lusha has no data for it.</ResponseField>
     <ResponseField name="results[].revenueRange" type="object">`min` and `max` revenue estimates.</ResponseField>
     <ResponseField name="results[].funding" type="object">Funding history, when available.</ResponseField>
     <ResponseField name="results[].technologies" type="string[]" />
     <ResponseField name="results[].businessModel" type="string[]" />
+    <ResponseField name="results[].alternativeName" type="string">Other name the company is known by.</ResponseField>
+    <ResponseField name="results[].alternativeDomains" type="string[]">Other domains the company uses.</ResponseField>
+    <ResponseField name="results[].companyOffering" type="string">Short description of what the company sells or does.</ResponseField>
+    <ResponseField name="results[].emailDomain" type="string">Primary domain used for company email addresses.</ResponseField>
+    <ResponseField name="results[].email" type="string">Company contact email address.</ResponseField>
+    <ResponseField name="results[].phone" type="string">Company phone number.</ResponseField>
+    <ResponseField name="results[].logoUrl" type="string">URL of the company logo.</ResponseField>
+    <ResponseField name="results[].additionalIndustries" type="object[]">Up to 2 secondary `industry` / `subIndustry` pairs.</ResponseField>
+    <ResponseField name="results[].specialities" type="string[]">Company specialities.</ResponseField>
+    <ResponseField name="results[].specialitiesRefactored" type="string[]">Normalized version of `specialities`.</ResponseField>
+    <ResponseField name="results[].keywords" type="string[]">Keywords associated with the company, normalized from specialities and description.</ResponseField>
+    <ResponseField name="results[].industryTags" type="string[]">Industry tags.</ResponseField>
+    <ResponseField name="results[].sicCodes" type="object[]">SIC codes, each with `code` and `description`.</ResponseField>
+    <ResponseField name="results[].naicsCodes" type="object[]">NAICS codes, each with `code` and `description`.</ResponseField>
+    <ResponseField name="results[].linkedinFollowers" type="number">LinkedIn follower count.</ResponseField>
+    <ResponseField name="results[].popularityTier" type="number">Popularity tier. Example: `1`</ResponseField>
+
+    <Info>
+      The fields below are returned only when you name them in `reveal`. They have the same shape as on [Enrich Companies](/api-reference/enrich/enrich-companies).
+    </Info>
+
+    <ResponseField name="results[].employeesByDepartment" type="object[]">Headcount by `department`, with `count`. Requires `employeesByDepartment`.</ResponseField>
+    <ResponseField name="results[].employeesByLocation" type="object[]">Headcount by `country` and `state`, with `count`. Requires `employeesByLocation`.</ResponseField>
+    <ResponseField name="results[].employeesBySeniority" type="object[]">Headcount by `seniority`, with `count`. Requires `employeesBySeniority`.</ResponseField>
+    <ResponseField name="results[].competitors" type="object[]">Competitor companies, each with `id`, `name`, and `domain`. Requires `competitors`.</ResponseField>
+    <ResponseField name="results[].intent" type="object">Intent data for the topics configured on your account. Requires `intent`.</ResponseField>
+    <ResponseField name="results[].estimatedAnnualItSpend" type="object">`value`, `currency`, and `valueUsd`. Requires `estimatedAnnualItSpend`.</ResponseField>
+    <ResponseField name="results[].monthlyWebsiteTraffic" type="object">`visits`, `momChangePercent`, and `month`. Requires `monthlyWebsiteTraffic`.</ResponseField>
+    <ResponseField name="results[].openJobs" type="object">`total`, `byDepartment`, `byLocation`, and `bySeniority` open-job counts. Each requires its own token: `openJobsTotal`, `openJobsByDepartment`, `openJobsByLocation`, `openJobsBySeniority`.</ResponseField>
+    <ResponseField name="results[].directParent" type="object">The company's immediate parent: `lushaCompanyId`, `name`, `domain`, and `hqCountry`. `null` when there is no known parent. Requires `directParent`.</ResponseField>
+    <ResponseField name="results[].ultimateParent" type="object">The company at the top of its ownership tree, same shape as `directParent`. Requires `ultimateParent`.</ResponseField>
 
     <ResponseField name="results[].error" type="object">
       Present instead of profile data when the lookup or enrich fails for this company.

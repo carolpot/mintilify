@@ -299,6 +299,21 @@ curl --request POST \
   `creditsCharged` and `resultsReturned` for this request.
 </ResponseField>
 
+<ResponseField name="tableWrite" type="object">
+  Present only when you pass `tableId` on the request. Summarizes what was written to the table. The rest of the response is unaffected even if the table write fails.
+
+  <Expandable title="properties">
+    <ResponseField name="tableId" type="string">The table that was written to. Example: `482910`</ResponseField>
+    <ResponseField name="added" type="integer">New entities added to the table by this call.</ResponseField>
+    <ResponseField name="alreadyPresent" type="integer">Entities from this call that were already in the table.</ResponseField>
+    <ResponseField name="columnsCreated" type="integer">Columns auto-created by this call, for example a Signals column created on first use.</ResponseField>
+    <ResponseField name="rowsProcessed" type="integer">Rows the column run touched as part of this call.</ResponseField>
+    <ResponseField name="rowsCharged" type="integer">Rows that incurred a credit charge.</ResponseField>
+    <ResponseField name="rowsAlreadyPaidInTable" type="integer">Rows already paid for in this table, which were not charged again.</ResponseField>
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this table write.</ResponseField>
+  </Expandable>
+</ResponseField>
+
 <Tip>
   **Billing:** Prospecting is charged per result via the `api_search` action. If you filter by `signals`, an additional charge applies per matched signal per result.
 </Tip>
