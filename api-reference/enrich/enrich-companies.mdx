@@ -231,10 +231,91 @@ POST https://api.lusha.com/v3/companies/enrich
       </Expandable>
     </ResponseField>
 
+    <ResponseField name="results[].companyOffering" type="string">
+      Short description of what the company sells or does. Example: `Cloud-based CRM software for small businesses`
+    </ResponseField>
+
+    <ResponseField name="results[].emailDomain" type="string">
+      Primary domain used for company email addresses. Example: `lusha.com`
+    </ResponseField>
+
+    <ResponseField name="results[].email" type="string">
+      Company contact email address. Example: `info@example.com`
+    </ResponseField>
+
+    <ResponseField name="results[].phone" type="string">
+      Company phone number. Example: `(480) 729-6394`
+    </ResponseField>
+
+    <ResponseField name="results[].logoUrl" type="string">
+      URL of the company logo.
+    </ResponseField>
+
+    <ResponseField name="results[].additionalIndustries" type="object[]">
+      Up to 2 secondary industry classifications beyond the primary `industry` and `subIndustry`.
+
+      <Expandable title="properties">
+        <ResponseField name="industry" type="string">Example: `Financial Services`</ResponseField>
+        <ResponseField name="subIndustry" type="string">Example: `Insurance`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].specialitiesRefactored" type="string[]">
+      Normalized version of `specialities`. Example: `["construction", "hvac", "plumbing"]`
+    </ResponseField>
+
+    <ResponseField name="results[].socialLinks" type="object">
+      Company social profiles. Each link is included automatically when Lusha holds it, and omitted when it doesn't.
+
+      <Expandable title="properties">
+        <ResponseField name="linkedin" type="string">Example: `https://www.linkedin.com/company/lushadata`</ResponseField>
+        <ResponseField name="facebook" type="string">Example: `https://www.facebook.com/lusha`</ResponseField>
+        <ResponseField name="x" type="string">X (formerly Twitter) profile URL. Example: `https://x.com/lusha`</ResponseField>
+        <ResponseField name="instagram" type="string[]">Instagram profile URLs. A company can have more than one.</ResponseField>
+        <ResponseField name="youtube" type="string[]">YouTube channel URLs.</ResponseField>
+        <ResponseField name="tiktok" type="string[]">TikTok profile URLs.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].estimatedAnnualItSpend" type="object">
+      Estimated annual IT spend. Present when `reveal` includes `estimatedAnnualItSpend`.
+
+      <Expandable title="properties">
+        <ResponseField name="value" type="number">Example: `500000`</ResponseField>
+        <ResponseField name="currency" type="string">Example: `USD`</ResponseField>
+        <ResponseField name="valueUsd" type="number">The value converted to USD. Example: `500000`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].monthlyWebsiteTraffic" type="object">
+      Monthly website visits. Present when `reveal` includes `monthlyWebsiteTraffic`.
+
+      <Expandable title="properties">
+        <ResponseField name="visits" type="number">Example: `128450`</ResponseField>
+        <ResponseField name="momChangePercent" type="number">Month-over-month change, in percent. Example: `4.3`</ResponseField>
+        <ResponseField name="month" type="string">Month the figure covers, `YYYY-MM`. Example: `2026-06`</ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].openJobs" type="object">
+      Open job posting counts. Each sub-field is present only when its `reveal` token was requested and data exists for it.
+
+      <Expandable title="properties">
+        <ResponseField name="total" type="integer">Total open job postings. Requires `openJobsTotal`. Example: `47`</ResponseField>
+        <ResponseField name="byDepartment" type="object[]">Counts by `department`. Requires `openJobsByDepartment`.</ResponseField>
+        <ResponseField name="byLocation" type="object[]">Counts by `location`. Requires `openJobsByLocation`.</ResponseField>
+        <ResponseField name="bySeniority" type="object[]">Counts by `seniority`. Requires `openJobsBySeniority`.</ResponseField>
+      </Expandable>
+    </ResponseField>
+
     <ResponseField name="results[].directParent" type="object">
       The company's immediate owner, one layer up. Present when `reveal` includes `directParent`.
 
       <Expandable title="properties">
+        <ResponseField name="lushaCompanyId" type="string">
+          Lusha company ID of the parent. Pass it to Enrich Companies to look up the parent's full profile.
+        </ResponseField>
+
         <ResponseField name="name" type="string">
           Example: `Lusha Holdings`
         </ResponseField>
@@ -253,6 +334,10 @@ POST https://api.lusha.com/v3/companies/enrich
       The top level of the company's global corporate tree. Present when `reveal` includes `ultimateParent`.
 
       <Expandable title="properties">
+        <ResponseField name="lushaCompanyId" type="string">
+          Lusha company ID of the parent. Pass it to Enrich Companies to look up the parent's full profile.
+        </ResponseField>
+
         <ResponseField name="name" type="string">
           Example: `Lusha Group`
         </ResponseField>
@@ -292,6 +377,21 @@ POST https://api.lusha.com/v3/companies/enrich
     <ResponseField name="resultsReturned" type="integer">
       Number of successful results.
     </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="tableWrite" type="object">
+  Present only when you pass `tableId` on the request. Summarizes what was written to the table. The rest of the response is unaffected even if the table write fails.
+
+  <Expandable title="properties">
+    <ResponseField name="tableId" type="string">The table that was written to. Example: `482910`</ResponseField>
+    <ResponseField name="added" type="integer">New entities added to the table by this call.</ResponseField>
+    <ResponseField name="alreadyPresent" type="integer">Entities from this call that were already in the table.</ResponseField>
+    <ResponseField name="columnsCreated" type="integer">Columns auto-created by this call, for example a Signals column created on first use.</ResponseField>
+    <ResponseField name="rowsProcessed" type="integer">Rows the column run touched as part of this call.</ResponseField>
+    <ResponseField name="rowsCharged" type="integer">Rows that incurred a credit charge.</ResponseField>
+    <ResponseField name="rowsAlreadyPaidInTable" type="integer">Rows already paid for in this table, which were not charged again.</ResponseField>
+    <ResponseField name="creditsCharged" type="integer">Credits charged for this table write.</ResponseField>
   </Expandable>
 </ResponseField>
 
