@@ -130,6 +130,43 @@ POST https://api.lusha.com/v3/contacts/enrich
       </Expandable>
     </ResponseField>
 
+    <ResponseField name="results[].linkedinFollowers" type="integer">
+      Number of followers on the contact's LinkedIn profile. Example: `1520`
+    </ResponseField>
+
+    <ResponseField name="results[].linkedinConnections" type="integer">
+      Number of connections on the contact's LinkedIn profile. Example: `500`
+    </ResponseField>
+
+    <ResponseField name="results[].profile" type="object">
+      Professional profile details from the contact's LinkedIn profile. Each list is omitted when Lusha has no data for it. Check the `has` array in your Search Contacts response (`skills`, `certifications`, `awards`, `courses`) to see what's available before enriching.
+
+      <Expandable title="properties">
+        <ResponseField name="skills" type="string[]">Skills listed on the profile. Example: `["Python", "Project Management"]`</ResponseField>
+        <ResponseField name="certifications" type="object[]">
+          <Expandable title="properties">
+            <ResponseField name="name" type="string">Certification name. Example: `AWS Certified Solutions Architect - Associate`</ResponseField>
+            <ResponseField name="authority" type="string">Issuing organization. Example: `Amazon Web Services`</ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="awards" type="object[]">
+          <Expandable title="properties">
+            <ResponseField name="title" type="string">Award title. Example: `Employee of the Year`</ResponseField>
+            <ResponseField name="date" type="string">Year the award was received. Example: `2019`</ResponseField>
+          </Expandable>
+        </ResponseField>
+        <ResponseField name="courses" type="object[]">
+          <Expandable title="properties">
+            <ResponseField name="name" type="string">Course name. Example: `Machine Learning`</ResponseField>
+          </Expandable>
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="results[].partialProfile" type="boolean">
+      Whether this is a partial profile. Search and Prospecting return partial profiles only when `options.includePartialProfiles` is `true`.
+    </ResponseField>
+
     <ResponseField name="results[].tags" type="object[]">
       Tags you've applied to this contact in Lusha.
 
