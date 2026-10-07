@@ -6,9 +6,31 @@ description: "All notable changes to the Lusha API and MCP. We follow semantic v
 All notable changes to the Lusha API and MCP are documented here. We follow semantic versioning.
 
 <Info>
-  **Current Version: 2.17.0**
+  **Current Version: 2.17.1**
   Status: Production · Released: October 2026 · Stability: Stable (Tables API is Beta)
 </Info>
+
+<Update label="2026-10-07" description="v2.17.1 - LinkedIn profile fields documented on contact enrichment" tags={["Enrichment"]}>
+
+**Fixed**
+
+**LinkedIn profile fields on contact enrichment** - `POST /v3/contacts/enrich` and `POST /v3/contacts/search-and-enrich` already returned these fields, but they were missing from the v3 docs:
+
+- `linkedinFollowers` and `linkedinConnections` - integer counts from the contact's LinkedIn profile
+- `profile.skills` - list of skills
+- `profile.certifications` - list of `{ name, authority }`
+- `profile.awards` - list of `{ title, date }`, where `date` is the year
+- `profile.courses` - list of `{ name }`
+- `partialProfile` - whether this is a partial profile
+
+Each `profile` list is omitted when Lusha has no data for it. Use the `has` array on Search Contacts to check availability before enriching. Behavior is unchanged - only the documentation was missing.
+
+**Notes**
+
+- These are the v3 names. v2 (`/v2/person`) returns the same data under different names and shapes (`linkedinFollowersCount`, `linkedinAwards`, and so on) - see the v2 reference
+- The data catalog now lists the v3 paths for these data points
+
+</Update>
 
 <Update label="2026-10-05" description="v2.17.0 - Data Waterfall: async enrich results and provenance" tags={["Enrichment"]}>
 

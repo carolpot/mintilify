@@ -86,6 +86,11 @@ Each contact in the `contacts` array needs **one** of the following:
     <ResponseField name="results[].jobTitle" type="object">Title, departments, and seniority.</ResponseField>
     <ResponseField name="results[].location" type="object">Country, state, city, continent, city-level coordinates (not street or neighborhood), and EU flag.</ResponseField>
 
+    <ResponseField name="results[].linkedinFollowers" type="integer">LinkedIn follower count.</ResponseField>
+    <ResponseField name="results[].linkedinConnections" type="integer">LinkedIn connection count.</ResponseField>
+    <ResponseField name="results[].profile" type="object">LinkedIn profile details: `skills` (strings), `certifications` (`name`, `authority`), `awards` (`title`, `date`), and `courses` (`name`). Each list is omitted when Lusha has no data for it. See [Enrich Contacts](/api-reference/enrich/enrich-contacts) for the full shape.</ResponseField>
+    <ResponseField name="results[].partialProfile" type="boolean">Whether this is a partial profile.</ResponseField>
+
     <ResponseField name="results[].emails" type="object[]">
       Present when `reveal` includes (or omits) `emails`. Each entry has `email`, `type`, `confidence`, and `updateDate`.
     </ResponseField>

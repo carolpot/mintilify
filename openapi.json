@@ -7785,6 +7785,85 @@
               }
             }
           },
+          "linkedinFollowers": {
+            "type": "integer",
+            "description": "Number of followers on the contact's LinkedIn profile.",
+            "example": 1520
+          },
+          "linkedinConnections": {
+            "type": "integer",
+            "description": "Number of connections on the contact's LinkedIn profile.",
+            "example": 500
+          },
+          "profile": {
+            "type": "object",
+            "description": "Professional profile details from the contact's LinkedIn profile. Each list is omitted when Lusha has no data for it. The `has` array on Search Contacts (`skills`, `certifications`, `awards`, `courses`) shows what's available before you enrich.",
+            "properties": {
+              "skills": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "Python",
+                  "Project Management"
+                ]
+              },
+              "certifications": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Certification name.",
+                      "example": "AWS Certified Solutions Architect - Associate"
+                    },
+                    "authority": {
+                      "type": "string",
+                      "description": "Issuing organization.",
+                      "example": "Amazon Web Services"
+                    }
+                  }
+                }
+              },
+              "awards": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "description": "Award title.",
+                      "example": "Employee of the Year"
+                    },
+                    "date": {
+                      "type": "string",
+                      "description": "Year the award was received.",
+                      "example": "2019"
+                    }
+                  }
+                }
+              },
+              "courses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Course name.",
+                      "example": "Machine Learning"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "partialProfile": {
+            "type": "boolean",
+            "description": "Whether this is a partial profile. Search and Prospecting return partial profiles only when `options.includePartialProfiles` is `true`."
+          },
           "updateDate": {
             "type": "string",
             "format": "date",
