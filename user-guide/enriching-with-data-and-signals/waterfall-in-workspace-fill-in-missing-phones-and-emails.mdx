@@ -1,0 +1,66 @@
+---
+title: "Waterfall in Workspace: fill in missing phones and emails"
+description: "How Waterfall completes missing work emails and phone numbers in your Workspace Contacts grid using external data vendors, and what it costs."
+---
+
+Waterfall in Workspace automatically completes missing work emails and phone numbers for your contacts, using trusted data vendors when Lusha's own database doesn't have the answer. Normally, when you search Lusha's database for a contact's work email or phone and Lusha doesn't have it, that field just stays empty. Waterfall solves that: with one click, it checks a sequence of external vendors for the missing piece of data and fills it in when a vendor confirms a match. You're charged only when a value is actually found - a miss costs you nothing.
+
+## Key concepts
+
+- **Waterfall** - Lusha's system for querying external data vendors, one after another, to fill a work email or phone that Lusha's own database doesn't have.
+- **Show** - the single button that reveals a contact's Lusha data and, in the same click, runs Waterfall on any missing work email or phone.
+- **Vendor columns** - two dedicated columns, **Work email vendor (Waterfall)** and **Phone vendor (Waterfall)**, that show which vendor supplied a Waterfall result. These stay blank when the value came from Lusha instead.
+- **Confirmed match** - a value a vendor actually found and returned. You're only charged credits for confirmed matches, never for a search that comes back empty.
+
+## Plan availability
+
+Waterfall in Workspace is available on paid plans, but must be enabled by an Admin or Manager. Once an Admin or Manager turns it on, it becomes available to all users in the workspace. If you aren't an Admin or Manager, ask one on your team to enable it.
+
+<CardGroup cols={2}>
+  <Card title="Enable Data Waterfall" icon="toggle-on" href="https://dashboard.lusha.com/account/waterfall">
+    Turn Waterfall on for your workspace.
+  </Card>
+  <Card title="Explore plans" icon="credit-card" href="https://www.lusha.com/pricing/">
+    Don't have a plan yet? See which plans include Data Waterfall.
+  </Card>
+</CardGroup>
+
+## Credits and billing
+
+Waterfall in Workspace uses the same pricing as Waterfall everywhere else in Lusha: 2 credits for a confirmed work email, 8 credits for a confirmed phone. You're charged only when a field is actually filled - a "not found" result never costs credits.
+
+Lusha's own data (when Lusha already has the value) is priced separately at the standard reveal price, and the hover preview always shows the combined total before you click.
+
+## How it works in Workspace
+
+Waterfall in Workspace lives in your Contacts grid, and it always checks Lusha's database first - vendors are only queried for whatever Lusha doesn't already have. You can trigger it three ways.
+
+### Per cell
+
+A single contact is missing a phone or work email, and that cell shows a **Show** button. Clicking it reveals Lusha's data and, if needed, runs Waterfall for that one field.
+
+<Note>
+Before you click, hover over the contact or the data point to see the price breakdown for that reveal. It shows whether each field is coming from Lusha or Waterfall and prices them accordingly, so you always know the cost upfront.
+</Note>
+
+### Next to the contact name
+
+One **Show** click reveals everything Lusha has on that contact and completes any missing phone or work email with Waterfall, all in one action. The hover preview adds up the combined cost - for example, a Lusha phone plus a Waterfall email.
+
+### Multi-select or whole table
+
+Select multiple contacts (or a full table) and click **Show** once to reveal Lusha data and complete every missing phone and work email across the selection. The price preview shows the Lusha price and the Waterfall price per data point, since results are a mix of both.
+
+While a search runs, the cell shows live progress ("Searching Prospeo...", "Searching ContactOut...") as Waterfall works through vendors in order. The first vendor to confirm a match wins, and the rest aren't queried for that field. If nothing turns up, the cell reads **Not found** and you're not charged.
+
+<Note>
+Waterfall in Workspace only affects the Contacts grid and CSV export. Data revealed here is not surfaced in Prospecting.
+</Note>
+
+<Warning>
+In Workspace filters, make sure the **Exclude contacts without details** toggle is off. When it's on, contacts missing a phone or email are filtered out of the table before Waterfall ever gets a chance to fill them in.
+</Warning>
+
+---
+
+You're all set! Once Waterfall is on, missing phones and emails are just one **Show** click away.

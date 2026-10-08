@@ -45,13 +45,19 @@ Have these values ready - you'll enter both into Okta during setup:
     - **Application username:** Email
   </Step>
   <Step title="Add attribute statements">
-    Scroll to **Attribute Statements** and add these three rows:
+    Scroll to **Attribute Statements** and add these three rows. Format is **Unspecified** for all three.
 
-    - Name: **email** | Format: Unspecified | Value: **user.email**
-    - Name: **firstName** | Format: Unspecified | Value: **user.firstName**
-    - Name: **lastName** | Format: Unspecified | Value: **user.lastName**
+    | Attribute Name (type this exactly) | Value (Okta expression) |
+    | --- | --- |
+    | `email` | `user.email` |
+    | `firstName` | `user.firstName` |
+    | `lastName` | `user.lastName` |
 
-    The attribute names must be lowercase and exactly as shown - Lusha's SAML parser is case-sensitive.
+    <Warning>
+    The **Name** column and the **Value** column are different fields in Okta. Type the Name exactly as shown in the left column - `firstName`, not `user.firstName`. The `user.` prefix belongs only in the Value field; it's Okta's reference to the user's profile property, not part of the attribute name. Sending `user.firstName` as the attribute Name is a common mistake and will cause Lusha not to receive the first and last name.
+    </Warning>
+
+    Attribute names must be lowercase and exactly as shown - Lusha's SAML parser is case-sensitive.
   </Step>
   <Step title="Finish the app setup">
     Click **Next**. Select **I'm an Okta customer adding an internal app**, then click **Finish**.
