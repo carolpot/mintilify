@@ -881,14 +881,26 @@
                 ]
               },
               {
-                "group": "CSV Enrichment",
+                "group": "Enrichment",
                 "icon": "file-csv",
                 "root": "user-guide/csv-enrichment/csv-enrichment",
                 "pages": [
-                  "user-guide/csv-enrichment/csv-enrichment",
-                  "user-guide/csv-enrichment/how-to-create-a-csv-file",
-                  "user-guide/csv-enrichment/csv-enrichment-how-matching-and-match-rates-work",
-                  "user-guide/csv-enrichment/crm-data-enrichment"
+                  {
+                    "group": "CSV Enrichment",
+                    "icon": "file-csv",
+                    "pages": [
+                      "user-guide/csv-enrichment/csv-enrichment",
+                      "user-guide/csv-enrichment/how-to-create-a-csv-file",
+                      "user-guide/csv-enrichment/csv-enrichment-how-matching-and-match-rates-work"
+                    ]
+                  },
+                  {
+                    "group": "CRM Enrichment",
+                    "icon": "arrows-rotate",
+                    "pages": [
+                      "user-guide/csv-enrichment/crm-data-enrichment"
+                    ]
+                  }
                 ]
               },
               {
