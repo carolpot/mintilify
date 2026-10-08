@@ -64,7 +64,7 @@ Waterfall works only on contacts Lusha already has. It does not search for new c
 Most providers answer inside the original Enrich call. Some providers process requests in the background instead, and return their results a short time later.
 
 - **MCP** handles this automatically - no extra steps needed.
-- **API** users get a `job` back in the Enrich response when an async provider is still working. Wait `job.retryAfter` seconds, then poll [Get Contacts Enrich Job](https://docs.lusha.com/api-reference/enrich/get-contacts-enrich-job) with the job ID until it completes, and merge the returned contacts into your results by `id`.
+- **API** users get a `job` back in the Enrich response when an async provider is still working. Wait `job.retryAfter` seconds, then poll [Get Contacts Enrich Job](/api-reference/enrich/get-contacts-enrich-job) with the job ID until it completes, and merge the returned contacts into your results by `id`.
 
 <Note>
   Polling for a job's results is free - a data point is only billed once, by whichever call delivers it.
