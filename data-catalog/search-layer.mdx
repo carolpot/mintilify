@@ -279,17 +279,17 @@ export const SearchLayerExplorer = () => {
         Showing {filtered.length} of {searchLayerFields.length} fields
       </p>
       <div style={{ overflowX: 'auto' }}>
-        <table style={{ tableLayout: 'fixed', width: '100%', minWidth: '1480px', fontSize: '0.82rem', borderCollapse: 'collapse' }}>
+        <table style={{ tableLayout: 'fixed', width: '100%', minWidth: '980px', fontSize: '0.82rem', borderCollapse: 'collapse' }}>
           <colgroup>
-            <col style={{ width: '150px' }} />
-            <col style={{ width: '300px' }} />
-            <col style={{ width: '90px' }} />
-            <col style={{ width: '90px' }} />
-            <col style={{ width: '170px' }} />
-            <col style={{ width: '220px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '100px' }} />
-            <col style={{ width: '240px' }} />
+            <col style={{ width: '11%' }} />
+            <col style={{ width: '26%' }} />
+            <col style={{ width: '8%' }} />
+            <col style={{ width: '8%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '15%' }} />
+            <col style={{ width: '8%' }} />
+            <col style={{ width: '8%' }} />
+            <col style={{ width: '14%' }} />
           </colgroup>
           <thead>
             <tr>
@@ -307,12 +307,12 @@ export const SearchLayerExplorer = () => {
           <tbody>
             {filtered.map((f) => (
               <tr key={`${f.category}-${f.field}`}>
-                <td style={{ whiteSpace: 'nowrap' }}><strong>{f.field}</strong></td>
+                <td style={{ overflowWrap: 'break-word' }}><strong>{f.field}</strong></td>
                 <td style={{ overflowWrap: 'break-word' }}>{f.description}</td>
-                <td style={{ whiteSpace: 'nowrap' }}>{f.entity}</td>
+                <td style={{ overflowWrap: 'break-word' }}>{f.entity}</td>
                 <td><Chip label={f.type} color={typeColors[f.type]} /></td>
                 <td><Chip label={f.category} color={categoryColors[f.category]} /></td>
-                <td style={{ overflowWrap: 'break-word' }}><code style={{ fontSize: '0.78rem', whiteSpace: 'nowrap' }}>{f.path}</code></td>
+                <td style={{ overflowWrap: 'break-word' }}><code style={{ fontSize: '0.78rem' }}>{f.path}</code></td>
                 <td><Chip label={f.dataType} color={dataTypeColors[f.dataType]} /></td>
                 <td><Chip label={f.refresh} color={refreshColors[f.refresh]} /></td>
                 <td>
