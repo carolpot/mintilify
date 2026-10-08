@@ -1,0 +1,115 @@
+---
+title: "The New CRM Data Enrichment"
+description: "How to set up CRM Data Enrichment workflows in Lusha to automatically update Salesforce or HubSpot records and enrich accounts with new contacts, using the single wallet credit system."
+---
+
+This is a rebuilt, newer version of Lusha's original CRM Data Enrichment feature. If your account is still on the legacy version, see [CRM Data Enrichment (Legacy)](/user-guide/csv-enrichment/crm-data-enrichment) instead - it stays accurate for accounts that haven't moved to one wallet credit system yet.
+
+CRM Data Enrichment keeps your Salesforce/HubSpot records current and adds new contacts to accounts you already own - without manual data entry. Set up a workflow once, and Lusha matches your CRM data against its own, shows you what changed, and lets you decide what gets pushed back.
+
+At launch, CRM Data Enrichment connects to Salesforce, Salesforce sandbox, and HubSpot.
+
+## Plan availability
+
+<Note>
+  **Beta notice**: CRM Data Enrichment is currently in beta for Premium and Enterprise accounts operating on a single wallet.
+</Note>
+
+Plan allocations and usage limits are structured as follows:
+
+| Plan | Active workflow limit | Processing cap (per run) |
+| --- | --- | --- |
+| Enterprise | Unlimited | 10,000 records |
+| Premium | Up to 3 active workflows | 10,000 records |
+
+## Before you start
+
+<Steps>
+  <Step title="Confirm you're an Admin">
+    You need to be an account Admin to set up or run a CRM Data Enrichment workflow.
+  </Step>
+  <Step title="Connect your CRM">
+    Connect Lusha to Salesforce/HubSpot from **Integrations** in the top navigation bar.
+  </Step>
+  <Step title="Map your fields">
+    In the **Field Mapping** tab, map the Lusha fields (emails, phone numbers) you want to sync, and turn on **Allow Override** so Lusha can update existing records.
+  </Step>
+</Steps>
+
+## The two workflow types
+
+CRM Data Enrichment covers two jobs:
+
+- **Update** - refreshes existing Salesforce leads, contacts, or accounts with current Lusha data.
+- **Enrich Accounts** - finds and adds net-new contacts at Salesforce accounts you already own, based on criteria you set.
+
+## Create a workflow
+
+<Steps>
+  <Step title="Open CRM Data Enrichment">
+    Open **CRM Data Enrichment** from the navigation bar and click **+ New workflow**.
+  </Step>
+  <Step title="Select your CRM and workflow type">
+    Select your CRM: Salesforce, Salesforce sandbox, or HubSpot. Choose your workflow type: Update or Enrich Accounts.
+
+    <Warning>
+      Changing the type after this step erases anything you've already set up.
+    </Warning>
+  </Step>
+  <Step title="Filter your CRM records">
+    Choose the record type, then target them by most recent records, a query on CRM fields, a CRM report, or (Enrich Accounts only) all accounts.
+  </Step>
+  <Step title="Complete the flow-specific steps">
+    Continue with the flow-specific steps below, then set run settings (frequency, an optional credit limit per run, whether to skip records exported in earlier runs, and which details you're paying to reveal) and save.
+  </Step>
+</Steps>
+
+### Setting up an Update workflow
+
+1. Choose which details to refresh - email, phone, both, email only, or phone only.
+2. Set run settings: how often the workflow runs and an optional credit limit per run.
+3. Choose whether to skip records already exported in earlier runs, and which details (email, phone) you're paying to reveal.
+
+### Setting up an Enrich Accounts workflow
+
+1. Add prospecting filters: location, department, seniority, job title, and which contact details to find.
+2. Set export settings: export as Contacts or Leads, how to handle duplicates, and up to 50 new contacts per account.
+3. Set run settings: how often the workflow runs, an optional credit limit per run, whether to skip records already exported in earlier runs, and which details you're paying to reveal.
+
+<Note>
+  Salesforce reports with row grouping aren't supported.
+</Note>
+
+## Reviewing results and pushing to Salesforce
+
+Every workflow run - Update or Enrich Accounts - follows the same review step:
+
+1. When a run finishes, its results appear in a table on your CRM Data Enrichment page - no email required.
+2. Review what's new or changed before anything is pushed anywhere.
+3. Decide whether to push to Salesforce or leave the results in the table. Nothing is pushed automatically.
+
+<Note>
+  Each workflow run is capped at 10,000 records. If more records match, the run stops after 10,000 rather than blocking setup - split larger sets into multiple workflows using filters or a CRM report.
+</Note>
+
+## Credits
+
+Setting up and running a CRM Data Enrichment workflow is free. You're only charged when you push results to Salesforce.
+
+| Action | Cost |
+| --- | --- |
+| Setting up or running a workflow (before pushing) | Free |
+| Pushing a row with new data to Salesforce | 1 credit per row |
+| Pushing a row with nothing new to add | Free - not charged |
+| Revealing an email or phone number as part of a push | Additional credits on top of the push cost - 1 credit per email and 5 credits per phone number revealed, based on your Run settings and plan |
+
+Before you confirm a push, Lusha shows you the estimated credits for that run and your current credit balance.
+
+- If you set a credit limit per run, the run stops automatically once it's reached.
+- If your account runs out of credits mid-run, the run stops and you can see which records were left unprocessed.
+
+<Note>
+  Exporting results to CSV isn't available in this version. Results stay in the in-app table, and only pushing to Salesforce is charged. On-demand, credit-charged CSV export is planned for a later phase.
+</Note>
+
+You're all set! Your workflow will keep running on schedule, and every result lands in your table for you to review before it touches Salesforce.
