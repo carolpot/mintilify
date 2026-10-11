@@ -461,3 +461,83 @@ body:has(.lp-root) #footer > div {
 body:has(.lp-root) #footer [class*="gap-y-24"] {
   row-gap: 0 !important;
 }
+
+/*
+ * Data tables (.kh-table)
+ *
+ * Shared styling for hand-built <table> components (data-catalog explorers
+ * and any future ones). Pair with `mode: "wide"` in the page frontmatter.
+ *
+ * - table-layout: auto lets content decide column widths, so no column is
+ *   squeezed into an unreadable sliver (the old fixed/percentage layouts did).
+ * - Every column gets a readable minimum width via a modifier class on its
+ *   <th> / <td> (see .kh-col-* below); the table only scrolls sideways as a
+ *   last resort on narrow screens, never inside a clipped inner box.
+ * - Inline <code> wraps at spaces only, so endpoints and paths stay whole.
+ */
+.kh-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/*
+ * The article column is ~650px even with `mode: "wide"` in this theme, far
+ * too narrow for 8-10 column tables. On desktop, let the table break out of
+ * the column, centred on it, up to 1100px but never under the sidebar.
+ */
+@media (min-width: 1024px) {
+  .kh-table-wrap {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1100px, calc(100vw - 22rem));
+  }
+}
+
+.kh-table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.kh-table th,
+.kh-table td {
+  padding: 0.65rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.kh-table th {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.kh-table td code {
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  font-size: 0.78rem;
+}
+
+/* Long unbroken tokens (JSON paths) may wrap anywhere rather than overflow. */
+.kh-table td code.kh-break {
+  overflow-wrap: anywhere;
+}
+
+.kh-table .kh-chip {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.kh-table .kh-nowrap { white-space: nowrap; }
+.kh-table .kh-col-sm { min-width: 3.5rem; }
+.kh-table .kh-col-md { min-width: 6rem; }
+.kh-table .kh-col-lg { min-width: 10rem; }
+.kh-table .kh-col-xl { min-width: 14rem; }

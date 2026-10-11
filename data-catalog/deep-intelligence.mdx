@@ -1,6 +1,7 @@
 ---
 title: "Deep Intelligence"
 description: "Three recommendation engines, a Buying Committee suite, and three predictive models in the Lusha v3 API, with coverage by region, endpoints, and platforms."
+mode: "wide"
 ---
 
 Deep Intelligence pairs your data with AI to deliver recommendations, buying committee identification, and predictive scores tailored to your ICP - three recommendation engines, a Buying Committee suite, and three predictive models, all available through the v3 API.
@@ -45,13 +46,6 @@ export const DeepIntelligenceExplorer = () => {
     background: 'var(--background, transparent)',
   }
 
-  const coverageCell = (feature, value) => {
-    if (!feature.coverageConfirmed) {
-      return <span style={{ opacity: 0.6 }}>Not yet published</span>
-    }
-    return value
-  }
-
   return (
     <div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
@@ -76,35 +70,46 @@ export const DeepIntelligenceExplorer = () => {
       <p style={{ fontSize: '0.85rem', opacity: 0.7, margin: '0 0 0.5rem' }}>
         Showing {filtered.length} of {deepIntelligenceFeatures.length} features
       </p>
-      <div style={{ overflowX: 'auto' }}>
-        <table>
+      <div className="kh-table-wrap">
+        <table className="kh-table">
           <thead>
             <tr>
-              <th>Feature</th>
-              <th>Group</th>
-              <th>Description</th>
-              <th>Live on</th>
-              <th>Planned</th>
-              <th>Endpoint</th>
-              <th>Coverage (Global)</th>
-              <th>NA</th>
-              <th>EMEA</th>
-              <th>APAC</th>
+              <th className="kh-col-md">Feature</th>
+              <th className="kh-col-xl">Description</th>
+              <th className="kh-col-md">Live on</th>
+              <th className="kh-col-md">Planned</th>
+              <th className="kh-col-lg">Endpoint</th>
+              <th className="kh-col-sm">Global</th>
+              <th className="kh-col-sm">NA</th>
+              <th className="kh-col-sm">EMEA</th>
+              <th className="kh-col-sm">APAC</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((f) => (
               <tr key={f.feature}>
-                <td><strong>{f.feature}</strong></td>
-                <td>{f.group}</td>
+                <td>
+                  <strong>{f.feature}</strong>
+                  <div style={{ fontSize: '0.78rem', opacity: 0.65 }}>{f.group}</div>
+                </td>
                 <td>{f.description}</td>
                 <td>{f.live.join(', ')}</td>
                 <td>{f.planned.length ? f.planned.join(', ') : '-'}</td>
-                <td><code>{f.endpoint}</code></td>
-                <td>{coverageCell(f, f.coverage.global)}</td>
-                <td>{coverageCell(f, f.coverage.na)}</td>
-                <td>{coverageCell(f, f.coverage.emea)}</td>
-                <td>{coverageCell(f, f.coverage.apac)}</td>
+                <td>
+                  {f.endpoint.split(', ').map((e) => (
+                    <div key={e}><code>{e}</code></div>
+                  ))}
+                </td>
+                {f.coverageConfirmed ? (
+                  <>
+                    <td>{f.coverage.global}</td>
+                    <td>{f.coverage.na}</td>
+                    <td>{f.coverage.emea}</td>
+                    <td>{f.coverage.apac}</td>
+                  </>
+                ) : (
+                  <td colSpan={4} style={{ opacity: 0.6 }}>Not yet published</td>
+                )}
               </tr>
             ))}
           </tbody>

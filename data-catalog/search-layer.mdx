@@ -190,17 +190,8 @@ export const Chip = ({ label, color }) => {
   const c = color || '#6B7280'
   return (
     <span
-      style={{
-        display: 'inline-block',
-        padding: '0.15rem 0.6rem',
-        borderRadius: '999px',
-        fontSize: '0.78rem',
-        fontWeight: 500,
-        color: c,
-        background: `${c}1a`,
-        border: `1px solid ${c}40`,
-        whiteSpace: 'nowrap',
-      }}
+      className="kh-chip"
+      style={{ color: c, background: `${c}1a`, border: `1px solid ${c}40` }}
     >
       {label}
     </span>
@@ -278,41 +269,30 @@ export const SearchLayerExplorer = () => {
       <p style={{ fontSize: '0.85rem', opacity: 0.7, margin: '0 0 0.5rem' }}>
         Showing {filtered.length} of {searchLayerFields.length} fields
       </p>
-      <div style={{ overflowX: 'auto' }}>
-        <table style={{ tableLayout: 'fixed', width: '100%', minWidth: '980px', fontSize: '0.82rem', borderCollapse: 'collapse' }}>
-          <colgroup>
-            <col style={{ width: '11%' }} />
-            <col style={{ width: '26%' }} />
-            <col style={{ width: '8%' }} />
-            <col style={{ width: '8%' }} />
-            <col style={{ width: '12%' }} />
-            <col style={{ width: '15%' }} />
-            <col style={{ width: '8%' }} />
-            <col style={{ width: '8%' }} />
-            <col style={{ width: '14%' }} />
-          </colgroup>
+      <div className="kh-table-wrap">
+        <table className="kh-table">
           <thead>
             <tr>
-              <th style={{ whiteSpace: 'nowrap' }}>Field</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Description</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Entity</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Type</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Category</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Path</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Data type</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Refresh</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Platform</th>
+              <th className="kh-col-md">Field</th>
+              <th className="kh-col-xl">Description</th>
+              <th className="kh-col-sm">Entity</th>
+              <th className="kh-col-sm">Type</th>
+              <th className="kh-col-md">Category</th>
+              <th className="kh-col-lg">Path</th>
+              <th className="kh-col-sm">Data type</th>
+              <th className="kh-col-sm">Refresh</th>
+              <th className="kh-col-lg">Platform</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((f) => (
               <tr key={`${f.category}-${f.field}`}>
-                <td style={{ overflowWrap: 'break-word' }}><strong>{f.field}</strong></td>
-                <td style={{ overflowWrap: 'break-word' }}>{f.description}</td>
-                <td style={{ overflowWrap: 'break-word' }}>{f.entity}</td>
+                <td><strong>{f.field}</strong></td>
+                <td>{f.description}</td>
+                <td>{f.entity}</td>
                 <td><Chip label={f.type} color={typeColors[f.type]} /></td>
                 <td><Chip label={f.category} color={categoryColors[f.category]} /></td>
-                <td style={{ overflowWrap: 'break-word' }}><code style={{ fontSize: '0.78rem' }}>{f.path}</code></td>
+                <td><code className="kh-break">{f.path}</code></td>
                 <td><Chip label={f.dataType} color={dataTypeColors[f.dataType]} /></td>
                 <td><Chip label={f.refresh} color={refreshColors[f.refresh]} /></td>
                 <td>
