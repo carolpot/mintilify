@@ -1,0 +1,61 @@
+---
+title: "How to use Lusha in Perplexity"
+description: "Connect Lusha to Perplexity and pull verified contact and company data into Search and Computer using plain-English requests."
+---
+
+<Info>
+**Availability:** The Lusha connector for Perplexity is rolling out to Perplexity's Connectors directory. If you don't see Lusha listed yet in your Perplexity account, check back soon - availability depends on Perplexity's own rollout schedule.
+</Info>
+
+Lusha is available as a native connector in Perplexity, giving Perplexity **Pro**, **Max**, and **Enterprise** users direct access to verified B2B contact and company data inside Search and Computer.
+
+Once connected, you can ask Perplexity for people and companies in natural language - for example, prospecting, account research, or enrichment - and get verified phone numbers, emails, and company details back in-thread, without switching tools.
+
+## Before you start, you will need
+
+- A Perplexity account on a paid plan (Pro, Max, or Enterprise).
+- A Lusha account with available credits.
+
+<Note>
+Connecting uses OAuth, the same sign-in flow as any other Lusha MCP client. You don't need an Admin or Manager role to connect your own account.
+</Note>
+
+## Connect Lusha to Perplexity
+
+<Steps>
+  <Step title="Open Perplexity Connectors">
+    In Perplexity, go to your connectors settings and search for **Lusha**.
+  </Step>
+  <Step title="Connect Lusha">
+    Click **Connect** next to the Lusha listing.
+  </Step>
+  <Step title="Sign in and approve permissions">
+    Sign in to your Lusha account and approve the requested permissions. If you don't have a Lusha account yet, sign up before returning to Perplexity.
+  </Step>
+  <Step title="Start asking Perplexity for contacts and companies">
+    Use Search or Computer as you normally would and include what you're looking for - Perplexity calls Lusha automatically when your request needs contact or company data.
+  </Step>
+</Steps>
+
+## Example requests
+
+- "Find VPs of Sales at fintech companies in New York and give me their phone numbers."
+- "Who is the CFO at Acme, and what's their email?"
+- "Research this company and find the right marketing contact to reach out to."
+
+## Credits and usage
+
+Every request that reveals a phone number or email uses Lusha credits from your account's credit pool, the same as any other connected AI client.
+
+Check your remaining balance any time at [Lusha Analytics](https://dashboard.lusha.com/insights), filtered by **Source → API** to see usage from Perplexity and other MCP clients.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Lusha MCP Server" href="/user-guide/mcp/lusha-model-context-protocol-mcp-server">
+    Full technical setup, requirements, and tool details for the Lusha MCP Server.
+  </Card>
+  <Card title="Using Lusha inside LLMs" href="/user-guide/mcp/using-lusha-inside-llms">
+    General tips for getting the most out of Lusha across connected AI clients.
+  </Card>
+</CardGroup>

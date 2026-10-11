@@ -1235,6 +1235,7 @@
                       "user-guide/mcp/lusha-model-context-protocol-mcp-server",
                       "user-guide/mcp/using-lusha-inside-llms",
                       "user-guide/mcp/how-to-use-the-lusha-plugin-for-claude",
+                      "user-guide/mcp/how-to-use-lusha-in-perplexity",
                       "user-guide/mcp/lusha-talent-sourcing-plugin"
                     ]
                   }
