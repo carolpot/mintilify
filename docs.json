@@ -898,6 +898,7 @@
                     "group": "CRM Enrichment",
                     "icon": "arrows-rotate",
                     "pages": [
+                      "user-guide/crm-enrichment/new-crm-data-enrichment",
                       "user-guide/crm-enrichment/crm-data-enrichment"
                     ]
                   }
