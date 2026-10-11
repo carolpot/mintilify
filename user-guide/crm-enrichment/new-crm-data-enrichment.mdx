@@ -1,0 +1,128 @@
+---
+title: "The New CRM Data Enrichment"
+description: "How to set up CRM Data Enrichment workflows in Lusha to automatically update Salesforce or HubSpot records and enrich accounts with new contacts, using the single wallet credit system."
+---
+
+This is a rebuilt, newer version of Lusha's original CRM Data Enrichment feature. If your account is still on the legacy version, see [CRM Data Enrichment (Legacy)](/user-guide/crm-enrichment/crm-data-enrichment) instead - it stays accurate for accounts that haven't moved to one wallet credit system yet.
+
+CRM Data Enrichment keeps your Salesforce/HubSpot records current and adds new contacts to accounts you already own - without manual data entry. Set up a workflow once, and Lusha matches your CRM data against its own, shows you what changed, and lets you decide what gets pushed back.
+
+At launch, CRM Data Enrichment connects to Salesforce, Salesforce sandbox, and HubSpot. More CRMs will follow.
+
+<Tip>
+  **Beta notice**: This functionality is rolling out gradually to beta accounts and might not be accessible to every registered beta user at this stage.
+</Tip>
+
+## Plan availability
+
+<Note>
+  **Beta notice**: CRM Data Enrichment is currently in beta for Premium and Enterprise accounts operating on a single wallet.
+</Note>
+
+Plan allocations and usage limits are structured as follows:
+
+| Plan | Active workflow limit | Processing cap (per run) |
+| --- | --- | --- |
+| Enterprise | Unlimited | 10,000 records |
+| Premium | Up to 3 active workflows | 10,000 records |
+
+## Before you start
+
+<Steps>
+  <Step title="Confirm access">
+    Admins can set up and run CRM Data Enrichment workflows, and can approve other users to do the same.
+  </Step>
+  <Step title="Connect your CRM">
+    Connect Lusha to Salesforce/HubSpot from **Integrations** in the top navigation bar.
+  </Step>
+  <Step title="Map your fields">
+    In the **Field Mapping** tab, map the Lusha fields (emails, phone numbers) you want to sync, and turn on **Allow Override** so Lusha can update existing records.
+  </Step>
+</Steps>
+
+## The two workflow types
+
+CRM Data Enrichment covers two jobs:
+
+- **Update** - refreshes existing Salesforce leads, contacts, or accounts with current Lusha data.
+- **Enrich Accounts** - finds and adds net-new contacts at Salesforce accounts you already own, based on criteria you set.
+
+<Note>
+  A quick glossary: **Contacts** are people already linked to an account in your CRM. **Leads** are people not yet converted to a contact. **Accounts** are the companies in your CRM - in Enrich Accounts, these are the companies Lusha searches for new contacts.
+</Note>
+
+## Create a workflow
+
+<Steps>
+  <Step title="Open CRM Data Enrichment">
+    Go to **Enrichment > CRM enrichment** in the navigation (next to CSV enrichment) and click **Create workflow**.
+  </Step>
+  <Step title="Select your CRM">
+    Select your CRM: Salesforce, Salesforce (Sandbox), or HubSpot - all three are live in the product as of October 8, 2026.
+  </Step>
+  <Step title="Choose your enrichment type">
+    Choose your enrichment type: **Enrich your existing accounts with new contacts and leads** (Enrich Accounts) or **Update your leads, contacts and accounts** (Update) - these are the exact in-product option labels.
+
+    <Warning>
+      Changing the workflow type partway through erases what you've set up so far - you'll be asked to confirm first.
+    </Warning>
+  </Step>
+  <Step title="Complete the flow-specific steps">
+    Continue with the flow-specific steps below - filtering your records, contact filters, export settings (Enrich Accounts only), and run settings - then save. Update takes 5 steps in total; Enrich Accounts takes 6. Each step opens once you save the one before it, and you see the estimated credits before you save.
+  </Step>
+</Steps>
+
+### Setting up an Update workflow
+
+1. **Filter your records**: choose the object type (Contact, Lead, or Account), then choose how to target them - **Most recent contacts** (set a number, recommended), **Build a query**, **Use a report**, or **All contacts**. Lusha shows a live count of matching records, with a **Preview** option.
+2. **Contact filters**: choose which details a contact must already have for Lusha to enrich it - **Email or phone**, **Email and phone**, **Email only**, or **Phone only**.
+3. **Run settings**: choose how often the workflow runs (**One-time**, **Daily**, **Weekly**, or **Monthly**), an optional credit limit per run, and which details you pay for - **Emails and phone numbers**, **Emails only**, or **Phone numbers only** (see Credits below for pricing). Turn on **Skip records exported in earlier runs** so each run only exports records it hasn't exported before, and you don't pay twice for the same record.
+
+### Setting up an Enrich Accounts workflow
+
+1. **Filter your records**: choose how to target accounts - **Most recent accounts** (set a number, recommended), **Build a query**, **Use a report**, or **All accounts**.
+2. **Contact filters**: by default Lusha finds all contacts at these accounts, or click **+ Add prospecting filters** to narrow by contact location, department, seniority, job title, or contact details. Then set export settings: export as Contacts or Leads, choose what happens if a duplicate is detected (**Keep the original** or **Update the original**), and set the maximum new contacts exported per account (up to 50).
+3. **Run settings**: choose how often the workflow runs (**One-time**, **Daily**, **Weekly**, or **Monthly**), an optional credit limit per run, and which details you pay for - **Emails and phone numbers**, **Emails only**, or **Phone numbers only** (see Credits below for pricing). Turn on **Skip records exported in earlier runs** so each run only exports records it hasn't exported before, and you don't pay twice for the same record.
+
+<Note>
+  Salesforce reports with row grouping aren't supported.
+</Note>
+
+## Reviewing results and pushing to CRM
+
+How results are reviewed depends on the run type.
+
+- **One-time runs**: review the results in Lusha and decide whether to push them to your CRM.
+- **Recurring runs**: each run pushes to your CRM automatically once you've approved the schedule. Pause the workflow at any time to stop it.
+
+Open **Last 5 runs** on any workflow to see the date, records matched, records enriched, and credits used for each recent run - no email or notification is sent when a run ends.
+
+<Note>
+  Each workflow run is capped at 10,000 records. If more records match, the run stops after 10,000 rather than blocking setup - split larger sets into multiple workflows using filters or a CRM report.
+</Note>
+
+## Credits
+
+Setting up and running a workflow is free. You use credits only when results are pushed to your CRM: 1 credit for each row pushed that has new data, plus credits for revealing emails or phone numbers based on the option you choose in Run settings. Rows with nothing new to add aren't charged.
+
+| Action | Cost |
+| --- | --- |
+| Setting up or running a workflow | Free |
+| Emails only | 1 credit per contact |
+| Phone numbers only | 5 credits per contact |
+| Emails and phone numbers | Up to 6 credits per contact |
+
+Before you confirm a push, Lusha shows you the estimated credits for that run and your current credit balance.
+
+- If you set a credit limit per run, the run stops automatically once it's reached.
+- If your account runs out of credits mid-run, the run stops and you can see which records were left unprocessed.
+
+<Note>
+  You can download a CSV of the results on request from the workflow results - it's no longer sent automatically by email.
+</Note>
+
+## Managing your workflows
+
+You can find all your workflows under **Enrichment > CRM enrichment**. Each row shows the workflow name, CRM, flow type, creator, schedule, status, object type, credits used, records matched in the last run, and total enriched. From the row menu you can view enriched records, edit the workflow, duplicate it, run it again outside its schedule, pause or resume it, or delete it (records already written to your CRM stay as they are). Open **Last 5 runs** on any workflow for the date, records matched, records enriched, and credits used on each recent run.
+
+You're all set! One-time runs wait in your table for you to review and push; recurring runs keep running on schedule and push automatically.
