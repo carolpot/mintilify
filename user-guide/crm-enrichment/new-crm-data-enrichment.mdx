@@ -117,7 +117,9 @@ Before you confirm a push, Lusha shows you the estimated credits for that run an
 - If you set a credit limit per run, the run stops automatically once it's reached.
 - If your account runs out of credits mid-run, the run stops and you can see which records were left unprocessed.
 
-![Screenshot 2026 10 12 At 12 25 41](/images/Screenshot-2026-10-12-at-12.25.41.png "Screenshot 2026 10 12 At 12 25 41")
+<Frame>
+  <img src="/images/user-guide/crm-enrichment/run-settings-credit-options.png" alt="Run settings step with Emails and phone numbers selected and an estimated cost of 780 credits for the run" />
+</Frame>
 
 <Note>
   You can download a CSV of the results on request from the workflow results - it's no longer sent automatically by email.
@@ -131,7 +133,9 @@ You can find all your workflows under **Enrichment > CRM enrichment**. From the 
 
 Each workflow row gives you a quick status snapshot. 
 
-![Screenshot 2026 10 12 At 12 33 22](/images/Screenshot-2026-10-12-at-12.33.22-1.png "Screenshot 2026 10 12 At 12 33 22")
+<Frame>
+  <img src="/images/user-guide/crm-enrichment/workflow-table-row.png" alt="CRM data enrichment workflow row showing columns for CRM, flow type, creator, schedule, status, CRM object type, credits used, matched, and total enriched" />
+</Frame>
 
 Here's what each column means:
 
@@ -158,12 +162,9 @@ Hover the info icon next to **Matched (last run)** to see which CRM object type 
 
 Hover the info icon next to **Total enriched** to see a per-field breakdown of what was added or updated across the enriched records - for example, how many got a new email, phone, title, first name, last name, or department. A record counts toward **Total enriched** if it received a match on at least one of these fields, so the field totals can each be lower than (or equal to) the **Total enriched** number.
 
-<img
-  src="/images/Screenshot-2026-10-12-at-12.33.42.png"
-  alt="Screenshot 2026 10 12 At 12 33 42"
-  title="Screenshot 2026 10 12 At 12 33 42"
-  className="mx-auto"
-/>
+<Frame>
+  <img src="/images/user-guide/crm-enrichment/total-enriched-tooltip.png" alt="Total enriched hover tooltip showing a per-field breakdown: 4 emails, 2 phones, and 5 each for title, last name, first name, and department" />
+</Frame>
 
 Taking the example above - Out of 5 contacts enriched, 4 included email addresses, 2 included phone numbers, and all 5 were updated with first name, last name, title, and department.
 
@@ -173,6 +174,8 @@ Taking the example above - Out of 5 contacts enriched, 4 included email addresse
   - **Duplicate workflow:** Create a copy of this workflow.
   - **Re-run workflow:** Run the workflow again (ideal for one-time tasks)
 
-![Screenshot 2026 10 12 At 14 23 12](/images/Screenshot-2026-10-12-at-14.23.12.png "Screenshot 2026 10 12 At 14 23 12")
+<Frame>
+  <img src="/images/user-guide/crm-enrichment/workflow-row-menu.png" alt="Workflow row's three-dot menu showing Delete, Duplicate, and Run again options" />
+</Frame>
 
 You're all set! One-time runs wait in your table for you to review and push; recurring runs keep running on schedule and push automatically.
