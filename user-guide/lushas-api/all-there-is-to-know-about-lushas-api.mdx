@@ -79,6 +79,18 @@ See [Signal Score and ICP Fit Score](/user-guide/ai-recommendations/signal-score
 
 For full parameter reference, see the [Signals API documentation](/signals/overview).
 
+## ICP Fit Score
+
+ICP Fit Score measures how closely a contact or company matches the Account Criteria and Persona Criteria in one of your Target Profiles. Previously available only in Recommendations, it now works on any list - bring your own contacts or companies (a CRM export, a CSV, or prospecting results) and score them against 1-3 of your Target Profiles, or against all of your ICPs.
+
+Each row gets a fit score from 0-1 plus the Target Profile it matches best.
+
+<Note>
+Cost is 1 credit per contact or company, regardless of how many profiles it's scored against - a score of 0 is still a real answer and is charged. Up to 100 contacts or companies per call.
+</Note>
+
+ICP Fit Score pairs with Signal Score to make up the in-app Lead Score. See [Signal Score and ICP Fit Score](/user-guide/ai-recommendations/signal-score-and-icp-fit-score) for how the scores combine, and the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) article if you want to build a Target Profile directly in an MCP conversation before scoring.
+
 ## Credit usage API
 
 Returns current credit consumption by type. Rate limit: 5 requests per minute.

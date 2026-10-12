@@ -41,7 +41,17 @@ See the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-serv
 
 ICP Fit Score measures how closely a contact or company matches the Account Criteria and Persona Criteria in your [Target Profile](/user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations). The more precisely your Target Profile is configured, the more accurate the fit score.
 
-ICP Fit Score is available on the Recommendations Home table and in Workspace today. It is not yet available via the API or MCP.
+### Where ICP Fit Score is available
+
+| Surface | Availability |
+| --- | --- |
+| Recommendations Home table | Live - shown today |
+| Workspace | Live - available today |
+| API & MCP | Live - score any contact or company list you bring (a CRM export, a CSV, or prospecting results), not just Recommendations |
+
+Via API and MCP, you bring a list and pick 1-3 of your Target Profiles (recommended) or ask to run it against all of your ICPs. Each contact or company gets a fit score from 0-1 plus the Target Profile it matches best. Cost is 1 credit per contact or company, regardless of how many profiles it's scored against - a score of 0 is still a real answer and is charged. Up to 100 contacts or companies per call.
+
+If you don't have a Target Profile yet, you can build one directly in the MCP conversation, then score your list against it without leaving MCP - see the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) article for details.
 
 See [ICP Hub: Setup, Scoring, and Recommendations](/user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations) for the full guide to Target Profiles, Inclusion Rules, and Exclusion Rules.
 
