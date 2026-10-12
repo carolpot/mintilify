@@ -40,7 +40,7 @@ Credits are charged based on the type of data revealed and the feature used. Use
 | **Workspace** | Signals enrichment (signal found) | 1 credit per signal detected |
 | **Workspace** | Signals enrichment (no signal found) | 0 credits |
 | **Workspace** | CSV export | 1 credit per 25 rows |
-| **Workspace** | CRM export (push to Salesforce / HubSpot) | 1 credit per export |
+| **Workspace** | CRM export (push to Salesforce / HubSpot) | 1 credit per changed row |
 | **Workspace** | Lusha Data columns | 0 credits |
 | **Workspace** | CRM columns (live Salesforce field values) | 0 credits |
 | **Workspace** | Waterfall - confirmed work email | 2 credits per contact |
@@ -95,6 +95,7 @@ Workspace introduces credit events beyond standard reveals:
 * **AI Data enrichment charges per cell** - a row with 3 AI Data columns costs 3 credits to enrich, not 1.
 * **Signals enrichment only charges for populated cells** - if no signal is detected, that cell is free.
 * **CSV export credits are separate from reveal credits** - exporting a table you've already revealed still costs 1 credit per 25 rows.
+* **CRM export charges per changed row, not per job** - a row already matching what's in your CRM isn't charged, so a 500-row export where 50 rows actually changed costs 50 credits, not 500 or 1.
 * **Signals are table-scoped** - running a signal search for the same contact in two different Workspace tables counts as two separate charges.
 * **Waterfall only charges for confirmed matches** - you pay 2 credits for a confirmed work email or 8 credits for a confirmed phone number; a "not found" result is always free. See [Waterfall in Workspace](/user-guide/enriching-with-data-and-signals/waterfall-in-workspace-fill-in-missing-phones-and-emails) for the full walkthrough.
 
