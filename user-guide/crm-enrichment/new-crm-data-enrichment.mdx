@@ -58,7 +58,7 @@ CRM Data Enrichment covers two jobs:
     Go to **Enrichment > CRM enrichment** in the navigation (next to CSV enrichment) and click **Create workflow**.
   </Step>
   <Step title="Select your CRM">
-    Select your CRM: Salesforce, Salesforce (Sandbox), or HubSpot - all three are live in the product as of October 8, 2026.
+    Select your CRM: Salesforce, Salesforce (Sandbox), or HubSpot.
   </Step>
   <Step title="Choose your enrichment type">
     Choose your enrichment type: **Enrich your existing accounts with new contacts and leads** (Enrich Accounts) or **Update your leads, contacts and accounts** (Update) - these are the exact in-product option labels.
@@ -117,12 +117,65 @@ Before you confirm a push, Lusha shows you the estimated credits for that run an
 - If you set a credit limit per run, the run stops automatically once it's reached.
 - If your account runs out of credits mid-run, the run stops and you can see which records were left unprocessed.
 
+<Frame>
+  <img src="/images/user-guide/crm-enrichment/run-settings-credit-options.png" alt="Run settings step with Emails and phone numbers selected and an estimated cost of 780 credits for the run" />
+</Frame>
+
 <Note>
   You can download a CSV of the results on request from the workflow results - it's no longer sent automatically by email.
 </Note>
 
 ## Managing your workflows
 
-You can find all your workflows under **Enrichment > CRM enrichment**. Each row shows the workflow name, CRM, flow type, creator, schedule, status, object type, credits used, records matched in the last run, and total enriched. From the row menu you can view enriched records, edit the workflow, duplicate it, run it again outside its schedule, pause or resume it, or delete it (records already written to your CRM stay as they are). Open **Last 5 runs** on any workflow for the date, records matched, records enriched, and credits used on each recent run.
+You can find all your workflows under **Enrichment > CRM enrichment**. From the row menu you can view enriched records, edit the workflow, duplicate it, run it again outside its schedule, pause or resume it, or delete it (records already written to your CRM stay as they are). Open **Last 5 runs** on any workflow for the date, records matched, records enriched, and credits used on each recent run.
+
+### Reading the workflow table
+
+Each workflow row gives you a quick status snapshot. 
+
+<Frame>
+  <img src="/images/user-guide/crm-enrichment/workflow-table-row.png" alt="CRM data enrichment workflow row showing columns for CRM, flow type, creator, schedule, status, CRM object type, credits used, matched, and total enriched" />
+</Frame>
+
+Here's what each column means:
+
+- **Name** - the workflow's name, set when you created it.
+- **CRM** - which connected CRM the workflow runs against (Salesforce, Salesforce Sandbox, or HubSpot).
+- **Flow type** - Update or Enrich (short for Enrich Accounts).
+- **Creator** - the user who set up the workflow.
+- **Schedule** - One-time, Daily, Weekly, or Monthly.
+- **Status (last run)** - the outcome of the most recent run (e.g., Completed).
+- **CRM object type** - the object the workflow writes to or exports as (Contact, Lead, or Account).
+- **Credits used** - credits spent on the last run.
+- **Matched (last run)** - how many records met your filter criteria in the last run.
+- **Total enriched** - how many of those matched records actually received new or updated data.
+
+<Note>
+  "Matched" and "Total enriched" are rarely the same number. Matching just means a record fit your filters - enrichment only happens, and only costs credits, for records where Lusha found something new to add.
+</Note>
+
+**Matched (last run)**
+
+Hover the info icon next to **Matched (last run)** to see which CRM object type the count is based on - for example, "Matched using your CRM object type: Account." For Enrich Accounts workflows, matching is evaluated against your accounts, even if the resulting enriched records are exported as contacts or leads.
+
+**Total enriched**
+
+Hover the info icon next to **Total enriched** to see a per-field breakdown of what was added or updated across the enriched records - for example, how many got a new email, phone, title, first name, last name, or department. A record counts toward **Total enriched** if it received a match on at least one of these fields, so the field totals can each be lower than (or equal to) the **Total enriched** number.
+
+<Frame>
+  <img src="/images/user-guide/crm-enrichment/total-enriched-tooltip.png" alt="Total enriched hover tooltip showing a per-field breakdown: 4 emails, 2 phones, and 5 each for title, last name, first name, and department" />
+</Frame>
+
+Taking the example above - Out of 5 contacts enriched, 4 included email addresses, 2 included phone numbers, and all 5 were updated with first name, last name, title, and department.
+
+- Click the **three-dot** menu to:
+  - **Review table:** View the created table to see exactly which contacts were enriched.
+  - **Delete workflow:** Remove this workflow.
+  - **Duplicate workflow:** Create a copy of this workflow.
+  - **Re-run workflow:** Run the workflow again (ideal for one-time tasks)
+
+<Frame>
+  <img src="/images/user-guide/crm-enrichment/workflow-row-menu.png" alt="Workflow row's three-dot menu showing Delete, Duplicate, and Run again options" />
+</Frame>
 
 You're all set! One-time runs wait in your table for you to review and push; recurring runs keep running on schedule and push automatically.

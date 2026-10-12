@@ -16,11 +16,11 @@ Standard Lusha credits are consumed when you reveal a contact's phone or email. 
 | Contact or company reveal | Based on your Lusha plan | Same as revealing in Search |
 | AI chat prompts | 1 credit per 5 prompts | Prompts used in Workspace AI Chat |
 | AI Data enrichment | 1 credit per cell enriched | Charged per cell, not per row |
-| Signals enrichment | 1 credit per signal detected | Empty cells (no signal found) are not charged  Signals are tied to specific tables, running searches for the same contact in two different tables will count as two separate charges. |
+| Signals enrichment | 1 credit per signal detected | Empty cells (no signal found) are not charged. Signals are tied to specific tables - running searches for the same contact in two different tables counts as two separate charges. |
 | CSV export | 1 credit per 25 rows | Charged at export, separate from reveal cost |
 | Lusha Data columns | Free | Pulls from verified database, no credit cost |
 | CRM columns | Free | Live Salesforce field values, no credit cost |
-| CRM export | 1 credit per export | Charged when pushing contacts to your CRM |
+| CRM export | 1 credit per changed row | Rows that already match what's in your CRM aren't charged |
 | Waterfall - work email | 2 credits per confirmed match | Only charged when a vendor confirms the email; a "not found" result is free |
 | Waterfall - phone number | 8 credits per confirmed match | Only charged when a vendor confirms the phone; a "not found" result is free |
 
@@ -30,7 +30,7 @@ Standard Lusha credits are consumed when you reveal a contact's phone or email. 
 - **Signals enrichment only charges for populated cells.** If no signal is detected for a row, that cell is free.
 - **CSV export credits are separate from reveal credits.** Exporting a table you've already revealed still costs 1 credit per 25 rows.
 - **AI chat prompts are grouped.** Every 5 prompts cost 1 credit. Exploring and refining is intentionally low-cost.
-- **CRM exports cost 1 credit.** Each time you push contacts to your CRM, 1 credit is charged - separate from the original reveal cost.
+- **CRM exports charge per changed row.** Each row that pushes new or updated data to your CRM costs 1 credit, separate from the original reveal cost - rows that already match what's in your CRM aren't charged.
 
 <Note>
 Monitor your credit usage in real time from the credit balance shown at the bottom of the sidebar, or in detail from **Usage Analytics**.
