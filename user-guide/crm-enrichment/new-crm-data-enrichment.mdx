@@ -123,6 +123,33 @@ Before you confirm a push, Lusha shows you the estimated credits for that run an
 
 ## Managing your workflows
 
-You can find all your workflows under **Enrichment > CRM enrichment**. Each row shows the workflow name, CRM, flow type, creator, schedule, status, object type, credits used, records matched in the last run, and total enriched. From the row menu you can view enriched records, edit the workflow, duplicate it, run it again outside its schedule, pause or resume it, or delete it (records already written to your CRM stay as they are). Open **Last 5 runs** on any workflow for the date, records matched, records enriched, and credits used on each recent run.
+You can find all your workflows under **Enrichment > CRM enrichment**. From the row menu you can view enriched records, edit the workflow, duplicate it, run it again outside its schedule, pause or resume it, or delete it (records already written to your CRM stay as they are). Open **Last 5 runs** on any workflow for the date, records matched, records enriched, and credits used on each recent run.
+
+### Reading the workflow table
+
+Each workflow row gives you a quick status snapshot. Here's what each column means:
+
+- **Name** - the workflow's name, set when you created it.
+- **CRM** - which connected CRM the workflow runs against (Salesforce, Salesforce Sandbox, or HubSpot).
+- **Flow type** - Update or Enrich (short for Enrich Accounts).
+- **Creator** - the user who set up the workflow.
+- **Schedule** - One-time, Daily, Weekly, or Monthly.
+- **Status (last run)** - the outcome of the most recent run (e.g., Completed).
+- **CRM object type** - the object the workflow writes to or exports as (Contact, Lead, or Account).
+- **Credits used** - credits spent on the last run.
+- **Matched (last run)** - how many records met your filter criteria in the last run.
+- **Total enriched** - how many of those matched records actually received new or updated data.
+
+<Note>
+  "Matched" and "Total enriched" are rarely the same number. Matching just means a record fit your filters - enrichment only happens, and only costs credits, for records where Lusha found something new to add.
+</Note>
+
+**Matched (last run)**
+
+Hover the info icon next to **Matched (last run)** to see which CRM object type the count is based on - for example, "Matched using your CRM object type: Account." For Enrich Accounts workflows, matching is evaluated against your accounts, even if the resulting enriched records are exported as contacts or leads.
+
+**Total enriched**
+
+Hover the info icon next to **Total enriched** to see a per-field breakdown of what was added or updated across the enriched records - for example, how many got a new email, phone, title, first name, last name, or department. A record counts toward **Total enriched** if it received a match on at least one of these fields, so the field totals can each be lower than (or equal to) the **Total enriched** number.
 
 You're all set! One-time runs wait in your table for you to review and push; recurring runs keep running on schedule and push automatically.
