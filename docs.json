@@ -1060,7 +1060,6 @@
                     "icon": "list-check",
                     "pages": [
                       "user-guide/manage-sequences/overview-and-optimize-your-sequences",
-                      "user-guide/manage-sequences/auto-sequence",
                       "user-guide/manage-sequences/how-to-reorder-steps-in-a-sequence",
                       "user-guide/manage-sequences/syncing-sequences-to-salesforce"
                     ]
@@ -1410,6 +1409,14 @@
     "drilldown": false
   },
   "redirects": [
+    {
+      "source": "/user-guide/manage-sequences/auto-sequence",
+      "destination": "/user-guide/manage-sequences/overview-and-optimize-your-sequences"
+    },
+    {
+      "source": "/user-guide/csv-enrichment/crm-data-enrichment",
+      "destination": "/user-guide/crm-enrichment/crm-data-enrichment"
+    },
     {
       "source": "/user-guide/zoho/api-usage-analytics",
       "destination": "/user-guide/lushas-api/api-usage-analytics"
