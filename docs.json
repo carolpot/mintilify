@@ -162,6 +162,12 @@
                         ]
                       },
                       {
+                        "group": "ICP Fit Score",
+                        "pages": [
+                          "icp-fit-score/overview"
+                        ]
+                      },
+                      {
                         "group": "Buying Group",
                         "pages": [
                           "buying-group/overview"
@@ -219,7 +225,6 @@
                         "pages": [
                           "tutorials/api_fundamentals",
                           "tutorials/postman-environment-guide",
-                          "tutorials/person-api-v1-deprecation",
                           "tutorials/v3-migration-guide"
                         ]
                       },
@@ -422,6 +427,15 @@
                       "POST /v3/companies/signal-score"
                     ],
                     "icon": "bolt"
+                  },
+                  {
+                    "group": "ICP Fit Score",
+                    "pages": [
+                      "GET /v3/icp/profiles",
+                      "POST /v3/contacts/icp-fit-score",
+                      "POST /v3/companies/icp-fit-score"
+                    ],
+                    "icon": "bullseye"
                   },
                   {
                     "group": "Buying Group",
@@ -1409,6 +1423,10 @@
     "drilldown": false
   },
   "redirects": [
+    {
+      "source": "/tutorials/person-api-v1-deprecation",
+      "destination": "/tutorials/v3-migration-guide"
+    },
     {
       "source": "/user-guide/manage-sequences/auto-sequence",
       "destination": "/user-guide/manage-sequences/overview-and-optimize-your-sequences"

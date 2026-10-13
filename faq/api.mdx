@@ -6,7 +6,7 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 <AccordionGroup>
 
 <Accordion title="What APIs does Lusha offer?">
-  Lusha provides eight main RESTful API endpoint groups:
+  Lusha provides these RESTful API endpoint groups:
 
   **Enrichment API** - Search and enrich contact and company records. V3 uses a search-then-enrich pattern: first search by identifier to get a non-PII preview, then enrich to reveal emails, phones, and firmographic data. A combined Search and Enrich endpoint is also available for single-step workflows.
 
@@ -23,6 +23,8 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
   **Buying Group API** - Map the buying committee within a set of companies. Supply up to 25 companies by domain or Lusha company ID and get back contacts labelled by persona role (`decision_maker`, `potential_champion`, `end_user`) as free previews. Pass the returned contact IDs to Enrich Contacts to reveal emails and phones. This replaces the retired Decision Makers API.
 
   **Signal Score API** - Score contacts or companies by their active buying signals, returning a single `[0, 1]` value plus the signal breakdown behind it. Accepts up to 100 records per call.
+
+  **ICP Fit Score API** - Score contacts or companies against 1-3 of your Target Profiles (ICPs), returning a `[0, 1]` fit score plus the profile each record fits best. Accepts up to 100 records per call.
 
   **Conversations API** - Search the sales calls recorded by Lusha Conversations for your account and fetch speaker-attributed transcripts. Search returns metadata, AI summaries, action items, risks, objections, and coaching analysis.
 
@@ -162,6 +164,31 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
   This endpoint replaces the retired Decision Makers API. See the [Buying Group overview](/buying-group/overview).
 </Accordion>
 
+<Accordion title="What is the ICP Fit Score API?">
+  The ICP Fit Score API scores how well any list of contacts or companies fits your Target Profiles (ICPs) - a CRM export, a CSV, or prospecting results.
+
+  It works in two steps:
+
+  1. Call `GET /v3/icp/profiles` to list the Target Profiles you can see - your own, plus any an admin has shared with the account. Filter with the optional `status` (`active` | `disabled`) and `access` (`private` | `shared`) query parameters. This call is free.
+  2. Pass 1-3 active profile IDs as `targetProfileIds` to `POST /v3/companies/icp-fit-score` or `POST /v3/contacts/icp-fit-score`, with 1-100 records per call.
+
+  Identify companies by exactly one of `id`, `domain`, `name`, or `email`. Identify contacts by one of `id`, `linkedinUrl`, `email`, or `firstName` + `lastName` + (`companyName` | `companyDomain`). Add an optional `clientReferenceId` to match results back to your data.
+
+  Each scored record returns:
+
+  - `icpFitScore` - the best fit across the requested profiles, from `0` to `1`
+  - `topProfile` - the profile the record fits best
+  - `profileScores` - the score for each profile, only when you request more than one
+
+  Records that can't be resolved return `NOT_FOUND`, and records with no score available return `NO_SCORE`. See the [ICP Fit Score overview](/icp-fit-score/overview).
+</Accordion>
+
+<Accordion title="How is ICP Fit Score different from Signal Score?">
+  They answer different questions. **ICP Fit Score** measures how closely a record matches your Target Profiles - *is this a good fit?* **Signal Score** measures how much buying activity is happening around the record right now - *is this a good time?*
+
+  Both accept the same identifiers and up to 100 records per call, so you can score the same list with both. In the Lusha app, the two combine into the Lead Score on recommendations. See [Signal Score and ICP Fit Score](/user-guide/ai-recommendations/signal-score-and-icp-fit-score).
+</Accordion>
+
 <Accordion title="What is the Conversations API?">
   The Conversations API surfaces the sales conversations recorded by Lusha Conversations for your account. It has two endpoints:
 
@@ -294,6 +321,7 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
   - **Enrich companies**: charged per successful result via `reveal_company`; additional revealable fields (e.g. `employeesByDepartment`, `competitors`, `intent`) are charged separately per result
   - **Signals**: charged per matched signal per result
   - **Lookalikes**: charged per result returned
+  - **ICP Fit Score**: listing Target Profiles is free. Scoring is charged 1 credit per scored contact or company, regardless of how many profiles it's scored against - a score of `0` is charged. `NOT_FOUND` and `NO_SCORE` entries are not charged
   - **Tables**: creating, listing, updating, deleting tables, and managing columns is free. Adding contacts to a table is free; adding companies is charged per newly-added company. Reading rows is charged per row returned. Running an enrichment column is charged per row, per the column's credit tier
   - **Webhooks**: charged when signals are detected and delivered; retries do not incur additional charges
 
