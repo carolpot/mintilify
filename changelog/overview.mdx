@@ -288,7 +288,7 @@ All four values are nested under a single `openJobs` object rather than returned
 
 **Added**
 
-**Waterfall Reveal on Enrich Contacts** - Added optional `waterfallEnabled` field to `POST /v3/contacts/enrich`. When Lusha's own data has no match for a field, the request falls through to your enabled third-party providers to try to fill the gap - extra reach on hard-to-match contacts, on top of standard enrichment.
+**Waterfall Reveal on Enrich Contacts** - `POST /v3/contacts/enrich` now falls through to your enabled third-party providers automatically when Lusha's own data has no match for a field - extra reach on hard-to-match contacts, on top of standard enrichment. An optional `waterfallEnabled` field lets you opt a single call out.
 
 - If Data Waterfall is enabled on your account, with specific providers turned on under **Account > Waterfall**, the waterfall runs automatically on every Enrich Contacts call - no need to pass anything to trigger it
 - Pass `waterfallEnabled: false` to opt a specific call out
