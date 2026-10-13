@@ -1411,6 +1411,10 @@
   },
   "redirects": [
     {
+      "source": "/user-guide/csv-enrichment/crm-data-enrichment",
+      "destination": "/user-guide/crm-enrichment/crm-data-enrichment"
+    },
+    {
       "source": "/user-guide/zoho/api-usage-analytics",
       "destination": "/user-guide/lushas-api/api-usage-analytics"
     },
