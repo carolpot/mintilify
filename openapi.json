@@ -10,7 +10,7 @@
       "name": "Proprietary",
       "url": "https://lusha.com/legal/terms"
     },
-    "description": "<blockquote class=\"callout\">\n\n **This is the Lusha API V3 documentation.** \n \n V3 introduces a new search-then-enrich pattern, bulk operations, AI-powered lookalikes, and richer filter capabilities. All endpoints are under `https://api.lusha.com/v3/`.\n\n  For more information on V3, refer to the [Migration Guide](/tutorials/v3-migration-guide).\n\n</blockquote>\n\n  --- \n\nLusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. Built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.\n\nUse the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.\n\n> All API requests must be made over **HTTPS**. All responses are returned in **JSON** format.\n\n--- \n## Available Endpoints\n\n| Category | Description |\n|---|---|\n| [**Search**](#tag/Search) | Find contacts or companies using known identifiers |\n| [**Enrich**](#tag/Enrich) | Retrieve full profile data for contacts or companies by ID |\n| [**Search & Enrich**](#tag/Search-and-Enrich) | Find and retrieve full contact or company data in a single call |\n| [**Prospecting**](#tag/Prospecting) | Filter-based search across contacts and companies |\n| [**Lookalikes**](#tag/Lookalikes) | AI-powered recommendations for similar contacts and companies |\n| [**Buying Group**](#tag/Buying-Group) | Identify decision makers, champions, and end users within target accounts |\n| [**Contacts Tables**](#tag/Contacts-Tables) | Persist, organize, and enrich contacts in reusable tables |\n| [**Companies Tables**](#tag/Companies-Tables) | Persist, organize, and enrich companies in reusable tables |\n| [**Signals**](#tag/Signals) | Real-world activity data for contacts and companies |\n| [**Website Visitors**](#tag/Website-Visits) | Companies ranked by website-visit signals for your tracked domains |\n| [**Conversations**](#tag/Conversations) | Search recorded sales conversations and fetch their transcripts |\n| [**Filters**](#tag/Filters) | Discover valid filter values for prospecting |\n| [**Webhooks**](#tag/Webhooks) | Real-time signal notifications via HTTP callbacks |\n| [**Account**](#tag/Account) | Usage, credits, rate limits, and pricing |\n\n<blockquote class=\"callout\">\n\n **Waterfall Reveal for Contact Enrichment.**\n\n  Enrich Contacts now supports `waterfallEnabled`. Fall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts. On by default once your account has it turned on - pass `waterfallEnabled: false` to opt a specific call out. [See Enrich Contacts](#operation/enrichContacts).\n\n</blockquote>\n\n---\n\n## Data Source and Privacy\n\n**Lusha is a search platform.** The data provided is not created or directly managed by Lusha. It is sourced from publicly available information and trusted business partners.\n\nFor more details on how we collect and handle data, see our [Privacy Policy](https://lusha.com/legal/privacy-notice/).\n\n---\n\n## Legal Notices\n\n(a) Data brokers and other third-party platforms may not embed, expose, or otherwise provide access to the Lusha API, or to Data obtained through it, on or through their own website, product, or service, without Lusha's prior written consent.\n\n(b) Data obtained through the API may not be used to train or develop AI/ML systems, subject to the terms and exceptions outlined in the [Terms and Conditions](https://lusha.com/legal/terms).\n\n---\n\n## Authentication\n\nAll API requests require an **API key** linked to your Lusha account and plan. Pass your key in the `api_key` request header on every call.\n\n> Generate and manage your API key in the [Lusha dashboard](https://dashboard.lusha.com/enrich/api).\n\nStore your API key securely and use it only in **server-side environments**.\n\n---\n\n## Rate Limiting\n\nLusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan.\n\nRate limits for the **Credit Usage API** differ from standard endpoint limits.\n\n> **Note:** To check your current plan's limits, visit the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.\n\n**Rate Limit Response Headers**\n\n| Header | Description |\n|--------|-------------|\n| `x-rate-limit-daily` | Total requests allowed per day |\n| `x-daily-requests-left` | Requests remaining in your daily quota |\n| `x-daily-usage` | Requests made in the current daily period |\n| `x-rate-limit-hourly` | Total requests allowed per hour |\n| `x-hourly-requests-left` | Requests remaining in your hourly quota |\n| `x-hourly-usage` | Requests made in the current hourly period |\n| `x-rate-limit-minute` | Total requests allowed per minute |\n| `x-minute-requests-left` | Requests remaining in the current minute window |\n| `x-minute-usage` | Requests made in the current minute window |\n\n---\n## Error Codes\n\nLusha uses standard HTTP status codes to indicate the result of each request.\n\n| Code | Name | Description |\n|------|------|-------------|\n| `200` | OK | Request was successful |\n| `400` | Bad Request | Request is malformed or missing required fields |\n| `401` | Unauthorized | API key is missing or invalid |\n| `402` | Payment Required | Insufficient credits or payment needed |\n| `403` | Forbidden | Account is inactive. Contact support@lusha.com |\n| `404` | Not Found | Endpoint or resource does not exist |\n| `429` | Too Many Requests | Rate limit or daily quota exceeded |\n| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |\n| `499` | Client Closed Request | Request timed out before completing |\n| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |\n\n**Error Response Format**\n\n```json\n{\n  \"statusCode\": 400,\n  \"message\": \"Invalid request parameters\"\n}\n```\n\n**Tables-specific error codes**\n\n| Code | Status | Meaning |\n|---|---|---|\n| `TABLE_NOT_FOUND` | 404 | The `table_id` does not exist or is not accessible to this account |\n| `COLUMN_NOT_FOUND` | 404 | The `column_id` does not exist on the given table |\n| `TABLE_NAME_CONFLICT` | 409 | A table with this name already exists |\n\nTables error bodies use the shape `{ \"message\": \"...\", \"code\": <status>, ... }` rather than the `statusCode`/`errors` shape used elsewhere in this doc.\n\n**Limits:** up to 500 entity IDs per add/remove call · max 50,000 entities per table · max 500 tables per account · `page` 0–100 · `size` default 100.\n\n**Tips for Handling Errors**\n\n- Verify your API key is correct and active\n- Read the `message` field for specific troubleshooting details\n- For `429` errors, wait before retrying\n- For `5XX` errors, use exponential backoff before retrying\n",
+    "description": "<blockquote class=\"callout\">\n\n **This is the Lusha API V3 documentation.** \n \n V3 introduces a new search-then-enrich pattern, bulk operations, AI-powered lookalikes, and richer filter capabilities. All endpoints are under `https://api.lusha.com/v3/`.\n\n  For more information on V3, refer to the [Migration Guide](/tutorials/v3-migration-guide).\n\n</blockquote>\n\n  --- \n\nLusha provides a RESTful API for querying a comprehensive dataset of business profiles and company information. Built for teams running prospecting, enrichment, automation, and analytics workflows that need accurate, continuously updated business data. The API supports both real-time and bulk use cases.\n\nUse the Lusha API to **search for new prospects**, **enrich existing records**, **react to real-world changes**, and **expand coverage** with AI-powered lookalike recommendations.\n\n> All API requests must be made over **HTTPS**. All responses are returned in **JSON** format.\n\n--- \n## Available Endpoints\n\n| Category | Description |\n|---|---|\n| [**Search**](#tag/Search) | Find contacts or companies using known identifiers |\n| [**Enrich**](#tag/Enrich) | Retrieve full profile data for contacts or companies by ID |\n| [**Search & Enrich**](#tag/Search-and-Enrich) | Find and retrieve full contact or company data in a single call |\n| [**Prospecting**](#tag/Prospecting) | Filter-based search across contacts and companies |\n| [**Lookalikes**](#tag/Lookalikes) | AI-powered recommendations for similar contacts and companies |\n| [**Buying Group**](#tag/Buying-Group) | Identify decision makers, champions, and end users within target accounts |\n| [**Contacts Tables**](#tag/Contacts-Tables) | Persist, organize, and enrich contacts in reusable tables |\n| [**Companies Tables**](#tag/Companies-Tables) | Persist, organize, and enrich companies in reusable tables |\n| [**Signals**](#tag/Signals) | Real-world activity data for contacts and companies |\n| [**ICP Fit Score**](#tag/ICP-Fit-Score) | Score contacts and companies against your Target Profiles (ICPs) |\n| [**Website Visitors**](#tag/Website-Visits) | Companies ranked by website-visit signals for your tracked domains |\n| [**Conversations**](#tag/Conversations) | Search recorded sales conversations and fetch their transcripts |\n| [**Filters**](#tag/Filters) | Discover valid filter values for prospecting |\n| [**Webhooks**](#tag/Webhooks) | Real-time signal notifications via HTTP callbacks |\n| [**Account**](#tag/Account) | Usage, credits, rate limits, and pricing |\n\n<blockquote class=\"callout\">\n\n **Waterfall Reveal for Contact Enrichment.**\n\n  Enrich Contacts now supports `waterfallEnabled`. Fall through to your enabled third-party providers when Lusha's own data has no match, for extra reach on hard-to-match contacts. On by default once your account has it turned on - pass `waterfallEnabled: false` to opt a specific call out. [See Enrich Contacts](#operation/enrichContacts).\n\n</blockquote>\n\n---\n\n## Data Source and Privacy\n\n**Lusha is a search platform.** The data provided is not created or directly managed by Lusha. It is sourced from publicly available information and trusted business partners.\n\nFor more details on how we collect and handle data, see our [Privacy Policy](https://lusha.com/legal/privacy-notice/).\n\n---\n\n## Legal Notices\n\n(a) Data brokers and other third-party platforms may not embed, expose, or otherwise provide access to the Lusha API, or to Data obtained through it, on or through their own website, product, or service, without Lusha's prior written consent.\n\n(b) Data obtained through the API may not be used to train or develop AI/ML systems, subject to the terms and exceptions outlined in the [Terms and Conditions](https://lusha.com/legal/terms).\n\n---\n\n## Authentication\n\nAll API requests require an **API key** linked to your Lusha account and plan. Pass your key in the `api_key` request header on every call.\n\n> Generate and manage your API key in the [Lusha dashboard](https://dashboard.lusha.com/enrich/api).\n\nStore your API key securely and use it only in **server-side environments**.\n\n---\n\n## Rate Limiting\n\nLusha enforces rate limits on a per-plan basis to ensure fair usage and platform stability. Limits are applied across multiple time windows (per minute, per hour, and per day), and vary depending on your account plan.\n\nRate limits for the **Credit Usage API** differ from standard endpoint limits.\n\n> **Note:** To check your current plan's limits, visit the [Lusha Help Center](https://info.lusha.com/en/articles/163856-all-there-is-to-know-about-lusha-s-api) or contact your account manager.\n\n**Rate Limit Response Headers**\n\n| Header | Description |\n|--------|-------------|\n| `x-rate-limit-daily` | Total requests allowed per day |\n| `x-daily-requests-left` | Requests remaining in your daily quota |\n| `x-daily-usage` | Requests made in the current daily period |\n| `x-rate-limit-hourly` | Total requests allowed per hour |\n| `x-hourly-requests-left` | Requests remaining in your hourly quota |\n| `x-hourly-usage` | Requests made in the current hourly period |\n| `x-rate-limit-minute` | Total requests allowed per minute |\n| `x-minute-requests-left` | Requests remaining in the current minute window |\n| `x-minute-usage` | Requests made in the current minute window |\n\n---\n## Error Codes\n\nLusha uses standard HTTP status codes to indicate the result of each request.\n\n| Code | Name | Description |\n|------|------|-------------|\n| `200` | OK | Request was successful |\n| `400` | Bad Request | Request is malformed or missing required fields |\n| `401` | Unauthorized | API key is missing or invalid |\n| `402` | Payment Required | Insufficient credits or payment needed |\n| `403` | Forbidden | Account is inactive. Contact support@lusha.com |\n| `404` | Not Found | Endpoint or resource does not exist |\n| `429` | Too Many Requests | Rate limit or daily quota exceeded |\n| `451` | Unavailable For Legal Reasons | Request blocked due to GDPR regulations |\n| `499` | Client Closed Request | Request timed out before completing |\n| `5XX` | Server Error | Issue on Lusha's end. Retry with exponential backoff |\n\n**Error Response Format**\n\n```json\n{\n  \"statusCode\": 400,\n  \"message\": \"Invalid request parameters\"\n}\n```\n\n**Tables-specific error codes**\n\n| Code | Status | Meaning |\n|---|---|---|\n| `TABLE_NOT_FOUND` | 404 | The `table_id` does not exist or is not accessible to this account |\n| `COLUMN_NOT_FOUND` | 404 | The `column_id` does not exist on the given table |\n| `TABLE_NAME_CONFLICT` | 409 | A table with this name already exists |\n\nTables error bodies use the shape `{ \"message\": \"...\", \"code\": <status>, ... }` rather than the `statusCode`/`errors` shape used elsewhere in this doc.\n\n**Limits:** up to 500 entity IDs per add/remove call · max 50,000 entities per table · max 500 tables per account · `page` 0–100 · `size` default 100.\n\n**Tips for Handling Errors**\n\n- Verify your API key is correct and active\n- Read the `message` field for specific troubleshooting details\n- For `429` errors, wait before retrying\n- For `5XX` errors, use exponential backoff before retrying\n",
     "contact": {
       "name": "Lusha Support",
       "url": "https://api.lusha.com",
@@ -77,6 +77,11 @@
     {
       "name": "Signals",
       "description": "Real-world activity data for contacts and companies.\n\nSignals are available as standalone endpoints or as an optional `signals` filter on Search and Prospecting endpoints.\n\n\n**Contact signal types:** `promotion`, `companyChange`, `allSignals`\n\n----\n\n**Company signal types:** `headcountIncrease1m/3m/6m/12m`, `headcountDecrease1m/3m/6m/12m`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`, `allSignals`\n\n----\n\n**Signal Score:** Use [Score Companies by Signal Activity](#operation/getCompanySignalScores) or [Score Contacts by Signal Activity](#operation/getContactSignalScores) to get a single aggregate momentum score ([0,1]) plus the active signal breakdown for a batch of entities, rather than a raw event list.\n\n----\n\nCredits are charged per matched signal per result via `showSignalsContact` or `showSignalsCompany`.\n\nPass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables) or [Companies Tables](#tag/Companies-Tables).\n",
+      "x-tag-expanded": true
+    },
+    {
+      "name": "ICP Fit Score",
+      "description": "Score how well contacts and companies fit your Target Profiles (ICPs).\n\n1. Call [List Target Profiles](#operation/listIcpProfiles) to get the IDs of the active profiles you can use.\n2. Pass 1-3 of those IDs as `targetProfileIds` to [Score Companies by ICP Fit](#operation/getCompanyIcpFitScores) or [Score Contacts by ICP Fit](#operation/getContactIcpFitScores), with up to 100 records per call.\n\nEach scored record gets an `icpFitScore` in `[0, 1]` - the best fit across the requested profiles - and the `topProfile` it fits best. When you request more than one profile, `profileScores` breaks the score down per profile.\n\n> **Billing:** Listing profiles is free. Scoring charges 1 credit per scored record, regardless of how many profiles it's scored against. A score of `0` is a real result and is charged. Error rows (`NOT_FOUND` / `NO_SCORE`) are never charged.\n",
       "x-tag-expanded": true
     },
     {
@@ -4335,6 +4340,325 @@
           },
           "502": {
             "$ref": "#/components/responses/BadGateway"
+          }
+        }
+      }
+    },
+    "/v3/icp/profiles": {
+      "get": {
+        "tags": [
+          "ICP Fit Score"
+        ],
+        "summary": "List Target Profiles",
+        "operationId": "listIcpProfiles",
+        "description": "Returns the Target Profiles (ICPs) you can see: your own, plus any an admin has shared with the account.\n\nUse the returned `id` values as `targetProfileIds` on [Score Companies by ICP Fit](#operation/getCompanyIcpFitScores) and [Score Contacts by ICP Fit](#operation/getContactIcpFitScores). Only `active` profiles can be used for scoring.\n\n> **Billing:** Free (0 credits).\n",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Return only profiles with this status.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "disabled"
+              ]
+            },
+            "example": "active"
+          },
+          {
+            "name": "access",
+            "in": "query",
+            "required": false,
+            "description": "Return only private profiles, or only profiles shared with the account.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "private",
+                "shared"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3IcpProfilesResponse"
+                },
+                "example": {
+                  "profiles": [
+                    {
+                      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                      "name": "Mid-market SaaS",
+                      "status": "active",
+                      "access": "private",
+                      "canEdit": true,
+                      "isOwner": true,
+                      "createdAt": "2026-09-01T10:00:00.000Z",
+                      "updatedAt": "2026-09-02T10:00:00.000Z"
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 0,
+                    "resultsReturned": 1,
+                    "lowBalance": false
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v3/companies/icp-fit-score": {
+      "post": {
+        "tags": [
+          "ICP Fit Score"
+        ],
+        "summary": "Score Companies by ICP Fit",
+        "operationId": "getCompanyIcpFitScores",
+        "description": "Score how well each company fits 1-3 of your Target Profiles, from `0` to `1`.\n\nAccepts 1-100 companies, each identified by exactly one of `id`, `domain`, `name`, or `email`, plus an optional `clientReferenceId`. `targetProfileIds` must be active profiles you own or that are shared with your account - get them from [List Target Profiles](#operation/listIcpProfiles).\n\nEach result is one of:\n- A **scored entry** - `icpFitScore` (the best fit), `topProfile` (the profile it fits best), and `profileScores` (the score per profile, only when more than one profile is requested).\n- A **`NOT_FOUND`** entry - the supplied identifier could not be resolved to a company.\n- A **`NO_SCORE`** entry - the company resolved, but no ICP fit score is available for it.\n\n> **Billing:** 1 credit per scored company, regardless of how many profiles it's scored against. A score of `0` is charged. Error rows (`NOT_FOUND` / `NO_SCORE`) are never charged.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V3IcpFitScoreCompaniesRequest"
+              },
+              "example": {
+                "targetProfileIds": [
+                  "3fbaaaa7-700f-4419-a0c6-56f9f3fca391",
+                  "a49d9e05-eb62-4c00-8186-e74ba237a0ad"
+                ],
+                "companies": [
+                  {
+                    "clientReferenceId": "ref-1",
+                    "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+                  },
+                  {
+                    "clientReferenceId": "ref-2",
+                    "domain": "www.microsoft.com"
+                  },
+                  {
+                    "clientReferenceId": "ref-3",
+                    "name": "Apple"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3IcpFitScoreCompaniesResponse"
+                },
+                "example": {
+                  "requestId": "5d6f13d2-f6b0-4e55-85d5-04e17f932c1a",
+                  "results": [
+                    {
+                      "clientReferenceId": "ref-1",
+                      "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                      "name": "Acme Corp",
+                      "domain": "acmecorp.io",
+                      "icpFitScore": 0.92,
+                      "topProfile": {
+                        "id": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391",
+                        "name": "Mid-market SaaS"
+                      },
+                      "profileScores": [
+                        {
+                          "id": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391",
+                          "name": "Mid-market SaaS",
+                          "score": 0.92
+                        },
+                        {
+                          "id": "a49d9e05-eb62-4c00-8186-e74ba237a0ad",
+                          "name": "Enterprise",
+                          "score": 0.1
+                        }
+                      ]
+                    },
+                    {
+                      "clientReferenceId": "ref-2",
+                      "id": "v1.6789ZyXwVuTsRqPoNmLkJiHgFeDcBa01",
+                      "name": "Microsoft",
+                      "domain": "microsoft.com",
+                      "icpFitScore": 0,
+                      "topProfile": {
+                        "id": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391",
+                        "name": "Mid-market SaaS"
+                      },
+                      "profileScores": [
+                        {
+                          "id": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391",
+                          "name": "Mid-market SaaS",
+                          "score": 0
+                        },
+                        {
+                          "id": "a49d9e05-eb62-4c00-8186-e74ba237a0ad",
+                          "name": "Enterprise",
+                          "score": 0
+                        }
+                      ]
+                    },
+                    {
+                      "clientReferenceId": "ref-3",
+                      "name": "Apple",
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Company not found"
+                      }
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 2,
+                    "resultsReturned": 2,
+                    "lowBalance": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v3/contacts/icp-fit-score": {
+      "post": {
+        "tags": [
+          "ICP Fit Score"
+        ],
+        "summary": "Score Contacts by ICP Fit",
+        "operationId": "getContactIcpFitScores",
+        "description": "Score how well each contact fits 1-3 of your Target Profiles, from `0` to `1`.\n\nAccepts 1-100 contacts, each identified by one of `id`, `linkedinUrl`, `email`, or `firstName` + `lastName` + (`companyName` | `companyDomain`), plus an optional `clientReferenceId`. `targetProfileIds` must be active profiles you own or that are shared with your account - get them from [List Target Profiles](#operation/listIcpProfiles).\n\nEach result is one of:\n- A **scored entry** - `fullName`, `company` (`id`, `name`, `domain`), `icpFitScore` (the best fit), `topProfile` (the profile it fits best), and `profileScores` (the score per profile, only when more than one profile is requested).\n- A **`NOT_FOUND`** entry - the supplied identifier could not be resolved to a contact.\n- A **`NO_SCORE`** entry - the contact resolved, but no ICP fit score is available for it.\n\n> **Billing:** 1 credit per scored contact, regardless of how many profiles it's scored against. A score of `0` is charged. Error rows (`NOT_FOUND` / `NO_SCORE`) are never charged.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V3IcpFitScoreContactsRequest"
+              },
+              "example": {
+                "targetProfileIds": [
+                  "3fbaaaa7-700f-4419-a0c6-56f9f3fca391"
+                ],
+                "contacts": [
+                  {
+                    "clientReferenceId": "ref-1",
+                    "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+                  },
+                  {
+                    "clientReferenceId": "ref-2",
+                    "linkedinUrl": "https://linkedin.com/in/johndoe"
+                  },
+                  {
+                    "clientReferenceId": "ref-3",
+                    "firstName": "Jane",
+                    "lastName": "Doe",
+                    "companyDomain": "acme.com"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V3IcpFitScoreContactsResponse"
+                },
+                "example": {
+                  "requestId": "5d6f13d2-f6b0-4e55-85d5-04e17f932c1a",
+                  "results": [
+                    {
+                      "clientReferenceId": "ref-1",
+                      "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                      "fullName": "John Doe",
+                      "company": {
+                        "id": "v1.ZyXwVuTsRqPoNmLkJiHgFeDcBa987654",
+                        "name": "Acme Corp",
+                        "domain": "acmecorp.io"
+                      },
+                      "icpFitScore": 0.66,
+                      "topProfile": {
+                        "id": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391",
+                        "name": "Mid-market SaaS"
+                      }
+                    },
+                    {
+                      "clientReferenceId": "ref-2",
+                      "id": "v1.QwErTyUiOpAsDfGhJkLzXcVbNm123456",
+                      "fullName": "Jane Roe",
+                      "error": {
+                        "code": "NO_SCORE",
+                        "message": "No ICP fit score available"
+                      }
+                    },
+                    {
+                      "clientReferenceId": "ref-3",
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Contact not found"
+                      }
+                    }
+                  ],
+                  "billing": {
+                    "creditsCharged": 1,
+                    "resultsReturned": 1,
+                    "lowBalance": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
           }
         }
       }
@@ -11478,6 +11802,314 @@
           },
           "billing": {
             "$ref": "#/components/schemas/V3Billing"
+          }
+        }
+      },
+      "V3IcpProfile": {
+        "type": "object",
+        "description": "A Target Profile (ICP) visible to the caller.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Target Profile ID. Pass it in `targetProfileIds` when scoring.",
+            "example": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+          },
+          "name": {
+            "type": "string",
+            "example": "Mid-market SaaS"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "disabled"
+            ],
+            "description": "Only `active` profiles can be used for scoring.",
+            "example": "active"
+          },
+          "access": {
+            "type": "string",
+            "enum": [
+              "private",
+              "shared"
+            ],
+            "description": "`private` - visible only to its owner. `shared` - shared with the account by an admin.",
+            "example": "private"
+          },
+          "canEdit": {
+            "type": "boolean",
+            "description": "Whether the caller can edit this profile.",
+            "example": true
+          },
+          "isOwner": {
+            "type": "boolean",
+            "description": "Whether the caller owns this profile.",
+            "example": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-09-01T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-09-02T10:00:00.000Z"
+          }
+        }
+      },
+      "V3IcpBilling": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/V3Billing"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "lowBalance": {
+                "type": "boolean",
+                "description": "Whether your account's credit balance is running low.",
+                "example": false
+              }
+            }
+          }
+        ]
+      },
+      "V3IcpProfilesResponse": {
+        "type": "object",
+        "properties": {
+          "profiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3IcpProfile"
+            }
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3IcpBilling"
+          }
+        }
+      },
+      "V3IcpProfileRef": {
+        "type": "object",
+        "description": "A Target Profile (ICP).",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391"
+          },
+          "name": {
+            "type": "string",
+            "example": "Mid-market SaaS"
+          }
+        }
+      },
+      "V3IcpProfileScore": {
+        "type": "object",
+        "description": "Fit score against one requested Target Profile.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391"
+          },
+          "name": {
+            "type": "string",
+            "example": "Mid-market SaaS"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "example": 0.92
+          }
+        }
+      },
+      "V3IcpTargetProfileIds": {
+        "type": "array",
+        "description": "1-3 Target Profile IDs to score against. Each must be an `active` profile you own or that is shared with your account - get them from [List Target Profiles](#operation/listIcpProfiles).",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "minItems": 1,
+        "maxItems": 3,
+        "example": [
+          "3fbaaaa7-700f-4419-a0c6-56f9f3fca391",
+          "a49d9e05-eb62-4c00-8186-e74ba237a0ad"
+        ]
+      },
+      "V3IcpFitScoreCompaniesRequest": {
+        "type": "object",
+        "required": [
+          "targetProfileIds",
+          "companies"
+        ],
+        "properties": {
+          "targetProfileIds": {
+            "$ref": "#/components/schemas/V3IcpTargetProfileIds"
+          },
+          "companies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3SignalScoreCompanyItem"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          }
+        }
+      },
+      "V3IcpFitScoreCompanyResult": {
+        "type": "object",
+        "description": "A scored entry, or an error entry with NOT_FOUND / NO_SCORE instead of the score fields.",
+        "properties": {
+          "clientReferenceId": {
+            "type": "string",
+            "example": "ref-1"
+          },
+          "id": {
+            "type": "string",
+            "description": "Encrypted Lusha company ID.",
+            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+          },
+          "name": {
+            "type": "string",
+            "example": "Acme Corp"
+          },
+          "domain": {
+            "type": "string",
+            "example": "acmecorp.io"
+          },
+          "icpFitScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Best fit across the requested profiles. Absent on error entries.",
+            "example": 0.92
+          },
+          "topProfile": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/V3IcpProfileRef"
+              }
+            ],
+            "description": "The requested profile this company fits best. Absent on error entries."
+          },
+          "profileScores": {
+            "type": "array",
+            "description": "Score for each requested profile. Present only when more than one profile is requested.",
+            "items": {
+              "$ref": "#/components/schemas/V3IcpProfileScore"
+            }
+          },
+          "error": {
+            "$ref": "#/components/schemas/V3ItemError"
+          }
+        }
+      },
+      "V3IcpFitScoreCompaniesResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "5d6f13d2-f6b0-4e55-85d5-04e17f932c1a"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3IcpFitScoreCompanyResult"
+            }
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3IcpBilling"
+          }
+        }
+      },
+      "V3IcpFitScoreContactsRequest": {
+        "type": "object",
+        "required": [
+          "targetProfileIds",
+          "contacts"
+        ],
+        "properties": {
+          "targetProfileIds": {
+            "$ref": "#/components/schemas/V3IcpTargetProfileIds"
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3SignalScoreContactItem"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          }
+        }
+      },
+      "V3IcpFitScoreContactResult": {
+        "type": "object",
+        "description": "A scored entry, or an error entry with NOT_FOUND / NO_SCORE instead of the score fields.",
+        "properties": {
+          "clientReferenceId": {
+            "type": "string",
+            "example": "ref-1"
+          },
+          "id": {
+            "type": "string",
+            "description": "Encrypted Lusha contact ID.",
+            "example": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345"
+          },
+          "fullName": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "company": {
+            "$ref": "#/components/schemas/V3SignalScoreContactCompanyRef"
+          },
+          "icpFitScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Best fit across the requested profiles. Absent on error entries.",
+            "example": 0.66
+          },
+          "topProfile": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/V3IcpProfileRef"
+              }
+            ],
+            "description": "The requested profile this contact fits best. Absent on error entries."
+          },
+          "profileScores": {
+            "type": "array",
+            "description": "Score for each requested profile. Present only when more than one profile is requested.",
+            "items": {
+              "$ref": "#/components/schemas/V3IcpProfileScore"
+            }
+          },
+          "error": {
+            "$ref": "#/components/schemas/V3ItemError"
+          }
+        }
+      },
+      "V3IcpFitScoreContactsResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "5d6f13d2-f6b0-4e55-85d5-04e17f932c1a"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/V3IcpFitScoreContactResult"
+            }
+          },
+          "billing": {
+            "$ref": "#/components/schemas/V3IcpBilling"
           }
         }
       },

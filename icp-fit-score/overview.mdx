@@ -1,0 +1,133 @@
+---
+title: "Score contacts and companies against your ICPs"
+sidebarTitle: "Overview"
+description: "Score how well any list of contacts or companies fits 1-3 of your Target Profiles, from 0 to 1 - up to 100 records per call."
+---
+
+ICP Fit Score tells you how closely a contact or company matches the Account Criteria and Persona Criteria in your [Target Profiles](/user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations) (ICPs). Bring any list - a CRM export, a CSV, or prospecting results - and get a `[0, 1]` score per record, plus the profile it fits best.
+
+Where [Signal Score](/signals/signal-score) tells you *how much buying activity* is happening, ICP Fit Score tells you *how good a fit* the record is.
+
+<CardGroup cols={3}>
+  <Card title="List Target Profiles" icon="list" href="/api-reference/icp-fit-score/list-target-profiles">
+    `GET /v3/icp/profiles` - free.
+  </Card>
+  <Card title="Score Companies" icon="building" href="/api-reference/icp-fit-score/score-companies-by-icp-fit">
+    `POST /v3/companies/icp-fit-score` - up to 100 companies per call.
+  </Card>
+  <Card title="Score Contacts" icon="user" href="/api-reference/icp-fit-score/score-contacts-by-icp-fit">
+    `POST /v3/contacts/icp-fit-score` - up to 100 contacts per call.
+  </Card>
+</CardGroup>
+
+## How it works
+
+<Steps>
+  <Step title="Get your Target Profile IDs">
+    Call `GET /v3/icp/profiles`. It returns your own profiles, plus any an admin has shared with the account. Filter with the optional `status` (`active` or `disabled`) and `access` (`private` or `shared`) query parameters.
+
+    ```bash
+    curl -X GET "https://api.lusha.com/v3/icp/profiles?status=active" \
+      -H "api_key: YOUR_API_KEY"
+    ```
+  </Step>
+  <Step title="Score your list">
+    Pass 1-3 profile IDs as `targetProfileIds`, and 1-100 companies or contacts.
+
+    ```bash
+    curl -X POST "https://api.lusha.com/v3/companies/icp-fit-score" \
+      -H "api_key: YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "targetProfileIds": ["3fbaaaa7-700f-4419-a0c6-56f9f3fca391", "a49d9e05-eb62-4c00-8186-e74ba237a0ad"],
+        "companies": [
+          { "clientReferenceId": "ref-1", "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345" },
+          { "clientReferenceId": "ref-2", "domain": "www.microsoft.com" },
+          { "clientReferenceId": "ref-3", "name": "Apple" }
+        ]
+      }'
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  Every ID in `targetProfileIds` must be an `active` profile that you own or that is shared with your account.
+</Note>
+
+## Identifying records
+
+Identity is resolved server-side before scoring. Add an optional `clientReferenceId` to any record to match it back to your own data - it's echoed on the result.
+
+<Tabs>
+  <Tab title="Companies">
+    Provide exactly one of:
+
+    - `id` - encrypted Lusha company ID
+    - `domain`
+    - `name`
+    - `email`
+  </Tab>
+  <Tab title="Contacts">
+    Provide one of:
+
+    - `id` - encrypted Lusha contact ID
+    - `linkedinUrl`
+    - `email`
+    - `firstName` + `lastName` + (`companyName` or `companyDomain`)
+  </Tab>
+</Tabs>
+
+## The score
+
+Each scored record includes:
+
+| Field | Description |
+|---|---|
+| `icpFitScore` | The best fit across the requested profiles, from `0` to `1`. |
+| `topProfile` | The profile the record fits best - `{ id, name }`. |
+| `profileScores` | The score for each requested profile. Returned only when you request more than one profile. |
+
+Company results also include `id`, `name`, and `domain`. Contact results include `id`, `fullName`, and `company` (`{ id, name, domain }`).
+
+```json
+{
+  "clientReferenceId": "ref-1",
+  "id": "v1.AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+  "name": "Acme Corp",
+  "domain": "acmecorp.io",
+  "icpFitScore": 0.92,
+  "topProfile": { "id": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391", "name": "Mid-market SaaS" },
+  "profileScores": [
+    { "id": "3fbaaaa7-700f-4419-a0c6-56f9f3fca391", "name": "Mid-market SaaS", "score": 0.92 },
+    { "id": "a49d9e05-eb62-4c00-8186-e74ba237a0ad", "name": "Enterprise", "score": 0.1 }
+  ]
+}
+```
+
+## Reading the results
+
+Each entry in `results` is one of three outcomes:
+
+| Outcome | Meaning |
+|---|---|
+| **Scored** | `icpFitScore` and `topProfile` are populated. A score of `0` is a real result - the record doesn't fit. |
+| **`NOT_FOUND`** | The identifier you supplied couldn't be resolved to a contact or company. |
+| **`NO_SCORE`** | The record resolved, but no ICP fit score is available for it right now. |
+
+<Note>
+  `NOT_FOUND` is an identifier problem worth retrying with a better identifier. `NO_SCORE` means the record is genuinely unscored right now.
+</Note>
+
+## Billing
+
+- Listing Target Profiles is free.
+- Scoring charges 1 credit per scored contact or company, regardless of how many profiles it's scored against. A score of `0` is charged.
+- `NOT_FOUND` and `NO_SCORE` entries are not charged.
+
+Check `billing.creditsCharged` in the response for the exact amount.
+
+## Related pages
+
+- [Signal Score and ICP Fit Score](/user-guide/ai-recommendations/signal-score-and-icp-fit-score) - how the scores are calculated and combined into Lead Score
+- [ICP Hub](/user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations) - create and manage Target Profiles
+- [Signal Score](/signals/signal-score) - score the same records by buying activity

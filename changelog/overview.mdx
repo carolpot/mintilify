@@ -6,9 +6,25 @@ description: "All notable changes to the Lusha API and MCP. We follow semantic v
 All notable changes to the Lusha API and MCP are documented here. We follow semantic versioning.
 
 <Info>
-  **Current Version: 2.17.1**
+  **Current Version: 2.18.0**
   Status: Production · Released: October 2026 · Stability: Stable (Tables API is Beta)
 </Info>
+
+<Update label="2026-10-13" description="v2.18.0 - ICP Fit Score API" tags={["Scoring"]}>
+
+**Added**
+
+**ICP Fit Score API** - Score any list of contacts or companies against your Target Profiles (ICPs). See [ICP Fit Score](/icp-fit-score/overview).
+
+- `GET /v3/icp/profiles` - list the Target Profiles you can see: your own, plus any an admin has shared with the account. Optional `status` (`active` | `disabled`) and `access` (`private` | `shared`) filters. Free
+- `POST /v3/companies/icp-fit-score` and `POST /v3/contacts/icp-fit-score` - score 1-100 records against 1-3 active Target Profiles. Each result returns `icpFitScore` (`[0, 1]`, the best fit), `topProfile`, and `profileScores` when more than one profile is requested
+- Records are identified the same way as on Signal Score, with an optional `clientReferenceId`
+
+**Notes**
+
+- Billing: 1 credit per scored record, regardless of how many profiles it's scored against. `NOT_FOUND` and `NO_SCORE` entries are not charged
+
+</Update>
 
 <Update label="2026-10-07" description="v2.17.1 - LinkedIn profile fields documented on contact enrichment" tags={["Enrichment"]}>
 

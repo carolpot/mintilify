@@ -162,6 +162,12 @@
                         ]
                       },
                       {
+                        "group": "ICP Fit Score",
+                        "pages": [
+                          "icp-fit-score/overview"
+                        ]
+                      },
+                      {
                         "group": "Buying Group",
                         "pages": [
                           "buying-group/overview"
@@ -421,6 +427,15 @@
                       "POST /v3/companies/signal-score"
                     ],
                     "icon": "bolt"
+                  },
+                  {
+                    "group": "ICP Fit Score",
+                    "pages": [
+                      "GET /v3/icp/profiles",
+                      "POST /v3/contacts/icp-fit-score",
+                      "POST /v3/companies/icp-fit-score"
+                    ],
+                    "icon": "bullseye"
                   },
                   {
                     "group": "Buying Group",
