@@ -18,11 +18,15 @@ All notable changes to the Lusha API and MCP are documented here. We follow sema
 
 - `GET /v3/icp/profiles` - list the Target Profiles you can see: your own, plus any an admin has shared with the account. Optional `status` (`active` | `disabled`) and `access` (`private` | `shared`) filters. Free
 - `POST /v3/companies/icp-fit-score` and `POST /v3/contacts/icp-fit-score` - score 1-100 records against 1-3 active Target Profiles. Each result returns `icpFitScore` (`[0, 1]`, the best fit), `topProfile`, and `profileScores` when more than one profile is requested
-- Records are identified the same way as on Signal Score, with an optional `clientReferenceId`
+- `targetProfileIds` must be active profiles you own or that are shared with your account - get them from `GET /v3/icp/profiles`
+- Companies are identified by exactly one of `id`, `domain`, `name`, or `email`. Contacts are identified by one of `id`, `linkedinUrl`, `email`, or `firstName` + `lastName` + (`companyName` | `companyDomain`). Both accept an optional `clientReferenceId`, echoed back on the result
+- Contact results return `fullName` and `company` (`id`, `name`, `domain`) in place of the company fields
+- Each result is a scored entry, a `NOT_FOUND` entry (identifier couldn't be resolved), or a `NO_SCORE` entry (record resolved, but no score is available)
 
 **Notes**
 
-- Billing: 1 credit per scored record, regardless of how many profiles it's scored against. `NOT_FOUND` and `NO_SCORE` entries are not charged
+- Billing: listing Target Profiles is free. Scoring is 1 credit per scored record, regardless of how many profiles it's scored against - a score of `0` is a real result and is charged. `NOT_FOUND` and `NO_SCORE` entries are not charged
+- All three endpoints return `billing.lowBalance`, set when your credit balance is running low
 
 </Update>
 
