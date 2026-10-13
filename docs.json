@@ -219,7 +219,6 @@
                         "pages": [
                           "tutorials/api_fundamentals",
                           "tutorials/postman-environment-guide",
-                          "tutorials/person-api-v1-deprecation",
                           "tutorials/v3-migration-guide"
                         ]
                       },
@@ -1409,6 +1408,10 @@
     "drilldown": false
   },
   "redirects": [
+    {
+      "source": "/tutorials/person-api-v1-deprecation",
+      "destination": "/tutorials/v3-migration-guide"
+    },
     {
       "source": "/user-guide/manage-sequences/auto-sequence",
       "destination": "/user-guide/manage-sequences/overview-and-optimize-your-sequences"
