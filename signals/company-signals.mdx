@@ -1,10 +1,10 @@
 ---
 title: "Retrieve company signals for business events and growth"
 sidebarTitle: "Company Signals"
-description: "Fetch hiring surges, headcount trends, website traffic changes, and news events for up to 100 companies per request using their Lusha company IDs."
+description: "Fetch hiring surges, headcount trends, website traffic changes, news events, and intent changes for up to 100 companies per request using their Lusha company IDs."
 ---
 
-Company signals give you visibility into what's happening inside your target accounts - hiring surges, headcount changes, shifts in website traffic and IT spend, and news events across seven categories. One endpoint takes up to 100 Lusha company IDs and the signal types you want, and returns everything that matched - no separate lookup or search step.
+Company signals give you visibility into what's happening inside your target accounts - hiring surges, headcount changes, shifts in website traffic and IT spend, news events across seven categories, and changes in the topics a company is researching. One endpoint takes up to 100 Lusha company IDs and the signal types you want, and returns everything that matched - no separate lookup or search step.
 
 <Note>
   Signals are charged per matched signal per result. Request only the signal types you need.
@@ -26,6 +26,8 @@ Send 1–100 Lusha company IDs per request along with the `signalTypes` you want
 | `signalTypes` | array of strings | Yes | Signal types to retrieve (see full list below) |
 | `startDate` | string | No | Earliest date for signals, in `YYYY-MM-DD` format |
 | `maxResultsPerSignal` | integer | No | Maximum signal instances returned per type per company (1–100) |
+| `filters.include.intentTopics` | array of strings | No | Narrows the intent signal types to these topics - see [Intent signals](#intent-signals) |
+| `filters.include.intentCategories` | array of strings | No | Narrows `linkedinActivityIntent` and the intent signal types to these categories |
 
 **Example request**
 
@@ -66,7 +68,7 @@ Every result carries `id`, `companyName`, and `domain`. Whichever signal types y
   <Accordion title="Hiring and workforce">
     | Signal type | Description |
     |---|---|
-    | `allSignals` | All available company signal types |
+    | `allSignals` | All available company signal types, except the four intent signal types |
     | `surgeInHiring` | Overall increase in open job postings |
     | `surgeInHiringByDepartment` | Hiring surge scoped to a specific department |
     | `surgeInHiringByLocation` | Hiring surge scoped to a specific country or state |
@@ -105,22 +107,112 @@ Every result carries `id`, `companyName`, and `domain`. Whichever signal types y
     | `marketIntelligenceNews` | Event participation, recognition, and competitor activity |
     | `productActivityNews` | Product launches, development, and integrations |
   </Accordion>
+
+  <Accordion title="Intent">
+    | Signal type | Description |
+    |---|---|
+    | `linkedinActivityIntent` | Employees posted LinkedIn content mapped to an intent category |
+    | `newIntentTopic` | The company started researching a topic it had no activity on the previous week |
+    | `intentScoreIncrease` | The company's intent score for a topic went up compared to the previous week |
+    | `intentScoreDecrease` | The company's intent score for a topic went down compared to the previous week |
+    | `intentTopicRemoved` | The topic dropped below the activity threshold, so it no longer has a score |
+
+    `allSignals` does not include `newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, or `intentTopicRemoved` - name them in `signalTypes` to get them.
+  </Accordion>
 </AccordionGroup>
 
 <Tip>
   Call [Get Company Signal Types](/api-reference/signals/company-signal-types) to fetch this list programmatically instead of hardcoding it.
 </Tip>
 
-## Explore the news, department, and location taxonomy
+## Intent signals
 
-Two reference endpoints let you explore what values exist for the news, department, and location dimensions behind company signals - useful for populating a picker UI or validating input before you build automations around specific categories.
+The four intent signal types track week-over-week changes in what a company is researching. Each topic has a score from 0 to 100 - a high score means the company is researching the topic more than usual. Intent data refreshes weekly.
+
+Every topic in the catalog is available - the topics selected in your Lusha dashboard don't apply.
+
+<Steps>
+  <Step title="Find the topics you care about">
+    There are about 18,000 intent topics, so search for them by name. `query` is required (2-256 characters), and up to 50 matches come back. This call is free.
+
+    ```bash
+    curl --request GET \
+      --url 'https://api.lusha.com/v3/companies/signals/filters/intentTopics?query=cloud%20hr' \
+      --header 'api_key: YOUR_API_KEY'
+    ```
+
+    ```json
+    { "values": ["Cloud HR Platform"] }
+    ```
+  </Step>
+  <Step title="Request intent signals for those topics">
+    Name the intent types in `signalTypes` and pass the exact topic names in `filters.include.intentTopics`. You can also narrow by `filters.include.intentCategories`. With neither filter, all topics come back, up to `maxResultsPerSignal`.
+
+    ```json
+    {
+      "ids": ["15789512"],
+      "signalTypes": ["newIntentTopic", "intentScoreIncrease", "intentScoreDecrease", "intentTopicRemoved"],
+      "startDate": "2026-09-01",
+      "maxResultsPerSignal": 10,
+      "filters": {
+        "include": {
+          "intentTopics": ["Air Cargo", "Cloud HR Platform", "Employee Onboarding Software"]
+        }
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  A topic that isn't in the catalog returns `400 INVALID_FILTER_VALUE`, naming the topic. Always use exact names from the topic search.
+</Warning>
+
+Each intent signal returns:
+
+| Field | Description |
+|---|---|
+| `id` | Signal ID |
+| `signalDate` | Week the change was detected |
+| `topic` | Intent topic |
+| `category` | Category the topic belongs to |
+| `score` | Current score, 0-100. `null` for `intentTopicRemoved` |
+| `previousScore` | Score the previous week. `null` for `newIntentTopic` and `intentTopicRemoved` |
+| `changeRatePercent` | Week-over-week change as a percentage, negative for a decrease. `null` for `newIntentTopic` and `intentTopicRemoved` |
+
+```json
+{
+  "id": "15789512",
+  "companyName": "UIC Inc",
+  "domain": "uicinc.com",
+  "intentScoreIncrease": [
+    { "id": "2139910966", "signalDate": "2026-09-28", "topic": "Air Cargo", "category": "Other", "score": 65, "previousScore": 60, "changeRatePercent": 8 }
+  ],
+  "intentScoreDecrease": [
+    { "id": "2139504101", "signalDate": "2026-09-28", "topic": "Cloud HR Platform", "category": "HR Tech", "score": 61, "previousScore": 83, "changeRatePercent": -27 }
+  ],
+  "intentTopicRemoved": [
+    { "id": "2139471579", "signalDate": "2026-09-28", "topic": "Employee Onboarding Software", "category": "HR Tech", "score": null, "previousScore": null, "changeRatePercent": null }
+  ]
+}
+```
+
+Intent signals are charged like every other company signal - per matched signal per result, via `showSignalsCompany`. No matches, no charge.
+
+<Note>
+  Intent signals are available on this lookup only. You can't use them to find new companies in Prospecting or signal search - for that, use the Prospecting `intentTopics` filter.
+</Note>
+
+## Explore the news, department, location, and intent taxonomy
+
+Two reference endpoints let you explore what values exist for the news, department, location, and intent dimensions behind company signals - useful for populating a picker UI or validating input before you build automations around specific categories.
 
 <Steps>
   <Step title="List available filter types">
-    Call [Get Company Signal Filters](/api-reference/signals/company-signal-filters) - `GET /v3/companies/signals/filters` - to see the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) and whether each requires a search `query`.
+    Call [Get Company Signal Filters](/api-reference/signals/company-signal-filters) - `GET /v3/companies/signals/filters` - to see the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`, `intentCategories`, `intentTopics`) and whether each requires a search `query`.
   </Step>
   <Step title="Fetch values for a specific filter type">
-    Call [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) - `GET /v3/companies/signals/filters/{filterType}` - for the values themselves. `hiringByLocations` requires a `query` (2–256 characters); the other two don't.
+    Call [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) - `GET /v3/companies/signals/filters/{filterType}` - for the values themselves. `hiringByLocations` and `intentTopics` require a `query` (2–256 characters); the others don't.
   </Step>
 </Steps>
 

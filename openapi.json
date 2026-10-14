@@ -76,7 +76,7 @@
     },
     {
       "name": "Signals",
-      "description": "Real-world activity data for contacts and companies.\n\nSignals are available as standalone endpoints or as an optional `signals` filter on Search and Prospecting endpoints.\n\n\n**Contact signal types:** `promotion`, `companyChange`, `allSignals`\n\n----\n\n**Company signal types:** `headcountIncrease1m/3m/6m/12m`, `headcountDecrease1m/3m/6m/12m`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`, `allSignals`\n\n----\n\n**Signal Score:** Use [Score Companies by Signal Activity](#operation/getCompanySignalScores) or [Score Contacts by Signal Activity](#operation/getContactSignalScores) to get a single aggregate momentum score ([0,1]) plus the active signal breakdown for a batch of entities, rather than a raw event list.\n\n----\n\nCredits are charged per matched signal per result via `showSignalsContact` or `showSignalsCompany`.\n\nPass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables) or [Companies Tables](#tag/Companies-Tables).\n",
+      "description": "Real-world activity data for contacts and companies.\n\nSignals are available as standalone endpoints or as an optional `signals` filter on Search and Prospecting endpoints.\n\n\n**Contact signal types:** `promotion`, `companyChange`, `allSignals`\n\n----\n\n**Company signal types:** `headcountIncrease1m/3m/6m/12m`, `headcountDecrease1m/3m/6m/12m`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`, `linkedinActivityIntent`, `allSignals`\n\n**Company intent signal types:** `newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, `intentTopicRemoved` - not included in `allSignals`, so name them explicitly. Find topics with `GET /v3/companies/signals/filters/intentTopics?query=...`.\n\n----\n\n**Signal Score:** Use [Score Companies by Signal Activity](#operation/getCompanySignalScores) or [Score Contacts by Signal Activity](#operation/getContactSignalScores) to get a single aggregate momentum score ([0,1]) plus the active signal breakdown for a batch of entities, rather than a raw event list.\n\n----\n\nCredits are charged per matched signal per result via `showSignalsContact` or `showSignalsCompany`.\n\nPass `tableId` to also persist matching results into an existing table. See [Contacts Tables](#tag/Contacts-Tables) or [Companies Tables](#tag/Companies-Tables).\n",
       "x-tag-expanded": true
     },
     {
@@ -3898,7 +3898,7 @@
         ],
         "summary": "Company Signals",
         "operationId": "getCompanySignals",
-        "description": "Retrieve signal events for a list of companies - hiring activity, headcount changes, web traffic, IT spend, and news.\n\nPass up to 100 company `ids`. Use `signalTypes` to specify which signals to return (or use `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsCompany` action.\n\n> **Persisting to a table:** Pass `tableId` to also add these companies to an existing table and populate the Signals column. See [Companies Tables](#tag/Companies-Tables).\n",
+        "description": "Retrieve signal events for a list of companies - hiring activity, headcount changes, web traffic, IT spend, news, and intent.\n\nPass up to 100 company `ids`. Use `signalTypes` to specify which signals to return (or use `allSignals`). Optionally set a `startDate` to limit results to recent activity.\n\n### Intent signals\nFour signal types track week-over-week changes in what a company is researching:\n- `newIntentTopic` - a topic with no activity the previous week now has a score\n- `intentScoreIncrease` - the topic's score went up compared to the previous week\n- `intentScoreDecrease` - the topic's score went down compared to the previous week\n- `intentTopicRemoved` - the topic dropped below the activity threshold, so it no longer has a score\n\nScores run from 0 to 100 - a high score means the company is researching the topic more than usual. Data refreshes weekly.\n\n`allSignals` does **not** include the intent types - name them in `signalTypes`. Narrow them with `filters.include.intentTopics` (find exact names with [Get Company Signal Filter Values](#operation/getCompanySignalFilterValues) and `filterType=intentTopics`) and `filters.include.intentCategories`. Every topic in the catalog is available - the topics selected in your dashboard don't apply.\n\n> **Billing:** Charged per matched signal per result via the `showSignalsCompany` action. Intent signals are charged the same way as every other company signal - no matches, no charge.\n\n> **Persisting to a table:** Pass `tableId` to also add these companies to an existing table and populate the Signals column. See [Companies Tables](#tag/Companies-Tables).\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3906,15 +3906,45 @@
               "schema": {
                 "$ref": "#/components/schemas/V3CompanySignalsRequest"
               },
-              "example": {
-                "ids": [
-                  "16303253"
-                ],
-                "signalTypes": [
-                  "allSignals"
-                ],
-                "startDate": "2025-01-01",
-                "maxResultsPerSignal": 10
+              "examples": {
+                "allSignals": {
+                  "summary": "All non-intent signals",
+                  "value": {
+                    "ids": [
+                      "16303253"
+                    ],
+                    "signalTypes": [
+                      "allSignals"
+                    ],
+                    "startDate": "2025-01-01",
+                    "maxResultsPerSignal": 10
+                  }
+                },
+                "intentSignals": {
+                  "summary": "Intent signals for specific topics",
+                  "value": {
+                    "ids": [
+                      "15789512"
+                    ],
+                    "signalTypes": [
+                      "newIntentTopic",
+                      "intentScoreIncrease",
+                      "intentScoreDecrease",
+                      "intentTopicRemoved"
+                    ],
+                    "startDate": "2026-09-01",
+                    "maxResultsPerSignal": 10,
+                    "filters": {
+                      "include": {
+                        "intentTopics": [
+                          "Air Cargo",
+                          "Cloud HR Platform",
+                          "Employee Onboarding Software"
+                        ]
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -3926,6 +3956,64 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/V3CompanySignalsResponse"
+                },
+                "examples": {
+                  "intentSignals": {
+                    "summary": "Intent signals",
+                    "value": {
+                      "results": [
+                        {
+                          "id": "15789512",
+                          "companyName": "UIC Inc",
+                          "domain": "uicinc.com",
+                          "intentScoreIncrease": [
+                            {
+                              "id": "2139910966",
+                              "signalDate": "2026-09-28",
+                              "topic": "Air Cargo",
+                              "category": "Other",
+                              "score": 65,
+                              "previousScore": 60,
+                              "changeRatePercent": 8
+                            }
+                          ],
+                          "intentScoreDecrease": [
+                            {
+                              "id": "2139504101",
+                              "signalDate": "2026-09-28",
+                              "topic": "Cloud HR Platform",
+                              "category": "HR Tech",
+                              "score": 61,
+                              "previousScore": 83,
+                              "changeRatePercent": -27
+                            }
+                          ],
+                          "intentTopicRemoved": [
+                            {
+                              "id": "2139471579",
+                              "signalDate": "2026-09-28",
+                              "topic": "Employee Onboarding Software",
+                              "category": "HR Tech",
+                              "score": null,
+                              "previousScore": null,
+                              "changeRatePercent": null
+                            }
+                          ]
+                        },
+                        {
+                          "id": "99999999",
+                          "error": {
+                            "code": "NOT_FOUND",
+                            "message": "Company not found"
+                          }
+                        }
+                      ],
+                      "billing": {
+                        "creditsCharged": 3,
+                        "resultsReturned": 1
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -4003,6 +4091,10 @@
                   "signalTypes": [
                     "allSignals",
                     "linkedinActivityIntent",
+                    "newIntentTopic",
+                    "intentScoreIncrease",
+                    "intentScoreDecrease",
+                    "intentTopicRemoved",
                     "websiteTrafficDecrease",
                     "websiteTrafficIncrease",
                     "itSpendIncrease",
@@ -4072,6 +4164,10 @@
                     {
                       "filterType": "intentCategories",
                       "requiresQuery": false
+                    },
+                    {
+                      "filterType": "intentTopics",
+                      "requiresQuery": true
                     }
                   ]
                 }
@@ -4094,7 +4190,7 @@
         ],
         "summary": "Get Company Signal Filter Values",
         "operationId": "getCompanySignalFilterValues",
-        "description": "Returns valid values for a single company signal filter type.\n\n| Filter type | Query required? |\n|---|---|\n| `newsEventTypes` | No |\n| `hiringByDepartments` | No |\n| `hiringByLocations` | Yes (2-256 chars) |\n| `intentCategories` | No - the `query` parameter is not supported for this filter type; passing one returns `400` |\n",
+        "description": "Returns valid values for a single company signal filter type.\n\n| Filter type | Query required? |\n|---|---|\n| `newsEventTypes` | No |\n| `hiringByDepartments` | No |\n| `hiringByLocations` | Yes (2-256 chars) |\n| `intentCategories` | No - the `query` parameter is not supported for this filter type; passing one returns `400` |\n| `intentTopics` | Yes (2-256 chars) |\n\n`intentTopics` is a text search over the full intent topic catalog (about 18,000 topics). It returns up to 50 matching topic names as plain strings - pass them as `filters.include.intentTopics` on [Company Signals](#operation/getCompanySignals). No match returns `200` with an empty `values` list.\n\n> **Billing:** Free.\n",
         "parameters": [
           {
             "name": "filterType",
@@ -4106,7 +4202,8 @@
                 "newsEventTypes",
                 "hiringByDepartments",
                 "hiringByLocations",
-                "intentCategories"
+                "intentCategories",
+                "intentTopics"
               ]
             }
           },
@@ -4118,7 +4215,8 @@
               "type": "string",
               "minLength": 2,
               "maxLength": 256
-            }
+            },
+            "description": "Text to match values against. Required for `hiringByLocations` and `intentTopics`."
           }
         ],
         "responses": {
@@ -4128,6 +4226,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FilterValuesResponse"
+                },
+                "examples": {
+                  "intentTopics": {
+                    "summary": "intentTopics?query=cloud hr",
+                    "value": {
+                      "values": [
+                        "Cloud HR Platform"
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -11277,6 +11385,10 @@
               "enum": [
                 "allSignals",
                 "linkedinActivityIntent",
+                "newIntentTopic",
+                "intentScoreIncrease",
+                "intentScoreDecrease",
+                "intentTopicRemoved",
                 "websiteTrafficDecrease",
                 "websiteTrafficIncrease",
                 "itSpendIncrease",
@@ -11303,7 +11415,8 @@
             },
             "example": [
               "allSignals"
-            ]
+            ],
+            "description": "Signal types to retrieve. `allSignals` returns every company signal type except the four intent types (`newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, `intentTopicRemoved`) - name those explicitly to get them.\n"
           },
           "startDate": {
             "type": "string",
@@ -11315,7 +11428,7 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 100,
-            "description": "For linkedinActivityIntent, results are capped at 50 per company regardless of the value passed. Other signal types use the requested value as-is (1-100).\n",
+            "description": "For linkedinActivityIntent, results are capped at 50 per company regardless of the value passed. Other signal types use the requested value as-is (1-100).\nFor the intent types, the cap applies after `intentTopics` / `intentCategories` filtering.\n",
             "example": 10
           },
           "tableId": {
@@ -11334,10 +11447,21 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Refines linkedinActivityIntent results by Bombora intent category. Only applies when linkedinActivityIntent is requested (via signalTypes or allSignals). See GET /v3/companies/signals/filters/intentCategories for valid values.\n",
+                    "description": "Narrows intent results by intent category. Applies to `linkedinActivityIntent` and the four intent types (`newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, `intentTopicRemoved`) - other signal types are unaffected. See GET /v3/companies/signals/filters/intentCategories for valid values.\n",
                     "example": [
                       "Technology",
                       "Business"
+                    ]
+                  },
+                  "intentTopics": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Narrows the four intent types (`newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, `intentTopicRemoved`) to these topics. Other signal types are unaffected. Use exact topic names from GET /v3/companies/signals/filters/intentTopics?query=... - a topic that isn't in the catalog returns `400 INVALID_FILTER_VALUE`. Omit to return all topics, up to `maxResultsPerSignal`.\n",
+                    "example": [
+                      "Cloud HR Platform",
+                      "Air Cargo"
                     ]
                   }
                 }
@@ -11472,6 +11596,55 @@
           }
         }
       },
+      "IntentSignalItem": {
+        "type": "object",
+        "description": "One intent change for one topic. Returned under `newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, or `intentTopicRemoved`.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Signal ID.",
+            "example": "2139910966"
+          },
+          "signalDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Week the change was detected. Intent data refreshes weekly.",
+            "example": "2026-09-28"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Intent topic. Use [Get Company Signal Filter Values](#operation/getCompanySignalFilterValues) with `intentTopics` to find exact topic names.",
+            "example": "Air Cargo"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category the topic belongs to.",
+            "example": "Other"
+          },
+          "score": {
+            "type": "integer",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Current intent score, 0-100. A high score means the company is researching the topic more than usual. `null` for `intentTopicRemoved`.",
+            "example": 65
+          },
+          "previousScore": {
+            "type": "integer",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Score the previous week. `null` for `newIntentTopic` and `intentTopicRemoved`.",
+            "example": 60
+          },
+          "changeRatePercent": {
+            "type": "number",
+            "nullable": true,
+            "description": "Week-over-week change in score, as a percentage. Negative for `intentScoreDecrease`. `null` for `newIntentTopic` and `intentTopicRemoved`.",
+            "example": 8
+          }
+        }
+      },
       "V3CompanySignalsResponse": {
         "type": "object",
         "properties": {
@@ -11497,6 +11670,33 @@
                   "items": {
                     "$ref": "#/components/schemas/LinkedinActivityIntentItem"
                   }
+                },
+                "newIntentTopic": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntentSignalItem"
+                  }
+                },
+                "intentScoreIncrease": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntentSignalItem"
+                  }
+                },
+                "intentScoreDecrease": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntentSignalItem"
+                  }
+                },
+                "intentTopicRemoved": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntentSignalItem"
+                  }
+                },
+                "error": {
+                  "$ref": "#/components/schemas/V3ItemError"
                 }
               },
               "additionalProperties": {

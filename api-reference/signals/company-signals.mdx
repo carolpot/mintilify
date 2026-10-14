@@ -32,9 +32,9 @@ POST https://api.lusha.com/v3/companies/signals
 <ParamField body="signalTypes" type="string[]" required>
   Signal types to retrieve.
 
-  Allowed values: `allSignals`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `headcountIncrease1m`, `headcountDecrease1m`, `headcountIncrease3m`, `headcountDecrease3m`, `headcountIncrease6m`, `headcountDecrease6m`, `headcountIncrease12m`, `headcountDecrease12m`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`
+  Allowed values: `allSignals`, `linkedinActivityIntent`, `newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, `intentTopicRemoved`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `headcountIncrease1m`, `headcountDecrease1m`, `headcountIncrease3m`, `headcountDecrease3m`, `headcountIncrease6m`, `headcountDecrease6m`, `headcountIncrease12m`, `headcountDecrease12m`, `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`
 
-  Use `allSignals` to retrieve every available company signal type in one call.
+  Use `allSignals` to retrieve every available company signal type in one call, except the four intent types (`newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, `intentTopicRemoved`) - name those explicitly.
 </ParamField>
 
 <ParamField body="startDate" type="string">
@@ -47,6 +47,21 @@ POST https://api.lusha.com/v3/companies/signals
   Maximum number of signal instances to return per signal type per company. Range: `1`–`100`.
 
   Example: `10`
+</ParamField>
+
+<ParamField body="filters" type="object">
+  Narrows intent results. Other signal types are unaffected.
+
+  <Expandable title="properties">
+    <ParamField body="filters.include.intentTopics" type="string[]">
+      Narrows the four intent types to these topics. Use exact names from [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) with `filterType=intentTopics` - a topic that isn't in the catalog returns `400 INVALID_FILTER_VALUE`. Omit to return all topics, up to `maxResultsPerSignal`.
+
+      Example: `["Cloud HR Platform", "Air Cargo"]`
+    </ParamField>
+    <ParamField body="filters.include.intentCategories" type="string[]">
+      Narrows `linkedinActivityIntent` and the four intent types to these categories. See `filterType=intentCategories` for valid values.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 ---
@@ -102,6 +117,22 @@ curl --request POST \
 
   <Info>
     Beyond `id`, `companyName`, and `domain`, each result also carries one array per signal type that matched - keyed by the `signalTypes` value you requested (for example `surgeInHiring`, `financialEventsNews`), the same keying pattern the [contact signals](/api-reference/signals/contact-signals) response uses for `promotion` and `companyChange`.
+  </Info>
+
+  <Expandable title="intent signal properties">
+    Each item under `newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, or `intentTopicRemoved`:
+
+    <ResponseField name="id" type="string">Signal ID. Example: `"2139910966"`</ResponseField>
+    <ResponseField name="signalDate" type="string">Week the change was detected. Example: `"2026-09-28"`</ResponseField>
+    <ResponseField name="topic" type="string">Intent topic. Example: `"Air Cargo"`</ResponseField>
+    <ResponseField name="category" type="string">Category the topic belongs to. Example: `"Other"`</ResponseField>
+    <ResponseField name="score" type="integer | null">Current score, 0-100. A high score means the company is researching the topic more than usual. `null` for `intentTopicRemoved`.</ResponseField>
+    <ResponseField name="previousScore" type="integer | null">Score the previous week. `null` for `newIntentTopic` and `intentTopicRemoved`.</ResponseField>
+    <ResponseField name="changeRatePercent" type="number | null">Week-over-week change as a percentage, negative for a decrease. `null` for `newIntentTopic` and `intentTopicRemoved`.</ResponseField>
+  </Expandable>
+
+  <Info>
+    A company ID that can't be found returns `id` plus an `error` object (`{ "code": "NOT_FOUND", "message": "Company not found" }`) instead of signal data.
   </Info>
 </ResponseField>
 
@@ -169,7 +200,7 @@ curl --request POST \
 
 | Status | Meaning |
 |--------|---------|
-| `400` | Bad request - invalid input data. |
+| `400` | Bad request - invalid input data, or `INVALID_FILTER_VALUE` when an `intentTopics` value isn't in the catalog. |
 | `401` | Unauthorized - your API key is missing or invalid. |
 | `402` | Payment required - insufficient credits. |
 | `403` | Forbidden - account inactive or V3 access not enabled. |
@@ -180,4 +211,5 @@ curl --request POST \
 - [Signals overview](/signals/overview) - the consolidated signals model, credits, and delivery options
 - [Get Company Signal Types](/api-reference/signals/company-signal-types) - the current list of valid `signalTypes` values
 - [Get Company Signal Filters](/api-reference/signals/company-signal-filters) - discover which signal filter types are available
+- [Company signals guide: Intent signals](/signals/company-signals#intent-signals) - how to find topics and read intent scores
 - [Contact Signals](/api-reference/signals/contact-signals) - the equivalent endpoint for contacts

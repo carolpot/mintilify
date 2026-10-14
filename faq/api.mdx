@@ -123,13 +123,38 @@ description: "Answers to common questions about Lusha's API endpoint groups, ver
 
   **Contact signals**: `promotion`, `companyChange`
 
-  **Company signals**: headcount changes (1m/3m/6m/12m increase or decrease), `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, and 7 news signal categories: `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`.
+  **Company signals**: headcount changes (1m/3m/6m/12m increase or decrease), `surgeInHiring`, `surgeInHiringByDepartment`, `surgeInHiringByLocation`, `websiteTrafficIncrease`, `websiteTrafficDecrease`, `itSpendIncrease`, `itSpendDecrease`, 7 news signal categories: `riskNews`, `commercialActivityNews`, `corporateStrategyNews`, `financialEventsNews`, `peopleNews`, `marketIntelligenceNews`, `productActivityNews`, and intent: `linkedinActivityIntent`, `newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, `intentTopicRemoved`.
 
   You can retrieve signals by Lusha IDs or by identifiers (LinkedIn URL, email, name + company/domain). Signals can also be used as filters in Search and Prospecting requests. Use `startDate` to scope results to a specific timeframe (default: last 6 months). `maxResultsPerSignal` is optional and caps results per signal type per entity.
 
-  Company signals also support sub-filters: `newsEventTypes`, `hiringByDepartments`, and `hiringByLocations` to narrow results without separate requests.
+  Company signals also support sub-filters: `newsEventTypes`, `hiringByDepartments`, `hiringByLocations`, `intentCategories`, and `intentTopics` to narrow results without separate requests.
 
   Pass `tableId` in the request body to also save matched results into an existing table and populate the Signals column.
+</Accordion>
+
+<Accordion title="How do I get intent signals for a company?">
+  Four company signal types track week-over-week changes in what a company is researching:
+
+  - `newIntentTopic` - the company started researching a topic it had no activity on the previous week
+  - `intentScoreIncrease` / `intentScoreDecrease` - the topic's score went up or down compared to the previous week, with `changeRatePercent`
+  - `intentTopicRemoved` - the topic dropped below the activity threshold, so it no longer has a score
+
+  Scores run from 0 to 100 - a high score means the company is researching the topic more than usual. Data refreshes weekly.
+
+  To get them:
+
+  1. Search the topic catalog with `GET /v3/companies/signals/filters/intentTopics?query=salesforce`. It returns up to 50 matching topic names and is free.
+  2. Call `POST /v3/companies/signals` with the intent types in `signalTypes` and the exact topic names in `filters.include.intentTopics`.
+
+  A few things to know:
+
+  - `allSignals` does **not** include the four intent types - you have to name them.
+  - Every topic in the catalog is available - the topics selected in your dashboard don't apply.
+  - A topic that isn't in the catalog returns `400 INVALID_FILTER_VALUE`.
+  - Intent signals are charged like every other company signal, per matched signal via `showSignalsCompany`.
+  - They're available on the signals lookup only - not in Prospecting or signal search.
+
+  See [Intent signals](/signals/company-signals#intent-signals).
 </Accordion>
 
 <Accordion title="What is the Lookalikes API?">
