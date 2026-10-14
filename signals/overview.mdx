@@ -48,7 +48,7 @@ Signals is a consolidated, one-call-per-entity model: give an endpoint a list of
 
 | Signal type | Description |
 |---|---|
-| `allSignals` | All available company signal types |
+| `allSignals` | All available company signal types, except the four intent signal types |
 | `surgeInHiring` | Overall increase in open job postings |
 | `surgeInHiringByDepartment` | Hiring surge scoped to a specific department |
 | `surgeInHiringByLocation` | Hiring surge scoped to a specific country or state |
@@ -83,20 +83,33 @@ Signals is a consolidated, one-call-per-entity model: give an endpoint a list of
 | `marketIntelligenceNews` | Event participation, recognition, and competitor activity |
 | `productActivityNews` | Product launches, development, and integrations |
 
+**Intent**
+
+| Signal type | Description |
+|---|---|
+| `linkedinActivityIntent` | Employees posted LinkedIn content mapped to an intent category |
+| `newIntentTopic` | The company started researching a topic it had no activity on the previous week |
+| `intentScoreIncrease` / `intentScoreDecrease` | The company's intent score for a topic changed compared to the previous week |
+| `intentTopicRemoved` | The topic dropped below the activity threshold, so it no longer has a score |
+
+<Note>
+  `allSignals` doesn't include `newIntentTopic`, `intentScoreIncrease`, `intentScoreDecrease`, or `intentTopicRemoved` - name them in `signalTypes`, and narrow them with `filters.include.intentTopics`. See [Intent signals](/signals/company-signals#intent-signals).
+</Note>
+
 <Tip>
   Don't hardcode this list. Call [Get Contact Signal Types](/api-reference/signals/contact-signal-types) or [Get Company Signal Types](/api-reference/signals/company-signal-types) to fetch the current, authoritative list of `signalTypes` values at runtime.
 </Tip>
 
 ## Discover company signal filters
 
-Company Signals results carry news-, department-, and location-specific detail. Two reference endpoints help you explore that taxonomy before you build a UI or automation on top of it:
+Company Signals results carry news-, department-, location-, and intent-specific detail. Two reference endpoints help you explore that taxonomy before you build a UI or automation on top of it:
 
 <CardGroup cols={2}>
   <Card title="Get Company Signal Filters" icon="list" href="/api-reference/signals/company-signal-filters">
-    Discovery endpoint - lists the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`) and whether each needs a search query.
+    Discovery endpoint - lists the available filter types (`newsEventTypes`, `hiringByDepartments`, `hiringByLocations`, `intentCategories`, `intentTopics`) and whether each needs a search query.
   </Card>
   <Card title="Get Company Signal Filter Values" icon="magnifying-glass" href="/api-reference/signals/company-signal-filter-values">
-    Returns the actual values for one filter type - a fixed list for `newsEventTypes` and `hiringByDepartments`, or a text-matched list for `hiringByLocations`.
+    Returns the actual values for one filter type - a fixed list for `newsEventTypes` and `hiringByDepartments`, or a text-matched list for `hiringByLocations` and `intentTopics`.
   </Card>
 </CardGroup>
 

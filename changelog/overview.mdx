@@ -6,9 +6,34 @@ description: "All notable changes to the Lusha API and MCP. We follow semantic v
 All notable changes to the Lusha API and MCP are documented here. We follow semantic versioning.
 
 <Info>
-  **Current Version: 2.18.0**
+  **Current Version: 2.19.0**
   Status: Production · Released: October 2026 · Stability: Stable (Tables API is Beta)
 </Info>
+
+<Update label="2026-10-14" description="v2.19.0 - Company intent signals" tags={["Signals"]}>
+
+**Added**
+
+**Intent signals on Company Signals** - Four new signal types on `POST /v3/companies/signals` track week-over-week changes in what a company is researching. See [Intent signals](/signals/company-signals#intent-signals).
+
+- `newIntentTopic` - the company started researching a topic it had no activity on the previous week
+- `intentScoreIncrease` / `intentScoreDecrease` - the topic's score went up or down compared to the previous week
+- `intentTopicRemoved` - the topic dropped below the activity threshold, so it no longer has a score
+- Each item returns `id`, `signalDate`, `topic`, `category`, `score` (0-100), `previousScore`, and `changeRatePercent`. Fields are `null` where they don't apply - removed topics have no score, and new topics have no previous score
+- New `filters.include.intentTopics` narrows the intent types to specific topics. `filters.include.intentCategories` now also applies to them. With neither, all topics come back, up to `maxResultsPerSignal`
+- All four types are listed on `GET /v3/companies/signals/types`
+
+**Intent topic search** - `GET /v3/companies/signals/filters/intentTopics?query=...` searches the full intent topic catalog (about 18,000 topics) and returns up to 50 matching names. `query` is required (2-256 characters). Free. `GET /v3/companies/signals/filters` now lists `intentTopics` with `requiresQuery: true`.
+
+**Notes**
+
+- `allSignals` does not include the four intent types - name them in `signalTypes` to get them
+- Every topic is available - the topics selected in your dashboard don't apply
+- A topic that isn't in the catalog returns `400 INVALID_FILTER_VALUE`, naming the topic
+- Billing: charged per matched signal via `showSignalsCompany`, the same as every other company signal. No matches, no charge
+- Intent signals are available on the signals lookup only - not in Prospecting or signal search. Intent data refreshes weekly
+
+</Update>
 
 <Update label="2026-10-13" description="v2.18.0 - ICP Fit Score API" tags={["Scoring"]}>
 
