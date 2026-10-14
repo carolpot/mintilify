@@ -54,7 +54,7 @@ POST https://api.lusha.com/v3/companies/signals
 
   <Expandable title="properties">
     <ParamField body="filters.include.intentTopics" type="string[]">
-      Narrows the four intent types to these topics. Use exact names from [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) with `filterType=intentTopics` - a topic that isn't in the catalog returns `400 INVALID_FILTER_VALUE`. Omit to return all topics, up to `maxResultsPerSignal`.
+      Narrows the four intent types to these topics. Does not apply to `linkedinActivityIntent` - use `intentCategories` for that. Use exact names from [Get Company Signal Filter Values](/api-reference/signals/company-signal-filter-values) with `filterType=intentTopics` - a topic that isn't in the catalog returns `400 INVALID_FILTER_VALUE`. Omit to return all topics, up to `maxResultsPerSignal`.
 
       Example: `["Cloud HR Platform", "Air Cargo"]`
     </ParamField>

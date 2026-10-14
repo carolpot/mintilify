@@ -26,7 +26,7 @@ Send 1–100 Lusha company IDs per request along with the `signalTypes` you want
 | `signalTypes` | array of strings | Yes | Signal types to retrieve (see full list below) |
 | `startDate` | string | No | Earliest date for signals, in `YYYY-MM-DD` format |
 | `maxResultsPerSignal` | integer | No | Maximum signal instances returned per type per company (1–100) |
-| `filters.include.intentTopics` | array of strings | No | Narrows the intent signal types to these topics - see [Intent signals](#intent-signals) |
+| `filters.include.intentTopics` | array of strings | No | Narrows the four intent signal types to these topics (not `linkedinActivityIntent`) - see [Intent signals](#intent-signals) |
 | `filters.include.intentCategories` | array of strings | No | Narrows `linkedinActivityIntent` and the intent signal types to these categories |
 
 **Example request**
