@@ -114,7 +114,7 @@ The CRM export tab lists every table pushed to a connected CRM in the last 90 da
 | Exported / total | How many records were successfully pushed |
 | Failed | How many records failed (shown in red when non-zero) |
 
-Select any job to see which contacts failed and why.
+Select any job to see which contacts failed and why - the job detail lists the top 5 failure reasons, ranked by how many rows each one affected, so you can see the biggest problem first and fix it yourself without opening a support ticket.
 
 <Note>
 The CRM export tab shows export-level results from Lusha. To see exactly which contacts are now in your CRM, go to your CRM directly and filter records by source - look for contacts where the source is set to Lusha.
@@ -124,6 +124,6 @@ The CRM export tab shows export-level results from Lusha. To see exactly which c
 
 - **Mapping errors** - check your field mapping in **Settings → Integrations → the relevant integration → Manage → Integration tab**.
 - **Integration issues** - go to **Settings → Integrations → the relevant integration → Manage → Integration tab** and reauthenticate your CRM connection. A disconnected token will cause a full job failure, shown as **Failed** in the CRM export tab.
-- **Contacts not appearing in CRM after export** - check the CRM export tab under Account to confirm the job status. If the job shows **Completed with errors**, select it to see how many contacts failed.
+- **Contacts not appearing in CRM after export** - check the CRM export tab under Account to confirm the job status. If the job shows **Completed with errors**, select it to see the top failure reasons and how many rows each affected, not just the failed count.
 
 You're all set - your contacts are on their way to your CRM.

@@ -42,7 +42,7 @@ Click the **CSV** button in the toolbar. A dialog appears with three scope optio
 | **Current page** | All rows visible on the current page |
 | **All rows (including filtered)** | Every row in the table, applying any active filters |
 
-**What's included in the CSV:** The export includes every column visible in your table at the time of export - including all Lusha data and any enrichment data (AI Data, Signals, CRM fields) for which data has been run. Columns you have hidden from view will not be included.
+**What's included in the CSV:** The export includes every column visible in your table at the time of export - including all Lusha data and any enrichment data (AI Data, Signals, CRM fields) for which data has been run. Columns you have hidden from view will not be included. The export keeps the exact column order shown in your table, so if you've reordered columns or saved a default layout, your CSV matches it. See [Customizing and saving your column layout](/user-guide/shared/tables/working-inside-a-saved-workspace-table#customizing-and-saving-your-column-layout).
 
 **Adjusting page size before exporting:** If you want to export a "current page" of a specific size, change your Rows per page setting first (25, 50, 75, or 150) using the dropdown at the bottom of the table.
 
@@ -142,7 +142,7 @@ Columns: CRM · Source table · Time · Status · Exported / total · Failed
 
 Status values: **Done** (green) · **Completed with errors** (amber) · **In progress** (blue) · **Failed** (red)
 
-Select any job to see which contacts failed and why.
+Select any job to see which contacts failed and why - the job detail lists the top 5 failure reasons, ranked by how many rows each affected. See [Reviewing your CRM exports](/user-guide/integrations-basics/how-to-export-contacts-to-crm-using-lusha#reviewing-your-crm-exports) for the full reference.
 
 <Note>
 To see exactly which contacts are now in your CRM, go to your CRM and filter by source - look for records where the source is set to Lusha.
@@ -183,4 +183,4 @@ Each CRM has a maximum per export - 10,000 for Salesforce, and 1,000 for HubSpot
 
 **What if some contacts fail during export?**
 
-Failed contacts stay **Not exported** and are automatically included in your next export run. Go to **Settings → Integrations → the relevant integration → Manage → Integration tab** to see which contacts failed and why.
+Failed contacts stay **Not exported** and are automatically included in your next export run. Go to **Settings → Integrations → the relevant integration → Manage → Integration tab** and select the job to see the top failure reasons, ranked by how many rows each affected.
