@@ -541,3 +541,13 @@ body:has(.lp-root) #footer [class*="gap-y-24"] {
 .kh-table .kh-col-md { min-width: 6rem; }
 .kh-table .kh-col-lg { min-width: 10rem; }
 .kh-table .kh-col-xl { min-width: 14rem; }
+
+/*
+ * Hide the floating "Ask a question..." assistant bar at the bottom of pages.
+ * The assistant stays available from the top bar button (#assistant-entry)
+ * and its chat panel (#chat-assistant-sheet). Undocumented Mintlify class,
+ * so re-check after Mintlify updates.
+ */
+.chat-assistant-floating-input {
+  display: none !important;
+}
