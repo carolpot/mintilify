@@ -882,24 +882,12 @@
                 "icon": "file-csv",
                 "root": "user-guide/csv-enrichment/csv-enrichment",
                 "pages": [
-                  {
-                    "group": "CSV Enrichment",
-                    "icon": "file-csv",
-                    "pages": [
-                      "user-guide/csv-enrichment/the-enrich-page-lushas-enrichment-hub",
-                      "user-guide/csv-enrichment/csv-enrichment",
-                      "user-guide/csv-enrichment/how-to-create-a-csv-file",
-                      "user-guide/csv-enrichment/csv-enrichment-how-matching-and-match-rates-work"
-                    ]
-                  },
-                  {
-                    "group": "CRM Enrichment",
-                    "icon": "arrows-rotate",
-                    "pages": [
-                      "user-guide/crm-enrichment/new-crm-data-enrichment",
-                      "user-guide/crm-enrichment/crm-data-enrichment"
-                    ]
-                  }
+                  "user-guide/csv-enrichment/the-enrich-page-lushas-enrichment-hub",
+                  "user-guide/csv-enrichment/csv-enrichment",
+                  "user-guide/csv-enrichment/how-to-create-a-csv-file",
+                  "user-guide/csv-enrichment/csv-enrichment-how-matching-and-match-rates-work",
+                  "user-guide/crm-enrichment/new-crm-data-enrichment",
+                  "user-guide/crm-enrichment/crm-data-enrichment"
                 ]
               },
               {
@@ -954,20 +942,8 @@
                       "user-guide/using-the-platform/using-the-snippets-library",
                       "user-guide/using-the-platform/understanding-your-meeting-analysis",
                       "user-guide/using-the-platform/lusha-conversations-insights",
-                      "user-guide/using-the-platform/zoom-settings-blocking-the-conversations-bot"
-                    ]
-                  },
-                  {
-                    "group": "Team & Administration",
-                    "icon": "user-gear",
-                    "pages": [
-                      "user-guide/team-and-administration/coaching-your-team-with-lusha-conversations"
-                    ]
-                  },
-                  {
-                    "group": "Trust & Compliance",
-                    "icon": "shield-halved",
-                    "pages": [
+                      "user-guide/using-the-platform/zoom-settings-blocking-the-conversations-bot",
+                      "user-guide/team-and-administration/coaching-your-team-with-lusha-conversations",
                       "user-guide/trust-and-compliance/lusha-conversations-data-security-and-compliance"
                     ]
                   }
