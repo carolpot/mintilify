@@ -92,6 +92,18 @@ Each table shows its name, the number of contacts or companies it contains, and 
 
 ---
 
+## Filling an empty table
+
+When a table has zero rows - whether it's new or you've emptied it - it shows three ways to add records instead of search alone:
+
+- **Search** - the primary action, opens the existing search flow.
+- **Import from CRM** - works the same as the **Import from CRM** button on the home page. See [Importing from CRM into Workspace](/user-guide/building-your-workspace-tables/Account-Based%20Prospecting%20(Beta)/importing-from-crm-into-workspace).
+- **Top daily contacts/companies** - adds from your AI Recommendations. See [Adding AI Recommendations to a table](#adding-ai-recommendations-to-a-table).
+
+Both contacts and companies tables show the same three options in the same order. Only one option can run at a time - if you leave without adding rows, you're back at the same empty state. The empty state disappears once a row is added.
+
+---
+
 ## The table toolbar
 
 When you open a saved table, the toolbar at the top gives you access to all key actions:
@@ -101,6 +113,7 @@ When you open a saved table, the toolbar at the top gives you access to all key 
 | Table name (top left) | Click to rename the table |
 | AI chat box (left panel) | Continue refining the table through conversation |
 | **Add enrichment** | Open the column library to add Lusha data, AI data, signals, or CRM fields |
+| **Settings** | Open the column settings panel to reorder or remove columns, and save your layout as the default for new tables. See [Customizing and saving your column layout](#customizing-and-saving-your-column-layout). |
 | **CSV** | Export the table to a CSV file |
 | **Show details** | Show a contact or company's details. Options depend on your plan - up to 1,000 for **Premium** and **Scale**; up to 50 for **Pro**; up to 25 for **Free** and **Starter**. |
 | **table** | Save selected contacts to a separate Lusha table (saved table), with preset options of 50, 150, 500, or 1,000 contacts. |
@@ -111,6 +124,27 @@ When you open a saved table, the toolbar at the top gives you access to all key 
 | **Search** | Search for a specific name within the table |
 | **+ Add** (bottom left) | Add more contacts or companies to the table - from search, or from AI Recommendations. See [Adding AI Recommendations to a table](#adding-ai-recommendations-to-a-table). |
 | **Rows per page** (bottom right) | Change how many contacts display per page. You can view up to 150 contacts/companies per page. |
+
+---
+
+## Customizing and saving your column layout
+
+Click **Settings** on the saved-table toolbar to open the column settings panel.
+
+- Drag and drop to reorder columns, or remove the ones you don't need. Grouped columns (like Signals) move together.
+- Tick the checkbox to save the current layout as your default for that table type.
+- Contacts and companies each have their own default, and each user has their own - saving a layout on a contacts table doesn't change your companies default, and your default doesn't affect your teammates.
+- Click **Reset** to put the current table back to Lusha's standard columns.
+
+<Note>
+Only new tables you create pick up your saved default. Existing tables, CRM imports, and recommendation tables keep their current columns.
+</Note>
+
+CSV exports keep the exact column order shown in your table, so a saved layout carries through to your downloads too. See [What's included in the CSV](/user-guide/managing-and-exporting-data/exporting-from-a-workspace-table#export-option-1-csv).
+
+<Note>
+Search tables don't support saved column layouts yet - this is planned for Q4.
+</Note>
 
 ---
 
