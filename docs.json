@@ -722,33 +722,14 @@
                 "pages": [
                   "user-guide/getting-started/index",
                   "user-guide/getting-started/introduction-to-lusha",
-                  "user-guide/getting-started/lushas-key-features-at-a-glance",
+                  "user-guide/explore-key-features",
                   "user-guide/getting-started/your-lusha-dashboard-a-quick-tour",
                   "user-guide/getting-started/notifications-and-feed-your-lusha-activity-center",
                   "user-guide/getting-started/how-credits-work-in-lusha",
+                  "user-guide/getting-started/understanding-data-quality-and-coverage",
                   "user-guide/getting-started/how-to-contact-lusha-support",
                   "user-guide/getting-started/join-lusha-community",
                   "user-guide/getting-started/feature-requests"
-                ]
-              },
-              {
-                "group": "Explore key features",
-                "icon": "star",
-                "root": "user-guide/explore-key-features",
-                "pages": [
-                  "user-guide/explore-key-features",
-                  "user-guide/introduction-and-getting-started/workspace-ai-powered-table-building",
-                  "user-guide/automations-connectors/lusha-api-connectors-build-and-automate",
-                  "user-guide/ai-recommendations/icp-hub-setup-scoring-and-recommendations",
-                  "user-guide/getting-started-with-prospecting/lusha-lookalikes-finding-similar-contacts-and-companies",
-                  "user-guide/csv-enrichment/the-enrich-page-lushas-enrichment-hub",
-                  "user-guide/integrations-basics/lusha-integrations-connect-your-crm",
-                  "user-guide/extension/lusha-extension-prospect-from-anywhere",
-                  "user-guide/getting-started-with-engage/lusha-engage-outreach-built-into-lusha",
-                  "user-guide/getting-started-with-prospecting/the-ultimate-guide-to-prospect-search-with-lusha",
-                  "user-guide/getting-started-with-conversations/lusha-conversations-overview",
-                  "user-guide/getting-started/understanding-data-quality-and-coverage",
-                  "user-guide/shared/features/website-visitors"
                 ]
               },
               {
@@ -841,6 +822,8 @@
                     "icon": "flag",
                     "pages": [
                       "user-guide/getting-started-with-prospecting/getting-started-with-lusha-prospecting",
+                      "user-guide/getting-started-with-prospecting/the-ultimate-guide-to-prospect-search-with-lusha",
+                      "user-guide/getting-started-with-prospecting/lusha-lookalikes-finding-similar-contacts-and-companies",
                       "user-guide/getting-started-with-prospecting/lushas-flex-search",
                       "user-guide/getting-started-with-prospecting/company-bulk-search",
                       "user-guide/getting-started-with-prospecting/saved-and-recent-searches",
@@ -899,23 +882,12 @@
                 "icon": "file-csv",
                 "root": "user-guide/csv-enrichment/csv-enrichment",
                 "pages": [
-                  {
-                    "group": "CSV Enrichment",
-                    "icon": "file-csv",
-                    "pages": [
-                      "user-guide/csv-enrichment/csv-enrichment",
-                      "user-guide/csv-enrichment/how-to-create-a-csv-file",
-                      "user-guide/csv-enrichment/csv-enrichment-how-matching-and-match-rates-work"
-                    ]
-                  },
-                  {
-                    "group": "CRM Enrichment",
-                    "icon": "arrows-rotate",
-                    "pages": [
-                      "user-guide/crm-enrichment/new-crm-data-enrichment",
-                      "user-guide/crm-enrichment/crm-data-enrichment"
-                    ]
-                  }
+                  "user-guide/csv-enrichment/the-enrich-page-lushas-enrichment-hub",
+                  "user-guide/csv-enrichment/csv-enrichment",
+                  "user-guide/csv-enrichment/how-to-create-a-csv-file",
+                  "user-guide/csv-enrichment/csv-enrichment-how-matching-and-match-rates-work",
+                  "user-guide/crm-enrichment/new-crm-data-enrichment",
+                  "user-guide/crm-enrichment/crm-data-enrichment"
                 ]
               },
               {
@@ -970,20 +942,8 @@
                       "user-guide/using-the-platform/using-the-snippets-library",
                       "user-guide/using-the-platform/understanding-your-meeting-analysis",
                       "user-guide/using-the-platform/lusha-conversations-insights",
-                      "user-guide/using-the-platform/zoom-settings-blocking-the-conversations-bot"
-                    ]
-                  },
-                  {
-                    "group": "Team & Administration",
-                    "icon": "user-gear",
-                    "pages": [
-                      "user-guide/team-and-administration/coaching-your-team-with-lusha-conversations"
-                    ]
-                  },
-                  {
-                    "group": "Trust & Compliance",
-                    "icon": "shield-halved",
-                    "pages": [
+                      "user-guide/using-the-platform/zoom-settings-blocking-the-conversations-bot",
+                      "user-guide/team-and-administration/coaching-your-team-with-lusha-conversations",
                       "user-guide/trust-and-compliance/lusha-conversations-data-security-and-compliance"
                     ]
                   }
@@ -1001,6 +961,7 @@
                 "root": "user-guide/extension/extension-overview",
                 "pages": [
                   "user-guide/extension/extension-overview",
+                  "user-guide/extension/lusha-extension-prospect-from-anywhere",
                   "user-guide/chrome-extension",
                   "user-guide/linkedin-extension",
                   "user-guide/extension/install-lusha-extension",
@@ -1052,6 +1013,7 @@
                     "group": "Getting Started with Engage",
                     "icon": "flag",
                     "pages": [
+                      "user-guide/getting-started-with-engage/lusha-engage-outreach-built-into-lusha",
                       "user-guide/getting-started-with-engage/what-is-lusha-engage",
                       "user-guide/getting-started-with-engage/send-a-one-time-email-from-a-table"
                     ]
@@ -1108,6 +1070,7 @@
                 "pages": [
                   "user-guide/native-crm-integrations",
                   "user-guide/integrations-basics/available-crm-integrations",
+                  "user-guide/integrations-basics/lusha-integrations-connect-your-crm",
                   {
                     "group": "Integration Basics",
                     "icon": "book",
@@ -1221,6 +1184,7 @@
                 "root": "user-guide/lushas-api/api-overview",
                 "pages": [
                   "user-guide/lushas-api/api-overview",
+                  "user-guide/automations-connectors/lusha-api-connectors-build-and-automate",
                   "user-guide/lushas-api/all-there-is-to-know-about-lushas-api",
                   "user-guide/lushas-api/signals-api",
                   "user-guide/lushas-api/lookalike-api",
@@ -1423,6 +1387,10 @@
     "drilldown": false
   },
   "redirects": [
+    {
+      "source": "/user-guide/getting-started/lushas-key-features-at-a-glance",
+      "destination": "/user-guide/explore-key-features"
+    },
     {
       "source": "/tutorials/person-api-v1-deprecation",
       "destination": "/tutorials/v3-migration-guide"
