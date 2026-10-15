@@ -125,7 +125,7 @@ Each `profile` list is omitted when Lusha has no data for it. Use the `has` arra
 
 **Changed**
 
-**Data Waterfall available on all paid plans** - Data Waterfall is available on every paid plan - all plans except Free. No API change - this is a packaging change only, and the feature is still enabled per account under **Account Settings → Waterfall**.
+**Data Waterfall available on all paid plans** - Data Waterfall is available on every paid plan (all plans except Free). This is a packaging change only, with no API change. You still enable the feature per account under **Account Settings → Waterfall**.
 
 **Fixed**
 
@@ -317,7 +317,7 @@ All four values are nested under a single `openJobs` object rather than returned
 
 **Added**
 
-**Waterfall Reveal on Enrich Contacts** - `POST /v3/contacts/enrich` now falls through to your enabled third-party providers automatically when Lusha's own data has no match for a field - extra reach on hard-to-match contacts, on top of standard enrichment. An optional `waterfallEnabled` field lets you opt a single call out.
+**Waterfall Reveal on Enrich Contacts** - `POST /v3/contacts/enrich` now falls through to your enabled third-party providers automatically when Lusha's own data has no match for a field. This adds extra reach on hard-to-match contacts, on top of standard enrichment. An optional `waterfallEnabled` field lets you opt a single call out.
 
 - If Data Waterfall is enabled on your account, with specific providers turned on under **Account > Waterfall**, the waterfall runs automatically on every Enrich Contacts call - no need to pass anything to trigger it
 - Pass `waterfallEnabled: false` to opt a specific call out
