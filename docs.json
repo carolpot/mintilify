@@ -724,6 +724,7 @@
                   "user-guide/getting-started/introduction-to-lusha",
                   "user-guide/explore-key-features",
                   "user-guide/getting-started/your-lusha-dashboard-a-quick-tour",
+                  "user-guide/getting-started/onboarding-checklist",
                   "user-guide/getting-started/notifications-and-feed-your-lusha-activity-center",
                   "user-guide/getting-started/how-credits-work-in-lusha",
                   "user-guide/getting-started/understanding-data-quality-and-coverage",
@@ -824,7 +825,6 @@
                       "user-guide/getting-started-with-prospecting/getting-started-with-lusha-prospecting",
                       "user-guide/getting-started-with-prospecting/the-ultimate-guide-to-prospect-search-with-lusha",
                       "user-guide/getting-started-with-prospecting/lusha-lookalikes-finding-similar-contacts-and-companies",
-                      "user-guide/getting-started-with-prospecting/lushas-flex-search",
                       "user-guide/getting-started-with-prospecting/company-bulk-search",
                       "user-guide/getting-started-with-prospecting/saved-and-recent-searches",
                       "user-guide/getting-started-with-prospecting/update-your-shown-contacts",
@@ -1269,6 +1269,7 @@
                   "user-guide/team-management/how-to-join-your-companys-lusha-account",
                   "user-guide/team-management/how-to-change-your-login-email-or-transfer-admin-access",
                   "user-guide/team-management/how-to-see-each-team-members-credit-usage",
+                  "user-guide/team-management/groups",
                   {
                     "group": "Team Capabilities & Permissions",
                     "icon": "user-lock",
@@ -1387,6 +1388,10 @@
     "drilldown": false
   },
   "redirects": [
+    {
+      "source": "/user-guide/getting-started-with-prospecting/lushas-flex-search",
+      "destination": "/user-guide/getting-started-with-prospecting/getting-started-with-lusha-prospecting#searching-with-flex-search"
+    },
     {
       "source": "/user-guide/getting-started/lushas-key-features-at-a-glance",
       "destination": "/user-guide/explore-key-features"

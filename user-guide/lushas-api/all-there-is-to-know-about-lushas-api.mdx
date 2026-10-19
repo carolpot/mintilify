@@ -11,7 +11,7 @@ Lusha's API gives you programmatic access to contact and company data for enrich
 
 ## Authentication
 
-Find your API key in **API Hub** (left sidebar). Click **Copy API key** in the top right, or open the **Manage API Keys** tab to view and manage your key. Pass the key in the request header to authenticate.
+Find your API key in **API & connectors** (left sidebar). Click **Copy API key** in the top right, or open the **Manage API Keys** tab to view and manage your key. Pass the key in the request header to authenticate.
 
 Every key is tied to the user who generated it - Users get one key each; Admins and Managers can generate as many as they need. A key authenticates as its owner and draws from the account's shared credit pool. How it's capped depends on who generated it: a key a **User** generates is capped only by that user's own personal credit limit (uncapped if they have none), while each key an **Admin or Manager** generates can also carry its own credit limit, set independently for that key and independently of their personal one.
 
@@ -43,7 +43,9 @@ Legacy users will keep the same limits they always had; 300/minute, 600/hour, 60
 
 ## Available endpoints
 
-The **APIs** tab in **API Hub** gives you a categorized view of every Lusha API: Prospecting, Enrichment, Signals, and Lookalikes. Each endpoint has a one-click **Try** button that opens the API playground with that action preloaded, so you can run live requests without any setup.
+The **Endpoints** tab in **API & connectors** gives you a categorized view of every Lusha API: Search, Prospecting, Enrich, Signals, Lookalike, Search & Enrich, Website Visits, Buying Group, Tables, and Conversations. Each endpoint has a one-click **Try** button that opens the API playground with that action preloaded, so you can run live requests without any setup.
+
+**API & connectors** also includes a **Connectors** tab, for connecting Lusha to tools like Zapier and n8n, and a **Webhooks** tab, for configuring webhook notifications for account events.
 
 ## Person API
 
@@ -105,7 +107,7 @@ See [Data Waterfall](/user-guide/lushas-api/data-waterfall) for full details on 
 
 ## MCP
 
-**API Hub** includes a dedicated **MCP** tab. Grab your personal MCP URL there and follow the ready-made setup guides for Claude, ChatGPT, Codex, Cursor, and VS Code (plus Gong AI Briefer) to connect Lusha to any AI tool. See the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) article for the full, current client list and setup instructions.
+**API & connectors** includes a dedicated **MCP** tab. Grab your personal MCP URL there and follow the ready-made setup guides for Claude, ChatGPT, n8n, and Cursor to connect Lusha to any AI tool. See the [Lusha MCP Server](/user-guide/mcp/lusha-model-context-protocol-mcp-server) article for the full, current client list and setup instructions.
 
 <Note>
 MCP connects over OAuth, not an API key, so it isn't affected by a user's API access permission. Admins can control MCP separately via a dedicated **MCP access** permission in **Account Settings → Permissions** - on by default; turn it off to restrict MCP connections to Admins and Managers only.
@@ -158,7 +160,7 @@ How you cap a key's spending depends on who generated it.
 
 <Steps>
   <Step title="Open Manage API Keys">
-    In **API Hub**, click the **Manage API Keys** tab.
+    In **API & connectors**, click the **Manage API Keys** tab.
   </Step>
   <Step title="Open the key's credit limit">
     Click the **edit (pencil) icon** or **Set limit** in the Credit usage column.
@@ -175,7 +177,7 @@ How you cap a key's spending depends on who generated it.
 
 <Steps>
   <Step title="Open Team Management">
-    Go to **Settings → Team Management**.
+    Go to **Team management** from the account menu.
   </Step>
   <Step title="Select the user">
     Select the user whose key you want to cap.
@@ -208,20 +210,20 @@ Leave it set to **No limit** and nothing changes. This default doesn't affect Ad
 
 If your API calls fail with a credit limit error, check which kind of key is failing:
 
-- **A key an Admin or Manager generated** (they can generate more than one) may have its own monthly limit, separate from their personal credit limit - check it under **API Hub → Manage API Keys**.
-- **A key a User generated for themselves** has no limit of its own - the block is coming from that user's own credit limit, set under **Settings → Team Management**.
+- **A key an Admin or Manager generated** (they can generate more than one) may have its own monthly limit, separate from their personal credit limit - check it under **API & connectors → Manage API Keys**.
+- **A key a User generated for themselves** has no limit of its own - the block is coming from that user's own credit limit, set under **Team management** (account menu).
 
 **To check and fix it:**
 
 <Steps>
   <Step title="Find the key's owner">
-    Find out who owns the key that's failing, and whether it's a key an Admin/Manager generated or a User's key - Admins and Managers can see every key and its owner under **API Hub → Manage API Keys**.
+    Find out who owns the key that's failing, and whether it's a key an Admin/Manager generated or a User's key - Admins and Managers can see every key and its owner under **API & connectors → Manage API Keys**.
   </Step>
   <Step title="Edit an Admin/Manager key's limit">
     If it's an Admin/Manager-generated key with its own limit, edit or remove that limit from the same tab.
   </Step>
   <Step title="Check a User's credit limit">
-    Otherwise, go to **Settings → Team Management** and check that user's credit limit - raise it, remove it, or free up some of their allowance.
+    Otherwise, go to **Team management** (account menu) and check that user's credit limit - raise it, remove it, or free up some of their allowance.
   </Step>
 </Steps>
 

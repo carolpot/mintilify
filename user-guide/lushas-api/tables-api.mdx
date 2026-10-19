@@ -5,13 +5,17 @@ description: "Create and manage persistent tables of contacts and companies prog
 
 The Lusha Tables API lets you create and manage persistent tables of contacts and companies directly from your own systems. If you use the Lusha Workspace UI, MCP server, or any other Lusha surface - they all read and write the same underlying data, so changes made through the API are reflected everywhere.
 
+<Warning>
+The Tables API is currently in **Beta**.
+</Warning>
+
 ## What the Tables API does
 
 Tables are structured, configurable sets of contacts or companies. Through the API you can:
 
 - **Create and manage tables** - create, list, rename, archive, change visibility, or delete tables
 - **Manage entities** - add or remove contacts or companies (rows) from a table, or read the full list
-- **Run columns** - list available columns, remove columns, or trigger a column to populate across all rows in a table
+- **Manage columns** - list available columns, add new columns to a table, remove columns, or trigger a column to populate across all rows in a table
 - **Persist search results automatically** - pass a `tableId` on Prospecting, Enrich, Signals, or Lookalike calls to save those results into a table without a separate step
 
 ## Contacts Tables vs. Companies Tables
@@ -24,6 +28,10 @@ There are two separate table types, each with its own set of endpoints:
 | Companies Tables | `Companies Tables` | Company records with firmographics, tech stack, Signals, and company-level data |
 
 Both types support the same table, entity, and column operations.
+
+<Note>
+Use the **Add columns** endpoint to add new columns to an existing table, in addition to listing, removing, or running columns.
+</Note>
 
 ## Authentication and ownership
 
@@ -53,7 +61,7 @@ OAuth and token-based callers are already identified by their token, so `owner.e
 - **Adding contacts** to a table is free.
 - **Adding companies** to a table is charged per newly-added company (deduped by row-count delta - duplicates and companies already in the table aren't charged again).
 - **Reading rows** (`GET .../entities`) is charged per row returned.
-- **Creating, listing, updating, and deleting tables** is free, as is **listing and removing columns**.
+- **Creating, listing, updating, and deleting tables** is free, as is **listing, adding, and removing columns**.
 - **Running a column** is charged per row, per that column's credit tier - company-enrichment columns charge once per company per table, so re-running an already-paid company is free.
 
 ## Error codes

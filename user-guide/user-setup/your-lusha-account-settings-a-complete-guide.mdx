@@ -8,7 +8,7 @@ Your account settings are where you manage your profile, billing, team permissio
 Access your settings by clicking your name at the bottom-left of the sidebar.
 
 <Note>
-Your Account Settings page has 9 tabs: **My profile**, **Payments & Subscription**, **Account settings**, **Report settings**, **Tags management**, **Intent**, **Privacy**, **Exports**, and **Waterfall**. The tabs visible to you depend on your role.
+Your Account Settings page has 10 tabs: **My profile**, **Payments & Subscription**, **Account settings**, **Report settings**, **Tags management**, **Intent**, **Privacy**, **Exports**, **Website visitors**, and **Waterfall** (marked **New**). The tabs visible to you depend on your role.
 </Note>
 
 ## My profile
@@ -53,7 +53,8 @@ Enterprise users may not have access to all billing options. Contact your Accoun
 Set what your Users are allowed to do:
 
 - **Invite members** - allow Users to invite new members to the account.
-- **Bulk show** - allow Users to reveal contact details in bulk. Limits by plan: Free: 25, Pro: 50, Premium: 150, Scale: 5,000 contacts at a time.
+- **Bulk show** - allow Users to reveal contact details in bulk. Limits by plan: Free: 25, Starter: 25, Pro: 50, Premium: 5,000, Scale: 10,000 contacts at a time. See [Getting started with Lusha Prospecting](/user-guide/getting-started-with-prospecting/getting-started-with-lusha-prospecting#how-to-reveal-a-contact) for details.
+- **Export without contact details** - allow Users to export contacts or companies to CSV without revealing their contact details first.
 - **CSV export** - allow Users to export contacts to a CSV file. Contact export itself is available on all plans - see [Export contacts to CSV file](/user-guide/export/export-contacts-to-csv-file) for row limits by context. The toggle to disable this permission for Users is a Scale plan only control. On other plans, Users with access always keep this ability. Exporting *company* data to CSV requires a Scale or Enterprise plan - see [Export company data to CSV](/user-guide/export/export-company-data-to-csv).
 - **CSV enrichment** - allow Users to enrich CSV files with Lusha data. (Scale plan only.)
 - **API access** - allow Users to create and use their own Lusha API key. On by default. Turning it off suspends - rather than deletes - any key that user owns; turning it back on reactivates it automatically. See [All there is to know about Lusha's API](/user-guide/lushas-api/all-there-is-to-know-about-lushas-api) for details.
@@ -64,6 +65,8 @@ Set what your Users are allowed to do:
 (Scale plan only)
 
 Set monthly or annual credit limits per user or group. The limit resets on the same day each cycle that your plan started. See [Limit credits per user or group](/user-guide/manage-your-team-capabilities/how-to-limit-credits-per-user-or-group) for setup steps.
+
+- **Default API credit limit** - set the default credit limit applied to API access for new or unassigned users.
 
 ## Inactivity timeout
 
@@ -78,9 +81,15 @@ Configure SSO so all team members sign in using your company identity provider.
 - See [Set up SSO (Okta/Azure)](/user-guide/security/how-to-set-up-sso-single-sign-on)
 - See [Custom SAML single sign-on](/user-guide/security/custom-saml-single-sign-on)
 
+## Website visitors tab
+
+(Available to Admins and Managers only)
+
+The **Website visitors** tab is where you configure domain tracking for the Website Visitors feature. See [Website visitors](/user-guide/shared/features/website-visitors) for setup and usage details.
+
 ## Waterfall tab
 
-(Available to Admins and Managers only, on paid plans, via the API and MCP)
+(Available to Admins and Managers only, on paid plans, via the API and MCP. Marked **New**.)
 
 Data Waterfall is its own top-level tab in your account settings - navigate to **Settings → Waterfall** to access it. Only Admins and Managers can access this tab; other roles don't see it.
 
