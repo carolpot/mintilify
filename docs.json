@@ -1771,5 +1771,6 @@
       "source": "/apis/:slug*",
       "destination": "/api-reference/overview"
     }
-  ]
+  ],
+  "description": "Access documentation, use cases, and technical guides for Lusha. One destination for data docs, developer APIs, and user guides across the Lusha platform."
 }
