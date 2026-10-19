@@ -14,7 +14,7 @@ Don't have a plan yet? [Explore plans](https://www.lusha.com/pricing/) to access
 ## Key concepts
 
 - **Waterfall Reveal** - the enrichment behavior itself: Lusha checks its own data first, then falls through to your enabled providers for any missing email or phone.
-- **Provider** - a third-party data vendor you turn on under **Account Settings → Waterfall**. Lusha determines the query order across providers. Waterfall currently spans 6 providers.
+- **Provider** - a third-party data vendor you turn on under **Account Settings → Waterfall**. Lusha determines the query order across providers. Waterfall currently spans these providers: DataLegion, Prospeo, Techsalerator, Bytemine, and Wiza (async).
 - **Async provider** - a provider that processes the request in the background instead of returning a result instantly. You retrieve the results once the job completes. See [Async providers](#async-providers) below.
 - **Partial Profiles** - contacts the Search API has identified but doesn't yet have contact details for. Pairing Partial Profiles with Data Waterfall gets you more contacts and more complete data.
 
@@ -24,11 +24,16 @@ Data Waterfall is currently available for:
 
 - API
 - MCP - enrichment through AI chats
+- Workspace - see [Waterfall in Workspace: fill in missing phones and emails](/user-guide/enriching-with-data-and-signals/waterfall-in-workspace-fill-in-missing-phones-and-emails)
 
-Coming soon: Workspace and Plugin support.
+Coming soon: Plugin support, and Wiza (async) support in Workspace.
 
 <Note>
   Data Waterfall is available on all paid plans. Don't have a plan yet? [Explore plans](https://www.lusha.com/pricing/) to access Data Waterfall, along with additional features and capabilities.
+</Note>
+
+<Note>
+  Matches stay available account-wide for 30 days. Phone numbers returned by Waterfall vendors are not scrubbed against Do Not Call (DNC) lists.
 </Note>
 
 The Waterfall settings page is only accessible to Admins and Managers on paid plans. See [Account settings - Waterfall tab](/user-guide/user-setup/your-lusha-account-settings-a-complete-guide#waterfall-tab) for details.
