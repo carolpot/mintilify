@@ -1,13 +1,13 @@
 ---
 title: "Lusha Model Context Protocol (MCP) Server"
-description: "Connect Lusha's B2B contact and company data to AI assistants like Claude, ChatGPT, and Codex using the Lusha MCP Server."
+description: "Connect Lusha's B2B contact and company data to AI assistants like Claude, ChatGPT, n8n, and Cursor using the Lusha MCP Server."
 ---
 
 <Info>
-**Audience:** Admins and developers setting up the Lusha MCP Server for the first time, or evaluating what the integration can do at a technical level. If you're already connected and want to know how to use Lusha inside Claude, ChatGPT, or Codex, see [Using Lusha inside LLMs](/user-guide/mcp/using-lusha-inside-llms).
+**Audience:** Admins and developers setting up the Lusha MCP Server for the first time, or evaluating what the integration can do at a technical level. If you're already connected and want to know how to use Lusha inside Claude, ChatGPT, n8n, or Cursor, see [Using Lusha inside LLMs](/user-guide/mcp/using-lusha-inside-llms).
 </Info>
 
-The Lusha MCP Server is a [Model Context Protocol](https://modelcontextprotocol.io/) server that exposes Lusha's B2B contact and company data as callable tools. MCP-compatible AI clients - including Claude, ChatGPT, Codex, Cursor, and VS Code - can invoke those tools through natural language, without any custom API integration. Lusha is also listed on [Gong Collective](https://collective.gong.io/integrations/lusha-systems-inc), so Gong customers can connect the same MCP tools straight into Gong's AI Briefer.
+The Lusha MCP Server is a [Model Context Protocol](https://modelcontextprotocol.io/) server that exposes Lusha's B2B contact and company data as callable tools. MCP-compatible AI clients - including Claude, ChatGPT, n8n, and Cursor - can invoke those tools through natural language, without any custom API integration.
 
 ## What you can do
 
@@ -33,8 +33,8 @@ The Lusha MCP Server is a [Model Context Protocol](https://modelcontextprotocol.
 - A Lusha account on any plan - every user can connect their own Lusha MCP Server, subject to your account's MCP access permission. Admins can restrict MCP access separately: a dedicated **MCP access** permission in **Account Settings → Permissions** is on by default - turn it off and only Admins and Managers can connect.
 - Available API credits - MCP calls consume credits from your account's credit pool
 - An MCP-compatible AI client. Lusha supports two connection methods, depending on your client:
-  - **OAuth** - one-click authentication via Lusha's official connector, for **Claude**, **ChatGPT**, and **Codex**. Not gated by Admin/Manager role or by your account's API key permission settings.
-  - **API Key** - pass your Lusha API key via the `x-api-key` request header, for **VS Code**, **Cursor**, **n8n**, **Gemini CLI**, **Gong AI Briefer**, and any other MCP-compatible client. Subject to your account's API key permission settings.
+  - **OAuth** - one-click authentication via Lusha's official connector, for **Claude** and **ChatGPT**. Not gated by Admin/Manager role or by your account's API key permission settings.
+  - **API Key** - pass your Lusha API key via the `x-api-key` request header, for **Cursor**, **n8n**, and any other MCP-compatible client. Subject to your account's API key permission settings.
 
 **MCP Server URL** (for API Key clients): `https://mcp.lusha.com`. Get your API key from [API Hub → Manage API Keys](https://dashboard.lusha.com/api/manage-api-keys).
 
@@ -48,9 +48,7 @@ The Lusha MCP Server is a [Model Context Protocol](https://modelcontextprotocol.
 
 [Connect via ChatGPT](https://chatgpt.com/apps?q=lusha) - find Lusha in the app directory and click **Connect**.
 
-[Connect via Codex](https://docs.lusha.com/mcp-docs) - find Lusha in the Codex plugin directory and click **Connect**.
-
-[Connect via Gong](https://collective.gong.io/integrations/lusha-systems-inc) - in Gong, go to **Settings → MCP connections**, select Lusha, authenticate, and enable the tools you want for AI Briefer.
+**Connect via n8n or Cursor** - use your Lusha API key with the MCP Server URL above, following your client's MCP setup instructions.
 
 ## Full setup guide and documentation
 
