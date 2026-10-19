@@ -824,7 +824,6 @@
                       "user-guide/getting-started-with-prospecting/getting-started-with-lusha-prospecting",
                       "user-guide/getting-started-with-prospecting/the-ultimate-guide-to-prospect-search-with-lusha",
                       "user-guide/getting-started-with-prospecting/lusha-lookalikes-finding-similar-contacts-and-companies",
-                      "user-guide/getting-started-with-prospecting/lushas-flex-search",
                       "user-guide/getting-started-with-prospecting/company-bulk-search",
                       "user-guide/getting-started-with-prospecting/saved-and-recent-searches",
                       "user-guide/getting-started-with-prospecting/update-your-shown-contacts",
@@ -1387,6 +1386,10 @@
     "drilldown": false
   },
   "redirects": [
+    {
+      "source": "/user-guide/getting-started-with-prospecting/lushas-flex-search",
+      "destination": "/user-guide/getting-started-with-prospecting/getting-started-with-lusha-prospecting#searching-with-flex-search"
+    },
     {
       "source": "/user-guide/getting-started/lushas-key-features-at-a-glance",
       "destination": "/user-guide/explore-key-features"
