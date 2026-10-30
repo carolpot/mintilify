@@ -9494,15 +9494,41 @@
               "B2B"
             ]
           },
-          "phone": {
-            "type": "string",
-            "description": "Company phone number",
-            "example": "(480) 729-6394"
+          "phones": {
+            "type": "array",
+            "description": "Company phone numbers. Omitted when none are available.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string",
+                  "description": "Company phone number"
+                }
+              }
+            },
+            "example": [
+              {
+                "number": "(480) 729-6394"
+              }
+            ]
           },
-          "email": {
-            "type": "string",
-            "description": "Company contact email address",
-            "example": "info@cobbmechanical.com"
+          "emails": {
+            "type": "array",
+            "description": "Company contact email addresses. Omitted when none are available.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "description": "Company contact email address"
+                }
+              }
+            },
+            "example": [
+              {
+                "email": "info@cobbmechanical.com"
+              }
+            ]
           },
           "keywords": {
             "type": "array",

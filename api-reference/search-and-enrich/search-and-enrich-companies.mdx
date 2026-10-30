@@ -92,8 +92,8 @@ Each company in the `companies` array needs **at least one** of the following:
     <ResponseField name="results[].alternativeDomains" type="string[]">Other domains the company uses.</ResponseField>
     <ResponseField name="results[].companyOffering" type="string">Short description of what the company sells or does.</ResponseField>
     <ResponseField name="results[].emailDomain" type="string">Primary domain used for company email addresses.</ResponseField>
-    <ResponseField name="results[].email" type="string">Company contact email address.</ResponseField>
-    <ResponseField name="results[].phone" type="string">Company phone number.</ResponseField>
+    <ResponseField name="results[].emails" type="object[]">Company contact email addresses, each with an `email` field. Omitted when none are available.</ResponseField>
+    <ResponseField name="results[].phones" type="object[]">Company phone numbers, each with a `number` field. Omitted when none are available.</ResponseField>
     <ResponseField name="results[].logoUrl" type="string">URL of the company logo.</ResponseField>
     <ResponseField name="results[].additionalIndustries" type="object[]">Up to 2 secondary `industry` / `subIndustry` pairs.</ResponseField>
     <ResponseField name="results[].specialities" type="string[]">Company specialities.</ResponseField>

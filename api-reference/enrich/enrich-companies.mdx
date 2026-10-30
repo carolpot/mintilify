@@ -239,12 +239,12 @@ POST https://api.lusha.com/v3/companies/enrich
       Primary domain used for company email addresses. Example: `lusha.com`
     </ResponseField>
 
-    <ResponseField name="results[].email" type="string">
-      Company contact email address. Example: `info@example.com`
+    <ResponseField name="results[].emails" type="object[]">
+      Company contact email addresses. Omitted when none are available. Example: `[{ "email": "info@example.com" }]`
     </ResponseField>
 
-    <ResponseField name="results[].phone" type="string">
-      Company phone number. Example: `(480) 729-6394`
+    <ResponseField name="results[].phones" type="object[]">
+      Company phone numbers. Omitted when none are available. Example: `[{ "number": "(480) 729-6394" }]`
     </ResponseField>
 
     <ResponseField name="results[].logoUrl" type="string">
